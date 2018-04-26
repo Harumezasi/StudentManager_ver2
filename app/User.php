@@ -22,8 +22,6 @@ class User extends Model
     public      $timestamps = false;
     public      $incrementing = false;
 
-
-
     // 02. 테이블 관계도 설정
     /**
      *  함수명:                         professor
@@ -59,4 +57,32 @@ class User extends Model
     // 04. 클래스 메서드 정의
 
     // 05. 멤버 메서드 정의
+    /**
+     *  함수명:                         selectUserInfo
+     *  함수 설명:                      해당 사용자의 상세 정보를 조회
+     *  만든날:                         2018년 4월 26일
+     */
+    public function selectUserInfo() {        $id = $this->id;
+
+        switch($this->type) {
+            case 'student':
+                // 학생 회원의 상세정보 조회
+                return $this->join('students', function($join) use($id) {
+                    $join->on('students.id', 'users.id')->where('users.id', $id);
+                })->get()->all()[0];
+                break;
+
+            case 'professor':
+                // 교수 회원의 상세정보 조회
+                return $this->join('professors', function($join) use($id) {
+                    $join->on('professors.id', 'users.id')->where('users.id', $id);
+                })->get()->all()[0];
+                break;
+            case 'admin':
+                // 운영자인 경우 -> 곧바로 반환
+
+                return $this;
+                break;
+        }
+    }
 }

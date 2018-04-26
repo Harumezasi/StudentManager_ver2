@@ -13,11 +13,16 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>환영합니다.</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
+    <title>{{ config()->get('app.name') }}</title>
+    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
+    <link href='//fonts.googleapis.com/earlyaccess/notosanskannada.css' rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div id="main_div"></div>
+    <div>
+        {{ session()->get('locale') }}
     </div>
     <script src='{{ asset('js/app.js') }}'></script>
 </body>

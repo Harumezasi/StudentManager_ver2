@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Http\Controllers\ResponseObject;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -46,6 +48,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($exception instanceof NotValidatedException) {
+            // 유효하지 않은 요청 예외처리
+            return response()->json(new ResponseObject(
+                false, "유효하지 않은 요청입니다."
+            ), 500);
+        } else if($exception instanceof ModelNotFoundException) {
+            // 데이터가 검색되지 않는 경우
+            return response()->json(new ResponseObject(
+                false, '데이터를 찾을 수 없습니다.'
+            ));
+        }
+
         return parent::render($request, $exception);
     }
 }
