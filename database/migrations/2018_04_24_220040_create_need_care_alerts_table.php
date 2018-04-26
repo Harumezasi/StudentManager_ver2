@@ -5,12 +5,12 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- *  클래스명:               CreateNeedCareAlertTable
+ *  클래스명:               CreateNeedCareAlertsTable
  *  설명:                   관심학생 선별 기준 데이터 테이블을 생성하는 마이그레이션
  *  만든이:                 3-WDJ 春目指し 1401213 이승민
  *  만든날:                 2018년 4월 24일
  */
-class CreateNeedCareAlertTable extends Migration
+class CreateNeedCareAlertsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -19,7 +19,7 @@ class CreateNeedCareAlertTable extends Migration
      */
     public function up()
     {
-        Schema::create('need_care_alert', function (Blueprint $table) {
+        Schema::create('need_care_alerts', function (Blueprint $table) {
             /**
              *  01. 칼럼 정의
              */
@@ -33,7 +33,7 @@ class CreateNeedCareAlertTable extends Migration
             $table->unsignedSmallInteger('days_unit');
             $table->enum('notification_flag', $notification_flag_enum);
             $table->unsignedSmallInteger('count');
-            $table->boolean('alert_std_flag');
+            $table->boolean('alert_std_flag')->default(false);
 
             /**
              *  02. 제약조건 설정
@@ -50,6 +50,6 @@ class CreateNeedCareAlertTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('need_care_alert');
+        Schema::dropIfExists('need_care_alerts');
     }
 }
