@@ -27,7 +27,7 @@ class CreateScoresTable extends Migration
             $table->increments('id');
             $table->date('execute_date');
             $table->enum('type', ['final', 'midterm', 'homework', 'quiz']);
-            $table->text('content');
+            $table->text('detail');
             $table->unsignedSmallInteger('perfect_score');
 
             /**

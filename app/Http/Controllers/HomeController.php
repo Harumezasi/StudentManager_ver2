@@ -19,6 +19,9 @@ use App\User;
  *          = setLanguage($locale):             언어 변경 요청을 받아, 제공하는 언어 패키지를 변경
  *      - 회원 관리
  *          = login(Request $request):          사용자 로그인을 실행
+ *      - 테스트
+ *          = session():                        세션 정보를 호출
+ *          = request():                        요청 값을 반환
  */
 class HomeController extends Controller
 {
@@ -154,5 +157,17 @@ class HomeController extends Controller
         }
 
         return redirect(route('home.index'));
+    }
+
+
+
+    // 테스트
+
+    public function session() {
+        return response()->json(session()->all(), 200);
+    }
+
+    public function request(Request $request) {
+        return response()->json(['header' => $request->header(), 'body' => $request->all()], 200);
     }
 }

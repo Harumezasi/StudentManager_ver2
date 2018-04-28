@@ -16,7 +16,7 @@ class User extends Model
     protected   $table = 'users';
     protected   $keyType = 'string';
     protected   $fillable = [
-        'subject_id', 'day_of_week', 'period', 'classroom'
+        'password', 'name', 'email', 'phone', 'type', 'photo'
     ];
 
     public      $timestamps = false;
@@ -62,21 +62,24 @@ class User extends Model
      *  함수 설명:                      해당 사용자의 상세 정보를 조회
      *  만든날:                         2018년 4월 26일
      */
-    public function selectUserInfo() {        $id = $this->id;
+    public function selectUserInfo() {
+        $id = $this->id;
 
         switch($this->type) {
             case 'student':
                 // 학생 회원의 상세정보 조회
                 return $this->join('students', function($join) use($id) {
-                    $join->on('students.id', 'users.id')->where('users.id', $id);
-                })->get()->all()[0];
+                        $join->on('students.id', 'users.id')->where('users.id', $id);
+                    })->get(['users.id', 'name', 'phone', 'type', 'study_class', 'photo'])
+                    ->all()[0];
                 break;
 
             case 'professor':
                 // 교수 회원의 상세정보 조회
                 return $this->join('professors', function($join) use($id) {
-                    $join->on('professors.id', 'users.id')->where('users.id', $id);
-                })->get()->all()[0];
+                        $join->on('professors.id', 'users.id')->where('users.id', $id);
+                    })->get(['users.id', 'name', 'phone', 'type', 'office', 'photo'])
+                    ->all()[0];
                 break;
             case 'admin':
                 // 운영자인 경우 -> 곧바로 반환

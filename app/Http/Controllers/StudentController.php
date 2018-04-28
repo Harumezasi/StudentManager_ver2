@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
  *  함수 목록
  *      - 메인
  *          = index():                          학생 회원의 메인 페이지를 출력
+ *      - 내 정보 관리
+ *      - 출결정보
+ *      - 학업정보
  */
 class StudentController extends Controller
 {
@@ -38,4 +41,11 @@ class StudentController extends Controller
     public function index() {
         return view('index');
     }
+
+    // 출결 정보
+    public function getMyAttendanceRecords() {
+
+    }
+
+    // 학업 정보
 }

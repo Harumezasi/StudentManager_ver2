@@ -75,19 +75,21 @@ class UsersTableSeeder extends Seeder
             $user->fill([
                 'id'        => $id,
                 'password'  => password_hash('aaaa', PASSWORD_DEFAULT),
+                'name'      => $value['name'],
                 'email'     => $value['email'],
                 'phone'     => $value['phone'],
-                'type'      => 'professor'
+                'type'      => 'professor',
+                'photo'     => $value['photo']
             ])->save();
 
             // 교수 데이터 저장
             $professor = new Professor();
             $professor->fill([
                 'id'        => $id,
-                'name'      => $value['name'],
                 'office'    => $value['office'],
-                'photo'     => $value['photo']
             ])->save();
+
+            echo "professor {$user->name} is generated!!!\n";
         }
 
         // 02. 반 생성
@@ -155,6 +157,7 @@ class UsersTableSeeder extends Seeder
             $user->fill([
                 'id'        => $id,
                 'password'  => password_hash('aaaa', PASSWORD_DEFAULT),
+                'name'      => $value,
                 'email'     => 'exam@exam.com',
                 'phone'     => '000-1234-5678',
                 'type'      => 'student'
@@ -165,8 +168,9 @@ class UsersTableSeeder extends Seeder
             $student->fill([
                 'id'            => $id,
                 'study_class'   => $class->id,
-                'name'          => $value
             ])->save();
+
+            echo "student {$user->name} is generated!!!\n";
         }
 
         // 03. 관리자 생성
@@ -174,9 +178,12 @@ class UsersTableSeeder extends Seeder
         $admin->fill([
             'id'        => 'admin',
             'password'  => password_hash('aaaa', PASSWORD_DEFAULT),
+            'name'      => '관리자',
             'email'     => 'root@root.com',
             'phone'     => '000-1234-5678',
             'type'      => 'admin'
         ])->save();
+
+        echo "admin is generated!!!\n";
     }
 }

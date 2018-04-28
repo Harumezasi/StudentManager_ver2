@@ -16,7 +16,7 @@ class Student extends Model
     protected   $table = 'students';
     protected   $keyType = 'string';
     protected   $fillable = [
-        'id', 'study_class', 'name', 'photo'
+        'id', 'study_class'
     ];
 
     public      $timestamps = false;

@@ -39,9 +39,11 @@ class CreateUsersTable extends Migration
              */
             $table->string('id', 30);
             $table->string('password', 100)->default('');
+            $table->string('name', 60);
             $table->string('email', 50);
             $table->string('phone', 30);
             $table->enum('type', ['student', 'professor', 'admin']);
+            $table->string('photo', 60)->default('');
 
             /**
              *  02. 제약조건 정의

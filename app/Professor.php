@@ -16,7 +16,7 @@ class Professor extends Model
     protected   $table = 'professors';
     protected   $keyType = 'string';
     protected   $guarded = [
-        'id', 'name', 'office', 'photo'
+        'id', 'name'
     ];
 
     public      $timestamps = false;
@@ -75,6 +75,10 @@ class Professor extends Model
 
 
     // 04. 클래스 메서드 정의
+    public static function allInfoList() {
+        return self::join('users', 'users.id', 'professors.id');
+    }
+
 
 
     // 05. 멤버 메서드 정의

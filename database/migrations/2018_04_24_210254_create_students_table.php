@@ -25,8 +25,6 @@ class CreateStudentsTable extends Migration
              */
             $table->string('id', 30);
             $table->unsignedInteger('study_class');
-            $table->string('name', 60);
-            $table->string('photo', 60)->default('');
 
             /**
              *  02. 제약조건 정의

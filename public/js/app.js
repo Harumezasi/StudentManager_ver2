@@ -67448,7 +67448,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.logo-box {\n  width: 150px;\n  height: auto;\n}\n\n/*-- Responsive Web Settings --*/\n@media ( max-width: 480px) {\n.container {\n    width: auto;\n}\n.content {\n    float: none;\n    width: auto;\n}\n}\n.logoutButton {\n  width:140px;\n  height:50px;\n  border:2px solid #0897ee;\n  float:left;\n  text-align:center;\n  cursor:pointer;\n  position:relative;\n  -webkit-box-sizing:border-box;\n          box-sizing:border-box;\n  overflow:hidden;\n  margin:0 0 1px 50px;\n}\n.logoutButton a{\n  font-family:arial;\n  font-size:16px;\n  color:#0897ee;\n  text-decoration:none;\n  line-height:50px;\n  -webkit-transition:all .5s ease;\n  transition:all .5s ease;\n  z-index:2;\n  position:relative;\n}\n.effect{\n  width:140px;\n  height:50px;\n  top:-50px;\n  background:#0897ee;\n  position:absolute;\n  -webkit-transition:all .5s ease;\n  transition:all .5s ease;\n  z-index:1;\n}\n.logoutButton:hover .effect{\n  top:0;\n}\n.logoutButton:hover a{\n  color:#fff;\n}\n", ""]);
+exports.push([module.i, "\n.logo-box {\n    width: 150px;\n    height: auto;\n}\n\n/*-- Responsive Web Settings --*/\n@media ( max-width: 480px) {\n.container {\n        width: auto;\n}\n.content {\n        float: none;\n        width: auto;\n}\n}\n.logoutButton {\n    width:140px;\n    height:50px;\n    border:2px solid #0897ee;\n    float:left;\n    text-align:center;\n    cursor:pointer;\n    position:relative;\n    -webkit-box-sizing:border-box;\n            box-sizing:border-box;\n    overflow:hidden;\n    margin:0 0 1px 50px;\n}\n.logoutButton a{\n    font-family:arial;\n    font-size:16px;\n    color:#0897ee;\n    text-decoration:none;\n    line-height:50px;\n    -webkit-transition:all .5s ease;\n    transition:all .5s ease;\n    z-index:2;\n    position:relative;\n}\n.effect{\n    width:140px;\n    height:50px;\n    top:-50px;\n    background:#0897ee;\n    position:absolute;\n    -webkit-transition:all .5s ease;\n    transition:all .5s ease;\n    z-index:1;\n}\n.logoutButton:hover .effect{\n    top:0;\n}\n.logoutButton:hover a{\n    color:#fff;\n}\n", ""]);
 
 // exports
 
@@ -67540,17 +67540,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      login: true,
-      studentMenu: [{ title: '출결관리', link: '/student/attendanceManagement', key: 1 }, { title: '학업관리', link: '/student/gradeManagement', key: 2 }, { title: '상담관리', link: '/student/consultingManagement', key: 3 }]
-    };
-  },
-  created: function created() {
-    this.login = this.$route.path == '/' ? true : false;
-  }
+    data: function data() {
+        return {
+            login: true,
+            studentMenu: [{ title: '내 정보', link: '', key: 1 }, { title: '출결정보', link: '', key: 2 }, { title: '학업정보', link: '', key: 3 }]
+        };
+    },
+    created: function created() {
+        this.login = this.$route.path == '/' ? true : false;
+    }
 });
 
 /***/ }),
@@ -67610,7 +67609,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", { staticClass: "logoutButton" }, [
-            _c("a", { attrs: { href: "/logout" } }, [_vm._v("LOGOUT")]),
+            _c("a", { attrs: { href: "/logout" } }, [_vm._v("로그아웃")]),
             _vm._v(" "),
             _c("div", { staticClass: "effect" })
           ])
