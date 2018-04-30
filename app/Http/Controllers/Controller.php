@@ -12,12 +12,7 @@ use Mockery\Exception;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    const TERM_LIST = [
-        1   => '1st_term',
-        2   => 'summer_vacation',
-        3   => '2nd_term',
-        4   => 'winter_vacation'
-    ];
+    const SCORE_TYPE = ['final', 'midterm', 'homework', 'quiz'];
 
     // 01. 공통 메서드 선언
     /**
@@ -73,9 +68,10 @@ class Controller extends BaseController
         }
 
         return [
-            'prev'  => $prevWeek,
-            'this'  => $thisWeek,
-            'next'  => $nextWeek
+            'prev'          => $prevWeek,
+            'this'          => $thisWeek,
+            'this_format'   => "{$thisWeek->year}년 {$thisWeek->month}월 {$thisWeek->weekOfMonth}주차",
+            'next'          => $nextWeek
         ];
     }
 
@@ -128,9 +124,10 @@ class Controller extends BaseController
         }
 
         return [
-            'prev'  => $prevMonth,
-            'this'  => $thisMonth,
-            'next'  => $nextMonth
+            'prev'          => $prevMonth,
+            'this'          => $thisMonth,
+            'this_format'   => "{$thisMonth->year}년 {$thisMonth->month}월",
+            'next'          => $nextMonth
         ];
     }
 
@@ -184,6 +181,7 @@ class Controller extends BaseController
                 $nowTerm = '2nd_term';
                 break;
         }
+
         if(is_null($argThisTerm)) {
             $year = today()->year;
             $term = $nowTerm;
@@ -235,11 +233,29 @@ class Controller extends BaseController
             }
         }
 
+        // 이번 학기에 대한 출력 양식 지정
+        $thisTermFormat = null;
+        switch(($temp = explode('-', $thisTerm))[1]) {
+            case '1st_term':
+                $thisTermFormat = "{$temp[0]}년도 1학기";
+                break;
+            case 'summer_vacation':
+                $thisTermFormat = "{$temp[0]}년도 여름방학";
+                break;
+            case '2nd_term':
+                $thisTermFormat = "{$temp[0]}년도 2학기";
+                break;
+            case 'winter_vacation':
+                $thisTermFormat = "{$temp[0]}년도 겨울방학";
+                break;
+        }
+
         // 반환
         return [
-            'prev'  => $prevTerm,
-            'this'  => $thisTerm,
-            'next'  => $nextTerm
+            'prev'          => $prevTerm,
+            'this'          => $thisTerm,
+            'this_format'   => $thisTermFormat,
+            'next'          => $nextTerm
         ];
     }
 
@@ -273,5 +289,24 @@ class Controller extends BaseController
             'this'  => $thisYear,
             'next'  => $nextYear
         ];
+    }
+
+
+
+    // 엑셀 관련 함수
+    public function getType($argType) {
+        switch(strtolower($argType)) {
+            case 'xlsx':
+                return \Maatwebsite\Excel\Excel::XLSX;
+                break;
+            case 'xls':
+                return \Maatwebsite\Excel\Excel::XLS;
+                break;
+            case 'csv':
+                return \Maatwebsite\Excel\Excel::CSV;
+                break;
+            default:
+                return \Maatwebsite\Excel\Excel::XLSX;
+        }
     }
 }

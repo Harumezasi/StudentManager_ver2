@@ -42,7 +42,7 @@ class AttendancesTableSeeder extends Seeder
             }
  
             // 일 단위로 순회하는 반복문
-            for (; today()->gte($regDate); $regDate->addDay()) {
+            for ($regDate->addDay(); today()->gte($regDate); $regDate->addDay()) {
                 // 주말인 경우 -> 50% 확률로 출석
                 if($regDate->isWeekend()) {
                     if(rand(0, 1) == 0) {

@@ -49,4 +49,23 @@ class Score extends Model
 
 
     // 05. 멤버 메서드 정의
+    public function insertScoreList(Score $score, array $argStdList) {
+        // 해당 성적 데이터가 저장되었으면 => 각 학생의 성적 등록
+        if($score->save()) {
+            // 각 학생의 성적 등록
+            foreach ($argStdList as $stdId => $scoreValue) {
+                $gainedScore = new GainedScore();
+
+                $gainedScore->score_type = $score->id;
+                $gainedScore->std_id = $stdId;
+                $gainedScore->score = $scoreValue;
+
+                $gainedScore->save();
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

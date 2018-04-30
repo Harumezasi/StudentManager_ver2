@@ -99,7 +99,9 @@ Route::group([
 
 
 
-        // 출결 정보
+        // 출결 관리
+
+        // 출결 정보 열람
         Route::get('/attendance', [
             'as'    => 'attendance',
             'uses'  => 'StudentController@getMyAttendanceRecords'
@@ -107,7 +109,9 @@ Route::group([
 
 
 
-        // 과목 정보
+        // 강의 관리
+
+        // 내 수강정보 열람
         Route::get('/subject', [
             'as'    => 'subject',
             'uses'  => 'StudentController@getMySubjectList'
@@ -134,6 +138,40 @@ Route::group([
         ]);
 
 
+
+        // 내 정보
+
+
+
+        // 강의 관리
+
+        // 강의목록 조회
+        Route::get('/subject/list', [
+            'as'    => 'subject.list',
+            'uses'  => 'ProfessorController@getMySubjectList'
+        ]);
+
+        // 해당 강의의 학생목록 조회
+        Route::get('/subject/join_list', [
+            'as'    => 'subject.join_list',
+            'uses'  => 'ProfessorController@getJoinListOfSubject'
+        ]);
+
+        // 성적 등록 Excel 파일 생성
+        Route::post('/subject/excel/download', [
+            'as'    => 'subject',
+            'uses'  => 'ProfessorController@downloadScoreForm'
+        ]);
+
+        // Excel 파일을 이용한 성적 등록
+        Route::post('/subject/excel/upload', [
+            'as'    => 'subject',
+            'uses'  => 'ProfessorController@uploadScores'
+        ]);
+
+
+
+        // 내 지도반 관리
     });
 });
 
@@ -153,6 +191,5 @@ Route::group([
             'as'    => 'index',
             'uses'  => 'AdminController@index'
         ]);
-
     });
 });

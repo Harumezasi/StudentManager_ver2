@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Subject;
 
 /**
  *  클래스명:               Student
@@ -112,8 +113,6 @@ class Student extends Model
                 $join->on('users.id', 'subjects.professor');
             })->select([
                 'subjects.id', 'users.name', 'users.photo',
-                'final_reflection', 'midterm_reflection',
-                'homework_reflection', 'quiz_reflection'
             ]);
     }
 
@@ -136,8 +135,11 @@ class Student extends Model
             ->rightJoin('scores', function($join) use ($subjectId){
                 $join->on('gained_scores.score_type', 'scores.id')->where('subject_id', $subjectId);
             })->select([
-                'scores.execute_date', 'scores.type', 'scores.detail',
-                'scores.perfect_score', 'gained_scores.score AS gained_score'
+                'scores.execute_date', 'scores.detail',
+                'scores.perfect_score', 'gained_scores.score AS gained_score',
+                DB::raw("(CASE scores.type WHEN 'final' THEN '기말' WHEN 'midterm' THEN '중간'
+                    WHEN 'homework' THEN '과제' WHEN 'quiz' THEN '쪽지' END) AS type
+                ")
             ]);
     }
 
@@ -163,5 +165,79 @@ class Student extends Model
                 DB::raw('sum(score) AS gained_score'),
                 DB::raw('format((sum(score) / sum(perfect_score)), 2) * 100 AS average')
             ]);
+    }
+
+    /**
+     *  함수명:                         selectStatsOfType
+     *  함수 설명:                      해당 학생이 해당 과목에서 성적 유형별로 취득한 성적을 조회
+     *  만든날:                         2018년 4월 29일
+     *
+     *  매개변수 목록
+     *  @param $subjectId :             강의 코드
+     *
+     *  지역변수 목록
+     *  $finalStats:                    기말고사 성적표
+     *  $midtermStats:                  중간고사 성적표
+     *  $homeworkStats:                 과제 성적표
+     *  $quizStats:                     쪽지시험 성적표
+     *  $subject:                       강의 데이터
+     *
+     *  반환값
+     *  @return                         array
+     */
+    public function selectStatList($subjectId) {
+        // 데이터 획득
+        $finalStats     = $this->selectStatsOfType($subjectId)->where('type', 'final')->get()->all();
+        $midtermStats   = $this->selectStatsOfType($subjectId)->where('type', 'midterm')->get()->all();
+        $homeworkStats  = $this->selectStatsOfType($subjectId)->where('type', 'homework')->get()->all();
+        $quizStats      = $this->selectStatsOfType($subjectId)->where('type', 'quiz')->get()->all();
+        $subject        = Subject::findOrFail($subjectId);
+
+        // 성적 통계표
+        $stats = [
+            'final'     => [
+                'type'          => '기말',
+                'count'         => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->count,
+                'perfect_score' => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->perfect_score,
+                'gained_score'  => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->gained_score,
+                'average'       => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->average,
+                'reflection'    => sprintf("%02d", $subject->final_reflection * 100)
+            ],
+            'midterm'   => [
+                'type'          => '중간',
+                'count'         => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->count,
+                'perfect_score' => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->perfect_score,
+                'gained_score'  => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->gained_score,
+                'average'       => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->average,
+                'reflection'    => sprintf("%02d", $subject->midterm_reflection * 100)
+            ],
+            'homework'  => [
+                'type'          => '과제',
+                'count'         => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->count,
+                'perfect_score' => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->perfect_score,
+                'gained_score'  => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->gained_score,
+                'average'       => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->average,
+                'reflection'    => sprintf("%02d", $subject->homework_reflection * 100)
+            ],
+            'quiz'      => [
+                'type'          => '쪽지',
+                'count'         => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->count,
+                'perfect_score' => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->perfect_score,
+                'gained_score'  => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->gained_score,
+                'average'       => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->average,
+                'reflection'    => sprintf("%02d", $subject->quiz_reflection * 100)
+            ]
+        ];
+
+        // 학업성취도 계산
+        $achievement = [];
+        foreach($stats as $stat) {
+            array_push($achievement, $stat['average'] * $stat['reflection']);
+        }
+
+        return [
+            'stats'         => $stats,
+            'achievement'   => sprintf("%03.1f", array_sum($achievement) / 100)
+        ];
     }
 }

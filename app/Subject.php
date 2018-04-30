@@ -15,7 +15,8 @@ class Subject extends Model
     // 01. 모델 속성 설정
     protected   $table = 'subjects';
     protected   $fillable = [
-        'year', 'term', 'professor', 'name', 'final_reflection', 'midterm_reflection', 'homework_reflection', 'quiz_reflection'
+        'year', 'term', 'professor', 'name', 'final_reflection',
+        'midterm_reflection', 'homework_reflection', 'quiz_reflection'
     ];
 
     public      $timestamps = false;
@@ -35,7 +36,7 @@ class Subject extends Model
      *  함수 설명:                      강의 테이블의 수강목록 테이블에 대한 1:* 소유관계를 정의
      *  만든날:                         2018년 4월 26일
      */
-    public function joinList() {
+    public function joinLists() {
         return $this->hasMany('App\JoinList', 'subject_id', 'id');
     }
 
@@ -51,7 +52,7 @@ class Subject extends Model
      *  @param $query:                  질의
      *  @param $when:                   조회 기간 (연도-학기)
      */
-    public function scopeWhen($query, $when) {
+    public function scopeTerm($query, $when) {
         $period = explode('-', $when);
 
         return $query->where([['year', $period[0]], ['term', $period[1]]]);

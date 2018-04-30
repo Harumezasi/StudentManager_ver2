@@ -108,7 +108,7 @@ class StudentController extends Controller
                 // 페이지네이션용 데이터 획득
                 $pagination = [
                     'prev'  => "{$date['prev']->year}-{$date['prev']->weekOfYear}",
-                    'this'  => "{$date['this']->year}년 {$date['this']->month}월 {$date['this']->weekOfMonth}주차",
+                    'this'  => $date['this_format'],
                     'next'  => is_null($date['next']) ? null : "{$date['next']->year}-{$date['next']->weekOfYear}",
                 ];
                 break;
@@ -126,7 +126,7 @@ class StudentController extends Controller
 
                 $pagination = [
                     'prev'  => "{$date['prev']->year}-{$prevMonth}",
-                    'this'  => "{$date['this']->year}년 {$date['this']->month}월",
+                    'this'  => $date['this_format'],
                     'next'  => is_null($nextMonth) ? null : "{$date['next']->year}-{$nextMonth}",
                 ];
                 break;
@@ -226,76 +226,23 @@ class StudentController extends Controller
 
         // 04. 각 강의별 성취도 & 성적 데이터 조회
         foreach($subjects as $subject) {
-            // 과목별 성적 목록
+            // 성적 통계 조회
+            $statList = $student->selectStatList($subject->id);
+
+            // 과목별 성적 목록 첨부
             $subject->scores    = $student->selectScoresList($subject->id)->get()->all();
 
-            // 성적 통계표
-            $finalStats     = $student->selectStatsOfType($subject->id)->where('type', 'final')->get()->all();
-            $midtermStats   = $student->selectStatsOfType($subject->id)->where('type', 'midterm')->get()->all();
-            $homeworkStats  = $student->selectStatsOfType($subject->id)->where('type', 'homework')->get()->all();
-            $quizStats      = $student->selectStatsOfType($subject->id)->where('type', 'quiz')->get()->all();
-            $subject->stats     = [
-                'final'     => [
-                    'type'          => '기말',
-                    'count'         => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->count,
-                    'perfect_score' => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->perfect_score,
-                    'gained_score'  => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->gained_score,
-                    'average'       => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->average,
-                    'reflection'    => sprintf("%02d", $subject->final_reflection * 100)
-                ],
-                'midterm'   => [
-                    'type'          => '중간',
-                    'count'         => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->count,
-                    'perfect_score' => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->perfect_score,
-                    'gained_score'  => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->gained_score,
-                    'average'       => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->average,
-                    'reflection'    => sprintf("%02d", $subject->midterm_reflection * 100)
-                ],
-                'homework'  => [
-                    'type'          => '과제',
-                    'count'         => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->count,
-                    'perfect_score' => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->perfect_score,
-                    'gained_score'  => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->gained_score,
-                    'average'       => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->average,
-                    'reflection'    => sprintf("%02d", $subject->homework_reflection * 100)
-                ],
-                'quiz'      => [
-                    'type'          => '쪽지',
-                    'count'         => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->count,
-                    'perfect_score' => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->perfect_score,
-                    'gained_score'  => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->gained_score,
-                    'average'       => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->average,
-                    'reflection'    => sprintf("%02d", $subject->quiz_reflection * 100)
-                ],
-            ];
+            // 성적 통계표 첨부
+            $subject->stats = $statList['stats'];
 
-            // 학업성취도 계산
-            $achievement = [];
-            foreach($subject->stats as $stat) {
-                array_push($achievement, $stat['average'] * $stat['reflection']);
-            }
-            $subject->achievement = sprintf("%02d", array_sum($achievement));
+            // 학업성취도 첨부
+            $subject->achievement = $statList['achievement'];
         }
 
         // 05. 페이지네이션 데이터 설정
-        $thisTermFormat = null;
-        switch(($thisTerm = explode('-', $period['this']))[1]) {
-            case '1st_term':
-                $thisTermFormat = "{$thisTerm[0]}년도 1학기";
-                break;
-            case 'summer_vacation':
-                $thisTermFormat = "{$thisTerm[0]}년도 여름방학";
-                break;
-            case '2nd_term':
-                $thisTermFormat = "{$thisTerm[0]}년도 2학기";
-                break;
-            case 'winter_vacation':
-                $thisTermFormat = "{$thisTerm[0]}년도 겨울방학";
-                break;
-        }
         $pagination = [
             'prev'  => $period['prev'],
-            'this'  => $thisTermFormat,
+            'this'  => $period['this_format'],
             'next'  => $period['next']
         ];
 
