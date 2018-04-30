@@ -88,13 +88,30 @@ Route::group([
 ], function() {
 
     // 로그인 이후 사용 가능 기능
-    Route::middleware(['check.login'])->group(function() {
+    Route::middleware(['check.student'])->group(function() {
         // 학생 메인 페이지
         Route::get('/main', [
             'as'    => 'index',
             'uses'  => 'StudentController@index'
         ]);
 
+        // 내 정보
+
+
+
+        // 출결 정보
+        Route::get('/attendance', [
+            'as'    => 'attendance',
+            'uses'  => 'StudentController@getMyAttendanceRecords'
+        ]);
+
+
+
+        // 과목 정보
+        Route::get('/subject', [
+            'as'    => 'subject',
+            'uses'  => 'StudentController@getMySubjectList'
+        ]);
     });
 });
 
@@ -109,12 +126,13 @@ Route::group([
 ], function() {
 
     // 로그인 이후 사용 가능 기능
-    Route::middleware(['check.login'])->group(function() {
+    Route::middleware(['check.professor'])->group(function() {
         // 교수 메인 페이지
         Route::get('/main', [
             'as'    => 'index',
             'uses'  => 'ProfessorController@index'
         ]);
+
 
     });
 });
@@ -129,7 +147,7 @@ Route::group([
 ], function() {
 
     // 로그인 이후 사용 가능 기능
-    Route::middleware(['check.login'])->group(function() {
+    Route::middleware(['check.admin'])->group(function() {
         // 교수 메인 페이지
         Route::get('/main', [
             'as'    => 'index',

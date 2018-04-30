@@ -6,10 +6,18 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Carbon;
+use Mockery\Exception;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    const TERM_LIST = [
+        1   => '1st_term',
+        2   => 'summer_vacation',
+        3   => '2nd_term',
+        4   => 'winter_vacation'
+    ];
 
     // 01. 공통 메서드 선언
     /**
@@ -41,13 +49,13 @@ class Controller extends BaseController
             $thisWeek = today();
 
             // 매개인자가 있는 경우 => 데이터 형식을 지키고 있을 때
-        } else if(preg_match("#^(19|20)\d{2}-(0[1-9]|1[012])-[1-6]$#", $argThisWeek)) {
+        } else if(preg_match("/^(19|20)\d{2}-[0-9]{1,2}$/", $argThisWeek)) {
             // 매개 데이터 분해
             $data = explode('-', $argThisWeek);
 
             // 이번주
-            $thisWeek = Carbon::createFromDate($data[0], $data[1], 1);
-            while($thisWeek->weekOfMonth <= $data[2]) {
+            $thisWeek = Carbon::createFromDate($data[0], 1, 1);
+            while($thisWeek->weekOfYear < $data[1]) {
                 $thisWeek->addWeek();
             }
             $thisWeek->startOfWeek();
@@ -65,14 +73,14 @@ class Controller extends BaseController
         }
 
         return [
-            'prev_week'     => $prevWeek,
-            'this_week'     => $thisWeek,
-            'next_week'     => $nextWeek
+            'prev'  => $prevWeek,
+            'this'  => $thisWeek,
+            'next'  => $nextWeek
         ];
     }
 
     /**
-     * 함수명:                         getWeeklyValue
+     * 함수명:                         getMonthlyValue
      * 함수 설명:                      지난 달, 이번 달, 다음 달 값을 반환
      * 만든날:                         2018년 4월 08일
      *
@@ -100,7 +108,7 @@ class Controller extends BaseController
             $thisMonth = today();
 
             // 매개인자가 있는 경우 => 데이터 형식을 지키고 있을 때
-        } else if(preg_match("#^(19|20)\d{2}-(0[1-9]|1[012])$#", $argThisMonth)) {
+        } else if(preg_match("/^(19|20)\d{2}-(0[1-9]|1[012])$/", $argThisMonth)) {
             // 매개 데이터 분해
             $data = explode('-', $argThisMonth);
 
@@ -120,9 +128,9 @@ class Controller extends BaseController
         }
 
         return [
-            'prev_month'        => $prevMonth,
-            'this_month'        => $thisMonth,
-            'next_month'        => $nextMonth
+            'prev'  => $prevMonth,
+            'this'  => $thisMonth,
+            'next'  => $nextMonth
         ];
     }
 
@@ -157,65 +165,81 @@ class Controller extends BaseController
             // 겨울방학
             case 1:
             case 2:
-                $nowTerm = ConstantEnum::TERM['winter_vacation'];
+                $nowTerm = 'winter_vacation';
                 break;
             case 3:
             case 4:
             case 5:
             case 6:
-                $nowTerm = ConstantEnum::TERM['1st_term'];
+                $nowTerm = '1st_term';
                 break;
             case 7:
             case 8:
-                $nowTerm = ConstantEnum::TERM['summer_vacation'];
+                $nowTerm = 'summer_vacation';
                 break;
             case 9:
             case 10:
             case 11:
             case 12:
-                $nowTerm = ConstantEnum::TERM['2nd_term'];
+                $nowTerm = '2nd_term';
                 break;
         }
         if(is_null($argThisTerm)) {
             $year = today()->year;
             $term = $nowTerm;
 
-        } else if(preg_match("#^(19|20)\d{2}-[1-4]$#", $argThisTerm)) {
+        } else if(preg_match("/^(19|20)\d{2}-[1-2]?[a-zA-z_]+$/", $argThisTerm)) {
             $data = explode('-', $argThisTerm);
 
             $year = $data[0];
             $term = $data[1];
         } else {
             //throw new ErrorException();
+            throw new Exception();
         }
 
         // 조회학기 설정
         $thisTerm = "{$year}-{$term}";
 
         // 지난 학기 설정
-        if($term == ConstantEnum::TERM['1st_term']) {
-            $prevTerm = ($year - 1).'-'.ConstantEnum::TERM['winter_vacation'];
-        } else {
-            $prevTerm = $year.'-'.($term - 1);
+        switch($term) {
+            case '1st_term':
+                $prevTerm = ($year - 1).'-winter_vacation';
+                break;
+            case 'summer_vacation':
+                $prevTerm = "{$year}-1st_term";
+                break;
+            case '2nd_term':
+                $prevTerm = "{$year}-summer_vacation";
+                break;
+            case 'winter_vacation':
+                $prevTerm = "{$year}-2nd_term";
+                break;
         }
 
         // 조회 연도와 학기가 현재 연도 학기보다 크다면 => 다음학기 생성하지 않음
         if(!($year >= today()->year && $term >= $nowTerm)) {
-            // 다음 학기 설정
-            if($term == ConstantEnum::TERM['winter_vacation']) {
-                $nextTerm = ($year + 1).'-'.ConstantEnum::TERM['1st_term'];
-            } else {
-                $nextTerm = $year.'-'.($term + 1);
+            switch($term) {
+                case '1st_term':
+                    $nextTerm = "{$year}-summer_vacation";
+                    break;
+                case 'summer_vacation':
+                    $nextTerm = "{$year}-2nd_term";
+                    break;
+                case '2nd_term':
+                    $nextTerm = "{$year}-winter_vacation";
+                    break;
+                case 'winter_vacation':
+                    $nextTerm = ($year + 1)."-1st_term";
+                    break;
             }
         }
 
         // 반환
         return [
-            'prev_term'     => $prevTerm,
-            'this_term'     => $thisTerm,
-            'year'          => $year,
-            'term'          => __('lecture.'.ConstantEnum::TERM[$term]),
-            'next_term'     => $nextTerm
+            'prev'  => $prevTerm,
+            'this'  => $thisTerm,
+            'next'  => $nextTerm
         ];
     }
 
@@ -245,9 +269,9 @@ class Controller extends BaseController
 
         // 반환
         return [
-            'prev_year' => $prevYear,
-            'this_year' => $thisYear,
-            'next_year' => $nextYear
+            'prev'  => $prevYear,
+            'this'  => $thisYear,
+            'next'  => $nextYear
         ];
     }
 }

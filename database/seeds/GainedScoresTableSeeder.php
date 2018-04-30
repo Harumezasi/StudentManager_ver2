@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use App\Score;
 use App\Student;
 use App\GainedScore;
+use App\JoinList;
+use App\Subject;
 
 /**
  *  클래스명:               GainedScoresTableSeeder
@@ -20,10 +22,12 @@ class GainedScoresTableSeeder extends Seeder
      */
     public function run()
     {
+        // 01. 학생별 취득 성적 데이터 생성
         // 성적 목록 획득
         Score::all()->each(function($score) {
-            // 학생별 취득 성적 데이터 생성
+            // 학생 목록 획득
             Student::all()->each(function($student) use ($score) {
+                // 취득성적 데이터 생성
                 $gainedScore = new GainedScore();
                 $gainedScore->fill([
                     'score_type'    => $score->id,

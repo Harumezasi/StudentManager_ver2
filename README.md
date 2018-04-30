@@ -15,6 +15,9 @@
 // Laravel Session
 composer requrie predis/predis
 
+// Laravel Flash Message
+composer require laracasts/flash
+
 // Laravel Excel Library
 composer require maatwebsite/excel
 composer require phpoffice/phpspreadsheet

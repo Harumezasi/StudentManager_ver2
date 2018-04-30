@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\CheckProfessor;
+use App\Http\Middleware\CheckStudent;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -64,6 +67,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
         // 로그인 여부 확인
-        'check.login'   => \App\Http\Middleware\CheckLogin::class
+        'check.admin'       => CheckAdmin::class,
+        'check.student'     => CheckStudent::class,
+        'check.professor'   => CheckProfessor::class,
     ];
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  *  클래스명:               Student
@@ -86,4 +87,81 @@ class Student extends Model
     // 04. 클래스 메서드 정의
 
     // 05. 멤버 메서드 정의
+    /**
+     *  함수명:                         selectSubjectsList
+     *  함수 설명:                      해당 학생이 수강하고 있는 교과목의 상세정보 목록을 조회
+     *  만든날:                         2018년 4월 29일
+     *
+     *  매개변수 목록
+     *  @param $when :                  조회기간을 지정 (연도-학기)
+     *
+     *  지역변수 목록
+     *  $period(array):                 지정된 조회기간
+     *
+     *  반환값
+     *  @return                          $this
+     */
+    public function selectSubjectsList($when) {
+        $period = explode('-', $when);
+
+        return $this->joinLists()
+            ->join('subjects', function($join) use($period) {
+                $join->on('subjects.id', 'join_lists.subject_id')
+                    ->where([['subjects.year', $period[0]], ['subjects.term', $period[1]]]);
+            })->join('users', function($join) {
+                $join->on('users.id', 'subjects.professor');
+            })->select([
+                'subjects.id', 'users.name', 'users.photo',
+                'final_reflection', 'midterm_reflection',
+                'homework_reflection', 'quiz_reflection'
+            ]);
+    }
+
+    /**
+     *  함수명:                         selectScoresList
+     *  함수 설명:                      해당 학생이 해당 과목에서 취득한 성적 목록을 출력
+     *  만든날:                         2018년 4월 29일
+     *
+     *  매개변수 목록
+     *  @param $subjectId:              강의 코드
+     *
+     *  지역변수 목록
+     *  $period(array):                 지정된 조회기간
+     *
+     *  반환값
+     *  @return                          $this
+     */
+    public function selectScoresList($subjectId) {
+        return $this->gainedScores()
+            ->rightJoin('scores', function($join) use ($subjectId){
+                $join->on('gained_scores.score_type', 'scores.id')->where('subject_id', $subjectId);
+            })->select([
+                'scores.execute_date', 'scores.type', 'scores.detail',
+                'scores.perfect_score', 'gained_scores.score AS gained_score'
+            ]);
+    }
+
+    /**
+     *  함수명:                         selectStatsOfType
+     *  함수 설명:                      해당 학생이 해당 과목에서 성적 유형별로 취득한 성적을 조회
+     *  만든날:                         2018년 4월 29일
+     *
+     *  매개변수 목록
+     *  @param $subjectId:              강의 코드
+     *
+     *  지역변수 목록
+     *  $period(array):                 지정된 조회기간
+     *
+     *  반환값
+     *  @return                          $this
+     */
+    public function selectStatsOfType($subjectId) {
+        return $this->selectScoresList($subjectId)->groupBy('type')
+            ->select([
+                'type', DB::raw('count(score) AS count'),
+                DB::raw('sum(perfect_score) AS perfect_score'),
+                DB::raw('sum(score) AS gained_score'),
+                DB::raw('format((sum(score) / sum(perfect_score)), 2) * 100 AS average')
+            ]);
+    }
 }

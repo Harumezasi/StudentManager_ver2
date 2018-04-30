@@ -42,6 +42,20 @@ class Subject extends Model
 
 
     // 03. 스코프 정의
+    /**
+     *  함수명:                         scopeWhen
+     *  함수 설명:                      조회 학기를 지정
+     *  만든날:                         2018년 4월 29일
+     *
+     *  매개변수 목록
+     *  @param $query:                  질의
+     *  @param $when:                   조회 기간 (연도-학기)
+     */
+    public function scopeWhen($query, $when) {
+        $period = explode('-', $when);
+
+        return $query->where([['year', $period[0]], ['term', $period[1]]]);
+    }
 
     // 04. 클래스 메서드 정의
 
