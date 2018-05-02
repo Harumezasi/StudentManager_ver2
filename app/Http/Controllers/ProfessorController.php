@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
+use App\GainedScore;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Validator;
+use App\User;
 use App\Professor;
 use App\Student;
 use App\Score;
@@ -21,23 +24,27 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
  *
  *  함수 목록
  *      - 메인
- *          = index():                          교수 회원의 메인 페이지를 출력
+ *          = index:                            교수 회원의 메인 페이지를 출력
+ *          = isTutor:                          해당 교수의 지도반 소유 여부를 조회
  *
  *
  *
  *      - 내 정보 관리
- *          = downloadScoreForm
- *
- *          = uploadScore
  *
  *      - 강의 관리
+ *          = getMySubjectList:                 내가 담당하는 강의 목록을 획득
+ *          = getJoinListOfSubject:             해당 과목의 수강학생 목록을 조회
+ *          = downloadScoreForm:                성적 등록을 위한 엑셀 양식을 다운로드
+ *          = uploadScoresAtExcel:              엑셀 파일을 분석하여 성적을 등록
+ *          = uploadScores:                     프론트엔드 인터페이스를 이용해 직접 성적 등록
+ *          = getScoresList:                    해당 과목에서 제출된 성적 목록 조회
+ *          = detailScoresOfStudent:            지정한 학생이 해당 과목에서 취득한 성적 목록 조회
  *
  *      - 지도반 관리
  */
 class ProfessorController extends Controller
 {
     // 01. 멤버 변수 선언
-
 
     // 02. 멤버 메서드 정의
 
@@ -58,6 +65,28 @@ class ProfessorController extends Controller
      */
     public function index() {
         return view('index');
+    }
+
+    /**
+     *  함수명:                         isTutor
+     *  함수 설명:                      해당 교수의 지도반 소유 여부를 조회
+     *  만든날:                         2018년 5월 02일
+     *
+     *  매개변수 목록
+     *  null
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return                         \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function isTutor() {
+        if(!is_null(session()->get('user')->study_class)) {
+            return response()->json(true, 200);
+        } else {
+            return response()->json(false, 200);
+        }
     }
 
 
@@ -116,7 +145,7 @@ class ProfessorController extends Controller
         // 03. 페이지네이션 데이터 지정
         $pagination     = [
             'prev'      => $periodValue['prev'],
-            'this'      => $periodValue['this_format'],
+            'this_page'      => $periodValue['this_format'],
             'next'      => $periodValue['next']
         ];
 
@@ -136,8 +165,10 @@ class ProfessorController extends Controller
      *  함수 설명:                     해당 과목의 수강학생 목록을 조회
      *  만든날:                        2018년 4월 30일
      *
-     *  매개 변수
+     *  매개변수 목록
      *  @param Request $request :       요청 메시지
+     *
+     *  지역변수 목록
      *
      *  반환값
      *  @return \Illuminate\Http\JsonResponse 예외
@@ -148,7 +179,7 @@ class ProfessorController extends Controller
     public function getJoinListOfSubject(Request $request) {
         // 01. 유효성 검사
         $validator = Validator::make($request->all(), [
-            'subject_id'        => 'required|numeric'
+            'subject_id'        => 'required|exists:subjects,id'
         ]);
 
         if($validator->fails()) {
@@ -156,18 +187,12 @@ class ProfessorController extends Controller
         }
 
         // 02. 강의 데이터 조회
-        $professor  = Professor::find(session()->get('user')->id);
-        $subjects   = $professor->subjects->where('id', $request->get('subject_id'));
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $subject    = $professor->isMySubject($request->get('subject_id'));
 
-        // ##### 클라이언트가 요청한 강의가 해당 교수가 담당하는 강의가 아닐 때 #####
-        if(sizeof($subjects) <= 0) {
-            return response()->json(new ResponseObject(
-                false, "잘못된 강의코드입니다."
-            ), 200);
-        }
 
         // 03. 수강학생 목록 조회
-        $joinList = $subjects[0]->joinLists()->join('users', 'users.id', 'join_lists.std_id')
+        $joinList = $subject->joinLists()->join('users', 'users.id', 'join_lists.std_id')
             ->get(['users.id', 'users.name', 'users.photo', 'join_lists.subject_id'])->all();
 
         // 학업 성취도 삽입
@@ -211,7 +236,7 @@ class ProfessorController extends Controller
         // 01. 입력값 검증
         $valid_scoreType = implode(',', self::SCORE_TYPE);
         $validator = Validator::make($request->all(), [
-            'subject_id'        => 'required|numeric',
+            'subject_id'        => 'required|exists:subjects,id',
             'file_name'         => 'required|string|min:2',
             'execute_date'      => 'required|date',
             'score_type'        => "required|in:{$valid_scoreType}",
@@ -226,12 +251,8 @@ class ProfessorController extends Controller
 
         // 02. 데이터 획득
         $professor  = Professor::findOrFail(session()->get('user')->id);
-        $subjects   = $professor->subjects()->where('id', $request->post('subject_id'))->get()->all();
+        $subject    = $professor->isMySubject($request->post('subject_id'));
 
-        // ##### 내 강의 목록에서 해당 강의가 없을 때 #####
-        if(sizeof($subjects) <= 0) {
-            return redirect(route('professor.index'))->with('alert', '해당 강의에 대한 접근 권한이 없습니다.');
-        }
 
         $fileName       = $request->post('file_name');
         $executeDate    = $request->post('execute_date');
@@ -239,12 +260,12 @@ class ProfessorController extends Controller
         $content        = $request->post('content');
         $perfectScore   = $request->post('perfect_score');
         $fileType       = $request->post('file_type');
-        $studentList    = $subjects[0]->joinLists()->join('users', 'users.id', 'join_lists.std_id')
+        $studentList    = $subject->joinLists()->join('users', 'users.id', 'join_lists.std_id')
                             ->get(['users.id', 'users.name'])->all();
 
         // 03. 엑셀에 삽입할 데이터 구성
         $data = [
-            ['강의 코드', $subjects[0]->id],
+            ['강의 코드', $subject->id],
             ['등록일자', $executeDate],
             ['유형', $scoreType],
             ['만점', $perfectScore],
@@ -270,7 +291,24 @@ class ProfessorController extends Controller
         return Excel::download(new UploadScoresFormExport($data), $fileName.'.'.$fileType, $fileType);
     }
 
-    public function uploadScores(Request $request) {
+    /**
+     *  함수명:                         uploadScoresAtExcel
+     *  함수 설명:                      엑셀 파일을 분석하여 성적을 등록
+     *  만든날:                         2018년 4월 30일
+     *
+     *  매개변수 목록
+     *  @param Request $request :        요청 메시지
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse
+     *
+     *  예외
+     *  @throws NotValidatedException
+     */
+    public function uploadScoresAtExcel(Request $request) {
         // 01. 전송 데이터 유효성 검사
         $validator = Validator::make($request->all(), [
             'upload_file'       => 'required|file|mimes:xlsx,xls,csv'
@@ -295,14 +333,8 @@ class ProfessorController extends Controller
         // 04. 데이터 추출
 
         // 추출 데이터 - 강의
-        $extractData['score']  = NULL;
-        if (sizeof($subjects = $professor->subjects()->where('id', $sheetData[1]['B'])->get()->all()) > 0) {
-            $extractData['subject_id'] = $sheetData[1]['B'];
-        } else {
-            return response()->json(new ResponseObject(
-                false, "강의 코드가 잘못되었습니다."
-            ), 200);
-        }
+        $extractData['subject_id']  = $sheetData[1]['B'];
+        $subject = $professor->isMySubject($extractData['subject_id']);
 
         // 실시 일자
         $extractData['execute_date'] = $sheetData[2]['B'];
@@ -317,10 +349,11 @@ class ProfessorController extends Controller
         $extractData['content'] = $sheetData[5]['B'];
 
         // 04. 유효성 검증 & 데이터 추출
+        $valid_today     = today()->format('Y-m-d');
         $valid_scoreType = implode(',', self::SCORE_TYPE);
         $validator = Validator::make($extractData, [
-            'subject_id'        => 'required|numeric',
-            'execute_date'      => 'required|date',
+            'subject_id'        => 'required|subjects,id',
+            'execute_date'      => "required|date|before:{$valid_today}",
             'score_type'        => "required|in:{$valid_scoreType}",
             'content'           => 'required|string|min:2',
             'perfect_score'     => 'required|between:1,999',
@@ -332,7 +365,7 @@ class ProfessorController extends Controller
 
         // 학생-점수 리스트
         $extractData['std_list'] = [];
-        $signUpList = $subjects[0]->joinLists()->get(['std_id'])->pluck('std_id')->all();
+        $signUpList = $subject->joinLists()->get(['std_id'])->pluck('std_id')->all();
         foreach($sheetData as $key => $row) {
             // 키값이 7보다 작으면(학생 리스트 등장 이전) 다음 행 추출
             if($key < 7) {
@@ -353,17 +386,19 @@ class ProfessorController extends Controller
                                 break;
                             }
                         }
-                        throw new NotValidatedException("등록되지 않은 학생이 존재합니다.");
+                        throw new NotValidatedException(["등록되지 않은 학생이 존재합니다."]);
                     case 'B':
+                        // 학생의 이름 칸 => 건너뛰기
                         continue;
                     case 'C':
+                        // 학생이 취득한 점수 => 0점 이상 만점 이하일 것
                         if(is_numeric($cell)) {
                             if ($cell <= $extractData['perfect_score'] && $cell >= 0) {
                                 $score = $cell;
                                 break;
                             }
                         }
-                        throw new NotValidatedException('형식에 맞지 않게 입력된 점수가 존재합니다.');
+                        throw new NotValidatedException(['형식에 맞지 않게 입력된 점수가 존재합니다.']);
                 }
             }
 
@@ -372,7 +407,7 @@ class ProfessorController extends Controller
         }
         // 새로운 점수 유형 생성
         $score = new Score();
-        $score->subject_id      = $extractData['subject_ide'];
+        $score->subject_id      = $extractData['subject_id'];
         $score->execute_date    = $extractData['execute_date'];
         $score->type            = $extractData['score_type'];
         $score->detail          = $extractData['content'];
@@ -388,6 +423,233 @@ class ProfessorController extends Controller
                 false, "성적 등록에 실패하였습니다."
             ), 200);
         }
+    }
+
+    /**
+     *  함수명:                         uploadScores
+     *  함수 설명:                      프론트엔드 인터페이스를 이용해 직접 성적 등록
+     *  만든날:                         2018년 5월 03일
+     *
+     *  매개변수 목록
+     *  @param Request $request :        요청 메시지
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse
+     *
+     *  예외
+     *  @throws NotValidatedException
+     */
+    public function uploadScores(Request $request) {
+        // 01. 요청 유효성 검사
+        $valid_today        = today()->format('Y-m-d');
+        $valid_scoreType    = implode(',', self::SCORE_TYPE);
+        $validator = Validator::make($request->all(), [
+            'subject_id'        => 'required|exists:subjects,id',
+            'execute_date'      => "required|date|before:{$valid_today}",
+            'score_type'        => "required|in:{$valid_scoreType}",
+            'detail'            => 'string|min:2',
+            'perfect_score'     => 'required|numeric|min:1|max:999',
+            'gained_score'      => 'required|array'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $subject    = $professor->isMySubject($request->post('subject_id'));
+        $signUpList = $subject->joinLists()->get(['std_id'])->pluck('std_id')->all();
+        //$detail     =
+
+        // 각 학생별 취득 성적 획득
+        $gainedScoreList = [];
+        foreach($request->post('gained_score') as $stdId => $gainedScore) {
+            if($gainedScore < 0 || $gainedScore > $request->post('perfect_score')) {
+                // 입력된 점수가 형식에 맞지 않을 때 => 알고리즘 종료
+                throw new NotValidatedException(["형식에 맞지 않게 입력된 점수가 존재합니다."]);
+            }
+
+            if(in_array($stdId, $signUpList)) {
+                // 해당 학생의 취득 점수를 등록
+                $gainedScoreList[$stdId] = $gainedScore;
+            } else {
+                // 입력된 학생 목록 중 해당 강의의 수강생이 아닐 경우
+                throw new NotValidatedException(["등록되지 않은 학생이 존재합니다."]);
+            }
+        }
+
+
+        // 03. 새로운 성적 유형 생성
+        $score = new Score();
+        $score->subject_id      = $subject->id;
+        $score->execute_date    = $request->post('execute_date');
+        $score->type            = $request->post('score_type');
+        $score->detail          = $request->post('detail');
+        $score->perfect_score   = $request->post('perfect_score');
+
+        // 각 학생별로 취득 점수 등록
+        if($score->insertScoreList($score, $gainedScoreList)) {
+            return response()->json(new ResponseObject(
+                true, "성적 등록에 성공하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "성적 등록에 실패하였습니다."
+            ), 200);
+        }
+    }
+
+    /**
+     *  함수명:                         getScoresList
+     *  함수 설명:                      해당 과목에서 제출된 성적 목록 조회
+     *  만든날:                         2018년 5월 02일
+     *
+     *  매개변수 목록
+     *  @param Request $request :       요청 메시지
+     *
+     *  지역변수 목록
+     *  $validator:                     요청 유효성 검사용 객체
+     *  $professor:                     교수회원 정보
+     *  $subject:                       강의 정보
+     *  $scores:                        해당 과목에서 제출된 성적 목록
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse 예외
+     *
+     * 예외
+     *  @throws NotValidatedException
+     */
+    public function getScoresList(Request $request) {
+        // 01. 데이터 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'subject_id'    => 'required|exists:scores,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $subject    = $professor->isMySubject($request->get('subject_id'));
+        $scores     = $subject->scores()->orderBy('execute_date', 'desc')
+                        ->get(['id', 'execute_date', 'type', 'detail'])->all();
+
+        // 03. 데이터 반환
+        return response()->json(new ResponseObject(
+            true, $scores
+        ), 200);
+    }
+
+    // 해당 성적 유형에서 학생들이 취득한 성적 확인
+    public function getGainedScoreList(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'score_type'    => 'required|exists:scores,id',
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $score      = Score::findOrFail($request->post('score_type'));
+
+        // 현재 접속한 회원이 이 성적에 접근할 권한이 있는지 확인
+        $subject    = $professor->isMySubject($score->subject->id);
+
+        $gainedScores   = $subject->selectGainedScoreList($score->id)->get()->all();
+
+        // 03. 반환 데이터 설정
+        $data = [
+            'score_info'    => [
+            ]
+        ];
+    }
+
+    // 해당 학생의 성적 갱신
+    public function updateGainedScore(Request $request) {
+        // 01. 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'score_type'    => 'required|exists:scores,id',
+            'std_id'        => 'required|exists:students,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $score      = Score::findOrFail($request->post('score_type'));
+        $subject    = $professor->isMySubject($score->subject_id);
+        $student    = Student::findOrFail($request->post('std_id'));
+
+        if(!in_array($student->id, $subject->joinLists()->get(['std_id'])->pluck('std_id')->all())) {
+            throw new NotValidatedException(["해당 학생은 이 강의의 수강생이 아닙니다."]);
+        }
+    }
+
+    /**
+     *  함수명:                         getScoresOfStudents
+     *  함수 설명:                      지정한 학생이 해당 과목에서 취득한 성적 목록 조회
+     *  만든날:                         2018년 5월 02일
+     *
+     *  매개변수 목록
+     *  @param Request $request :       요청 메시지
+     *
+     *  지역변수 목록
+     *  $validator:                     요청 유효성 검사용 객체
+     *  $professor:                     교수회원 정보
+     *  $subject:                       강의 정보
+     *  $student:                       조회하고자 하는 학생 정보
+     *  $scores:                        해당 학생의 성적 목록
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse 예외
+     *
+     * 예외
+     *  @throws NotValidatedException
+     */
+    public function detailScoresOfStudent(Request $request) {
+        // 01. 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'subject_id'    => 'required|exists:subjects,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $subject    = $professor->isMySubject($request->get('subject_id'));
+        $student    = in_array($request->get('std_id'), $subject->joinLists->pluck('std_id')->all())
+                            ? Student::findOrFail($request->get('std_id')) : null;
+
+        // ##### 해당 과목을 수강하는 학생이 아닐 때 ######
+        if(is_null($student)) {
+            throw new NotValidatedException(["잘못된 학번입니다."]);
+        }
+
+        $scores     = $subject->scores()
+            ->leftJoin('gained_scores', function($join) use ($student) {
+                $join->on('scores.id', 'gained_scores.score_type')
+                    ->where('gained_scores.std_id', $student->id);
+            })->get(['scores.execute_date', 'scores.type', 'scores.detail', 'scores.perfect_score', 'gained_scores.score'])
+            ->all();
+
+
+        // 03. 데이터 반환
+        return response()->json(new ResponseObject(
+            true, $scores
+        ), 200);
     }
 
 

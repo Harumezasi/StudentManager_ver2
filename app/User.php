@@ -78,7 +78,9 @@ class User extends Model
                 // 교수 회원의 상세정보 조회
                 return $this->join('professors', function($join) use($id) {
                         $join->on('professors.id', 'users.id')->where('users.id', $id);
-                    })->get(['users.id', 'name', 'phone', 'type', 'office', 'photo'])
+                    })->leftJoin('study_classes', 'study_classes.tutor', 'professors.id')
+                    ->get(['users.id', 'users.name', 'phone', 'type', 'office', 'photo',
+                        'study_classes.id as study_class'])
                     ->all()[0];
                 break;
             case 'admin':

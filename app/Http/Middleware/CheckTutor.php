@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Http\Controllers\ResponseObject;
 
-class CheckStudent
+class CheckTutor
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,8 @@ class CheckStudent
      */
     public function handle($request, Closure $next)
     {
-        if(session()->has('user')) {
-            if(session()->get('user')->type == 'student') {
+        if(!is_null(session()->get('user')->study_class)) {
                 return $next($request);
-            }
         }
 
         //return redirect(route('home.index'))->with('alert', '허가되지 않은 접근입니다.');

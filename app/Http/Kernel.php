@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckProfessor;
 use App\Http\Middleware\CheckStudent;
+use App\Http\Middleware\CheckTutor;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,5 +71,8 @@ class Kernel extends HttpKernel
         'check.admin'       => CheckAdmin::class,
         'check.student'     => CheckStudent::class,
         'check.professor'   => CheckProfessor::class,
+
+        // 지도교수 여부 확인
+        'check.tutor'       => CheckTutor::class,
     ];
 }

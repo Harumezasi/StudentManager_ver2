@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\NotValidatedException;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -75,6 +76,11 @@ class Professor extends Model
 
 
     // 04. 클래스 메서드 정의
+    /**
+     *  함수명:                         allInfoList
+     *  함수 설명:                      교수의 모든 정보를 조회
+     *  만든날:                         2018년 4월 30일
+     */
     public static function allInfoList() {
         return self::join('users', 'users.id', 'professors.id');
     }
@@ -82,4 +88,18 @@ class Professor extends Model
 
 
     // 05. 멤버 메서드 정의
+    /**
+     *  함수명:                         isMySubject
+     *  함수 설명:                      사용자가 해당 과목의 담당교수인지 조회
+     *  만든날:                         2018년 4월 30일
+     */
+    public function isMySubject($subjectId) {
+        $subjects = $this->subjects()->where('id', $subjectId)->get()->all();
+
+        if(sizeof($subjects) > 0) {
+            return $subjects[0];
+        } else {
+            throw new NotValidatedException(["해당 강의에 접근할 권한이 없습니다."]);
+        }
+    }
 }

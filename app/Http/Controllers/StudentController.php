@@ -79,8 +79,8 @@ class StudentController extends Controller
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
             // 요청에 필요한 값은 period(조회기간 단위), date(조회기간)
-            'period'    => 'in:weekly,monthly',
-            'date'      => 'required_with:period|regex:/^[1-2]\d{3}-\d{1,2}$/'
+            'period'    => 'required_with:date|in:weekly,monthly',
+            'date'      => 'regex:/^[1-2]\d{3}-\d{2}$/'
         ]);
 
         if($validator->fails()) {
@@ -106,10 +106,14 @@ class StudentController extends Controller
                     ->end($date['this']->copy()->endOfWeek()->format('Y-m-d'));
 
                 // 페이지네이션용 데이터 획득
+                $prevWeek = sprintf('%04d-%02d', $date['prev']->year, $date['prev']->weekOfYear);
+                $nextWeek = is_null($date['next']) ? null :
+                    sprintf('%04d-%02d', $date['next']->year, $date['next']->weekOfYear);
                 $pagination = [
-                    'prev'  => "{$date['prev']->year}-{$date['prev']->weekOfYear}",
-                    'this'  => $date['this_format'],
-                    'next'  => is_null($date['next']) ? null : "{$date['next']->year}-{$date['next']->weekOfYear}",
+                    'prev'      => $prevWeek,
+                    'this'      => $date['this_format'],
+                    'next'      => $nextWeek,
+                    'period'    => $argPeriod
                 ];
                 break;
 
@@ -128,6 +132,7 @@ class StudentController extends Controller
                     'prev'  => "{$date['prev']->year}-{$prevMonth}",
                     'this'  => $date['this_format'],
                     'next'  => is_null($nextMonth) ? null : "{$date['next']->year}-{$nextMonth}",
+                    'period'    => $argPeriod
                 ];
                 break;
         }
@@ -136,7 +141,7 @@ class StudentController extends Controller
         if(with(clone $attendances)->count() <= 0) {
             return response()->json(new ResponseObject(
                 false, "조회된 출석기록이 없습니다."
-            ));
+            ), 200);
         }
 
 
@@ -155,7 +160,7 @@ class StudentController extends Controller
             'absence'               => with(clone $attendances)->absence()->count('reg_date'),
 
             // 출석률 (정상 등교 / 총 출석일)
-            'attendance_rate'       => number_format(($signIn / with(clone $attendances)->count()), 2) * 100,
+            'attendance_rate'       => number_format(($signIn / with(clone $attendances)->count()) * 100, 0),
 
             // 최근 정상등교 일자
             'recent_sign_in'        => with(clone $attendances)->signIn()->max('reg_date'),

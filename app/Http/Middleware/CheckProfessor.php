@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Http\Controllers\ResponseObject;
 
 class CheckProfessor
 {
@@ -21,6 +22,9 @@ class CheckProfessor
             }
         }
 
-        return redirect(route('home.index'));
+        //return redirect(route('home.index'))->with('alert', '허가되지 않은 접근입니다.');
+        return response()->json(new ResponseObject(
+            false, '허가되지 않은 접근입니다.'
+        ), 401);
     }
 }

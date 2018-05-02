@@ -53,16 +53,16 @@ class Controller extends BaseController
             while($thisWeek->weekOfYear < $data[1]) {
                 $thisWeek->addWeek();
             }
-            $thisWeek->startOfWeek();
         } else {
             //throw new ErrorException('aaa');
         }
+        $thisWeek->endOfWeek();
 
         // 지난주
         $prevWeek = $thisWeek->copy()->subWeek();
 
         // 기준 시간대가 이번주보다 과거인 경우 다음주 생성
-        if(today()->startOfWeek()->gt($thisWeek->copy()->startOfWeek())) {
+        if(today()->endOfWeek()->gt($thisWeek->copy()->endOfWeek())) {
             // 다음주
             $nextWeek = $thisWeek->copy()->addWeek();
         }

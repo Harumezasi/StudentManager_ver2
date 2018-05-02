@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\ResponseObject;
 use Closure;
 
 class CheckAdmin
@@ -21,6 +22,9 @@ class CheckAdmin
             }
         }
 
-        return redirect(route('home.index'));
+        //return redirect(route('home.index'))->with('alert', '허가되지 않은 접근입니다.');
+        return response()->json(new ResponseObject(
+            false, '허가되지 않은 접근입니다.'
+        ), 401);
     }
 }
