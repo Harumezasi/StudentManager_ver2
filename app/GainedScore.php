@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Subject;
+use App\Student;
+use App\Score;
 
 /**
  *  클래스명:               GainedScore
@@ -28,7 +31,7 @@ class GainedScore extends Model
      *  함수 설명:                      취득점수 테이블의 성적 테이블에 대한 1:* 역관계를 정의
      *  만든날:                         2018년 4월 25일
      */
-    public function score() {
+    public function scoreType() {
         return $this->belongsTo('App\Score', 'score_type', 'id');
     }
 
@@ -52,4 +55,8 @@ class GainedScore extends Model
 
 
     // 05. 멤버 메서드 정의
+    // 학업 성취도를 갱신
+    public function updateAchievement() {
+
+    }
 }

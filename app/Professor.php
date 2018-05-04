@@ -99,7 +99,7 @@ class Professor extends Model
         if(sizeof($subjects) > 0) {
             return $subjects[0];
         } else {
-            throw new NotValidatedException(["해당 강의에 접근할 권한이 없습니다."]);
+            throw new NotValidatedException("해당 강의에 접근할 권한이 없습니다.");
         }
     }
 }

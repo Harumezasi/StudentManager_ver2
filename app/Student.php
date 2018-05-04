@@ -112,7 +112,7 @@ class Student extends Model
             })->join('users', function($join) {
                 $join->on('users.id', 'subjects.professor');
             })->select([
-                'subjects.id', 'users.name', 'users.photo',
+                'subjects.id', 'subjects.name', 'users.name as prof_name', 'users.photo',
             ]);
     }
 
@@ -163,7 +163,7 @@ class Student extends Model
                 'type', DB::raw('count(score) AS count'),
                 DB::raw('sum(perfect_score) AS perfect_score'),
                 DB::raw('sum(score) AS gained_score'),
-                DB::raw('format((sum(score) / sum(perfect_score)), 2) * 100 AS average')
+                DB::raw('format((sum(score) / sum(perfect_score)) * 100, 0) AS average')
             ]);
     }
 
@@ -201,7 +201,7 @@ class Student extends Model
                 'perfect_score' => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->perfect_score,
                 'gained_score'  => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->gained_score,
                 'average'       => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->average,
-                'reflection'    => sprintf("%02d", $subject->final_reflection * 100)
+                'reflection'    => number_format($subject->final_reflection * 100, 0)
             ],
             'midterm'   => [
                 'type'          => '중간',
@@ -209,7 +209,7 @@ class Student extends Model
                 'perfect_score' => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->perfect_score,
                 'gained_score'  => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->gained_score,
                 'average'       => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->average,
-                'reflection'    => sprintf("%02d", $subject->midterm_reflection * 100)
+                'reflection'    => number_format($subject->midterm_reflection * 100, 0)
             ],
             'homework'  => [
                 'type'          => '과제',
@@ -217,7 +217,7 @@ class Student extends Model
                 'perfect_score' => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->perfect_score,
                 'gained_score'  => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->gained_score,
                 'average'       => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->average,
-                'reflection'    => sprintf("%02d", $subject->homework_reflection * 100)
+                'reflection'    => number_format($subject->homework_reflection * 100, 0)
             ],
             'quiz'      => [
                 'type'          => '쪽지',
@@ -225,7 +225,7 @@ class Student extends Model
                 'perfect_score' => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->perfect_score,
                 'gained_score'  => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->gained_score,
                 'average'       => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->average,
-                'reflection'    => sprintf("%02d", $subject->quiz_reflection * 100)
+                'reflection'    => number_format($subject->quiz_reflection * 100, 0)
             ]
         ];
 

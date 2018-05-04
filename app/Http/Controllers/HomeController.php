@@ -16,11 +16,23 @@ use App\User;
  *  함수 목록
  *      - 메인
  *          = index():                          서비스의 메인 페이지를 출력
+ *
  *          = setLanguage($locale):             언어 변경 요청을 받아, 제공하는 언어 패키지를 변경
+ *
+ *
+ *
  *      - 회원 관리
  *          = login(Request $request):          사용자 로그인을 실행
+ *          = 사용자 정보 불러오기
+ *
+ *
+ *      - 하드웨어
+ *          = 오늘자 학생 출결목록 출력
+ *          = 오늘자 시간표 출력
+ *
  *      - 테스트
  *          = session():                        세션 정보를 호출
+ *
  *          = request():                        요청 값을 반환
  */
 class HomeController extends Controller
@@ -157,6 +169,20 @@ class HomeController extends Controller
         }
 
         return redirect(route('home.index'));
+    }
+
+    // 사용자 정보 불러오기
+    public function getUserInfo() {
+        if(!session()->exists('user')) {
+            return response()->json([], 200);
+        }
+
+        return response()->json(new ResponseObject(
+            true, [
+                'name'  => session()->get('user')->name,
+                'photo' => session()-> get('user')->photo
+            ]
+        ));
     }
 
 

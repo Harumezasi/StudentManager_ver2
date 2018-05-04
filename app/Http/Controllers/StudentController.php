@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Dotenv\Exception\ValidationException;
 use Validator;
 use Illuminate\Http\Request;
 use App\Student;
+use App\Attendance;
 use App\Exceptions\NotValidatedException;
+use Illuminate\Support\Carbon;
 
 /**
  *  클래스명:               StudentController
@@ -183,6 +186,59 @@ class StudentController extends Controller
         ), 200);
     }
 
+    // 하드웨어 : 등교
+    public function signInOfHardware(Request $request) {
+        // 01. 요청 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'student_number_id'     => 'required|exists:students,id',
+        ]);
+
+        if($validator->fails()) {
+            throw new ValidationException("허가되지 않은 접근입니다.");
+        }
+
+        // 02. 데이터 획득
+        $student        = Student::findOrFail($request->post('student_number_id'));
+        $detail         = $request->exists('detail') ? $request->post('detail') : "";
+        $signInTime     = Carbon::create();
+
+        // 03. 심층 유효성 검사
+        // 오늘자 출석기록 조회
+        $adaRecordOfToday = $student->attendances()->start($signInTime->format('Y-m-d'))
+                                ->end($signInTime->format('Y-m-d'))->get()->all();
+        if(sizeof($adaRecordOfToday) > 0) {
+            // 오늘의 출석기록이 있으면 => 출석 인증 중단
+            return response()->json(new ResponseObject(
+                false, "오늘은 이미 출석하셨습니다."
+            ), 200);
+        }
+
+        // 04. 출석
+        $signInLimit    = explode(':', $student->studyClass->sign_in_time);
+        $attendance = new Attendance();
+        $attendance->std_id             = $student->id;
+        $attendance->reg_date           = $signInTime->format('Y-m-d');
+        $attendance->sign_in_time       = $signInTime->format('Y-m-d H:i:s');
+        $attendance->sign_out_time      = null;
+        $attendance->lateness_flag      = $signInTime->gt(Carbon::createFromTime($signInLimit[0], $signInLimit[1], $signInLimit[2]))
+                                    ? 'unreason' : 'good';
+        $attendance->early_leave_flag   = 'good';
+        $attendance->absence_flag       = 'good';
+        $attendance->detail             = $detail;
+
+        // 05. 결과 반환
+        if($attendance->save()) {
+            return response()->json(new ResponseObject(
+                true, "좋은 아침입니다, {$student->user->name}님."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "출석 인증에 실패하였습니다."
+            ), 200);
+        }
+    }
+
+    // 하드웨어 : 하교
 
 
     // 학업 정보

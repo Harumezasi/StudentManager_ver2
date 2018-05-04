@@ -31,16 +31,22 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
  *
  *      - 내 정보 관리
  *
+ *
+ *
  *      - 강의 관리
  *          = getMySubjectList:                 내가 담당하는 강의 목록을 획득
- *          = getJoinListOfSubject:             해당 과목의 수강학생 목록을 조회
- *          = downloadScoreForm:                성적 등록을 위한 엑셀 양식을 다운로드
- *          = uploadScoresAtExcel:              엑셀 파일을 분석하여 성적을 등록
- *          = uploadScores:                     프론트엔드 인터페이스를 이용해 직접 성적 등록
- *          = getScoresList:                    해당 과목에서 제출된 성적 목록 조회
- *          = detailScoresOfStudent:            지정한 학생이 해당 과목에서 취득한 성적 목록 조회
  *
- *      - 지도반 관리
+ *          = getJoinListOfSubject:             해당 과목의 수강학생 목록을 조회
+ *
+ *          = downloadScoreForm:                성적 등록을 위한 엑셀 양식을 다운로드
+ *
+ *          = uploadScoresAtExcel:              엑셀 파일을 분석하여 성적을 등록
+ *
+ *          = uploadScores:                     프론트엔드 인터페이스를 이용해 직접 성적 등록
+ *
+ *          = getScoresList:                    해당 과목에서 제출된 성적 목록 조회
+ *
+ *          = detailScoresOfStudent:            지정한 학생이 해당 과목에서 취득한 성적 목록 조회
  */
 class ProfessorController extends Controller
 {
@@ -144,9 +150,9 @@ class ProfessorController extends Controller
 
         // 03. 페이지네이션 데이터 지정
         $pagination     = [
-            'prev'      => $periodValue['prev'],
-            'this_page'      => $periodValue['this_format'],
-            'next'      => $periodValue['next']
+            'prev'          => $periodValue['prev'],
+            'this_page'     => $periodValue['this_format'],
+            'next'          => $periodValue['next']
         ];
 
         // 04. 전송할 데이터 지정
@@ -386,7 +392,7 @@ class ProfessorController extends Controller
                                 break;
                             }
                         }
-                        throw new NotValidatedException(["등록되지 않은 학생이 존재합니다."]);
+                        throw new NotValidatedException("등록되지 않은 학생이 존재합니다.");
                     case 'B':
                         // 학생의 이름 칸 => 건너뛰기
                         continue;
@@ -398,7 +404,7 @@ class ProfessorController extends Controller
                                 break;
                             }
                         }
-                        throw new NotValidatedException(['형식에 맞지 않게 입력된 점수가 존재합니다.']);
+                        throw new NotValidatedException('형식에 맞지 않게 입력된 점수가 존재합니다.');
                 }
             }
 
@@ -470,7 +476,7 @@ class ProfessorController extends Controller
         foreach($request->post('gained_score') as $stdId => $gainedScore) {
             if($gainedScore < 0 || $gainedScore > $request->post('perfect_score')) {
                 // 입력된 점수가 형식에 맞지 않을 때 => 알고리즘 종료
-                throw new NotValidatedException(["형식에 맞지 않게 입력된 점수가 존재합니다."]);
+                throw new NotValidatedException("형식에 맞지 않게 입력된 점수가 존재합니다.");
             }
 
             if(in_array($stdId, $signUpList)) {
@@ -478,7 +484,7 @@ class ProfessorController extends Controller
                 $gainedScoreList[$stdId] = $gainedScore;
             } else {
                 // 입력된 학생 목록 중 해당 강의의 수강생이 아닐 경우
-                throw new NotValidatedException(["등록되지 않은 학생이 존재합니다."]);
+                throw new NotValidatedException("등록되지 않은 학생이 존재합니다.");
             }
         }
 
@@ -567,17 +573,22 @@ class ProfessorController extends Controller
 
         // 03. 반환 데이터 설정
         $data = [
-            'score_info'    => [
-            ]
+            'score_info'    => $score,
+            'gained_scores' => $gainedScores
         ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
     }
 
     // 해당 학생의 성적 갱신
     public function updateGainedScore(Request $request) {
         // 01. 유효성 검사
         $validator = Validator::make($request->all(), [
-            'score_type'    => 'required|exists:scores,id',
-            'std_id'        => 'required|exists:students,id'
+            'gained_score_id'   => 'required|exists:gained_scores,id',
+            'std_id'            => 'required|exists:students,id',
+            'score'             => 'required|numeric|min:0|max:999'
         ]);
 
         if($validator->fails()) {
@@ -585,13 +596,35 @@ class ProfessorController extends Controller
         }
 
         // 02. 데이터 획득
-        $professor  = Professor::findOrFail(session()->get('user')->id);
-        $score      = Score::findOrFail($request->post('score_type'));
-        $subject    = $professor->isMySubject($score->subject_id);
-        $student    = Student::findOrFail($request->post('std_id'));
+        $professor      = Professor::findOrFail(session()->get('user')->id);
+        $gainedScore    = GainedScore::findOrFail($request->post('gained_score_id'));
+        $scoreType      = $gainedScore->scoreType;
+        $subject        = $professor->isMySubject($scoreType->subject_id);
+        $student        = Student::findOrFail($request->post('std_id'));
 
         if(!in_array($student->id, $subject->joinLists()->get(['std_id'])->pluck('std_id')->all())) {
-            throw new NotValidatedException(["해당 학생은 이 강의의 수강생이 아닙니다."]);
+            // ###### 성적 수정을 요청한 학생이 해당 강의의 수강생이 아닐 때 ######
+            throw new NotValidatedException("해당 학생은 이 강의의 수강생이 아닙니다.");
+        }
+
+        $score          = $request->post('score');
+
+        if($score > $scoreType->perfect_score) {
+            // ##### 입력된 성적이 만점을 초과할 경우 #####
+            throw new NotValidatedException("입력한 성적이 만점을 초과합니다.");
+        }
+
+
+        // 03. 데이터 수정
+        $gainedScore->score = $score;
+        if($gainedScore->save() === true) {
+            return response()->json(new ResponseObject(
+                true, "성적 수정이 완료되었습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, '성적 수정이 실패하였습니다.'
+            ), 200);
         }
     }
 
@@ -635,7 +668,7 @@ class ProfessorController extends Controller
 
         // ##### 해당 과목을 수강하는 학생이 아닐 때 ######
         if(is_null($student)) {
-            throw new NotValidatedException(["잘못된 학번입니다."]);
+            throw new NotValidatedException("잘못된 학번입니다.");
         }
 
         $scores     = $subject->scores()
@@ -651,8 +684,4 @@ class ProfessorController extends Controller
             true, $scores
         ), 200);
     }
-
-
-
-    // 지도반 관리
 }

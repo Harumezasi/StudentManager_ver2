@@ -50,8 +50,14 @@ class Handler extends ExceptionHandler
     {
         if($exception instanceof NotValidatedException) {
             // 유효하지 않은 요청 예외처리
+            $message = $exception->getMessage();
+            $jsonMessage = json_decode($message);
+            if(json_last_error() == JSON_ERROR_NONE) {
+                $message = $jsonMessage;
+            }
+
             return response()->json(new ResponseObject(
-                false, json_decode($exception->getMessage())
+                false, $message
             ), 400);
         } else if($exception instanceof ModelNotFoundException) {
             // 데이터가 검색되지 않는 경우

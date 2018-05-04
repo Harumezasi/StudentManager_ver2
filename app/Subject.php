@@ -95,6 +95,9 @@ class Subject extends Model
             ->leftJoin('gained_scores', function($join) use($scoreId) {
                 $join->on('join_lists.std_id', 'gained_scores.std_id')
                     ->where('gained_scores.score_type', $scoreId);
-            });
+            })->join('users', 'join_lists.std_id', 'users.id')
+            ->select([
+                'gained_scores.id', 'join_lists.std_id', 'users.name', 'gained_scores.score'
+            ]);
     }
 }

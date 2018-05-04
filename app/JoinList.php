@@ -52,4 +52,7 @@ class JoinList extends Model
 
 
     // 05. 멤버 메서드 정의
+    public function updateAchievement() {
+
+    }
 }

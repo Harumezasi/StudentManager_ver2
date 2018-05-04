@@ -75,6 +75,12 @@ Route::name('home.')->group(function() {
         'as'   => 'forgot',
         'uses' => 'HomeController@forgot'
     ]);
+
+    // 회원 정보 획득
+    Route::get('/user_info', [
+        'as'    => 'info',
+        'uses'  => 'HomeController@getUserInfo'
+    ]);
 });
 
 
@@ -150,67 +156,120 @@ Route::group([
 
 
         // 강의 관리
+        Route::group([
+            'as'        => 'subject.',
+            'prefix'    => 'subject'
+        ], function() {
+            // 강의목록 조회
+            Route::get('/list', [
+                'as' => 'list',
+                'uses' => 'ProfessorController@getMySubjectList'
+            ]);
 
-        // 강의목록 조회
-        Route::get('/subject/list', [
-            'as'    => 'subject.list',
-            'uses'  => 'ProfessorController@getMySubjectList'
-        ]);
-
-        // 해당 강의의 학생목록 조회
-        Route::get('/subject/join_list', [
-            'as'    => 'subject.join_list',
-            'uses'  => 'ProfessorController@getJoinListOfSubject'
-        ]);
-
-        // 해당 과목에서 제출된 성적 목록 조회
-        Route::get('/subject/scores', [
-            'as'    => 'subject.scores',
-            'uses'  => 'ProfessorController@getScoresList'
-        ]);
-
-        // 성적 등록 Excel 파일 생성
-        Route::post('/subject/excel/download', [
-            'as'    => 'subject.score.excel_download',
-            'uses'  => 'ProfessorController@downloadScoreForm'
-        ]);
-
-        // Excel 파일을 이용한 성적 등록
-        Route::post('/subject/excel/upload', [
-            'as'    => 'subject.score.excel_upload',
-            'uses'  => 'ProfessorController@uploadScoresAtExcel'
-        ]);
-
-        // 웹 인터페이스를 통한 직접 성적 등록
-        Route::post('/subject/score/upload', [
-            'as'    => 'subject.score.directly_upload',
-            'uses'  => 'ProfessorController@uploadScores'
-        ]);
-
-        // 해당 성적 유형에서 학생들이 취득한 성적 확인
-        Route::get('/subject/gained_scores', [
-            'as'    => 'subject.score.gained_scores',
-            'uses'  => 'ProfessorController@getGainedScoreList'
-        ]);
-
-        // 지정한 학생이 해당 과목에서 취득한 성적 목록 조회
-        Route::get('/subject/details/scores', [
-            'as'    => 'subject.details.scores',
-            'uses'  => 'ProfessorController@detailScoresOfStudent'
-        ]);
+            // 해당 강의의 학생목록 조회
+            Route::get('/join_list', [
+                'as' => 'join_list',
+                'uses' => 'ProfessorController@getJoinListOfSubject'
+            ]);
 
 
+            // 성적 관련 기능
+            Route::group([
+                'as'        => 'score.',
+                'prefix'    => 'score'
+            ], function() {
 
-        // 내 지도반 관련 기능
-        Route::middleware(['check.tutor'])->group(function() {
+                // 해당 과목에서 제출된 성적 목록 조회
+                Route::get('/list', [
+                    'as' => 'list',
+                    'uses' => 'ProfessorController@getScoresList'
+                ]);
 
+                // 해당 성적 유형에서 학생들이 취득한 성적 확인
+                Route::get('/gained_scores', [
+                    'as' => 'gained_scores',
+                    'uses' => 'ProfessorController@getGainedScoreList'
+                ]);
+
+                // 해당 학생의 성적 갱신
+                Route::post('/update', [
+                    'as' => 'update',
+                    'uses' => 'ProfessorController@updateGainedScore'
+                ]);
+
+                // 성적 등록 Excel 파일 생성
+                Route::post('/excel/download', [
+                    'as' => 'excel_download',
+                    'uses' => 'ProfessorController@downloadScoreForm'
+                ]);
+
+                // Excel 파일을 이용한 성적 등록
+                Route::post('/excel/upload', [
+                    'as' => 'excel_upload',
+                    'uses' => 'ProfessorController@uploadScoresAtExcel'
+                ]);
+
+                // 웹 인터페이스를 통한 직접 성적 등록
+                Route::post('/upload', [
+                    'as' => 'directly_upload',
+                    'uses' => 'ProfessorController@uploadScores'
+                ]);
+            });
+        });
+
+
+
+        // 학생별 상세정보 조회
+        Route::group([
+            'as'        => 'detail',
+            'prefix'    => 'detail'
+        ], function() {
+            // 지정한 학생이 해당 과목에서 취득한 성적 목록 조회
+            Route::get('/scores', [
+                'as' => 'scores',
+                'uses' => 'ProfessorController@detailScoresOfStudent'
+            ]);
         });
     });
 });
 
 
 /**
- *  04. 관리자 컨트롤러 기능
+ *  04. 지도교수 컨트롤러 기능
+ */
+Route::group([
+    'as'        => 'tutor.',
+    'prefix'    => 'tutor'
+], function() {
+    // 로그인 이후 사용 기능
+    Route::middleware(['check.professor', 'check.tutor'])->group(function() {
+        // 메인
+
+        // 메인화면 출력
+        Route::get('/main', [
+            'as'    => 'index',
+            'uses'  => 'TutorController@index'
+        ]);
+
+
+
+        // 출결 관리
+        Route::group([
+            'as'        => 'attendance.',
+            'prefix'    => 'attendance'
+        ], function() {
+            // 오늘 출결기록 조회
+            Route::get('/today', [
+                'as'    => 'today',
+                'uses'  => 'TutorController@getAttendanceRecordsOfToday'
+            ]);
+        });
+    });
+});
+
+
+/**
+ *  05. 관리자 컨트롤러 기능
  */
 Route::group([
     'as'        => 'admin.',
@@ -225,4 +284,24 @@ Route::group([
             'uses'  => 'AdminController@index'
         ]);
     });
+});
+
+
+
+// test URL
+Route::group([
+    'as'        => 'test.',
+    'prefix'    => 'test'
+], function() {
+    Route::get('/', [
+        'as'    => 'index',
+        'uses'  => function (){
+            return view('test');
+        }
+    ]);
+
+    Route::post('/sign_in', [
+        'as'    => 'sign_in',
+        'uses'  => 'StudentController@signInOfHardware'
+    ]);
 });
