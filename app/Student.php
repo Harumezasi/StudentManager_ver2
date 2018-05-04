@@ -229,15 +229,6 @@ class Student extends Model
             ]
         ];
 
-        // 학업성취도 계산
-        $achievement = [];
-        foreach($stats as $stat) {
-            array_push($achievement, $stat['average'] * $stat['reflection']);
-        }
-
-        return [
-            'stats'         => $stats,
-            'achievement'   => sprintf("%03.1f", array_sum($achievement) / 100)
-        ];
+        return $stats;
     }
 }

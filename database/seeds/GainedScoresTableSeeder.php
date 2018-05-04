@@ -23,10 +23,10 @@ class GainedScoresTableSeeder extends Seeder
     public function run()
     {
         // 01. 학생별 취득 성적 데이터 생성
-        // 성적 목록 획득
-        Score::all()->each(function($score) {
-            // 학생 목록 획득
-            Student::all()->each(function($student) use ($score) {
+        // 학생 목록 획득
+        Student::all()->each(function($student) {
+            // 성적 목록획득
+            Score::all()->each(function($score) use ($student) {
                 // 취득성적 데이터 생성
                 $gainedScore = new GainedScore();
                 $gainedScore->fill([
@@ -36,6 +36,11 @@ class GainedScoresTableSeeder extends Seeder
                 ])->save();
 
                 echo "Gained score of {$student->id} at {$score->detail} is generated!!!\n";
+            });
+
+            // 학업 성취도 갱신
+            $student->joinLists()->each(function ($joinList) {
+                $joinList->updateAchievement();
             });
         });
     }

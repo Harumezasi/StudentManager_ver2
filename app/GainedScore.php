@@ -55,8 +55,4 @@ class GainedScore extends Model
 
 
     // 05. 멤버 메서드 정의
-    // 학업 성취도를 갱신
-    public function updateAchievement() {
-
-    }
 }

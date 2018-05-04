@@ -10,7 +10,7 @@
 5. mbstring
 6. xmlrpc
 
-#### Laravel
+#### Laravel - Version 5.6.17
 <pre>
 // Laravel Session
 composer requrie predis/predis

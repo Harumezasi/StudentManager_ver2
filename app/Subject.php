@@ -100,4 +100,28 @@ class Subject extends Model
                 'gained_scores.id', 'join_lists.std_id', 'users.name', 'gained_scores.score'
             ]);
     }
+
+    /**
+     *  함수명:                         updateReflections
+     *  함수 설명:                      각 성적별 학업성취도 반영비율 수정
+     *  만든날:                         2018년 5월 4일
+     *
+     *  매개변수 목록
+     *  @param array $reflections:      수정할 반영비 정보
+     *
+     *  반환값
+     *  @return bool
+     */
+    public function updateReflections(Array $reflections) {
+        $this->final_reflection     = $reflections['final'];
+        $this->midterm_reflection   = $reflections['midterm'];
+        $this->homework_reflection  = $reflections['homework'];
+        $this->quiz_reflection      = $reflections['quiz'];
+
+        if($this->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

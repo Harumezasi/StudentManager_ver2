@@ -287,17 +287,15 @@ class StudentController extends Controller
 
         // 04. 각 강의별 성취도 & 성적 데이터 조회
         foreach($subjects as $subject) {
-            // 성적 통계 조회
-            $statList = $student->selectStatList($subject->id);
-
             // 과목별 성적 목록 첨부
             $subject->scores    = $student->selectScoresList($subject->id)->get()->all();
 
             // 성적 통계표 첨부
-            $subject->stats = $statList['stats'];
+            $subject->stats = $student->selectStatList($subject->id);;
 
             // 학업성취도 첨부
-            $subject->achievement = $statList['achievement'];
+            $subject->achievement =
+                number_format($student->joinLists()->subject($subject->id)->get()[0]->achievement * 100, 0);
         }
 
         // 05. 페이지네이션 데이터 설정

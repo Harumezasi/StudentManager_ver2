@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
 use App\GainedScore;
+use App\Subject;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 use App\User;
 use App\Professor;
@@ -25,6 +27,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
  *  함수 목록
  *      - 메인
  *          = index:                            교수 회원의 메인 페이지를 출력
+ *
  *          = isTutor:                          해당 교수의 지도반 소유 여부를 조회
  *
  *
@@ -46,7 +49,15 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
  *
  *          = getScoresList:                    해당 과목에서 제출된 성적 목록 조회
  *
+ *          = getGainedScoreList:               해당 성적 유형에서 학생들이 취득한 성적 확인
+ *
+ *          = updateGainedScore:                해당 학생의 성적 갱신
+ *
  *          = detailScoresOfStudent:            지정한 학생이 해당 과목에서 취득한 성적 목록 조회
+ *
+ *          = getAchievementReflections:        해당 강의의 성적별 학업성취도 반영비율 조회
+ *
+ *          = updateAchievementReflections:     해당 강의의 성적별 학업성취도 반영비율 수정
  */
 class ProfessorController extends Controller
 {
@@ -85,7 +96,7 @@ class ProfessorController extends Controller
      *  null
      *
      *  반환값
-     *  @return                         \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *  @return                         \Illuminate\Http\JsonResponse
      */
     public function isTutor() {
         if(!is_null(session()->get('user')->study_class)) {
@@ -98,7 +109,62 @@ class ProfessorController extends Controller
 
 
     // 내 정보 관리
+    // 내 정보 열람
+    public function getMyInfo() {
+        return response()->json(new ResponseObject(
+            true, [
+                'id'        => session()->get('user')->id,
+                'name'      => session()->get('user')->name,
+                'phone'     => session()->get('user')->phone,
+                'email'     => session()->get('user')->email,
+                'office'    => session()->get('user')->office,
+                'photo'     => session()->get('user')->photo
+            ]
+        ), 200);
+    }
 
+    // 내 정보 수정
+    public function updateMyInfo(Request $request) {
+        // 01. 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'password'          => 'required|same:password_check',
+            'password_check'    => 'required|same:password',
+            'phone'             => 'required',
+            'email'             => 'required|email',
+            'office'            => 'required|string',
+            'photo'             => 'image'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $password   = $request->post('password');
+        $phone      = $request->post('phone');
+        $email      = $request->post('email');
+        $office     = $request->post('office');
+        $photo      = $request->hasFile('photo') ? $request->file('photo') : null;
+
+        // 03. 데이터 수정
+        $professor->password    = password_hash($password, PASSWORD_DEFAULT);
+        $professor->phone       = $phone;
+        $professor->email       = $email;
+        $professor->office      = $office;
+
+        if(!is_null($photo)) {
+            // 기존 이미지가 존재한다면 => 기존 이미지 삭제
+            if(strlen($professor->photo) > 0) {
+
+            }
+
+            // 새 이미지 저장
+        }
+
+
+        return response()->json($request->all(), 200);
+    }
 
 
     // 강의 관리
@@ -199,12 +265,11 @@ class ProfessorController extends Controller
 
         // 03. 수강학생 목록 조회
         $joinList = $subject->joinLists()->join('users', 'users.id', 'join_lists.std_id')
-            ->get(['users.id', 'users.name', 'users.photo', 'join_lists.subject_id'])->all();
+            ->get(['users.id', 'users.name', 'users.photo', 'join_lists.subject_id', 'join_lists.achievement'])->all();
 
         // 학업 성취도 삽입
         foreach($joinList as $item) {
-            $achievement = Student::find($item->id)->selectStatList($item->subject_id)['achievement'];
-            $item->achievement = $achievement;
+            $item->achievement = number_format($item->achievement * 100, 0);
         }
 
         // 04. 데이터 반환
@@ -233,18 +298,19 @@ class ProfessorController extends Controller
      *  $data:                          엑셀 파일에 등록할 데이터
      *
      *  반환값
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     *  @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      *
      *  예외
      *  @throws NotValidatedException
      */
     public function downloadScoreForm(Request $request) {
         // 01. 입력값 검증
+        $valid_today     = today()->format('Y-m-d');
         $valid_scoreType = implode(',', self::SCORE_TYPE);
         $validator = Validator::make($request->all(), [
             'subject_id'        => 'required|exists:subjects,id',
             'file_name'         => 'required|string|min:2',
-            'execute_date'      => 'required|date',
+            'execute_date'      => "required|date|before_or_equal:{$valid_today}",
             'score_type'        => "required|in:{$valid_scoreType}",
             'content'           => 'required|string|min:2',
             'perfect_score'     => 'required|between:1,999',
@@ -358,8 +424,8 @@ class ProfessorController extends Controller
         $valid_today     = today()->format('Y-m-d');
         $valid_scoreType = implode(',', self::SCORE_TYPE);
         $validator = Validator::make($extractData, [
-            'subject_id'        => 'required|subjects,id',
-            'execute_date'      => "required|date|before:{$valid_today}",
+            'subject_id'        => 'required|exists:subjects,id',
+            'execute_date'      => "required|date|before_or_equal:{$valid_today}",
             'score_type'        => "required|in:{$valid_scoreType}",
             'content'           => 'required|string|min:2',
             'perfect_score'     => 'required|between:1,999',
@@ -420,7 +486,7 @@ class ProfessorController extends Controller
         $score->perfect_score   = $extractData['perfect_score'];
 
         // 각 학생별로 취득 점수 등록
-        if($score->insertScoreList($score, $extractData['std_list'])) {
+        if($score->insertScoreList($extractData['std_list'])) {
             return response()->json(new ResponseObject(
                 true, "성적 등록에 성공하였습니다."
             ), 200);
@@ -438,6 +504,13 @@ class ProfessorController extends Controller
      *
      *  매개변수 목록
      *  @param Request $request :        요청 메시지
+     *      # subject_id(강의 코드):            필수|강의 테이블에 존재하는 코드일 것
+     *      # execute_date(실시 일자):          필수|날짜 자료형|오늘보다 미래시점은 금지
+     *      # score_type(성적 유형):            필수|시스템에서 지정한 타입일 것
+     *      # detail(상세 내용):                문자열|최소:2
+     *      # perfect_score(만점):              필수|숫자형|최소:1|최대:999
+     *      # gained_score(취득 점수):          필수|배열형일 것
+     *
      *
      *  지역변수 목록
      *  null
@@ -458,7 +531,7 @@ class ProfessorController extends Controller
             'score_type'        => "required|in:{$valid_scoreType}",
             'detail'            => 'string|min:2',
             'perfect_score'     => 'required|numeric|min:1|max:999',
-            'gained_score'      => 'required|array'
+            'gained_score'      => 'required|array',
         ]);
 
         if($validator->fails()) {
@@ -469,7 +542,6 @@ class ProfessorController extends Controller
         $professor  = Professor::findOrFail(session()->get('user')->id);
         $subject    = $professor->isMySubject($request->post('subject_id'));
         $signUpList = $subject->joinLists()->get(['std_id'])->pluck('std_id')->all();
-        //$detail     =
 
         // 각 학생별 취득 성적 획득
         $gainedScoreList = [];
@@ -516,6 +588,7 @@ class ProfessorController extends Controller
      *
      *  매개변수 목록
      *  @param Request $request :       요청 메시지
+     *      # subject_id(강의 코드):            필수|강의 테이블에 존재하는 코드일 것
      *
      *  지역변수 목록
      *  $validator:                     요청 유효성 검사용 객체
@@ -582,7 +655,32 @@ class ProfessorController extends Controller
         ), 200);
     }
 
-    // 해당 학생의 성적 갱신
+    /**
+     *  함수명:                         updateGainedScore
+     *  함수 설명:                      해당 학생의 성적 갱신
+     *  만든날:                         2018년 4월 26일
+     *
+     *  매개변수 목록
+     *  @param Request $request:        요청 메시지
+     *      # gained_score_id(취득점수 코드):         필수|취득점수 테이블에 존재하는 코드
+     *      # std_id(학번):                           필수|학생 테이블에 존재하는 학번
+     *      # score(취득점수):                        필수|숫자|최소:0|최대:999 => 이후에 만점을 초과하지 않는지 추가로 검사
+     *
+     *  지역변수 목록
+     *  $validator:                     요청 유효성 검사용 객체
+
+     *  $professor:                     교수 정보
+     *  $gainedScore:                   취득점수 정보
+     *  $scoreType:                     성적 유형
+     *  $subject:                       강의 정보
+     *  $student:                       학생 정보
+     *
+     *  반환값
+     *  @return                         \Illuminate\Http\JsonResponse
+     *
+     *  예외
+     *  @throws                         NotValidatedException
+     */
     public function updateGainedScore(Request $request) {
         // 01. 유효성 검사
         $validator = Validator::make($request->all(), [
@@ -671,17 +769,143 @@ class ProfessorController extends Controller
             throw new NotValidatedException("잘못된 학번입니다.");
         }
 
-        $scores     = $subject->scores()
-            ->leftJoin('gained_scores', function($join) use ($student) {
-                $join->on('scores.id', 'gained_scores.score_type')
-                    ->where('gained_scores.std_id', $student->id);
-            })->get(['scores.execute_date', 'scores.type', 'scores.detail', 'scores.perfect_score', 'gained_scores.score'])
-            ->all();
+        // 03. View 단에 반환할 성적 목록 획득
+        $scores = $student->selectScoresList($subject->id)->get()->all();
 
 
         // 03. 데이터 반환
         return response()->json(new ResponseObject(
             true, $scores
         ), 200);
+    }
+
+    /**
+     *  함수명:                         getAchievementReflections
+     *  함수 설명:                      해당 강의의 성적별 학업성취도 반영비율 조회
+     *  만든날:                         2018년 5월 04일
+     *
+     *  매개변수 목록
+     *  @param Request $request :       요청 메시지
+     *      # subject_id(강의 코드):            필수|강의 테이블에 존재하는 코드일 것
+     *
+     *  지역변수 목록
+     *  $validator:                     요청 유효성 검사용 객체
+     *  $professor:                     교수회원 정보
+     *  $subject:                       강의 정보
+     *  $data:                          프론트엔드에 반환하는 값
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse 예외
+     *
+     * 예외
+     *  @throws NotValidatedException
+     */
+    public function getAchievementReflections(Request $request) {
+        // 01. 데이터 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'subject_id'        => 'required|exists:subjects,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $subject    = $professor->isMySubject($request->get('subject_id'));
+
+        // 03. 반환 데이터 설정
+        $data = [
+            // 기말 반영비
+            'final'         => number_format($subject->final_reflection * 100, 0),
+
+            // 중간 반영비
+            'midterm'       => number_format($subject->midterm_reflection * 100, 0),
+
+            // 과제 반영비
+            'homework'      => number_format($subject->homework_reflection * 100, 0),
+
+            // 쪽지시험 반영비
+            'quiz'          => number_format($subject->quiz_reflection * 100, 0),
+        ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
+    }
+
+    /**
+     *  함수명:                         updateAchievementReflections
+     *  함수 설명:                      해당 강의의 성적별 학업성취도 반영비율 수정
+     *  만든날:                         2018년 5월 04일
+     *
+     *  매개변수 목록
+     *  @param Request $request :       요청 메시지
+     *      # subject_id(강의 코드):                필수|강의 테이블에 존재하는 코드일 것
+     *      # final(기말 반영비):                   필수|숫자형|최소:0|최대:100
+     *      # midterm(중간 반영비):                 필수|숫자형|최소:0|최대:100
+     *      # homework(과제 반영비):                필수|숫자형|최소:0|최대:100
+     *      # quiz(쪽지시험 반영비):                필수|숫자형|최소:0|최대:100
+     *
+     *  지역변수 목록
+     *  $validator:                     요청 유효성 검사용 객체
+     *  $professor:                     교수회원 정보
+     *  $subject:                       강의 정보
+     *  $reflections:                   갱신에 사용할 반영비 데이터
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse 예외
+     *
+     * 예외
+     *  @throws NotValidatedException
+     */
+    public function updateAchievementReflections(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'subject_id'    => 'required|exists:subjects,id',
+            'final'         => 'required|numeric|min:0|max:100',
+            'midterm'       => 'required|numeric|min:0|max:100',
+            'homework'      => 'required|numeric|min:0|max:100',
+            'quiz'          => 'required|numeric|min:0|max:100',
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $subject    = $professor->isMySubject($request->post('subject_id'));
+
+        // 입력된 반영비 획득
+        $reflections = [
+            'final'     => $request->post('final'),
+            'midterm'   => $request->post('midterm'),
+            'homework'  => $request->post('homework'),
+            'quiz'      => $request->post('quiz'),
+        ];
+
+        // ##### 반영비의 합이 100이 아닐 경우 => 갱신 중단 #####
+        if(array_sum($reflections) != 100) {
+            throw new NotValidatedException("입력된 반영비의 합이 100이 아닙니다.");
+        }
+        // 소수점으로 변환
+        $reflections = [
+            'final'     => number_format($reflections['final'] / 100, 2),
+            'midterm'   => number_format($reflections['midterm'] / 100, 2),
+            'homework'  => number_format($reflections['homework'] / 100, 2),
+            'quiz'      => number_format($reflections['quiz'] / 100, 2),
+        ];
+
+        // 03. 갱신
+        if($subject->updateReflections($reflections)) {
+            return response()->json(new ResponseObject(
+                true, "반영비를 갱신하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "반영비 갱신에 실패하였습니다."
+            ), 200);
+        }
     }
 }
