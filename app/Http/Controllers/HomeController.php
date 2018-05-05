@@ -180,7 +180,7 @@ class HomeController extends Controller
         return response()->json(new ResponseObject(
             true, [
                 'name'  => session()->get('user')->name,
-                'photo' => session()-> get('user')->photo
+                'photo' => session()-> get('user')->photo_url
             ]
         ));
     }

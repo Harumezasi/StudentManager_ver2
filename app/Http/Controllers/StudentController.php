@@ -9,6 +9,7 @@ use App\Student;
 use App\Attendance;
 use App\Exceptions\NotValidatedException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *  클래스명:               StudentController
@@ -24,12 +25,14 @@ use Illuminate\Support\Carbon;
  *
  *
  *  - 내 정보 관리
+ *          = getMyInfo:                        사용자 정보를 획득
+ *
+ *          = updateMyInfo:                     사용자 정보를 갱신
  *
  *
  *
  *  - 출결정보
- *      = getMyAttendanceRecords(Request $request)
- *          : 자신의 최근 출석 데이터를 조회
+ *          = getMyAttendanceRecords:           자신의 최근 출석 데이터를 조회
  *
  *
  *
@@ -58,6 +61,104 @@ class StudentController extends Controller
      */
     public function index() {
         return view('index');
+    }
+
+    // 내 정보 관리
+    /**
+     *  함수명:                         getMyInfo
+     *  함수 설명:                      사용자 정보를 획득
+     *  만든날:                         2018년 5월 05일
+     *
+     *  매개변수 목록
+     *  null
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse
+     */
+    public function getMyInfo() {
+        return response()->json(new ResponseObject(
+            true, [
+                'id'        => session()->get('user')->id,
+                'name'      => session()->get('user')->name,
+                'phone'     => session()->get('user')->phone,
+                'email'     => session()->get('user')->email,
+                'photo'     => session()->get('user')->photo_url
+            ]
+        ), 200);
+    }
+
+    /**
+     *  함수명:                         updateMyInfo
+     *  함수 설명:                      사용자 정보를 수정
+     *  만든날:                         2018년 5월 05일
+     *
+     *  매개변수 목록
+     *  @param Request $request:        요청 메시지
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse
+     *
+     *  예외
+     *  @throws NotValidatedException
+     */
+    public function updateMyInfo(Request $request) {
+        // 01. 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'password'          => 'required_with:password_check|same:password_check',
+            'password_check'    => 'required_with:password|same:password',
+            'phone'             => 'required',
+            'email'             => 'required|email',
+            'photo'             => 'image'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $student    = Student::findOrFail(session()->get('user')->id);
+        $password   = $request->post('password');
+        $phone      = $request->post('phone');
+        $email      = $request->post('email');
+        $photo      = $request->hasFile('photo') ? $request->file('photo') : null;
+
+        // 03. 데이터 수정
+        $updateInfo['password'] = $password;
+        $updateInfo['phone']    = $phone;
+        $updateInfo['email']    = $email;
+
+        if(!is_null($photo)) {
+            // 기존 이미지가 존재한다면 => 기존 이미지 삭제
+            $original_photo = session()->get('user')->photo;
+                // 파일의 존재여부를 확인
+            if(Storage::disk('std_photo')->exists($original_photo)) {
+                // 삭제
+                Storage::disk('std_photo')->delete($original_photo);
+            }
+
+            // 새 이미지 저장 => DB 사용자 정보에 새로운 이미지 경로를 지정
+            $fileName = $photo->store('/','std_photo');
+            $updateInfo['photo'] = $fileName;
+        }
+
+        // 04. 데이터 갱신
+        if($student->updateMyInfo($updateInfo)) {
+            session()->put('user', $student->user->selectUserInfo());
+
+            return response()->json(new ResponseObject(
+                true, "정보 갱신을 완료했습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "정보 갱신을 실패했습니다."
+            ), 200);
+        }
     }
 
     // 출결 정보

@@ -102,4 +102,25 @@ class Professor extends Model
             throw new NotValidatedException("해당 강의에 접근할 권한이 없습니다.");
         }
     }
+
+    // 교수 정보 갱신 메서드
+    public function updateMyInfo(Array $dataArray) {
+        // 01. 부모 테이블(사용자)의 데이터 갱신
+        $user = $this->user;
+
+        if(isset($dataArray['password']))
+            $user->password = password_hash($dataArray['password'], PASSWORD_DEFAULT);
+        if(isset($dataArray['email']))      $user->email    = $dataArray['email'];
+        if(isset($dataArray['phone']))      $user->phone    = $dataArray['phone'];
+        if(isset($dataArray['photo']))      $user->photo    = $dataArray['photo'];
+
+        if($user->save() !== true) return false;
+
+        // 02. 교수 정보 갱신
+        if(isset($dataArray['office']))     $this->office   = $dataArray['office'];
+
+        if($this->save() !== true) return false;
+
+        return true;
+    }
 }

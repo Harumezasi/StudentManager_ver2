@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *  클래스명:               User
@@ -68,20 +69,36 @@ class User extends Model
         switch($this->type) {
             case 'student':
                 // 학생 회원의 상세정보 조회
-                return $this->join('students', function($join) use($id) {
+                $data = $this->join('students', function($join) use($id) {
                         $join->on('students.id', 'users.id')->where('users.id', $id);
-                    })->get(['users.id', 'name', 'phone', 'type', 'study_class', 'photo'])
-                    ->all()[0];
+                })->get(['users.id', 'name', 'phone', 'email', 'type', 'study_class', 'photo'])
+                ->all()[0];
+
+                // 사용자 사진이 등록되어 있다면
+                if(Storage::disk('std_photo')->exists($data->photo)) {
+                    $data->photo_url = Storage::url('source/std_face/') . $data->photo;
+                } else {
+                    $data->photo_url = Storage::url('source/std_face/').'default.png';
+                }
+
+                return $data;
                 break;
 
             case 'professor':
                 // 교수 회원의 상세정보 조회
-                return $this->join('professors', function($join) use($id) {
-                        $join->on('professors.id', 'users.id')->where('users.id', $id);
-                    })->leftJoin('study_classes', 'study_classes.tutor', 'professors.id')
-                    ->get(['users.id', 'users.name', 'phone', 'type', 'office', 'photo',
-                        'study_classes.id as study_class'])
-                    ->all()[0];
+                $data = $this->join('professors', function($join) use($id) {
+                    $join->on('professors.id', 'users.id')->where('users.id', $id);
+                })->leftJoin('study_classes', 'study_classes.tutor', 'professors.id')
+                ->get([
+                    'users.id', 'users.name', 'phone', 'email', 'type', 'office', 'photo', 'study_classes.id as study_class'
+                ])->all()[0];
+
+                // 사용자 사진이 등록되어 있다면
+                if(strlen($data->photo) > 0) {
+                    $data->photo_url = Storage::url('source/prof_face/') . $data->photo;
+                }
+
+                return $data;
                 break;
             case 'admin':
                 // 운영자인 경우 -> 곧바로 반환

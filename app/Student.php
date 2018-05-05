@@ -231,4 +231,20 @@ class Student extends Model
 
         return $stats;
     }
+
+    // 학생 정보 갱신 메서드
+    public function updateMyInfo(Array $dataArray) {
+        // 01. 사용자의 데이터 갱신
+        $user = $this->user;
+
+        if(isset($dataArray['password']))
+            $user->password = password_hash($dataArray['password'], PASSWORD_DEFAULT);
+        if(isset($dataArray['email']))      $user->email    = $dataArray['email'];
+        if(isset($dataArray['phone']))      $user->phone    = $dataArray['phone'];
+        if(isset($dataArray['photo']))      $user->photo    = $dataArray['photo'];
+
+        if($user->save() !== true) return false;
+
+        return true;
+    }
 }

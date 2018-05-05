@@ -16,7 +16,6 @@ use App\Score;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UploadScoresFormExport;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 /**
  *  클래스명:               ProfessorController
@@ -33,6 +32,9 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
  *
  *
  *      - 내 정보 관리
+ *          = getMyInfo:                        사용자 정보를 획득
+ *
+ *          = updateMyInfo:                     사용자 정보를 갱신
  *
  *
  *
@@ -109,7 +111,20 @@ class ProfessorController extends Controller
 
 
     // 내 정보 관리
-    // 내 정보 열람
+    /**
+     *  함수명:                         getMyInfo
+     *  함수 설명:                      사용자 정보를 획득
+     *  만든날:                         2018년 5월 05일
+     *
+     *  매개변수 목록
+     *  null
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse
+     */
     public function getMyInfo() {
         return response()->json(new ResponseObject(
             true, [
@@ -118,17 +133,33 @@ class ProfessorController extends Controller
                 'phone'     => session()->get('user')->phone,
                 'email'     => session()->get('user')->email,
                 'office'    => session()->get('user')->office,
-                'photo'     => session()->get('user')->photo
+                'photo'     => session()->get('user')->photo_url
             ]
         ), 200);
     }
 
-    // 내 정보 수정
+    /**
+     *  함수명:                         updateMyInfo
+     *  함수 설명:                      사용자 정보를 수정
+     *  만든날:                         2018년 5월 05일
+     *
+     *  매개변수 목록
+     *  @param Request $request:        요청 메시지
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse
+     *
+     *  예외
+     *  @throws NotValidatedException
+     */
     public function updateMyInfo(Request $request) {
         // 01. 유효성 검사
         $validator = Validator::make($request->all(), [
-            'password'          => 'required|same:password_check',
-            'password_check'    => 'required|same:password',
+            'password'          => 'required_with:password_check|same:password_check',
+            'password_check'    => 'required_with:password|same:password',
             'phone'             => 'required',
             'email'             => 'required|email',
             'office'            => 'required|string',
@@ -148,22 +179,37 @@ class ProfessorController extends Controller
         $photo      = $request->hasFile('photo') ? $request->file('photo') : null;
 
         // 03. 데이터 수정
-        $professor->password    = password_hash($password, PASSWORD_DEFAULT);
-        $professor->phone       = $phone;
-        $professor->email       = $email;
-        $professor->office      = $office;
+        $updateInfo['password'] = $password;
+        $updateInfo['phone']    = $phone;
+        $updateInfo['email']    = $email;
+        $updateInfo['office']   = $office;
 
         if(!is_null($photo)) {
             // 기존 이미지가 존재한다면 => 기존 이미지 삭제
-            if(strlen($professor->photo) > 0) {
-
+            $original_photo = session()->get('user')->photo;
+            // 파일의 존재여부를 확인
+            if(Storage::disk('prof_photo')->exists($original_photo)) {
+                // 삭제
+                Storage::disk('prof_photo')->delete($original_photo);
             }
 
-            // 새 이미지 저장
+            // 새 이미지 저장 => DB 사용자 정보에 새로운 이미지 경로를 지정
+            $fileName = $photo->store('/','prof_photo');
+            $updateInfo['photo'] = $fileName;
         }
 
+        // 04. 데이터 갱신
+        if($professor->updateMyInfo($updateInfo)) {
+            session()->put('user', $professor->user->selectUserInfo());
 
-        return response()->json($request->all(), 200);
+            return response()->json(new ResponseObject(
+                true, "정보 갱신을 완료했습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "정보 갱신을 실패했습니다."
+            ), 200);
+        }
     }
 
 

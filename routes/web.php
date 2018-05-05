@@ -102,7 +102,23 @@ Route::group([
         ]);
 
         // 내 정보
+        // 내 정보 관리
+        Route::group([
+            'as'        => 'info.',
+            'prefix'    => 'info'
+        ], function() {
+            // 정보 조회
+            Route::get('/select', [
+                'as'    => 'select',
+                'uses'  => 'StudentController@getMyInfo'
+            ]);
 
+            // 정보 갱신
+            Route::post('/update', [
+                'as'    => 'update',
+                'uses'  => 'StudentController@updateMyInfo'
+            ]);
+        });
 
 
         // 출결 관리

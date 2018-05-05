@@ -43,7 +43,7 @@ class CreateUsersTable extends Migration
             $table->string('email', 50);
             $table->string('phone', 30);
             $table->enum('type', ['student', 'professor', 'admin']);
-            $table->string('photo', 60)->default('');
+            $table->text('photo')->default('');
 
             /**
              *  02. 제약조건 정의
