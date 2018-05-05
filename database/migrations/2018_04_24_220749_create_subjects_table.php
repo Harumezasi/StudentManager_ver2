@@ -28,6 +28,7 @@ class CreateSubjectsTable extends Migration
             $table->increments('id');
             $table->year('year');
             $table->enum('term', $term);
+            $table->unsignedInteger('join_class');
             $table->string('professor', 30);
             $table->string('name', 60);
             $table->unsignedDecimal('final_reflection')->default(0.3);
@@ -39,6 +40,7 @@ class CreateSubjectsTable extends Migration
              *  02. 제약조건 정의
              */
             //$table->primary('id');
+            $table->foreign('join_class')->references('id')->on('study_classes')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('professor')->references('id')->on('professors')->onUpdate('cascade')->onDelete('cascade');
         });
     }

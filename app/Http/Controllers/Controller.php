@@ -12,7 +12,8 @@ use Mockery\Exception;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    const SCORE_TYPE = ['final', 'midterm', 'homework', 'quiz'];
+    const SCORE_TYPE    = ['final', 'midterm', 'homework', 'quiz'];
+    const ADA_TYPE      = ['lateness', 'early_leave', 'absence'];
 
     // 01. 공통 메서드 선언
     /**

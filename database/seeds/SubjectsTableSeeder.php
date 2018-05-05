@@ -51,6 +51,9 @@ class SubjectsTableSeeder extends Seeder
                     continue;
             }
 
+            // 소속 반 지정
+            $studyClass = Professor::find('ycjung')->studyClass;
+
             // 교과목 정보 생성
             foreach($subjects as $name) {
                 // 강의 생성
@@ -58,6 +61,7 @@ class SubjectsTableSeeder extends Seeder
                 $subject->fill([
                     'year'          => 2018,
                     'term'          => '1st_term',
+                    'join_class'    => $studyClass->id,
                     'professor'     => $professor->id,
                     'name'          => $name,
                 ])->save();

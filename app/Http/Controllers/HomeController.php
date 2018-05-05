@@ -171,20 +171,6 @@ class HomeController extends Controller
         return redirect(route('home.index'));
     }
 
-    // 사용자 정보 불러오기
-    public function getUserInfo() {
-        if(!session()->exists('user')) {
-            return response()->json([], 200);
-        }
-
-        return response()->json(new ResponseObject(
-            true, [
-                'name'  => session()->get('user')->name,
-                'photo' => session()-> get('user')->photo_url
-            ]
-        ));
-    }
-
 
 
     // 테스트

@@ -75,12 +75,6 @@ Route::name('home.')->group(function() {
         'as'   => 'forgot',
         'uses' => 'HomeController@forgot'
     ]);
-
-    // 회원 정보 획득
-    Route::get('/user_info', [
-        'as'    => 'info',
-        'uses'  => 'HomeController@getUserInfo'
-    ]);
 });
 
 
@@ -317,6 +311,30 @@ Route::group([
                 'as'    => 'today',
                 'uses'  => 'TutorController@getAttendanceRecordsOfToday'
             ]);
+
+            // 사랑이 필요한 학생 알림 관리
+            Route::group([
+               'as'     => 'care.',
+               'prefix' => 'care'
+            ], function() {
+                // 알림 저장
+                Route::post('/insert', [
+                    'as'    => 'insert',
+                    'uses'  => 'TutorController@setNeedCareAlert'
+                ]);
+
+                // 알림 조회
+                Route::get('/select', [
+                    'as'    => 'select',
+                    'uses'  => 'TutorController@getNeedCareAlertList'
+                ]);
+
+                // 알림 삭제
+                Route::post('/delete', [
+                    'as'    => 'delete',
+                    'uses'  => 'TutorController@'
+                ]);
+            });
         });
     });
 });

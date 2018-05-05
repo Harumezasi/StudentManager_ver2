@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\NeedCareAlert;
+use Mockery\Exception;
+use Validator;
 use App\Exceptions\NotValidatedException;
 use Illuminate\Http\Request;
 use App\Professor;
@@ -142,13 +145,144 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 출결 필터링 조건 입력
+    // 사랑이 필요한 학생 필터링 조건 설정
     public function setNeedCareAlert(Request $request) {
         // 01. 요청 유효성 검증
+        $validAdaType = implode(',', self::ADA_TYPE);
         $validator = Validator::make($request->all(), [
+            'days_unit'             => 'required|numeric|min:1|max:999',
+            'ada_type'              => "required|in:{$validAdaType}",
+            'continuative_flag'     => 'required|boolean',
+            'count'                 => 'required|numeric|min:1|max:999',
+            'alert_std_flag'        => 'required|boolean'
         ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 설정
+        $professor      = Professor::findOrFail(session()->get('user')->id);
+
+        // 알림 조건
+        $notificationFlag   = null;
+        $continuativeFlag   = $request->post('continuative_flag');
+        switch($request->post('ada_type')) {
+            case 'lateness':
+                if($continuativeFlag)
+                    $notificationFlag = 'continuative_lateness';
+                else
+                    $notificationFlag = 'total_lateness';
+                break;
+            case 'absence':
+                if($continuativeFlag)
+                    $notificationFlag = 'continuative_absence';
+                else
+                    $notificationFlag = 'total_absence';
+                break;
+            case 'early_leave':
+                if($continuativeFlag)
+                    $notificationFlag = 'continuative_early_leave';
+                else
+                    $notificationFlag = 'total_early_leave';
+                break;
+        }
+
+        // 03. 데이터 저장
+        $model = new NeedCareAlert();
+
+        $model->manager             = $professor->id;
+        $model->days_unit           = $request->post('days_unit');
+        $model->notification_flag   = $notificationFlag;
+        $model->count               = $request->post('count');
+        $model->alert_std_flag      = $request->post('alert_std_flag');
+
+        if($model->save()) {
+            return response()->json(new ResponseObject(
+                true, "알림을 등록하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "알림 등록에 실패하였습니다."
+            ), 200);
+        }
     }
 
+    // 사랑이 필요한 학생 필터링 조건 목록 조회
+    public function getNeedCareAlertList() {
+        // 01. 데이터 획득
+        $professor = Professor::findOrFail(session()->get('user')->id);
+        $alertList = $professor->needCareAlerts;
+
+        // 데이터 설정
+        foreach($alertList as $alert) {
+            switch($alert->notification_flag) {
+                case 'continuative_lateness':
+                    $alert->continuative_flag   = true;
+                    $alert->ada_type            = 'lateness';
+                    break;
+                case 'continuative_absence':
+                    $alert->continuative_flag   = true;
+                    $alert->ada_type            = 'absence';
+                    break;
+                case 'continuative_early_leave':
+                    $alert->continuative_flag   = true;
+                    $alert->ada_type            = 'early_leave';
+                    break;
+                case 'total_lateness':
+                    $alert->continuative_flag   = false;
+                    $alert->ada_type            = 'lateness';
+                    break;
+                case 'total_absence':
+                    $alert->continuative_flag   = false;
+                    $alert->ada_type            = 'absence';
+                    break;
+                case 'total_early_leave':
+                    $alert->continuative_flag   = false;
+                    $alert->ada_type            = 'early_leave';
+                    break;
+            }
+            unset($alert->notification_flag);
+        }
+
+        // ##### 조회된 알림 조건이 없을 경우 #####
+        if(sizeof($alertList) <= 0) {
+            return response()->json(new ResponseObject(
+                true, null
+            ), 200);
+        }
+
+        return response()->json(new ResponseObject(
+            true, $alertList
+        ), 200);
+    }
+
+    // 사랑이 필요한 학생 필터링 조건 삭제
+    public function deleteNeedCareAlert(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'alert_id'  => 'required|exists:need_care_alerts,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $alert      = $professor->isMyNeedCareAlert($request->post('alert_id'));
+
+        // 03. 알림 삭제
+        if($alert->delete()) {
+            return response()->json(new ResponseObject(
+                true, "알림을 삭제하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "알림 삭제가 실패하였습니다."
+            ), 200);
+        }
+    }
 
 
     // 학생 관리
@@ -162,4 +296,5 @@ class TutorController extends Controller
             throw new NotValidatedException($request->errors());
         }
     }
+
 }
