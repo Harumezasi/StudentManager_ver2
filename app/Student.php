@@ -247,4 +247,67 @@ class Student extends Model
 
         return true;
     }
+
+    // 연속/누적 출석데이터 획득
+    public function selectAttendancesStats($argDaysUnit) {
+        // 01. 데이터 획득
+        $startDate  = today()->subDays($argDaysUnit - 1)->format("Y-m-d");
+        $endDate    = today()->format('Y-m-d');
+
+        $attendancesRecords = $this->attendances()->start($startDate)->end($endDate);
+
+        // 02. 연속 데이터 추출
+        $continuativeData = [
+            'lateness'      => null,
+            'absence'       => null,
+            'early_leave'   => null
+        ];
+        $tempLateness   = 0;
+        $tempAbsence    = 0;
+        $tempEarlyLeave = 0;
+        $tempArray = with(clone $attendancesRecords)->orderDesc()->get()->all();
+        foreach($tempArray as $item) {
+            // 모든 데이터를 추출했다면 => 반복문 종료
+            if(!in_array(null, $continuativeData)) {
+                break;
+            }
+
+            // 지각
+            if(is_null($continuativeData['lateness'])) {
+                if($item->lateness_flag != 'good') {
+                    $tempLateness++;
+                } else {
+                    $continuativeData['lateness'] = $tempLateness;
+                }
+            }
+
+            // 결석
+            if(is_null($continuativeData['absence'])) {
+                if($item->absence_flag != 'good') {
+                    $tempAbsence++;
+                } else {
+                    $continuativeData['absence'] = $tempAbsence;
+                }
+            }
+
+            // 조퇴
+            if(is_null($continuativeData['early_leave'])) {
+                if($item->early_leave_flag != 'good') {
+                    $tempEarlyLeave++;
+                } else {
+                    $continuativeData['early_leave'] = $tempEarlyLeave;
+                }
+            }
+        }
+
+        // 03. 데이터 반환
+        return [
+            'total_lateness'            => with(clone $attendancesRecords)->lateness()->count(),
+            'total_absence'             => with(clone $attendancesRecords)->absence()->count(),
+            'total_early_leave'         => with(clone $attendancesRecords)->earlyLeave()->count(),
+            'continuative_lateness'     => $continuativeData['lateness'],
+            'continuative_absence'      => $continuativeData['absence'],
+            'continuative_early_leave'  => $continuativeData['early_leave'],
+        ];
+    }
 }

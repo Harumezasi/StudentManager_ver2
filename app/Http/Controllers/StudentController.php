@@ -287,11 +287,12 @@ class StudentController extends Controller
         ), 200);
     }
 
-    // 하드웨어 : 등교
-    public function signInOfHardware(Request $request) {
+    // 등교
+    public function signIn(Request $request) {
         // 01. 요청 유효성 검증
         $validator = Validator::make($request->all(), [
-            'student_number_id'     => 'required|exists:students,id',
+            'student_number_id'     => 'exists:students,id',
+            'detail'                => 'string|min:2'
         ]);
 
         if($validator->fails()) {
@@ -299,7 +300,9 @@ class StudentController extends Controller
         }
 
         // 02. 데이터 획득
-        $student        = Student::findOrFail($request->post('student_number_id'));
+        $student        = $request->exists('student_number_id') ?
+            Student::findOrFail($request->post('student_number_id')) :
+            Student::findOrFail(session()->get('user')->id);
         $detail         = $request->exists('detail') ? $request->post('detail') : "";
         $signInTime     = Carbon::create();
 
@@ -325,7 +328,14 @@ class StudentController extends Controller
                                     ? 'unreason' : 'good';
         $attendance->early_leave_flag   = 'good';
         $attendance->absence_flag       = 'good';
-        $attendance->detail             = $detail;
+
+        // 상세 내역은 json encode
+        $attendance->detail             = json_encode(new class($detail){
+            public $sign_in;
+            public function __construct($detail) {
+                $this->sign_in = $detail;
+            }
+        });
 
         // 05. 결과 반환
         if($attendance->save()) {
@@ -340,6 +350,56 @@ class StudentController extends Controller
     }
 
     // 하드웨어 : 하교
+    public function signOut(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'student_number_id'     => 'exists:students,id',
+            'detail'                => 'string|min:2'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException("허가되지 않은 접근입니다.");
+        }
+
+        // 02. 데이터 획득
+        $student        = $request->exists('student_number_id') ?
+            Student::findOrFail($request->post('student_number_id')) :
+            Student::findOrFail(session()->get('user')->id);
+        $detail         = $request->exists('detail') ? $request->post('detail') : "";
+        $signOutTime    = Carbon::create();
+
+        // 03. 심층 유효성 검사
+        // 최근 데이터에 하교 데이터가 기록되었다면 => 하교 인증 실패
+        $adaRecordOfRecent = $student->attendances()->orderDesc()->limit(1)->get()->all();
+        if(sizeof($adaRecordOfRecent) <= 0 || !is_null($adaRecordOfRecent[0]->sign_out_time)) {
+            return response()->json(new ResponseObject(
+                false, "등교 내역이 없습니다."
+            ), 200);
+        }
+
+        // 04. 하교
+        $signOutLimit   = explode(':', $student->studyClass->sign_out_time);
+        $attendance = $adaRecordOfRecent[0];
+        $attendance->sign_out_time      = null;
+        $attendance->early_leave_flag   = $signOutTime->lt(Carbon::createFromTime($signOutLimit[0], $signOutLimit[1], $signOutLimit[2]))
+            ? 'unreason' : 'good';
+
+        // 상세 사항을 json 객체로 입력
+        $detailObject                   = json_decode($attendance->detail);
+        $detailObject->sign_out         = $detail;
+        $attendance->detail             = json_encode($detailObject);
+
+        // 05. 결과 반환
+        if($attendance->save()) {
+            return response()->json(new ResponseObject(
+                true, "고생하셨습니다, {$student->user->name}님."
+            ), 200);#
+        } else {
+            return response()->json(new ResponseObject(
+                false, "출석 인증에 실패하였습니다."
+            ), 200);
+        }
+    }
 
 
     // 학업 정보

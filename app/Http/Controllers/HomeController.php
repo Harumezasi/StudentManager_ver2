@@ -171,6 +171,16 @@ class HomeController extends Controller
         return redirect(route('home.index'));
     }
 
+    // 회원 정보 반환
+    public function getUserInfo() {
+        return response()->json(new ResponseObject(
+            true, [
+                'name'      => session()->get('user')->name,
+                'photo'     => session()->get('user')->photo_url
+            ]
+        ), 200);
+    }
+
 
 
     // 테스트

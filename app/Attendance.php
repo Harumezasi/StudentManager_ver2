@@ -136,6 +136,12 @@ class Attendance extends Model
         return $query->where('absence_flag', '!=', 'good');
     }
 
+    // 등록일자 역순 정렬
+    public function scopeOrderDesc($query) {
+        return $query->orderBy('reg_date', 'desc');
+    }
+
+
     // 04. 클래스 메서드 정의
 
 

@@ -75,6 +75,15 @@ Route::name('home.')->group(function() {
         'as'   => 'forgot',
         'uses' => 'HomeController@forgot'
     ]);
+
+
+    // 로그인 이후 사용 기능
+    Route::middleware(['check.login'])-> group(function() {
+        Route::get('/info', [
+            'as'    => 'info',
+            'uses'  => 'HomeController@getUserInfo'
+        ]);
+    });
 });
 
 
@@ -86,6 +95,18 @@ Route::group([
     'as'        => 'student.',
     'prefix'    => 'student'
 ], function() {
+
+    // 등교
+    Route::post('/sign_in', [
+        'as'    => 'sign_in',
+        'uses'  => 'StudentController@signIn'
+    ]);
+
+    // 하교
+    Route::post('/sign_out', [
+        'as'    => 'sign_out',
+        'uses'  => 'StudentController@signOut'
+    ]);
 
     // 로그인 이후 사용 가능 기능
     Route::middleware(['check.student'])->group(function() {
@@ -332,7 +353,7 @@ Route::group([
                 // 알림 삭제
                 Route::post('/delete', [
                     'as'    => 'delete',
-                    'uses'  => 'TutorController@'
+                    'uses'  => 'TutorController@deleteNeedCareAlert'
                 ]);
             });
         });

@@ -60,7 +60,12 @@ class AttendancesTableSeeder extends Seeder
                         'lateness_flag'     => 'good',
                         'early_leave_flag'  => 'good',
                         'absence_flag'      => 'unreason',
-                        'detail'            => ''
+                        'detail'            => json_encode(new class(){
+                            public $sign_in;
+                            public function __construct($detail = '') {
+                                $this->sign_in = $detail;
+                            }
+                        })
                     ]);
 
                     continue;
@@ -81,7 +86,12 @@ class AttendancesTableSeeder extends Seeder
                     'lateness_flag'     => $signInTime->format('H:i:s') > $signInLimit ? 'unreason' : 'good',
                     'early_leave_flag'  => $signOutTime->format('H:i:s') < $signOutLimit ? 'unreason' : 'good',
                     'absence_flag'      => 'good',
-                    'detail'            => ''
+                    'detail'            => json_encode(new class(){
+                        public $sign_in;
+                        public function __construct($detail = '') {
+                            $this->sign_in = $detail;
+                        }
+                    })
                 ]);
 
                 echo "{$student->id}'s attendance data of {$regDate->format('Y-m-d')} is created!!!\n";

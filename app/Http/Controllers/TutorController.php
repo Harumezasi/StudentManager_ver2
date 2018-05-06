@@ -97,18 +97,56 @@ class TutorController extends Controller
 
             // 출결관리가 필요한 학생 필터링
             foreach($needCareAlerts as $alert) {
+                $attendanceStat = $student->selectAttendancesStats($alert->days_unit);
+
                 switch($alert->notification_flag) {
                     case 'continuative_lateness':
+                        if($attendanceStat['continuative_lateness'] >= $alert->count) {
+                            $student->reason = "연속 지각 {$alert->count}회";
+                            $student->sign_in_time = $attendance->sign_in_time;
+                            $attendanceRecords['need_care'][] = $student;
+                            continue 3;
+                        }
                         break;
                     case 'continuative_leave':
+                        if($attendanceStat['continuative_early_leave'] >= $alert->count) {
+                            $student->reason = "연속 결석 {$alert->count}회";
+                            $student->sign_in_time = $attendance->sign_in_time;
+                            $attendanceRecords['need_care'][] = $student;
+                            continue 3;
+                        }
                         break;
                     case 'continuative_absence':
+                        if($attendanceStat['continuative_early_leave'] >= $alert->count) {
+                            $student->reason = "연속 조퇴 {$alert->count}회";
+                            $student->sign_in_time = $attendance->sign_in_time;
+                            $attendanceRecords['need_care'][] = $student;
+                            continue 3;
+                        }
                         break;
                     case 'total_lateness':
+                        if($attendanceStat['total_lateness'] >= $alert->count) {
+                            $student->reason = "누적 지각 {$alert->count}회";
+                            $student->sign_in_time = $attendance->sign_in_time;
+                            $attendanceRecords['need_care'][] = $student;
+                            continue 3;
+                        }
                         break;
                     case 'total_early_leave':
+                        if($attendanceStat['total_early_leave'] >= $alert->count) {
+                            $student->reason = "누적 조퇴 {$alert->count}회";
+                            $student->sign_in_time = $attendance->sign_in_time;
+                            $attendanceRecords['need_care'][] = $student;
+                            continue 3;
+                        }
                         break;
                     case 'total_absence':
+                        if($attendanceStat['total_absence'] >= $alert->count) {
+                            $student->reason = "누적 결석 {$alert->count}회";
+                            $student->sign_in_time = $attendance->sign_in_time;
+                            $attendanceRecords['need_care'][] = $student;
+                            continue 3;
+                        }
                         break;
                 }
             }
@@ -137,7 +175,7 @@ class TutorController extends Controller
             'lateness'  => $attendanceRecords['lateness'],
             'absence'   => $attendanceRecords['absence'],
             'sign_out'  => $attendanceRecords['sign_out'],
-            'need_care' => $attendanceRecords['need_care']
+            'need_care' => $attendanceRecords['need_care'],
         ];
 
         return response()->json(new ResponseObject(
@@ -286,15 +324,12 @@ class TutorController extends Controller
 
 
     // 학생 관리
+
+    // 내 지도학생 목록 조회
     public function getMyStudentsList(Request $request) {
-        // 01. 데이터 유효성 검사
-        $validator = Validator::make($request->all(), [
+        // 01. 데이터 획득
+        $professor = Professor::find(session()->get('user')->id);
 
-        ]);
-
-        if($validator->fails()) {
-            throw new NotValidatedException($request->errors());
-        }
     }
 
 }
