@@ -79,6 +79,7 @@ Route::name('home.')->group(function() {
 
     // 로그인 이후 사용 기능
     Route::middleware(['check.login'])-> group(function() {
+        // 사용자 정보 획득
         Route::get('/info', [
             'as'    => 'info',
             'uses'  => 'HomeController@getUserInfo'
@@ -356,6 +357,55 @@ Route::group([
                     'uses'  => 'TutorController@deleteNeedCareAlert'
                 ]);
             });
+        });
+
+        // 내 지도반 관리
+        Route::group([
+            'as'        => 'class.',
+            'prefix'    => 'class'
+        ], function() {
+            // 학생 목록 조회
+            Route::get('/student_list', [
+                'as'    => 'student_list',
+                'uses'  => 'TutorController@getMyStudentsList'
+            ]);
+        });
+
+
+        // 학생별 상세 관리
+        Route::group([
+            'as'        => 'detail.',
+            'prefix'    => 'detail'
+        ], function() {
+            // 해당 학생의 출결 관리
+            Route::group([
+                'as'        => 'attendance.',
+                'prefix'    => 'attendance'
+            ], function() {
+                // 해당 학생의 출석 통계 조회
+                Route::get('/stat', [
+                    'as'    => 'stat',
+                    'uses'  => 'TutorController@getDetailsOfAttendanceStats'
+                ]);
+            });
+
+            // 해당 학생의 수강목록 조회
+            Route::get('/join_list', [
+                'as'    => 'join_list',
+                'uses'  => 'TutorController@getDetailsOfSubjects'
+            ]);
+
+            // 학생이 해당 강의에서 취득한 성적통계 획득
+            Route::get('/subject_stat', [
+                'as'    => 'subject_stat',
+                'uses'  => 'TutorController@getDetailsOfScoreStat'
+            ]);
+
+            // 학생이 해당 강의에서 취득한 성적 목록 조회
+            Route::get('/subject_scores', [
+                'as'    => 'subject_scores',
+                'uses'  => 'TutorController@getDetailsOfScoreList'
+            ]);
         });
     });
 });

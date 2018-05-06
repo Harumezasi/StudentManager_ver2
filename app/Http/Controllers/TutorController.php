@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Professor;
 use App\Student;
 use App\StudyClass;
+use App\User;
 use Illuminate\Support\Carbon;
 
 
@@ -327,9 +328,305 @@ class TutorController extends Controller
 
     // 내 지도학생 목록 조회
     public function getMyStudentsList(Request $request) {
-        // 01. 데이터 획득
-        $professor = Professor::find(session()->get('user')->id);
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'period'        => 'regex:/^[1-2]\d{3}-[1-2]?[a-zA-Z_]+$/'
+        ]);
 
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::find(session()->get('user')->id);
+        $students   = $professor->studyClass->students()->get()->all();
+        $argPeriod  = $request->exists('period') ? $request->get('period') : null;
+        $period     = $this->getTermValue($argPeriod);
+
+        // 학업성취도 획득
+        foreach($students as $student) {
+            $joinList = Student::findOrFail($student->id)->joinLists()->period($period['this']);
+
+            unset($student->study_class);
+            $student->name  = User::findOrFail($student->id)->name;
+            $student->average_achievement = number_format(with(clone $joinList)->avg('achievement') * 100, 0);
+            $student->minimum_achievement = number_format(with(clone $joinList)->min('achievement') * 100, 0);
+        }
+
+        // 페이지네이션 설정
+        $pagination = [
+            'prev'  => $period['prev'],
+            'this'  => $period['this_format'],
+            'next'  => $period['next']
+        ];
+
+        // 03. View 단에 전달할 데이터 설정
+        $data = [
+            'students'      => $students,
+            'pagination'    => $pagination
+        ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
     }
 
+    // 학생별 상세 관리
+    // 해당 학생의 출결 통계 목록 획득
+    public function getDetailsOfAttendanceStats(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'period'        => 'required_with:date|in:weekly,monthly',
+            'date'          => 'regex:/^[1-2]\d{3}-\d{2}$/'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+        $argPeriod  = $request->exists('period') ? $request->get('period') : 'weekly';
+        $argDate    = $request->exists('date') ? $request->get('date') : null;
+
+        // 03. 출석 데이터 조회
+        $attendances    = null;
+        $date           = null;
+        $pagination     = null;
+        switch($argPeriod) {
+            case 'weekly':
+                // 주 단위 조회결과를 획득
+                $date = $this->getWeeklyValue($argDate);
+                $attendances = $student->attendances()
+                    ->start($date['this']->copy()->startOfWeek()->format('Y-m-d'))
+                    ->end($date['this']->copy()->endOfWeek()->format('Y-m-d'));
+
+                // 페이지네이션용 데이터 획득
+                $prevWeek = sprintf('%04d-%02d', $date['prev']->year, $date['prev']->weekOfYear);
+                $nextWeek = is_null($date['next']) ? null :
+                    sprintf('%04d-%02d', $date['next']->year, $date['next']->weekOfYear);
+                $pagination = [
+                    'prev'      => $prevWeek,
+                    'this'      => $date['this_format'],
+                    'next'      => $nextWeek,
+                    'period'    => $argPeriod
+                ];
+                break;
+
+            case 'monthly':
+                // 월 단위 조회 결과를 획득
+                $date = $this->getMonthlyValue($argDate);
+                $attendances = $student->attendances()
+                    ->start($date['this']->copy()->startOfMonth()->format('Y-m-d'))
+                    ->end($date['this']->copy()->endOfMonth()->format('Y-m-d'));
+
+                // 페이지네이션용 데이터 획득
+                $prevMonth = sprintf("%02d", $date['prev']->month);
+                $nextMonth = is_null($date['next']) ? null : sprintf("%02d", $date['next']->month);
+
+                $pagination = [
+                    'prev'  => "{$date['prev']->year}-{$prevMonth}",
+                    'this'  => $date['this_format'],
+                    'next'  => is_null($nextMonth) ? null : "{$date['next']->year}-{$nextMonth}",
+                    'period'    => $argPeriod
+                ];
+                break;
+        }
+
+        // ##### 조회 결과가 없을 경우 #####
+        if(with(clone $attendances)->count() <= 0) {
+            return response()->json(new ResponseObject(
+                false, "조회된 출석기록이 없습니다."
+            ), 200);
+        }
+
+        // 오늘자 출석 기록 조회
+        $selectDate = Carbon::create()->hour > 6 ? today()->format('Y-m-d') : today()->subDay()->format('Y-m-d');
+        $todayAda = $student->attendances()->start($selectDate)->end($selectDate)->get()->all();
+        if(sizeof($todayAda) > 0) {
+            $todayAda = $todayAda[0];
+        } else {
+            $todayAda = null;
+        }
+
+        // 연속 기록 조회
+        $daysUnit = null;
+        switch($argPeriod) {
+            case 'weekly':
+                $daysUnit = 7;
+                break;
+            case 'monthly':
+                $daysUnit = $date['this']->copy()->endOfMonth()->diffInDays($date['this']->copy()->startOfmonth());
+                break;
+        }
+        $continuativeData = $student->selectAttendancesStats($daysUnit);
+
+
+        // 04. view 단에 전달할 데이터 설정
+        $data = [
+            // 총 출석횟수
+            'total_sign_in'                     => with(clone $attendances)->signIn()->count(),
+
+            // 총 지각횟수
+            'total_lateness'                    => with(clone $attendances)->lateness()->count(),
+
+            // 총 결석횟수
+            'total_absence'                     => with(clone $attendances)->absence()->count(),
+
+            // 총 조퇴횟수
+            'total_early_leave'                 => with(clone $attendances)->earlyLeave()->count(),
+
+            // 오늘 등교일시
+            'today_sign_in'                     => is_null($todayAda) ? null : $todayAda->sign_in_time,
+
+            // 오늘 하교일시
+            'today_sign_out'                    => is_null($todayAda) ? null :
+                                                        is_null($todayAda->sign_out_time) ? "학습 중" : $todayAda->sign_out_time,
+
+            // 연속 지각횟수
+            'continuative_lateness'             => $continuativeData['continuative_lateness'],
+
+            // 연속 결석횟수
+            'continuative_absence'              => $continuativeData['continuative_absence'],
+
+            // 연속 조퇴횟수
+            'continuative_early_leave'          => $continuativeData['continuative_early_leave'],
+
+            // 최근 지각일자
+            'recent_lateness'                   => with(clone $attendances)->lateness()->max('reg_date'),
+
+            // 최근 결석일자
+            'recent_absence'                    => with(clone $attendances)->absence()->max('reg_date'),
+
+            // 최근 조퇴일자
+            'recent_early_leave'                => with(clone $attendances)->earlyLeave()->max('reg_date'),
+
+            // 페이지네이션용 데이터
+            'pagination'                        => $pagination,
+        ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
+    }
+
+    // 해당 학생의 출석 데이터 목록 획득
+    
+
+    // 해당 학생의 수강목록 획득
+    public function getDetailsOfSubjects(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            "period"        => 'regex:/^[1-2]\d{3}-[1-2]?[a-zA-Z_]+$/'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+        $argPeriod  = $request->exists('period') ? $request->get('period') : null;
+        $periodData = $this->getTermValue($argPeriod);
+
+        // 해당 학기의 과목 목록 획득
+        $subjects   = $student->joinLists()->period($periodData['this'])
+            ->join('subjects', 'join_lists.subject_id', 'subjects.id')->get(['subjects.id', 'subjects.name'])->all();
+
+        $pagination = [
+            'prev'  => $periodData['prev'],
+            'this'  => $periodData['this_format'],
+            'next'  => $periodData['next']
+        ];
+
+        // 03. view 단에 전달할 데이터 설정
+        $data = [
+            'subjects'      => $subjects,
+            'pagination'    => $pagination
+        ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
+    }
+
+    // 학생이 해당 강의에서 취득한 성적통계 획득
+    public function getDetailsOfScoreStat(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'subject_id'    => 'required|exists:subjects,id',
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+        $subject    = $student->isMySubject($request->get('subject_id'));
+
+        // 03. view 단에 데이터 반환
+        $data = [
+            'stats'         => $student->selectStatList($subject->id),
+            'achievement'   => number_format($student->joinLists()->subject($subject->id)->get()[0]->achievement * 100, 0)
+        ];
+
+        return response()->json(new ResponseObject(
+            200, $data
+        ), 200);
+    }
+
+    // 학생이 해당 강의에서 취득한 성적 목록 조회
+    public function getDetailsOfScoreList(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'subject_id'    => 'required_without:period|exists:subjects,id',
+            'period'        => 'required_without:subject_id|regex:/^[1-2]\d{3}-[1-2]?[a-zA-Z_]+$/'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+        $subject    = $request->exists('subject_id') ?
+            $student->isMySubject($request->get('subject_id')) : null;
+
+        $scores     = [];
+        if(is_null($subject)) {
+            // 과목을 지정하지 않았다면 => 해당 학기의 성적 목록을 출력
+            $joinList = $student->joinLists()->period($request->get('period'))->get()->all();
+
+            // 각 강의별 성적 목록 획득
+            foreach($joinList as $join) {
+                $scores = array_merge_recursive($scores, $student->selectScoresList($join->subject_id)->get()->all());
+            }
+
+            // 실시 일자에 따른 역순정렬
+            uasort($scores, function($a, $b) {
+                if($a->execute_date == $b->execute_date) return 0;
+
+                return $a->execute_date < $b->execute_date ? 1 : -1;
+            });
+            $scores = array_merge($scores);
+
+        } else {
+            // 과목을 지정했다면 => 해당 과목의 성적 목록을 출력
+            $scores = $student->selectScoresList($subject->id)->get()->all();
+        }
+
+
+        return response()->json(new ResponseObject(
+            true, $scores
+        ), 200);
+    }
 }

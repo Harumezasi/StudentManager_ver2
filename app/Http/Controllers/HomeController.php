@@ -176,6 +176,7 @@ class HomeController extends Controller
         return response()->json(new ResponseObject(
             true, [
                 'name'      => session()->get('user')->name,
+                'type'      => session()->get('user')->type,
                 'photo'     => session()->get('user')->photo_url
             ]
         ), 200);

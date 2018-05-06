@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  *  클래스명:               JoinList
@@ -44,6 +45,15 @@ class JoinList extends Model
 
 
     // 03. 스코프 정의
+    public function scopePeriod($query, $period) {
+        $term   = explode('-', $period);
+
+        return $query->whereIn('subject_id',
+            DB::table('subjects')
+                ->where([['year', $term[0]], ['term', $term[1]]])
+                ->select('id')->get()->pluck('id')->all()
+        );
+    }
 
 
 

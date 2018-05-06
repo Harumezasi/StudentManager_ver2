@@ -114,6 +114,17 @@ class Professor extends Model
         }
     }
 
+    // 해당 학생이 사용자의 지도 학생인지 확인
+    public function isMyStudent($stdId) {
+        $students = $this->studyClass->students()->where('id', $stdId)->get()->all();
+
+        if(sizeof($students) > 0) {
+            return $students[0];
+        } else {
+            throw new NotValidatedException("해당 학생의 정보에 접근할 권한이 없습니다.");
+        }
+    }
+
     // 교수 정보 갱신 메서드
     public function updateMyInfo(Array $dataArray) {
         // 01. 부모 테이블(사용자)의 데이터 갱신

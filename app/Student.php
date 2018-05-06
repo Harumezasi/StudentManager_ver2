@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\Exceptions\NotValidatedException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Subject;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *  클래스명:               Student
@@ -105,7 +106,7 @@ class Student extends Model
     public function selectSubjectsList($when) {
         $period = explode('-', $when);
 
-        return $this->joinLists()
+        $subjects = $this->joinLists()
             ->join('subjects', function($join) use($period) {
                 $join->on('subjects.id', 'join_lists.subject_id')
                     ->where([['subjects.year', $period[0]], ['subjects.term', $period[1]]]);
@@ -113,7 +114,29 @@ class Student extends Model
                 $join->on('users.id', 'subjects.professor');
             })->select([
                 'subjects.id', 'subjects.name', 'users.name as prof_name', 'users.photo',
-            ]);
+            ])->get()->all();
+
+        foreach($subjects as $data) {
+            // 사용자 사진이 등록되어 있다면
+            if (Storage::disk('prof_photo')->exists($data->photo)) {
+                $data->photo = Storage::url('source/prof_face/') . $data->photo;
+            } else {
+                $data->photo = Storage::url('source/prof_face/').'default.png';
+            }
+        }
+
+        return $subjects;
+    }
+
+    // 해당 과목이 사용자가 수강하는 강의인지 확인
+    public function isMySubject($subjectId) {
+        $subjects = $this->joinLists()->where("subject_id", $subjectId)->get()->all();
+
+        if(sizeof($subjects) > 0) {
+            return Subject::findOrFail($subjectId);
+        } else {
+            throw new NotValidatedException("해당 강의에 접근할 권한이 없습니다.");
+        }
     }
 
     /**
@@ -130,7 +153,7 @@ class Student extends Model
      *  반환값
      *  @return                          $this
      */
-    public function selectScoresList($subjectId) {
+    public function selectScoresList($subjectId = null) {
         return $this->gainedScores()
             ->rightJoin('scores', function($join) use ($subjectId){
                 $join->on('gained_scores.score_type', 'scores.id')->where('subject_id', $subjectId);
@@ -138,8 +161,7 @@ class Student extends Model
                 'scores.execute_date', 'scores.detail',
                 'scores.perfect_score', 'gained_scores.score AS gained_score',
                 DB::raw("(CASE scores.type WHEN 'final' THEN '기말' WHEN 'midterm' THEN '중간'
-                    WHEN 'homework' THEN '과제' WHEN 'quiz' THEN '쪽지' END) AS type
-                ")
+                    WHEN 'homework' THEN '과제' WHEN 'quiz' THEN '쪽지' END) AS type")
             ]);
     }
 

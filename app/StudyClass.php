@@ -48,4 +48,10 @@ class StudyClass extends Model
     // 04. 클래스 메서드 정의
 
     // 05. 멤버 메서드 정의
+    // 내 반 학생들을 조회
+    public function selectMyStudents() {
+        return $this->students()->join('users', 'users.id', 'students.id')
+            ->select([ 'users.id', 'users.name' ]);
+    }
+
 }

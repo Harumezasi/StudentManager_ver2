@@ -349,7 +349,7 @@ class StudentController extends Controller
         }
     }
 
-    // 하드웨어 : 하교
+    // 하교
     public function signOut(Request $request) {
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
@@ -373,15 +373,20 @@ class StudentController extends Controller
         $adaRecordOfRecent = $student->attendances()->orderDesc()->limit(1)->get()->all();
         if(sizeof($adaRecordOfRecent) <= 0 || !is_null($adaRecordOfRecent[0]->sign_out_time)) {
             return response()->json(new ResponseObject(
-                false, "등교 내역이 없습니다."
+                false, "최근 등교 내역이 없습니다."
             ), 200);
         }
 
         // 04. 하교
-        $signOutLimit   = explode(':', $student->studyClass->sign_out_time);
         $attendance = $adaRecordOfRecent[0];
-        $attendance->sign_out_time      = null;
-        $attendance->early_leave_flag   = $signOutTime->lt(Carbon::createFromTime($signOutLimit[0], $signOutLimit[1], $signOutLimit[2]))
+
+        // 조퇴 판단용 데이터 : 등교 일자, 하교 제한시각 획득
+        $signInDate     = explode('-', $attendance->reg_date);
+        $signOutLimit   = explode(':', $student->studyClass->sign_out_time);
+
+        $attendance->sign_out_time      = $signOutTime->format('Y-m-d H:i:s');
+        $attendance->early_leave_flag   = $signOutTime
+            ->lt(Carbon::create($signInDate[0], $signInDate[1], $signInDate[2],$signOutLimit[0], $signOutLimit[1], $signOutLimit[2]))
             ? 'unreason' : 'good';
 
         // 상세 사항을 json 객체로 입력
@@ -437,7 +442,7 @@ class StudentController extends Controller
 
         // 03. 강의 데이터 조회
         $period     = $this->getTermValue($argPeriod);
-        $subjects   = $student->selectSubjectsList($period['this'])->get()->all();
+        $subjects   = $student->selectSubjectsList($period['this']);
 
         // ##### 조회된 과목정보가 없을 때 ######
         if(sizeof($subjects) <= 0) {
@@ -452,7 +457,7 @@ class StudentController extends Controller
             $subject->scores    = $student->selectScoresList($subject->id)->get()->all();
 
             // 성적 통계표 첨부
-            $subject->stats = $student->selectStatList($subject->id);;
+            $subject->stats = $student->selectStatList($subject->id);
 
             // 학업성취도 첨부
             $subject->achievement =

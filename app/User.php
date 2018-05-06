@@ -94,8 +94,10 @@ class User extends Model
                 ])->all()[0];
 
                 // 사용자 사진이 등록되어 있다면
-                if(strlen($data->photo) > 0) {
+                if(Storage::disk('prof_photo')->exists($data->photo)) {
                     $data->photo_url = Storage::url('source/prof_face/') . $data->photo;
+                } else {
+                    $data->photo_url = Storage::url('source/prof_face/').'default.png';
                 }
 
                 return $data;
