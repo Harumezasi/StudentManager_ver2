@@ -118,7 +118,7 @@ class HomeController extends Controller
         ]);
 
         if($validator->fails()) {
-            throw new NotValidatedException();
+            throw new NotValidatedException($validator->errors());
         }
 
         // 01. 로그인 관련 데이터 추출
