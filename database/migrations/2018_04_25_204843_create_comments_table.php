@@ -25,7 +25,7 @@ class CreateCommentsTable extends Migration
              */
             $table->increments('id');
             $table->string('std_id', 30);
-            $table->string('prof_id', 30)->nullable();
+            $table->string('prof_id', 30);
             $table->text('content');
             $table->year('year');
             $table->enum('term', ['1st_term', '2ed_term', 'summer_vacation', 'winter_vacation']);
@@ -35,7 +35,7 @@ class CreateCommentsTable extends Migration
              */
             //$table->primary('id');
             $table->foreign('std_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('prof_id')->references('id')->on('professors')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('prof_id')->references('id')->on('professors')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

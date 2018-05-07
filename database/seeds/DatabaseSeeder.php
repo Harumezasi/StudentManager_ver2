@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-/*
+
         // 사용자 테이블 시딩
         StudyClass::truncate();
         Student::truncate();
@@ -33,12 +33,12 @@ class DatabaseSeeder extends Seeder
         User::truncate();
         $this->call(UsersTableSeeder::class);
         $this->command->info('users table is seeded.');
-*/
+
         // 출석 데이터 시딩
         Attendance::truncate();
         $this->call(AttendancesTableSeeder::class);
         $this->command->info('attendances table is seeded.');
-/*
+
         // 과목 데이터 시딩
         Subject::truncate();
         JoinList::truncate();
@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
         Timetable::truncate();
         $this->call(TimetablesTableSeeder::class);
         $this->command->info('timetables table is seeded.');
-*/
+
         Model::reguard();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }

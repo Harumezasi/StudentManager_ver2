@@ -6,6 +6,8 @@ use App\Exceptions\NotValidatedException;
 use Validator;
 use Illuminate\Http\Request;
 use App\User;
+use App\StudyClass;
+use Illuminate\Support\Carbon;
 
 /**
  *  클래스명:               HomeController
@@ -29,6 +31,7 @@ use App\User;
  *      - 하드웨어
  *          = 오늘자 학생 출결목록 출력
  *          = 오늘자 시간표 출력
+ *          =
  *
  *      - 테스트
  *          = session():                        세션 정보를 호출
@@ -182,6 +185,84 @@ class HomeController extends Controller
         ), 200);
     }
 
+
+
+    // 하드웨어
+
+    // 오늘자 시간표 출력
+    public function getTimetableOfToday(Request $request) {
+        // 01. 요청 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'class_id'      => 'required|exists:study_classes,id',
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 설정
+        $studyClass = StudyClass::findOrFail($request->get('class_id'));
+        $term       = $this->getTermValue()['this'];
+        $dayOfWeek  = today()->dayOfWeek;
+        $timetables = $studyClass->selectTimetables($term)
+            ->where('day_of_week', $dayOfWeek)->get()->all();
+
+        return response()->json(new ResponseObject(
+            true, $timetables
+        ), 200);
+    }
+
+    // 오늘자 출석 현황 출력
+    public function getAttendanceRecordsOfToday(Request $request) {
+        // 01. 요청 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'class_id'  => 'required|exists:study_classes,id'
+        ]);
+
+        if($validator->fails()) {
+            return new NotValidatedException($request->errors());
+        }
+
+        // 02. 데이터 획득
+        $studyClass     = StudyClass::findOrFail($request->get('class_id'));
+        $student        = $studyClass->students();
+
+        // 오늘자 출석기록 획득
+        $today          = Carbon::create()->hour > 6 ?
+            today()->format('Y-m-d') : today()->subDay()->format('Y-m-d');
+        $attendances    = $student->join('users', 'users.id', 'students.id')
+            ->leftJoin('attendances', function($join) use ($today) {
+                $join->on('students.id', 'attendances.std_id')
+                    ->where('attendances.reg_date', "{$today}");
+            })->select('students.id', 'users.name', 'attendances.sign_in_time', 'attendances.lateness_flag')
+            ->get()->all();
+
+        // 03. View 단에 전송할 데이터 설정
+        $data = [
+            'reg_date'  => $today,
+            'absence'   => [],
+            'lateness'  => [],
+            'sign_in'   => []
+        ];
+        foreach($attendances as $attendance) {
+            if(is_null($attendance->sign_in_time)) {
+                $data['absence'][] = $attendance;
+                continue;
+            } else {
+                if($attendance->lateness_flag == 'good') {
+                    $data['sign_in'][] = $attendance;
+                    continue;
+                } else {
+                    $data['lateness'][] = $attendance;
+                    continue;
+                }
+            }
+        }
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
+    }
 
 
     // 테스트

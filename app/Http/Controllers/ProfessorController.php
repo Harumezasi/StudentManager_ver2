@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
 use App\GainedScore;
-use App\Subject;
-use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Validator;
-use App\User;
 use App\Professor;
 use App\Student;
 use App\Score;
+use App\Comment;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UploadScoresFormExport;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -60,6 +59,12 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  *          = getAchievementReflections:        해당 강의의 성적별 학업성취도 반영비율 조회
  *
  *          = updateAchievementReflections:     해당 강의의 성적별 학업성취도 반영비율 수정
+ *
+ *
+ *
+ *      - 코멘트 관리
+ *          =
+ *          =
  */
 class ProfessorController extends Controller
 {
@@ -953,5 +958,156 @@ class ProfessorController extends Controller
                 false, "반영비 갱신에 실패하였습니다."
             ), 200);
         }
+    }
+
+
+
+    // 코멘트 관리
+
+    // 코멘트 등록
+    public function insertComment(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'content'       => 'required|string|min:2'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = Student::findOrFail($request->post('std_id'));
+        $content    = $request->post('content');
+        $thisTerm   = explode('-', $this->getTermValue()['this']);
+
+
+        // 03. 코멘트 등록
+        $comment = new Comment();
+        $comment->std_id    = $student->id;
+        $comment->prof_id   = $professor->id;
+        $comment->content   = $content;
+        $comment->year      = $thisTerm[0];
+        $comment->term      = $thisTerm[1];
+
+        if($comment->save()) {
+            return response()->json(new ResponseObject(
+                true, "코멘트 등록에 성공하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "코멘트 등록에 실패하였습니다."
+            ), 200);
+        }
+    }
+
+    // 코멘트 수정
+    public function updateComment(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'comment_id'        => 'required|exists:comments,id',
+            'content'           => 'required|string|min:2'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get("user")->id);
+        $comment    = $professor->isMyComment($request->post('comment_id'));
+        $content    = $request->post('content');
+
+        // 03. 코멘트 내용 수정
+        $comment->content = $content;
+
+        if($comment->save()) {
+            return response()->json(new ResponseObject(
+                true, "코멘트 수정에 성공하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "코멘트 수정에 실패하였습니다."
+            ), 200);
+        }
+    }
+
+    // 코멘트 삭제
+    public function deleteComment(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'comment_id'        => 'required|exists:comments,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 설정
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $comment    = $professor->isMyComment($request->post('comment_id'));
+
+        if($comment->delete()) {
+            return response()->json(new ResponseObject(
+                true, "코멘트를 성공적으로 삭제하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, "코멘트 삭제를 실패하였습니다."
+            ), 200);
+        }
+    }
+
+    // 코멘트 조회
+    public function selectComment(Request $request) {
+        // 01. 요청 메시지 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'date'          => 'regex:/^[1-2]\d{3}-[1-2]?[a-zA-Z_]+$/'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 설정
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = Student::findOrFail($request->get('std_id'));
+        $argDate    = $request->exists('date') ? $request->get('date') : null;
+        $date       = $this->getTermValue($argDate);
+
+        // 03. 데이터 조회
+        $comments   = $student->comments()->term($date['this'])
+            ->join('users', 'comments.prof_id', 'users.id')
+            ->get(['comments.id', 'users.name', 'comments.prof_id', 'comments.content'])->all();
+
+        if(sizeof($comments) <= 0) {
+            // 조회된 데이터가 없을 경우
+            $comments = "조회된 코멘트가 없습니다.";
+
+        } else {
+            // 글쓴이 여부 검사
+            foreach ($comments as $key => $comment) {
+                $comments[$key]->isOwner = $comment->prof_id === $professor->id;
+            }
+        }
+
+        // 페이지네이션 설정
+        $pagination = [
+            'prev'  => $date['prev'],
+            'this'  => $date['this_format'],
+            'next'  => $date['next']
+        ];
+
+        // 04. View 단에 전달할 데이터 설정
+        $data = [
+            'comments'      => $comments,
+            'pagination'    => $pagination
+        ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
     }
 }

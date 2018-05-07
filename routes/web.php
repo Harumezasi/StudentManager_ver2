@@ -77,6 +77,22 @@ Route::name('home.')->group(function() {
     ]);
 
 
+
+    // 하드웨어
+
+    // 오늘의 시간표 조회
+    Route::get('/timetable', [
+        'as'    => 'timetable',
+        'uses'  => 'HomeController@getTimetableOfToday'
+    ]);
+
+    // 오늘의 출석기록 조회
+    Route::get('/attendance', [
+        'as'    => 'attendance',
+        'uses'  => 'HomeController@getAttendanceRecordsOfToday'
+    ]);
+
+
     // 로그인 이후 사용 기능
     Route::middleware(['check.login'])-> group(function() {
         // 사용자 정보 획득
@@ -294,11 +310,42 @@ Route::group([
             'as'        => 'detail',
             'prefix'    => 'detail'
         ], function() {
-            // 지정한 학생이 해당 과목에서 취득한 성적 목록 조회
+            // 지정한 학생이 해당 강의에서 취득한 성적 목록 조회
             Route::get('/score', [
                 'as'    => 'score',
                 'uses'  => 'ProfessorController@detailScoresOfStudent'
             ]);
+
+
+            // 코멘트 관리
+            Route::group([
+                'as'     => 'comment.',
+                'prefix' => 'comment'
+            ], function() {
+                // 코멘트 조회
+                Route::get('/select', [
+                    'as'    => 'select',
+                    'uses'  => 'ProfessorController@selectComment'
+                ]);
+
+                // 코멘트 등록
+                Route::post('/insert', [
+                    'as'    => 'insert',
+                    'uses'  => 'ProfessorController@insertComment'
+                ]);
+
+                // 코멘트 수정
+                Route::post('/update', [
+                    'as'    => 'update',
+                    'uses'  => 'ProfessorController@updateComment'
+                ]);
+
+                // 코멘트 삭제
+                Route::post('/delete', [
+                    'as'    => 'delete',
+                    'uses'  => 'ProfessorController@deleteComment'
+                ]);
+            });
         });
     });
 });

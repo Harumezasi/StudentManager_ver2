@@ -45,18 +45,19 @@ class Comment extends Model
 
     // 03. 스코프 정의
     /**
-     *  함수명:                         scopeWhen
+     *  함수명:                         scopeDate
      *  함수 설명:                      언제 등록된 코멘트인지 조회기간을 지정
      *  만든날:                         2018년 4월 25일
      *
      *  매개변수 목록
      *  @param $query:                  질의
-     *  @param $year:                   조회 연도
-     *  @param $term:                   조회 학기
+     *  @param $argDate:                조회 학기 지정
      */
-    public function scopeWhen($query, $year, $term) {
+    public function scopeTerm($query, $argDate) {
+        $date = explode('-', $argDate);
+
         return $query->where([
-            ['year', $year], ['term', $term]
+            ['year', $date[0]], ['term', $date[1]]
         ]);
     }
 
@@ -66,5 +67,5 @@ class Comment extends Model
 
 
 
-    // 04. 멤버 메서드 정의
+    // 05. 멤버 메서드 정의
 }

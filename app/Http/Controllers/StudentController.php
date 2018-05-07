@@ -321,11 +321,12 @@ class StudentController extends Controller
         $signInLimit    = today()->isWeekday() ? explode(':', $student->studyClass->sign_in_time) : null;
         $latenessFlag   = 'good';
         if(!is_null($signInLimit)) {
-            $latenessFlag = $signInTime->gt(Carbon::createFromTime($signInLimit[0], $signInLimit[1], $signInLimit[2]))
+            $latenessFlag = $signInTime->gt($inLimit = Carbon::create(
+                today()->year, today()->month, today()->day, $signInLimit[0], $signInLimit[1], $signInLimit[2]))
                 ? 'unreason' : 'good';
 
             if($latenessFlag != 'good') {
-                $latenessTime = $signInTime->diffInSeconds($signInLimit);
+                $latenessTime = $signInTime->diffInSeconds($inLimit);
             }
         }
 
@@ -356,7 +357,11 @@ class StudentController extends Controller
         // 05. 결과 반환
         if($attendance->save()) {
             return response()->json(new ResponseObject(
-                true, "좋은 아침입니다, {$student->user->name}님."
+                true, [
+                    'id'    => $student->id,
+                    'name'  => $student->user->name,
+                    'photo' => $student->user->selectUserInfo()->photo_url
+                ]
             ), 200);
         } else {
             return response()->json(new ResponseObject(
@@ -403,10 +408,10 @@ class StudentController extends Controller
 
         $earlyLeaveFlag = 'good';
         if(!is_null($signOutLimit)) {
-            $earlyLeaveFlag = $signOutTime->lt(Carbon::create($signInDate[0], $signInDate[1], $signInDate[2],
+            $earlyLeaveFlag = $signOutTime->lt($outLimit = Carbon::create($signInDate[0], $signInDate[1], $signInDate[2],
                 $signOutLimit[0], $signOutLimit[1], $signOutLimit[2])) ? 'unreason' : 'good';
             if($earlyLeaveFlag != 'good') {
-                $earlyLeaveTime = $signOutTime->diffInSeconds($signOutLimit);
+                $earlyLeaveTime = $signOutTime->diffInSeconds($outLimit);
             }
         }
 
@@ -426,8 +431,12 @@ class StudentController extends Controller
         // 05. 결과 반환
         if($attendance->save()) {
             return response()->json(new ResponseObject(
-                true, "고생하셨습니다, {$student->user->name}님."
-            ), 200);#
+                true, [
+                    'id'    => $student->id,
+                    'name'  => $student->user->name,
+                    'photo' => $student->user->selectUserInfo()->photo_url
+                ]
+            ), 200);
         } else {
             return response()->json(new ResponseObject(
                 false, "하교 인증에 실패하였습니다."

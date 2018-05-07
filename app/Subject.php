@@ -58,7 +58,14 @@ class Subject extends Model
         return $this->belongsTo('App\Professor', 'professor',' id');
     }
 
-
+    /**
+     *  함수명:                         studyClass
+     *  함수 설명:                      강의 테이블의 반 테이블에 대한 1:* 역관계를 정의
+     *  만든날:                         2018년 5월 8일
+     */
+    public function studyClass() {
+        return $this->belongsTo('App\StudyClass', 'join_class', id);
+    }
 
     // 03. 스코프 정의
     /**
@@ -77,6 +84,8 @@ class Subject extends Model
     }
 
     // 04. 클래스 메서드 정의
+
+
 
     // 05. 멤버 메서드 정의
     /**
@@ -124,4 +133,5 @@ class Subject extends Model
             return false;
         }
     }
+
 }

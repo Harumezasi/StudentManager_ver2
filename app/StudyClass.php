@@ -41,6 +41,15 @@ class StudyClass extends Model
         return $this->hasMany('App\Student', 'study_class', 'id');
     }
 
+    /**
+     *  함수명:                         subjects
+     *  함수 설명:                      반 테이블의 강의 테이블에 대한 1:* 소유 관계를 정의
+     *  만든날:                         2018년 5월 8일
+     */
+    public function subjects() {
+        return $this->hasMany('App\Subject', 'join_class', 'id');
+    }
+
 
 
     // 03. 스코프 정의
@@ -54,4 +63,17 @@ class StudyClass extends Model
             ->select([ 'users.id', 'users.name' ]);
     }
 
+
+    // 학기별 시간표 조회
+    public function selectTimetables($term) {
+        return $this->subjects()->term($term)
+            ->join('timetables', 'timetables.subject_id', 'subjects.id')
+            ->join('users', 'users.id', 'subjects.professor')
+            ->orderBy('timetables.day_of_week')
+            ->orderBy('timetables.period')
+            ->select([
+                'timetables.id', 'timetables.day_of_week', 'timetables.period', 'timetables.classroom',
+                'subjects.name as subject_name', 'users.name as prof_name'
+            ]);
+    }
 }

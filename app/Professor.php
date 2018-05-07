@@ -125,6 +125,17 @@ class Professor extends Model
         }
     }
 
+    // 사용자가 해당 코멘트의 소유자인지 확인
+    public function isMyComment($commentId) {
+        $comments = $this->comments()->where('id', $commentId)->get()->all();
+
+        if(sizeof($comments) > 0) {
+            return $comments[0];
+        } else {
+            throw new NotValidatedException("해당 코멘트에 접근할 권한이 없습니다.");
+        }
+    }
+
     // 교수 정보 갱신 메서드
     public function updateMyInfo(Array $dataArray) {
         // 01. 부모 테이블(사용자)의 데이터 갱신

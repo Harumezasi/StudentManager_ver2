@@ -46,8 +46,9 @@ class TimetablesTableSeeder extends Seeder
                     ['day_of_week' => Carbon::THURSDAY, 'period' => 7, 'classroom' => '본관 200호'],
                 ];
             } else if(stripos($subject->name, "DB") !== false) {
+                // DB설계 시간표
                 $periods = [
-                    ['day_of_week' => Carbon::MONDAY, 'period' => 4, 'classroom' => '본관 200호'],
+                    ['day_of_week' => Carbon::MONDAY, 'period' => 6, 'classroom' => '본관 200호'],
                     ['day_of_week' => Carbon::WEDNESDAY, 'period' => 6, 'classroom' => '본관 200호'],
                     ['day_of_week' => Carbon::WEDNESDAY, 'period' => 7, 'classroom' => '본관 200호'],
                 ];

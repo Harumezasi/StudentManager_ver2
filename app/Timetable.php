@@ -35,8 +35,14 @@ class Timetable extends Model
 
 
     // 03. 스코프 정의
+    public function scopeDayOfWeek($query, $dayOfWeek) {
+        return $query->where('day_of_week', $dayOfWeek);
+    }
+
 
     // 04. 클래스 메서드 정의
+
+
 
     // 05. 멤버 메서드 정의
 }
