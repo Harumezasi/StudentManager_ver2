@@ -220,7 +220,7 @@ class HomeController extends Controller
         ]);
 
         if($validator->fails()) {
-            return new NotValidatedException($request->errors());
+            return new NotValidatedException($validator->errors());
         }
 
         // 02. 데이터 획득
