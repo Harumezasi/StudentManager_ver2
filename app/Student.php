@@ -6,6 +6,7 @@ use App\Exceptions\NotValidatedException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 /**
  *  클래스명:               Student
@@ -330,6 +331,164 @@ class Student extends Model
             'continuative_lateness'     => $continuativeData['lateness'],
             'continuative_absence'      => $continuativeData['absence'],
             'continuative_early_leave'  => $continuativeData['early_leave'],
+        ];
+    }
+
+    // (결석|조퇴|지각)이 잦은 요일을 계산
+    public function selectFrequentAttendances() {
+        // 01. 출석 데이터 획득
+        $attendances = $this->attendances()->recent()->select('reg_date');
+
+        // 02. 자주 (지각|조퇴|결석)하는 요일 획득
+        $frequentDay['lateness']    = with(clone $attendances)->lateness();
+        $frequentDay['absence']     = with(clone $attendances)->absence();
+        $frequentDay['early_leave'] = with(clone $attendances)->earlyLeave();
+        $frequentResult = [
+            'lateness'      => null,
+            'absence'       => null,
+            'early_leave'   => null
+        ];
+        $averageLateTime    = null;
+        foreach($frequentDay as $adaType => $adaDataArray) {
+            // ##### (지각|결석|조퇴) 비율이 일정 비율(기본값 : 0.2)을 넘기지 못할 경우 => 연산 중단 ######
+            if(($adaDataArray->count() / $attendances->count()) < 0.2) {
+                switch($adaType) {
+                    case 'lateness':
+                        $type = "지각";
+                        break;
+                    case 'absence':
+                        $type = "결석";
+                        break;
+                    case 'early_leave':
+                        $type = "조퇴";
+                        break;
+                }
+                $frequentResult[$adaType] = "{$type}율 20% 미만";
+                continue;
+            }
+
+            // 유형별 (지각|결석|조퇴)가 잦은 요일 획득
+            $dailyCount = [
+                '월요일'   => 0,
+                '화요일'   => 0,
+                "수요일"   => 0,
+                "목요일"   => 0,
+                '금요일'   => 0
+            ];
+            foreach($adaDataArray->get()->all() as $attendance) {
+                $regDate = explode('-', $attendance->reg_date);
+                $regDate = Carbon::createFromDate($regDate[0], $regDate[1], $regDate[2]);
+
+                // 각 요일별 (지각|결석|조퇴) 횟수 획득
+                switch ($regDate->dayOfWeek) {
+                    case Carbon::MONDAY:
+                        $dailyCount['월요일']++;
+                        break;
+                    case Carbon::TUESDAY:
+                        $dailyCount['화요일']++;
+                        break;
+                    case Carbon::WEDNESDAY:
+                        $dailyCount['수요일']++;
+                        break;
+                    case Carbon::THURSDAY:
+                        $dailyCount['목요일']++;
+                        break;
+                    case Carbon::FRIDAY:
+                        $dailyCount['금요일']++;
+                        break;
+                    default:
+                        continue 2;
+                }
+
+                arsort($dailyCount);
+                $frequentResult[$adaType] = array_search($max = max($dailyCount), $dailyCount)." ({$max} 회)";
+            }
+        }
+
+        return $frequentResult;
+    }
+
+    // 최근 평균 지각 시각 계산
+    public function selectAverageLatenessTime() {
+        // 01. 출석 데이터 획득
+        $attendances = $this->attendances()->recent()->lateness()->select('detail');
+
+        // 02. 평균 지각시간 계산
+        $totalTime = 0;
+        foreach($attendances->get()->pluck('detail')->all() as $detailObj) {
+            $detail = json_decode($detailObj);
+
+            $totalTime += $detail->lateness_time;
+        }
+
+        return number_format($totalTime / $attendances->count(), 0);
+    }
+
+    // (지각|조퇴|결석) 주요 사유 조회
+    public function selectAttendanceReason() {
+        // 01. 출석 데이터 획득
+        $reasonValue = [
+            'good'      => '정상',
+            'unreason'  => '무단',
+            'personal'  => '개인사정',
+            'sick'      => '병',
+            'hometown'  => '고향',
+            'accident'  => '사고',
+            'disaster'  => '천재지변',
+            'etc'       => '기타',
+        ];
+        $attendances = $this->attendances()->recent();
+
+        // 02. 각 유형별 데이터 획득
+        $reasons['lateness'] = with(clone $attendances)->lateness()
+            ->groupBy('lateness_flag')->having('lateness_flag', '!=', 'good')
+            ->select(['lateness_flag as reason', DB::raw('count(*) as count')])->get()->all();
+        $reasons['early_leave'] = with(clone $attendances)->earlyLeave()
+            ->groupBy('early_leave_flag')->having('early_leave_flag', '!=', 'good')
+            ->select(['early_leave_flag as reason', DB::raw('count(*) as count')])->get()->all();
+        $reasons['absence'] = with(clone $attendances)->absence()
+            ->groupBy('absence_flag')->having('absence_flag', '!=', 'good')
+            ->select(['absence_flag as reason', DB::raw('count(*) as count')])->get()->all();
+        $reasonResult = [
+            'lateness'      => null,
+            'absence'       => null,
+            'early_leave'   => null
+        ];
+
+        foreach($reasons as $type => $reason) {
+            $maxValue = 0;
+
+            foreach($reason as $row) {
+                if($row->count > $maxValue) {
+                    $maxValue = $row->count;
+                    $reasonResult[$type] = $reasonValue[$row->reason];
+                }
+            }
+        }
+
+        return $reasonResult;
+    }
+
+    // 월 평균 (지각|조퇴|결석) 횟수 획득
+    public function selectMonthlyAverageAttendances() {
+        // 01. 출석 데이터 획득
+        $count = $this->attendances()->groupBy('m')->select([
+            DB::raw("date_format(reg_date, '%Y-%m') AS m"),
+            DB::raw("count(CASE lateness_flag when 'good' THEN NULL ELSE TRUE END) AS lateness_count"),
+            DB::raw("count(CASE absence_flag when 'good' THEN NULL ELSE TRUE END) AS absence_count"),
+            DB::raw("count(CASE early_leave_flag when 'good' THEN NULL ELSE TRUE END) AS early_leave_count"),
+        ]);
+
+        // 02. 평균 계산
+        $total_lateness_count       = $count->get(['lateness_count'])->pluck('lateness_count')->all();
+        $total_absence_count        = $count->get(['absence_count'])->pluck('absence_count')->all();
+        $total_early_leave_count    = $count->get(['early_leave_count'])->pluck('early_leave_count')->all();
+        $rowCount = sizeof($count->get()->all());
+
+        return [
+            'lateness'      => number_format(array_sum($total_lateness_count) / $rowCount, 0),
+            'absence'       => number_format(array_sum($total_absence_count) / $rowCount, 0),
+            'early_leave'   => number_format(array_sum($total_early_leave_count) / $rowCount, 0),
         ];
     }
 }

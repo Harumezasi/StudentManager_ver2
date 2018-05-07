@@ -377,6 +377,7 @@ Route::group([
             'as'        => 'detail.',
             'prefix'    => 'detail'
         ], function() {
+
             // 해당 학생의 출결 관리
             Route::group([
                 'as'        => 'attendance.',
@@ -386,6 +387,18 @@ Route::group([
                 Route::get('/stat', [
                     'as'    => 'stat',
                     'uses'  => 'TutorController@getDetailsOfAttendanceStats'
+                ]);
+
+                // 해당 학생의 출석 데이터 목록 획득
+                Route::get('/list', [
+                    'as'    => 'list',
+                    'uses'  => 'TutorController@getDetailsOfAttendanceRecords'
+                ]);
+
+                // 해당 학생의 출결 분석 결과 획득
+                Route::get('/analyse', [
+                    'as'    => 'analyse',
+                    'uses'  => 'TutorController@getDetailsOfAnalyseAttendance'
                 ]);
             });
 

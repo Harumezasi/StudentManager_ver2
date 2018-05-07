@@ -141,6 +141,15 @@ class Attendance extends Model
         return $query->orderBy('reg_date', 'desc');
     }
 
+    // 최근 8주간 데이터 조회
+    public function scopeRecent($query) {
+        // 01. 관측 일자 지정 : 지난 주로부터 8주간
+        $endDate    = today()->subWeek()->endOfWeek();
+        $startDate  = $endDate->copy()->subWeeks(8)->startOfWeek();
+
+        return $query->start($startDate->format('Y-m-d'))->end($endDate->format('Y-m-d'));
+    }
+
 
     // 04. 클래스 메서드 정의
 

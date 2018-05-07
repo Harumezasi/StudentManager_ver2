@@ -388,7 +388,7 @@ class TutorController extends Controller
         // 02. 데이터 획득
         $professor  = Professor::findOrFail(session()->get('user')->id);
         $student    = $professor->isMyStudent($request->get('std_id'));
-        $argPeriod  = $request->exists('period') ? $request->get('period') : 'weekly';
+        $argPeriod  = $request->exists('period') ? $request->get('period') : 'monthly';
         $argDate    = $request->exists('date') ? $request->get('date') : null;
 
         // 03. 출석 데이터 조회
@@ -482,8 +482,7 @@ class TutorController extends Controller
             'today_sign_in'                     => is_null($todayAda) ? null : $todayAda->sign_in_time,
 
             // 오늘 하교일시
-            'today_sign_out'                    => is_null($todayAda) ? null :
-                                                        is_null($todayAda->sign_out_time) ? "학습 중" : $todayAda->sign_out_time,
+            'today_sign_out'                    => is_null($todayAda) ? null : $todayAda->sign_out_time,
 
             // 연속 지각횟수
             'continuative_lateness'             => $continuativeData['continuative_lateness'],
@@ -513,6 +512,69 @@ class TutorController extends Controller
     }
 
     // 해당 학생의 출석 데이터 목록 획득
+    public function getDetailsOfAttendanceRecords(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+        $attendance = $student->attendances()->orderBy('reg_date', 'desc')->get([
+            'reg_date', 'sign_in_time', 'sign_out_time', 'lateness_flag', 'early_leave_flag', 'absence_flag', 'detail'
+        ])->all();
+
+        // ##### 조회된 출석 기록이 없을 때 ######
+        if(sizeof($attendance) <= 0) {
+            return response()->json(new ResponseObject(
+                false, "조회된 출석 기록이 없습니다."
+            ), 200);
+        }
+
+        return response()->json(new ResponseObject(
+            true, $attendance
+        ), 200);
+    }
+
+    // 해당 학생의 출결 분석 결과 획득
+    public function getDetailsOfAnalyseAttendance(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+
+        // 03. view 단에 반환할 데이터 설정
+        $data = [
+            // 요일별 (지각|결석|조퇴) 데이터 획득
+            'frequent_data'     => $student->selectFrequentAttendances(),
+
+            // 평균 지각 시각
+            'lateness_average'  => $student->selectAverageLatenessTime(),
+
+            // 월 평균 (지각|결석|조퇴) 횟수 획득
+            'average_data'      => $student->selectMonthlyAverageAttendances(),
+
+            // 주요 사유
+            'reason'            => $student->selectAttendanceReason(),
+        ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
+    }
     
 
     // 해당 학생의 수강목록 획득

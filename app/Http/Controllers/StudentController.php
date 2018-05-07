@@ -318,24 +318,40 @@ class StudentController extends Controller
         }
 
         // 04. 출석
-        $signInLimit    = explode(':', $student->studyClass->sign_in_time);
+        $signInLimit    = today()->isWeekday() ? explode(':', $student->studyClass->sign_in_time) : null;
+        $latenessFlag   = 'good';
+        if(!is_null($signInLimit)) {
+            $latenessFlag = $signInTime->gt(Carbon::createFromTime($signInLimit[0], $signInLimit[1], $signInLimit[2]))
+                ? 'unreason' : 'good';
+
+            if($latenessFlag != 'good') {
+                $latenessTime = $signInTime->diffInSeconds($signInLimit);
+            }
+        }
+
+        // 메시지 객체 추가
+        $detailObj = new class($detail){
+            public $sign_in;
+            public function __construct($detail) {
+                $this->sign_in = $detail;
+            }
+        };
+        if(isset($latenessTime)) {
+            $detailObj->lateness_time = $latenessTime;
+            unset($latenessTime);
+        }
+
         $attendance = new Attendance();
         $attendance->std_id             = $student->id;
         $attendance->reg_date           = $signInTime->format('Y-m-d');
         $attendance->sign_in_time       = $signInTime->format('Y-m-d H:i:s');
         $attendance->sign_out_time      = null;
-        $attendance->lateness_flag      = $signInTime->gt(Carbon::createFromTime($signInLimit[0], $signInLimit[1], $signInLimit[2]))
-                                    ? 'unreason' : 'good';
+        $attendance->lateness_flag      = $latenessFlag;
         $attendance->early_leave_flag   = 'good';
         $attendance->absence_flag       = 'good';
 
         // 상세 내역은 json encode
-        $attendance->detail             = json_encode(new class($detail){
-            public $sign_in;
-            public function __construct($detail) {
-                $this->sign_in = $detail;
-            }
-        });
+        $attendance->detail             = json_encode($detailObj);
 
         // 05. 결과 반환
         if($attendance->save()) {
@@ -382,16 +398,29 @@ class StudentController extends Controller
 
         // 조퇴 판단용 데이터 : 등교 일자, 하교 제한시각 획득
         $signInDate     = explode('-', $attendance->reg_date);
-        $signOutLimit   = explode(':', $student->studyClass->sign_out_time);
+        $signOutLimit   = Carbon::createFromDate($signInDate[0], $signInDate[1], $signInDate[2])->isWeekday() ?
+            explode(':', $student->studyClass->sign_out_time) : null;
+
+        $earlyLeaveFlag = 'good';
+        if(!is_null($signOutLimit)) {
+            $earlyLeaveFlag = $signOutTime->lt(Carbon::create($signInDate[0], $signInDate[1], $signInDate[2],
+                $signOutLimit[0], $signOutLimit[1], $signOutLimit[2])) ? 'unreason' : 'good';
+            if($earlyLeaveFlag != 'good') {
+                $earlyLeaveTime = $signOutTime->diffInSeconds($signOutLimit);
+            }
+        }
 
         $attendance->sign_out_time      = $signOutTime->format('Y-m-d H:i:s');
-        $attendance->early_leave_flag   = $signOutTime
-            ->lt(Carbon::create($signInDate[0], $signInDate[1], $signInDate[2],$signOutLimit[0], $signOutLimit[1], $signOutLimit[2]))
-            ? 'unreason' : 'good';
+        $attendance->early_leave_flag   = $earlyLeaveFlag;
 
         // 상세 사항을 json 객체로 입력
         $detailObject                   = json_decode($attendance->detail);
         $detailObject->sign_out         = $detail;
+        if(isset($earlyLeaveTime)) {
+            $detailObject->early_leave_time = $earlyLeaveTime;
+            unset($earlyLeaveTime);
+        }
+
         $attendance->detail             = json_encode($detailObject);
 
         // 05. 결과 반환
@@ -401,7 +430,7 @@ class StudentController extends Controller
             ), 200);#
         } else {
             return response()->json(new ResponseObject(
-                false, "출석 인증에 실패하였습니다."
+                false, "하교 인증에 실패하였습니다."
             ), 200);
         }
     }

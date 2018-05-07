@@ -32,8 +32,8 @@ class AttendancesTableSeeder extends Seeder
 
             // 반복문 시작 시점 지정
             if(is_null($regDate)) {
-                // max값이 존재하지 않으면 => 2018년 3월 1일부터 시작,
-                $regDate = Carbon::createFromDate(2018, 3, 1)->startOfDay();
+                // max값이 존재하지 않으면 => 2018년 1월 1일부터 시작,
+                $regDate = Carbon::createFromDate(2018, 1, 1)->startOfDay();
 
             } else if(today()->lte($regDate)) {
                 // 등록된 최대 일자가 오늘과 같은 경우 => 함수 종료
@@ -72,26 +72,68 @@ class AttendancesTableSeeder extends Seeder
                 }
 
                 // 등/하교 시간 획득
-                $signInLimit = $student->studyClass->sign_in_time;
-                $signOutLimit = $student->studyClass->sign_out_time;
+                $signInLimit = null;
+                $signOutLimit = null;
+                if($regDate->isWeekday()) {
+                    $signInLimit = explode(':', $student->studyClass->sign_in_time);
+                    $signInLimit = Carbon::create($regDate->year, $regDate->month, $regDate->day,
+                        $signInLimit[0], $signInLimit[1], $signInLimit[2]);
+
+                    $signOutLimit = explode(':', $student->studyClass->sign_out_time);
+                    $signOutLimit = Carbon::create($regDate->year, $regDate->month, $regDate->day,
+                        $signOutLimit[0], $signOutLimit[1], $signOutLimit[2]);
+                }
+
+                // 지각 / 조퇴 플래그 획득
+                $signInTime = Carbon::create($regDate->year, $regDate->month, $regDate->day, rand(6, 9), rand(0, 60), rand(0, 60));
+                $signOutTime = Carbon::create($regDate->year, $regDate->month, $regDate->day, rand(20, 23), rand(0, 60), rand(0, 60));
+                $latenessFlag = 'good';
+                $earlyLeaveFlag = 'good';
+                if(!is_null($signInLimit)) {
+                    $latenessFlag = $signInLimit->lt($signInTime) ? 'unreason' : 'good';
+
+                    if($latenessFlag != 'good') {
+                        $latenessTime = $signInTime->diffInSeconds($signInLimit);
+                    }
+                }
+                if(!is_null($signOutLimit)) {
+                    $earlyLeaveFlag = $signOutLimit->gt($signOutTime) ? 'unreason' : 'good';
+
+                    if($earlyLeaveFlag != 'good') {
+                        $earlyLeaveTime = $signOutTime->diffInSeconds($signOutLimit);
+                    }
+                }
+
+                // 메시지에 첨부할 내용 추가
+                $detailObj = new class(){
+                    public $sign_in_message, $sign_out_message;
+                    public function __construct($signInDetail = '', $signOutDetail = '') {
+                        $this->sign_in_message  = $signInDetail;
+                        $this->sign_out_message = $signOutDetail;
+                    }
+                };
+                // 지각 => 몇 초 만큼 지각했는지 추가
+                if(isset($latenessTime)) {
+                    $detailObj->lateness_time   = $latenessTime;
+                    unset($latenessTime);
+                }
+
+                // 결석 => 몇 초 만큼 조퇴했는지 추가
+                if(isset($earlyLeaveTime)) {
+                    $detailObj->early_leave_time      = $earlyLeaveTime;
+                    unset($earlyLeaveTime);
+                }
 
                 // 출석 데이터 삽입
                 Attendance::insert([
                     'std_id'            => $student->id,
                     'reg_date'          => $regDate->format('Y-m-d'),
-                    'sign_in_time'      => ($signInTime = Carbon::create($regDate->year, $regDate->month, $regDate->day,
-                                            rand(6, 9), rand(0, 60), rand(0, 60)))->format('Y-m-d H:i:s'),
-                    'sign_out_time'     => ($signOutTime = Carbon::create($regDate->year, $regDate->month, $regDate->day,
-                                            rand(20, 23), rand(0, 60), rand(0, 60)))->format('Y-m-d H:i:s'),
-                    'lateness_flag'     => $signInTime->format('H:i:s') > $signInLimit ? 'unreason' : 'good',
-                    'early_leave_flag'  => $signOutTime->format('H:i:s') < $signOutLimit ? 'unreason' : 'good',
+                    'sign_in_time'      => $signInTime->format('Y-m-d H:i:s'),
+                    'sign_out_time'     => $signOutTime->format('Y-m-d H:i:s'),
+                    'lateness_flag'     => $latenessFlag,
+                    'early_leave_flag'  => $earlyLeaveFlag,
                     'absence_flag'      => 'good',
-                    'detail'            => json_encode(new class(){
-                        public $sign_in;
-                        public function __construct($detail = '') {
-                            $this->sign_in = $detail;
-                        }
-                    })
+                    'detail'            => json_encode($detailObj)
                 ]);
 
                 echo "{$student->id}'s attendance data of {$regDate->format('Y-m-d')} is created!!!\n";
