@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Exceptions\NotValidatedException;
 use App\GainedScore;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Validator;
+use App\User;
 use App\Professor;
 use App\Student;
 use App\Score;
@@ -320,7 +320,8 @@ class ProfessorController extends Controller
 
         // 학업 성취도 삽입
         foreach($joinList as $item) {
-            $item->achievement = number_format($item->achievement * 100, 0);
+            $item->photo        = User::findOrFail($item->id)->selectUserInfo()->photo_url;
+            $item->achievement  = number_format($item->achievement * 100, 0);
         }
 
         // 04. 데이터 반환

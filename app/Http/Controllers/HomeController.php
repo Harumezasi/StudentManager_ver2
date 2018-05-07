@@ -192,8 +192,12 @@ class HomeController extends Controller
     // 오늘자 시간표 출력
     public function getTimetableOfToday(Request $request) {
         // 01. 요청 유효성 검증
+        $validDayOfWeek = implode(',', [
+            Carbon::MONDAY, Carbon::TUESDAY, Carbon::WEDNESDAY, Carbon::THURSDAY, Carbon::FRIDAY
+        ]);
         $validator = Validator::make($request->all(), [
             'class_id'      => 'required|exists:study_classes,id',
+            'day_of_week'   => "in:{$validDayOfWeek}"
         ]);
 
         if($validator->fails()) {
@@ -203,9 +207,13 @@ class HomeController extends Controller
         // 02. 데이터 설정
         $studyClass = StudyClass::findOrFail($request->get('class_id'));
         $term       = $this->getTermValue()['this'];
-        $dayOfWeek  = today()->dayOfWeek;
-        $timetables = $studyClass->selectTimetables($term)
-            ->where('day_of_week', $dayOfWeek)->get()->all();
+        $dayOfWeek  = $request->exists('day_of_week') ? $request->get('day_of_week') : null;
+        $timetables = $studyClass->selectTimetables($term);
+        if(is_null($dayOfWeek)) {
+            $timetables = $timetables->get()->all();
+        } else {
+            $timetables = $timetables->where('day_of_week', $dayOfWeek)->get()->all();
+        }
 
         return response()->json(new ResponseObject(
             true, $timetables

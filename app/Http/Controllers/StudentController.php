@@ -360,7 +360,9 @@ class StudentController extends Controller
                 true, [
                     'id'    => $student->id,
                     'name'  => $student->user->name,
-                    'photo' => $student->user->selectUserInfo()->photo_url
+                    'photo' => $student->user->selectUserInfo()->photo_url,
+                    'time'  => $signInTime->format("Y-m-d H:i:s"),
+                    'type'  => $latenessFlag == 'good' ? '정상' : '지각',
                 ]
             ), 200);
         } else {
@@ -434,7 +436,9 @@ class StudentController extends Controller
                 true, [
                     'id'    => $student->id,
                     'name'  => $student->user->name,
-                    'photo' => $student->user->selectUserInfo()->photo_url
+                    'photo' => $student->user->selectUserInfo()->photo_url,
+                    'time'  => $signOutTime->format("Y-m-d H:i:s"),
+                    'type'  => $earlyLeaveFlag == 'good' ? '정상' : '조퇴',
                 ]
             ), 200);
         } else {
