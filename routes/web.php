@@ -80,6 +80,12 @@ Route::name('home.')->group(function() {
 
     // 하드웨어
 
+    // 학생 인증
+    Route::post('/check_student', [
+        'as'    => 'check_student',
+        'uses'  => 'HomeController@checkStudent'
+    ]);
+
     // 오늘의 시간표 조회
     Route::get('/timetable', [
         'as'    => 'timetable',
@@ -446,6 +452,12 @@ Route::group([
                 Route::get('/analyse', [
                     'as'    => 'analyse',
                     'uses'  => 'TutorController@getDetailsOfAnalyseAttendance'
+                ]);
+
+                // 모바일 : 출결 그래프 획득
+                Route::get('/graph', [
+                    'as'    => 'graph',
+                    'uses'  => 'TutorController@getGraphOfAttendance'
                 ]);
             });
 

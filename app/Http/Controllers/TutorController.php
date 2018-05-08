@@ -349,6 +349,7 @@ class TutorController extends Controller
 
             unset($student->study_class);
             $student->name  = User::findOrFail($student->id)->name;
+            $student->photo = User::findOrFail($student->id)->selectUserInfo()->photo_url;
             $student->average_achievement = number_format(with(clone $joinList)->avg('achievement') * 100, 0);
             $student->minimum_achievement = number_format(with(clone $joinList)->min('achievement') * 100, 0);
         }
@@ -509,6 +510,20 @@ class TutorController extends Controller
         return response()->json(new ResponseObject(
             true, $data
         ), 200);
+    }
+
+    // 모바일 : 학생 출결정보 그래프 출력
+    public function getGraphOfAttendance(Request $request) {
+        // 01. 데이터 획득
+        $data = $this->getDetailsOfAttendanceStats($request)->original->message;
+
+        // 02. 웹 페이지 반환
+        return view('student_attendance_graph', [
+            'sign_in'       => $data['total_sign_in'],
+            'lateness'      => $data['total_lateness'],
+            'absence'       => $data['total_absence'],
+            'early_leave'   => $data['total_early_leave'],
+        ]);
     }
 
     // 해당 학생의 출석 데이터 목록 획득

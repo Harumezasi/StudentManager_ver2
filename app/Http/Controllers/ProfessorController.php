@@ -737,7 +737,6 @@ class ProfessorController extends Controller
         // 01. 유효성 검사
         $validator = Validator::make($request->all(), [
             'gained_score_id'   => 'required|exists:gained_scores,id',
-            'std_id'            => 'required|exists:students,id',
             'score'             => 'required|numeric|min:0|max:999'
         ]);
 
@@ -750,7 +749,7 @@ class ProfessorController extends Controller
         $gainedScore    = GainedScore::findOrFail($request->post('gained_score_id'));
         $scoreType      = $gainedScore->scoreType;
         $subject        = $professor->isMySubject($scoreType->subject_id);
-        $student        = Student::findOrFail($request->post('std_id'));
+        $student        = Student::findOrFail($gainedScore->std_id);
 
         if(!in_array($student->id, $subject->joinLists()->get(['std_id'])->pluck('std_id')->all())) {
             // ###### 성적 수정을 요청한 학생이 해당 강의의 수강생이 아닐 때 ######

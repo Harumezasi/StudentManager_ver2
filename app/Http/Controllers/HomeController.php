@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
+use App\Student;
+use PHPUnit\Util\RegularExpression;
 use Validator;
 use Illuminate\Http\Request;
 use App\User;
@@ -188,6 +190,53 @@ class HomeController extends Controller
 
 
     // 하드웨어
+    // 학생 인증
+    public function checkStudent(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'id'        => 'required',
+            'password'  => 'required'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $student = Student::find($request->post('id'));
+
+        // ##### DB에 등록되지 않은 ID인 경우 #####
+        if(is_null($student)) {
+            return response()->json(new ResponseObject(
+                false, "아이디 또는 비밀번호가 틀렸습니다."
+            ), 200);
+        }
+
+        $userInfo = $student->user;
+        if(password_verify($request->post('password'), $userInfo->password)) {
+            // 로그인 성공
+            return response()->json(new ResponseObject(
+                true, [
+                    'id'    => $userInfo->id,
+                    'name'  => $userInfo->name,
+                    'photo' => $userInfo->selectUserInfo()->photo_url
+                ]
+            ), 200);
+
+        } else if(strlen($userInfo->password) <= 0) {
+            // 패스워드가 없음 => 등록되지 않은 학생
+            return response()->json(new ResponseObject(
+                false, "회원가입이 되지 않았습니다. 먼저 회원가입을 하세요."
+            ), 200);
+
+        } else {
+            // 패스워드가 틀림
+            return response()->json(new ResponseObject(
+                false, "아이디 또는 비밀번호가 틀렸습니다."
+            ), 200);
+        }
+    }
+
 
     // 오늘자 시간표 출력
     public function getTimetableOfToday(Request $request) {
