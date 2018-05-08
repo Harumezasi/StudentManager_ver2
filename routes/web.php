@@ -99,6 +99,28 @@ Route::name('home.')->group(function() {
     ]);
 
 
+    /* 교수 권한이 있어야 접근 가능 */
+    Route::middleware(['check.professor'])->group(function() {
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 start ■■■■■■■■■■■■■■■■■■■■■■■■ */
+        Route::get('/studentManagement/main', function(){
+            return view('index');
+        });
+
+        Route::get('/studentManagement/info', function(){
+            return view('index');
+        });
+
+        Route::get('/studentManagement/Grade', function(){
+            return view('index');
+        });
+
+        Route::get('/studentManagement/Comment', function(){
+            return view('index');
+        });
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 end ■■■■■■■■■■■■■■■■■■■■■■■■ */
+    });
+
+
     // 로그인 이후 사용 기능
     Route::middleware(['check.login'])-> group(function() {
         // 사용자 정보 획득
@@ -191,6 +213,17 @@ Route::group([
 
     // 로그인 이후 사용 가능 기능
     Route::middleware(['check.professor'])->group(function() {
+
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 start ■■■■■■■■■■■■■■■■■■■■■■■■ */
+        Route::get('/studentManagement', function(){
+            return view('index');
+        });
+
+        Route::get('/gradeCheck', function(){
+            return view('index');
+        });
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 End ■■■■■■■■■■■■■■■■■■■■■■■■ */
+
         // 교수 메인 페이지
         Route::get('/main', [
             'as'    => 'index',
@@ -366,6 +399,22 @@ Route::group([
 ], function() {
     // 로그인 이후 사용 기능
     Route::middleware(['check.professor', 'check.tutor'])->group(function() {
+
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 start ■■■■■■■■■■■■■■■■■■■■■■■■ */
+        Route::get('/attendance', function(){
+            return view('index');
+        });
+
+        Route::get('/alertStudentSetting',function() {
+            return view('index');
+        });
+
+        Route::get('/studentManagement', function(){
+            return view('index');
+        });
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 End ■■■■■■■■■■■■■■■■■■■■■■■■ */
+
+
         // 메인
 
         // 메인화면 출력
