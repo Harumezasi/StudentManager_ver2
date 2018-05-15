@@ -46,16 +46,16 @@ Route::name('home.')->group(function() {
         'uses'  => 'HomeController@setLanguage'
     ]);
 
-    // 회원가입 페이지
-    Route::get('/join', [
-        'as'    => 'join.main',
+    // 회원가입
+    Route::post('/join', [
+        'as'    => 'join',
         'uses'  => 'HomeController@join'
     ]);
 
-    // 회원가입 유형 획득
-    Route::get('/join/{joinType}', [
-        'as'    => 'join.form',
-        'uses'  => 'HomeController@setJoinForm'
+    // 회원가입 여부 확인
+    Route::get('/join/check', [
+        'as'    => 'join.check',
+        'uses'  => 'HomeController@checkJoin'
     ]);
 
     // 로그인 페이지

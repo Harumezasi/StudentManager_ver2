@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
+use App\Http\Middleware\Language;
 use App\Student;
-use PHPUnit\Util\RegularExpression;
+use App\Professor;
 use Validator;
 use Illuminate\Http\Request;
 use App\User;
@@ -186,6 +187,143 @@ class HomeController extends Controller
             ]
         ), 200);
     }
+
+    // 회원가입 여부 확인
+    public function checkJoin(Request $request) {
+        // 01. 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'type'              => 'required|in:professor,student',
+            'id'                => 'required'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 회원가입 유형에 따른 검증방법 설정
+        $type = $request->get('type');
+        switch($type) {
+            case 'student':
+                // 02. 해당 학생의 회원가입 여부 검증
+                $student = Student::find($request->get('id'));
+
+                if (is_null($student)) {
+                    return response()->json(new ResponseObject(
+                        false, "해당 학생은 존재하지 않습니다."
+                    ), 200);
+                } else if (strlen($student->user->password) <= 0) {
+                    return response()->json(new ResponseObject(
+                        true, $student->user->name
+                    ), 200);
+                } else {
+                    return response()->json(new ResponseObject(
+                        false, "해당 학번은 이미 회원가입되어 있습니다."
+                    ), 200);
+                }
+            case 'professor':
+                $user = User::find($request->get('id'));
+
+                if(is_null($user)) {
+                    return response()->json(new ResponseObject(
+                        true, "사용 가능한 아이디입니다."
+                    ), 200);
+                } else {
+                    return response()->json(new ResponseObject(
+                        false, "이미 사용중인 아이디입니다."
+                    ), 200);
+                }
+        }
+    }
+
+    // 회원가입
+    public function join(Request $request) {
+        // 01. 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'type'              => 'required|in:student,professor',
+            'id'                => 'required',
+            'id_check'          => 'required|boolean',
+            'password'          => 'required|same:password_check',
+            'password_check'    => 'required|same:password',
+            'name'              => 'required',
+            'email'             => 'required|email',
+            'phone'             => 'required',
+            'photo'             => 'image',
+            'office'            => 'required_if:type,professor'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 설정
+        $type   = $request->post('type');
+        $id     = $request->post('id');
+
+        $user   = null;
+        switch($type) {
+            case 'student':
+                $user = Student::find($id);
+                if(is_null($user)) {
+                    throw new NotValidatedException("해당 학번은 존재하지 않습니다.");
+                }
+                break;
+            case 'professor':
+                $user = new Professor();
+                $user->id       = $request->post('id');
+                $user->office   = $request->post('office');
+                $user->name     = $request->post('name');
+                break;
+        }
+
+        $photo = $request->hasFile('photo') ? $request->file('photo') : null;
+        $photoName = '';
+        if(!is_null($photo)) {
+            // 새 이미지 저장 => DB 사용자 정보에 새로운 이미지 경로를 지정
+            $fileName = $photo->store('/',$type == 'student' ? 'std_photo' : 'prof_photo');
+            $photoName = $fileName;
+        }
+
+        // 03. 사용자 정보 획득
+        $user->type     = $type;
+        $user->password = $request->post('password');
+        $user->email    = $request->post('email');
+        $user->phone    = $request->post('phone');
+        $user->photo    = $photoName;
+
+        // 04. 데이터베이스에 데이터 등록
+        switch($type) {
+            case 'student':
+                if($user->updateMyInfo([
+                    'password'  => $user->password,
+                    'email'     => $user->email,
+                    'phone'     => $user->phone,
+                    'photo'     => $user->photo
+                ])) {
+                    return response()->json(new ResponseObject(
+                        true, "회원가입 완료했습니다."
+                    ), 200);
+                } else {
+                    return response()->json(new ResponseObject(
+                        false, "회원가입에 실패했습니다."
+                    ), 200);
+                }
+            case 'professor':
+                if($user->insertMyInfo()) {
+                    return response()->json(new ResponseObject(
+                        true, "회원가입 완료했습니다."
+                    ), 200);
+                } else {
+                    return response()->json(new ResponseObject(
+                        false, "회원가입에 실패했습니다."
+                    ), 200);
+                }
+        }
+    }
+
+    // 아이디 찾기
+
+
+    // 비밀번호 찾기
 
 
 

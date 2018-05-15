@@ -332,9 +332,9 @@ class StudentController extends Controller
 
         // 메시지 객체 추가
         $detailObj = new class($detail){
-            public $sign_in;
+            public $sign_in_message;
             public function __construct($detail) {
-                $this->sign_in = $detail;
+                $this->sign_in_message = $detail;
             }
         };
         if(isset($latenessTime)) {
@@ -422,7 +422,7 @@ class StudentController extends Controller
 
         // 상세 사항을 json 객체로 입력
         $detailObject                   = json_decode($attendance->detail);
-        $detailObject->sign_out         = $detail;
+        $detailObject->sign_out_message = $detail;
         if(isset($earlyLeaveTime)) {
             $detailObject->early_leave_time = $earlyLeaveTime;
             unset($earlyLeaveTime);

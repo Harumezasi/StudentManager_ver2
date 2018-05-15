@@ -156,4 +156,35 @@ class Professor extends Model
 
         return true;
     }
+
+    // 교수 회원가입 메서드
+    public function insertMyInfo() {
+        // 01. 사용자 정보 저장
+        $user = new User();
+
+        $user->id       = $this->id;
+        $user->password = password_hash($this->password, PASSWORD_DEFAULT);
+        unset($this->password);
+        $user->email    = $this->email;
+        unset($this->email);
+        $user->phone    = $this->phone;
+        unset($this->phone);
+        $user->type     = $this->type;
+        unset($this->type);
+        $user->name     = $this->name;
+        unset($this->name);
+        $user->photo    = $this->photo;
+        unset($this->photo);
+
+        if($user->save() === false) {
+            return false;
+        }
+
+        // 02. 교수 정보 저장
+        if($this->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

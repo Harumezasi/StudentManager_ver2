@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\NeedCareAlert;
-use Mockery\Exception;
 use Validator;
 use App\Exceptions\NotValidatedException;
 use Illuminate\Http\Request;
 use App\Professor;
 use App\Student;
-use App\StudyClass;
 use App\User;
 use Illuminate\Support\Carbon;
 
@@ -706,4 +704,6 @@ class TutorController extends Controller
             true, $scores
         ), 200);
     }
+
+
 }
