@@ -389,15 +389,33 @@ class StudentController extends Controller
             Student::findOrFail($request->post('student_number_id')) :
             Student::findOrFail(session()->get('user')->id);
         $detail         = $request->exists('detail') ? $request->post('detail') : "";
-        $signOutTime    = Carbon::create();
+        $signOutTime    = now();
 
         // 03. 심층 유효성 검사
-        // 최근 데이터에 하교 데이터가 기록되었다면 => 하교 인증 실패
+        $today = (now()->hour > 8 && now()->minute >= 30) ? today() : today()->subDay();
         $adaRecordOfRecent = $student->attendances()->orderDesc()->limit(1)->get()->all();
-        if(sizeof($adaRecordOfRecent) <= 0 || !is_null($adaRecordOfRecent[0]->sign_out_time)) {
+
+        if(sizeof($adaRecordOfRecent) <= 0) {
+            // 등교 이력이 없다면 => 하교 인증 실패
             return response()->json(new ResponseObject(
-                false, "최근 등교 내역이 없습니다."
+            false, "등교 내역이 없습니다."
             ), 200);
+
+        } else if(!is_null($adaRecordOfRecent[0]->sign_out_time)) {
+            // 최근 데이터에 하교 데이터가 기록되었다면 => 하교 인증 실패
+
+            if($adaRecordOfRecent[0]->reg_date == $today->format('Y-m-d')) {
+                // 오늘 일자인 경우 => 이미 하교
+                return response()->json(new ResponseObject(
+                    false, "오늘은 이미 하교하셨습니다."
+                ), 200);
+
+            } else {
+                // 오늘이 아니라면 => 최근 등교 내역이 없는 것
+                return response()->json(new ResponseObject(
+                    false, "최근 등교 내역이 없습니다."
+                ), 200);
+            }
         }
 
         // 04. 하교
