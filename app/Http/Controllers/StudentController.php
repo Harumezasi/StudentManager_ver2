@@ -398,7 +398,7 @@ class StudentController extends Controller
         if(sizeof($adaRecordOfRecent) <= 0) {
             // 등교 이력이 없다면 => 하교 인증 실패
             return response()->json(new ResponseObject(
-            false, "등교 내역이 없습니다."
+                false, "등교 내역이 없습니다."
             ), 200);
 
         } else if(!is_null($adaRecordOfRecent[0]->sign_out_time)) {

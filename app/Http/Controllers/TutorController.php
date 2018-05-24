@@ -182,7 +182,7 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 사랑이 필요한 학생 필터링 조건 설정
+    // 출결알림 조건 설정
     public function setNeedCareAlert(Request $request) {
         // 01. 요청 유효성 검증
         $validAdaType = implode(',', self::ADA_TYPE);
@@ -245,7 +245,7 @@ class TutorController extends Controller
         }
     }
 
-    // 사랑이 필요한 학생 필터링 조건 목록 조회
+    // 출결알림 목록 조회
     public function getNeedCareAlertList() {
         // 01. 데이터 획득
         $professor = Professor::findOrFail(session()->get('user')->id);
@@ -294,7 +294,7 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 사랑이 필요한 학생 필터링 조건 삭제
+    // 출결알림 조건 삭제
     public function deleteNeedCareAlert(Request $request) {
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
@@ -320,6 +320,22 @@ class TutorController extends Controller
             ), 200);
         }
     }
+
+
+
+    // 학생 분석
+
+    // 유형별 학생 리스트 출력
+    public function getStudentListOfType(Request $request) {
+        // 01. 요청 유효성 검사
+        $validType  = implode(',', ['total', 'filter', 'attention']);
+        $validOrder = implode(',' , ['id', 'name']);
+        $validator  = Validator::make($request->all(), [
+            'type'      => "required|in:{$validType}",
+            'order'     => ''
+        ]);
+    }
+
 
 
     // 학생 관리

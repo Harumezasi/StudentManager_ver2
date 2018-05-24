@@ -32,19 +32,23 @@ class SubjectsTableSeeder extends Seeder
             switch($professor->id) {
                 case 'ycjung':
                     // 정영철 교수님  => 객체지향프로그래밍, 웹프로그래밍, 캡스톤디자인
-                    $subjects = ['객체지향프로그래밍(Ⅲ)', '웹프로그래밍(Ⅱ)', '캡스톤디자인(Ⅰ)'];
+                    $subjects = [
+                        ['name' => '객체지향프로그래밍(Ⅲ)', 'type' => 'major'],
+                        ['name' => '웹프로그래밍(Ⅱ)', 'type' => 'major'],
+                        ['name' => '캡스톤디자인(Ⅰ)', 'type' => 'major']
+                    ];
                     break;
                 case 'kjkim':
                     // 김기종 교수님  => DB설계
-                    $subjects = ['DB설계'];
+                    $subjects = [['name' => 'DB설계', 'type' => 'major']];
                     break;
                 case 'seohk17':
                     // 서희경 교수님  => 실무일본어회화 - A
-                    $subjects = ['실무일본어회화(Ⅱ) - A'];
+                    $subjects = [['name' => '실무일본어회화(Ⅱ) - A', 'type' => 'japanese']];
                     break;
                 case 'figures':
                     // 기쿠치 교수님  => 실무일본어회화 - C
-                    $subjects = ['실무일본어회화(Ⅱ) - C'];
+                    $subjects = [['name' => '실무일본어회화(Ⅱ) - C', 'type' => 'japanese']];
                     break;
                 default:
                     // 김종율 교수님, 박성철 교수님
@@ -55,15 +59,16 @@ class SubjectsTableSeeder extends Seeder
             $studyClass = Professor::find('ycjung')->studyClass;
 
             // 교과목 정보 생성
-            foreach($subjects as $name) {
+            foreach($subjects as $value) {
                 // 강의 생성
                 $subject = new Subject();
                 $subject->fill([
                     'year'          => 2018,
                     'term'          => '1st_term',
+                    'type'          => $value['type'],
                     'join_class'    => $studyClass->id,
                     'professor'     => $professor->id,
-                    'name'          => $name,
+                    'name'          => $value['name'],
                 ])->save();
                 echo "Subject {$subject->name} is created!!!\n";
 

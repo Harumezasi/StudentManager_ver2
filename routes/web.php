@@ -436,7 +436,7 @@ Route::group([
                 'uses'  => 'TutorController@getAttendanceRecordsOfToday'
             ]);
 
-            // 사랑이 필요한 학생 알림 관리
+            // 출결알림 관리
             Route::group([
                'as'     => 'care.',
                'prefix' => 'care'
