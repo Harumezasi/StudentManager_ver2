@@ -413,7 +413,7 @@ class StudentController extends Controller
             } else {
                 // 오늘이 아니라면 => 최근 등교 내역이 없는 것
                 return response()->json(new ResponseObject(
-                    false, "최근 등교 내역이 없습니다.######"
+                    false, "최근 등교 내역이 없습니다."
                 ), 200);
             }
         }
