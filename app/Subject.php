@@ -16,7 +16,8 @@ class Subject extends Model
     protected   $table = 'subjects';
     protected   $fillable = [
         'year', 'term', 'professor', 'name', 'final_reflection',
-        'midterm_reflection', 'homework_reflection', 'quiz_reflection'
+        'midterm_reflection', 'homework_reflection', 'quiz_reflection',
+        'type'
     ];
 
     public      $timestamps = false;
@@ -83,6 +84,30 @@ class Subject extends Model
         return $query->where([['year', $period[0]], ['term', $period[1]]]);
     }
 
+    /**
+     *  함수명:                         scopeJapanese
+     *  함수 설명:                      강의 유형을 일본어로 설정
+     *  만든날:                         2018년 5월 25일
+     *
+     *  매개변수 목록
+     *  @param $query:                  질의
+     */
+    public function scopeJapanese($query) {
+        return $query->where('type', 'japanese');
+    }
+
+    /**
+     *  함수명:                         scopeMajor
+     *  함수 설명:                      강의 유형을 전공으로 설정
+     *  만든날:                         2018년 5월 25일
+     *
+     *  매개변수 목록
+     *  @param $query:                  질의
+     */
+    public function scopeMajor($query) {
+        return $query->where('type', 'major');
+    }
+
     // 04. 클래스 메서드 정의
 
 
@@ -90,7 +115,7 @@ class Subject extends Model
     // 05. 멤버 메서드 정의
     /**
      *  함수명:                         selectGainedScoreList
-     *  함수 설명:                      조회 학기를 지정
+     *  함수 설명:                      취득성적 목록을 조회
      *  만든날:                         2018년 5월 3일
      *
      *  매개변수 목록
@@ -134,4 +159,15 @@ class Subject extends Model
         }
     }
 
+    // 수강학생 목록을 획득
+    public function selectJoinedStudents() {
+        $joinList = $this->joinLists()->pluck('std_id')->all();
+
+        $data = [];
+        foreach($joinList as $stdId) {
+            $data[] = Student::findOrFail($stdId);
+        }
+
+        return $data;
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\NeedCareAlert;
+use App\Score;
 use Validator;
 use App\Exceptions\NotValidatedException;
 use Illuminate\Http\Request;
@@ -325,6 +326,16 @@ class TutorController extends Controller
 
     // 학생 분석
 
+    // 학생 분류기준 조회
+    public function getCriteriaOfEvaluation(Request $request) {
+
+    }
+
+    // 학생 분류기준 수정
+    public function updateCriteriaOfEvaluation(Request $request) {
+
+    }
+
     // 유형별 학생 리스트 출력
     public function getStudentListOfType(Request $request) {
         // 01. 요청 유효성 검사
@@ -332,8 +343,172 @@ class TutorController extends Controller
         $validOrder = implode(',' , ['id', 'name']);
         $validator  = Validator::make($request->all(), [
             'type'      => "required|in:{$validType}",
-            'order'     => ''
+            'order'     => "required|in:{$validOrder}"
         ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor      = Professor::findOrFail(session()->get('user')->id);
+        $studyClass     = $professor->studyClass;
+        $students       = $studyClass->students->all();
+        $type           = $request->post('type');
+        $order          = $request->post('order');
+
+        // 03. 분류 기준에 따른 학생 분류
+        foreach($students as $student) {
+            $trouble = [];
+            // 03-01. 출석 분석
+            $attendances = $student->attendances()->start(today()->subDays($studyClass->ada_search_period))
+                ->end(today()->format('Y-m-d'));
+
+            // 지각
+            if(($latenessCount = with(clone $attendances)->lateness()->count()) >= $studyClass->lateness_count) {
+                $trouble[__('ada.ada')][] = __('tutor.lateness_count', ['count' => $latenessCount]);
+            }
+
+            // 조퇴
+            if(($earlyLeaveCount = with(clone $attendances)->earlyLeave()->count()) >= $studyClass->early_leave_count) {
+                $trouble[__('ada.ada')][] = __('tutor.early_leave_count', ['count' => $earlyLeaveCount]);
+            }
+
+            // 결석
+            if(($absenceCount = with(clone $attendances)->absence()->count()) >= $studyClass->absence_count) {
+                $trouble[__('ada.ada')][] = __('tutor.absence_count', ['count' => $absenceCount]);
+            }
+
+
+            // 03-02. 하위권 학생 & 최근 문제 학생 분류
+            // 전공 & 일본어의 수강목록 획득
+            $japaneseSubjects       = $student->selectSubjectList()->japanese()->pluck('id')->all();
+            $majorSubjects          = $student->selectSubjectList()->major()->pluck('id')->all();
+
+            // 문제점을 분석하는 알고리즘 정의
+            $algorithm = function($type, $subjects) use ($studyClass, $student) {
+                // 1. 데이터 정의
+                $scores = Score::whereIn('subject_id', $subjects)
+                    ->orderBy('execute_date', 'desc')->limit($studyClass->study_usual)->get()->all();
+                $result = [];
+
+                $standingOrders = [];
+                $gainedScores = [];
+                $averageScores = [];
+                $recentStandingOrders = [];
+                $recentGainedScores = [];
+                foreach ($scores as $key => $score) {
+                    $tempScore = $score->selectGainedScore($student->id);
+
+                    // 평균 석차백분율 & 평균 성적을 획득
+                    array_push($standingOrders, $tempScore->standing_order);
+                    array_push($gainedScores,
+                        number_format(($tempScore->score / $score->perfect_score) * 100, 0));
+                    array_push($averageScores, $score->average_score);
+
+                    // 최근 석차백분율 & 평균성적을 획득
+                    if ($key < $studyClass->study_recent) {
+                        array_push($recentStandingOrders, $tempScore->standing_order);
+                        array_push($recentGainedScores,
+                            number_format(($tempScore->score / $score->perfect_score) * 100, 0));
+                    }
+                }
+
+                // 일본어 강의에 대한 분류
+                // 석차백분율 대조
+                $standingOrder = number_format(array_sum($standingOrders) / sizeof($standingOrders), 2);
+                $recentStandingOrder = number_format(array_sum($recentStandingOrders) / sizeof($recentStandingOrders), 2);
+                // 하위권 판단
+                if ((1 - $studyClass->low_reflection) <= $standingOrder) {
+                    $result[__('tutor.low_level')][] = __("tutor.{$type}_low_ref", ['ref' => $standingOrder * 100]);
+                }
+                // 최근 문제 판단
+                if (($standingOrderGap = $recentStandingOrder - $standingOrder) >= $studyClass->recent_reflection) {
+                    $result[__('tutor.recent_trouble')][] = __("tutor.{$type}_recent_ref", ['ref' => $standingOrderGap * 100]);
+                }
+
+                /*
+                // 반평균 대비 성적 대조
+                $averageScore = number_format(array_sum($averageScores) / sizeof($averageScores), 0);
+                $gainedScore = number_format(array_sum($gainedScores) / sizeof($gainedScores), 0);
+                $recentGainedScore = number_format(array_sum($recentGainedScores) / sizeof($recentGainedScores), 0);
+                // 하위권 판단
+                if ($averageScore >= $gainedScore + $studyClass->low_score) {
+                    $scoreGap = $averageScore - $gainedScore;
+                    $result[__('tutor.low_level')][] = __("tutor.{$type}_low_score", ['point' => $scoreGap]);
+                }
+                // 최근 문제 판단
+                if ($gainedScore >= $recentGainedScore + $studyClass->recent_score) {
+                    $scoreGap = $gainedScore - $recentGainedScore;
+                    $result[__('tutor.recent_trouble')][] = __("tutor.{$type}_recent_score", ['point' => $scoreGap]);
+                }*/
+
+                return $result;
+            };
+
+            // 각 과목유형에 대한 문제점 분석
+            $japaneseTrouble    = $algorithm('japanese', $japaneseSubjects);
+            $majorTrouble       = $algorithm('major', $majorSubjects);
+            $studyTrouble       = array_merge_recursive($japaneseTrouble, $majorTrouble);
+
+
+            // 03-03. 출석분석 & 학업분석 결과를 병합
+            $trouble = array_merge_recursive($trouble, $studyTrouble);
+
+            // 03-04. 학생에 대한 필요 정보를 결합
+            $stdInfo            = with(clone $student)->user->selectUserInfo();
+            $student->name      = $stdInfo->name;
+            $student->photo_url = $stdInfo->photo_url;
+            $student->trouble   = $trouble;
+        }
+
+        // 조회 유형에 따른 학생 데이터 필터링
+        switch($type) {
+            case 'filter':
+                $students = array_filter($students, function($value) {
+                    return sizeof($value->trouble) > 0;
+                });
+                break;
+            case 'attention':
+                $students = array_filter($students, function($value) {
+                    return $value->attention_level > 0;
+                });
+                break;
+        }
+
+        // 정렬
+        usort($students, function($a, $b) use ($order) {
+            switch($order) {
+                case 'id':
+                    if($a->id == $b->id) return 0;
+
+                    return $a->id > $b->id ? 1 : -1;
+                case 'name':
+                    if($a->name == $b->name) return 0;
+
+                    return strcmp($a->name, $b->name);
+            }
+        });
+
+        // 응답
+        return response()->json(new ResponseObject(
+            true, $students
+        ), 200);
+    }
+
+    // 분석에 사용할 속성 목록 획득
+    public function getOptionList(Request $request) {
+
+    }
+
+    // 출석 그래프 데이터 획득
+    public function getDataOfAdaGraph(Request $request) {
+
+    }
+
+    // 학업 그래프 데이터 획득
+    public function getDataOfStudyGraph(Request $request) {
+
     }
 
 
@@ -359,13 +534,13 @@ class TutorController extends Controller
 
         // 학업성취도 획득
         foreach($students as $student) {
-            $joinList = Student::findOrFail($student->id)->joinLists()->period($period['this']);
+            //$joinList = Student::findOrFail($student->id)->joinLists()->period($period['this']);
 
             unset($student->study_class);
             $student->name  = User::findOrFail($student->id)->name;
             $student->photo = User::findOrFail($student->id)->selectUserInfo()->photo_url;
-            $student->average_achievement = number_format(with(clone $joinList)->avg('achievement') * 100, 0);
-            $student->minimum_achievement = number_format(with(clone $joinList)->min('achievement') * 100, 0);
+            //$student->average_achievement = number_format(with(clone $joinList)->avg('achievement') * 100, 0);
+            //$student->minimum_achievement = number_format(with(clone $joinList)->min('achievement') * 100, 0);
         }
 
         // 페이지네이션 설정
@@ -665,7 +840,7 @@ class TutorController extends Controller
         // 03. view 단에 데이터 반환
         $data = [
             'stats'         => $student->selectStatList($subject->id),
-            'achievement'   => number_format($student->joinLists()->subject($subject->id)->get()[0]->achievement * 100, 0)
+            //'achievement'   => number_format($student->joinLists()->subject($subject->id)->get()[0]->achievement * 100, 0)
         ];
 
         return response()->json(new ResponseObject(

@@ -55,4 +55,5 @@ class GainedScore extends Model
 
 
     // 05. 멤버 메서드 정의
+
 }

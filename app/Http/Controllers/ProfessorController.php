@@ -316,12 +316,14 @@ class ProfessorController extends Controller
 
         // 03. 수강학생 목록 조회
         $joinList = $subject->joinLists()->join('users', 'users.id', 'join_lists.std_id')
-            ->get(['users.id', 'users.name', 'users.photo', 'join_lists.subject_id', 'join_lists.achievement'])->all();
+            ->get(['users.id', 'users.name', 'users.photo', 'join_lists.subject_id',
+                //'join_lists.achievement'
+                ])->all();
 
         // 학업 성취도 삽입
         foreach($joinList as $item) {
             $item->photo        = User::findOrFail($item->id)->selectUserInfo()->photo_url;
-            $item->achievement  = number_format($item->achievement * 100, 0);
+            //$item->achievement  = number_format($item->achievement * 100, 0);
         }
 
         // 04. 데이터 반환
@@ -830,6 +832,7 @@ class ProfessorController extends Controller
         ), 200);
     }
 
+
     /**
      *  함수명:                         getAchievementReflections
      *  함수 설명:                      해당 강의의 성적별 학업성취도 반영비율 조회
@@ -851,6 +854,7 @@ class ProfessorController extends Controller
      * 예외
      *  @throws NotValidatedException
      */
+    /*
     public function getAchievementReflections(Request $request) {
         // 01. 데이터 유효성 검증
         $validator = Validator::make($request->all(), [
@@ -884,6 +888,7 @@ class ProfessorController extends Controller
             true, $data
         ), 200);
     }
+    */
 
     /**
      *  함수명:                         updateAchievementReflections
@@ -910,6 +915,7 @@ class ProfessorController extends Controller
      * 예외
      *  @throws NotValidatedException
      */
+    /*
     public function updateAchievementReflections(Request $request) {
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
@@ -959,6 +965,7 @@ class ProfessorController extends Controller
             ), 200);
         }
     }
+    */
 
 
 

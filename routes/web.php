@@ -461,6 +461,8 @@ Route::group([
             });
         });
 
+
+
         // 내 지도반 관리
         Route::group([
             'as'        => 'class.',
@@ -472,6 +474,28 @@ Route::group([
                 'uses'  => 'TutorController@getMyStudentsList'
             ]);
         });
+
+
+
+        // 학생 분석
+        Route::group([
+            'as'        => 'analyse.',
+            'prefix'    => 'analyse'
+        ], function() {
+            // 알고리즘에 의해 분류된 학생 목록 조회
+            Route::get('/student_list', [
+                'as'    => 'student_list',
+                'uses'  => 'TutorController@getStudentListOfType'
+            ]);
+
+            // 분석 조건으로 사용할 속성 목록 획득
+            /*
+            Route::post('/option_list', [
+                'as'    => 'option_list',
+                'uses'  => 'TutorController@'
+            ]);*/
+        });
+
 
 
         // 학생별 상세 관리

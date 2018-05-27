@@ -15,7 +15,9 @@ class StudyClass extends Model
     // 01. 모델 속성 설정
     protected   $table = 'study_classes';
     protected   $fillable = [
-        'tutor', 'name', 'sign_in_time', 'sign_out_time'
+        'tutor', 'name', 'sign_in_time', 'sign_out_time',
+        'ada_search_period', 'lateness_count', 'early_leave_count', 'absence_count', 'study_usual', 'study_recent',
+        'low_reflection', 'low_score', 'recent_reflection', 'recent_score'
     ];
 
     public      $timestamps = false;

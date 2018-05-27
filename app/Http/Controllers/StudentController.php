@@ -392,7 +392,7 @@ class StudentController extends Controller
         $signOutTime    = now();
 
         // 03. 심층 유효성 검사
-        $today = (now()->hour > 8 && now()->minute >= 30) ? today() : today()->subDay();
+        $today = (now()->gte(Carbon::createFromTime(8, 30, 0))) ? now() : now()->subDay();
         $adaRecordOfRecent = $student->attendances()->orderDesc()->limit(1)->get()->all();
 
         if(sizeof($adaRecordOfRecent) <= 0) {
@@ -519,9 +519,11 @@ class StudentController extends Controller
             // 성적 통계표 첨부
             $subject->stats = $student->selectStatList($subject->id);
 
+            /*
             // 학업성취도 첨부
             $subject->achievement =
                 number_format($student->joinLists()->subject($subject->id)->get()[0]->achievement * 100, 0);
+            */
         }
 
         // 05. 페이지네이션 데이터 설정

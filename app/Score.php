@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\NotValidatedException;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -43,6 +44,32 @@ class Score extends Model
 
 
     // 03. 스코프 정의
+    /**
+     *  함수명:                         scopeStart
+     *  함수 설명:                      실시일자의 조회 시작지점을 설정
+     *  만든날:                         2018년 5월 25일
+     *
+     *  매개변수 목록
+     *  @param $query:                  질의
+     *  @param $start:                  조회 시작시점
+     */
+    public function scopeStart($query, $start) {
+        return $query->where('execute_date', '>=', $start);
+    }
+
+    /**
+     *  함수명:                         scopeEnd
+     *  함수 설명:                      실시일자의 조회 종료지점을 설정
+     *  만든날:                         2018년 5월 25일
+     *
+     *  매개변수 목록
+     *  @param $query:                  질의
+     *  @param $end:                    조회 종료시점
+     */
+    public function scopeEnd($query, $end) {
+        return $query->where('execute_date', '<=', $end);
+    }
+
 
 
     // 04. 클래스 메서드 정의
@@ -64,7 +91,13 @@ class Score extends Model
                 $gainedScore->save();
 
                 // 학업 성취도 갱신
-                Student::find($stdId)->joinLists()->subject($this->subject_id)->get()[0]->updateAchievement();
+                //Student::find($stdId)->joinLists()->subject($this->subject_id)->get()[0]->updateAchievement();
+
+                // 석차 백분율 갱신
+                $this->updateStandingOrder();
+
+                // 수강학생 평균 점수 등록
+                $this->updateAverageScore();
             }
 
             return true;
@@ -73,7 +106,50 @@ class Score extends Model
         }
     }
 
-    public function selectGainedScoreListOfStudent() {
+    // 해당 학생이 취득한 성적 조회
+    public function selectGainedScore($stdId) {
+        $gainedScore = GainedScore::where([['std_id', $stdId], ['score_type', $this->id]])->get()->all();
 
+        if(sizeof($gainedScore) <= 0) {
+            throw new NotValidatedException("해당 데이터에 접근할 권한이 없습니다.");
+        } else {
+            return $gainedScore[0];
+        }
+    }
+
+    // 석채백분율 갱신
+    public function updateStandingOrder() {
+        // 01. 데이터 획득
+        $gainedScores = $this->gainedScores->all();
+
+        // 02. 성적에 따른 정렬
+        usort($gainedScores, function($a, $b) {
+            if($a->score == $b->score) return 0;
+
+            return $a->score < $b->score ? 1 : -1;
+        });
+
+        foreach($gainedScores as $key => $gainedScore) {
+            $standingOrder = number_format($key / (sizeof($gainedScores) - 1), 2);
+
+            $gainedScore->standing_order = $standingOrder;
+
+            if($gainedScore->save() === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // 수강학생 평균 점수 갱신
+    public function updateAverageScore() {
+        // 01. 취득점수 목록 획득
+        $gainedScores = $this->gainedScores;
+
+        // 02. 평균 점수 계산
+        $this->average_score = number_format($gainedScores->average('score'), 0);
+
+        return $this->save();
     }
 }

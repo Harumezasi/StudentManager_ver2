@@ -16,7 +16,8 @@ class JoinList extends Model
     // 01. 모델 속성 정의
     protected   $table = 'join_lists';
     protected   $fillable = [
-        'subject_id', 'std_id', 'achievement'
+        'subject_id', 'std_id',
+        //'achievement'
     ];
 
     public      $timestamps = false;
@@ -74,6 +75,7 @@ class JoinList extends Model
 
 
     // 05. 멤버 메서드 정의
+    /*
     public function updateAchievement() {
         // 01. 데이터 설정
         $subject = $this->subject;
@@ -108,4 +110,5 @@ class JoinList extends Model
 
         return $this->save();
     }
+    */
 }

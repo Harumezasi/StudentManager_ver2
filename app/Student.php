@@ -20,7 +20,8 @@ class Student extends Model
     protected   $table = 'students';
     protected   $keyType = 'string';
     protected   $fillable = [
-        'id', 'study_class'
+        'id', 'study_class',
+        'attention_level', 'attention_reason', 'stop_flag'
     ];
 
     public      $timestamps = false;
@@ -490,5 +491,29 @@ class Student extends Model
             'absence'       => number_format(array_sum($total_absence_count) / $rowCount, 0),
             'early_leave'   => number_format(array_sum($total_early_leave_count) / $rowCount, 0),
         ];
+    }
+
+    // 내가 수강하는 강의 목록 조회
+    public function selectSubjectList() {
+        /*
+        // 01. 수강목록 조회
+        $joinLists = $this->joinLists()->pluck('subject_id')->all();
+
+        // 02. 강의 데이터 획득
+        $data = [];
+        foreach($joinLists as $subjectId) {
+            $subject = Subject::findOrFail($subjectId);
+
+            if(!is_null($type)) {
+                if($subject->type != $type) continue;
+            }
+
+            $data[] = $subject;
+        }
+
+        return $data;
+        */
+
+        return Subject::whereIn('id', $this->joinLists()->pluck('subject_id')->all());
     }
 }
