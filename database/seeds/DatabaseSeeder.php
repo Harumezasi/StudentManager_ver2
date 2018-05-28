@@ -8,6 +8,7 @@ use App\Student;
 use App\Professor;
 use App\User;
 use App\Attendance;
+use App\Term;
 use App\Subject;
 use App\JoinList;
 use App\Score;
@@ -25,7 +26,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-/*
+
         // 사용자 테이블 시딩
         StudyClass::truncate();
         Student::truncate();
@@ -38,7 +39,12 @@ class DatabaseSeeder extends Seeder
         Attendance::truncate();
         $this->call(AttendancesTableSeeder::class);
         $this->command->info('attendances table is seeded.');
-*/
+
+        // 학기 데이터 시딩
+        Term::truncate();
+        $this->call(TermsTableSeeder::class);
+        $this->command->info('terms table is seeded.');
+
         // 과목 데이터 시딩
         Subject::truncate();
         JoinList::truncate();

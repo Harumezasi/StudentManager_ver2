@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Professor;
 use Dotenv\Exception\ValidationException;
 use Validator;
 use Illuminate\Http\Request;
@@ -544,6 +545,45 @@ class StudentController extends Controller
 
         return response()->json(new ResponseObject(
             true, $data
+        ), 200);
+    }
+
+    // 시간표 획득
+    public function getTimetable() {
+        // 01. 데이터 설정
+        $student    = Student::findOrFail(session()->get('user')->id);
+        $subjects   = $student->subjects()->term($this->getTermValue()['this'])->get()->all();
+
+        // 02. 시간표 데이터 획득
+        $timetables = [];
+        foreach($subjects as $subject) {
+            $temp = $subject->timetables->all();
+
+            // 각 교시별 강의명 & 담당교수명 획득
+            foreach($temp as $item) {
+                $item->subject_name = $subject->name;
+                $item->prof_name    = Professor::findOrFail($subject->professor)->user->name;
+                unset($item->id);
+                unset($item->subject_id);
+            }
+
+            // 획득한 데이터를 시간표 배열에 병합
+            $timetables = array_merge($timetables, $temp);
+        }
+
+        // 03. 요일-교시별 정렬
+        usort($timetables, function($a, $b) {
+            if($a->day_of_week == $b->day_of_week) {
+                if($a->period == $b->period) return 0;
+
+                return $a->period > $b->period ? 1 : -1;
+            };
+
+            return $a->day_of_week > $b->day_of_week ? 1 : -1;
+        });
+
+        return response()->json(new ResponseObject(
+            true, $timetables
         ), 200);
     }
 }

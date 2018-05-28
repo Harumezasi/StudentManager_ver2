@@ -780,60 +780,6 @@ class ProfessorController extends Controller
     }
 
     /**
-     *  함수명:                         getScoresOfStudents
-     *  함수 설명:                      지정한 학생이 해당 과목에서 취득한 성적 목록 조회
-     *  만든날:                         2018년 5월 02일
-     *
-     *  매개변수 목록
-     *  @param Request $request :       요청 메시지
-     *
-     *  지역변수 목록
-     *  $validator:                     요청 유효성 검사용 객체
-     *  $professor:                     교수회원 정보
-     *  $subject:                       강의 정보
-     *  $student:                       조회하고자 하는 학생 정보
-     *  $scores:                        해당 학생의 성적 목록
-     *
-     *  반환값
-     *  @return \Illuminate\Http\JsonResponse 예외
-     *
-     * 예외
-     *  @throws NotValidatedException
-     */
-    public function detailScoresOfStudent(Request $request) {
-        // 01. 유효성 검사
-        $validator = Validator::make($request->all(), [
-            'std_id'        => 'required|exists:students,id',
-            'subject_id'    => 'required|exists:subjects,id'
-        ]);
-
-        if($validator->fails()) {
-            throw new NotValidatedException($validator->errors());
-        }
-
-        // 02. 데이터 획득
-        $professor  = Professor::findOrFail(session()->get('user')->id);
-        $subject    = $professor->isMySubject($request->get('subject_id'));
-        $student    = in_array($request->get('std_id'), $subject->joinLists->pluck('std_id')->all())
-                            ? Student::findOrFail($request->get('std_id')) : null;
-
-        // ##### 해당 과목을 수강하는 학생이 아닐 때 ######
-        if(is_null($student)) {
-            throw new NotValidatedException("잘못된 학번입니다.");
-        }
-
-        // 03. View 단에 반환할 성적 목록 획득
-        $scores = $student->selectScoresList($subject->id)->get()->all();
-
-
-        // 03. 데이터 반환
-        return response()->json(new ResponseObject(
-            true, $scores
-        ), 200);
-    }
-
-
-    /**
      *  함수명:                         getAchievementReflections
      *  함수 설명:                      해당 강의의 성적별 학업성취도 반영비율 조회
      *  만든날:                         2018년 5월 04일
@@ -966,6 +912,84 @@ class ProfessorController extends Controller
         }
     }
     */
+
+
+
+    // 학생 상세관리
+    /**
+     *  함수명:                         getScoresOfStudents
+     *  함수 설명:                      지정한 학생이 해당 과목에서 취득한 성적 목록 조회
+     *  만든날:                         2018년 5월 02일
+     *
+     *  매개변수 목록
+     *  @param Request $request :       요청 메시지
+     *
+     *  지역변수 목록
+     *  $validator:                     요청 유효성 검사용 객체
+     *  $professor:                     교수회원 정보
+     *  $subject:                       강의 정보
+     *  $student:                       조회하고자 하는 학생 정보
+     *  $scores:                        해당 학생의 성적 목록
+     *
+     *  반환값
+     *  @return \Illuminate\Http\JsonResponse 예외
+     *
+     * 예외
+     *  @throws NotValidatedException
+     */
+    public function detailScoresOfStudent(Request $request) {
+        // 01. 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'subject_id'    => 'required|exists:subjects,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $subject    = $professor->isMySubject($request->get('subject_id'));
+        $student    = in_array($request->get('std_id'), $subject->joinLists->pluck('std_id')->all())
+            ? Student::findOrFail($request->get('std_id')) : null;
+
+        // ##### 해당 과목을 수강하는 학생이 아닐 때 ######
+        if(is_null($student)) {
+            throw new NotValidatedException("잘못된 학번입니다.");
+        }
+
+        // 03. View 단에 반환할 성적 목록 획득
+        $scores = $student->selectScoresList($subject->id)->get()->all();
+
+
+        // 03. 데이터 반환
+        return response()->json(new ResponseObject(
+            true, $scores
+        ), 200);
+    }
+
+    // 학생 정보 획득
+    public function getInfoOfStudent(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+        $data       = $student->user->selectUserInfo();
+        unset($data->photo);
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
+    }
 
 
 

@@ -198,6 +198,12 @@ Route::group([
             'as'    => 'subject',
             'uses'  => 'StudentController@getMySubjectList'
         ]);
+
+        // 강의 시간표 획득
+        Route::get('/timetable', [
+            'as'    => 'timetable',
+            'uses'  => 'StudentController@getTimetable'
+        ]);
     });
 });
 
@@ -349,6 +355,12 @@ Route::group([
             'as'        => 'detail',
             'prefix'    => 'detail'
         ], function() {
+            // 지정한 학생의 정보 조회
+            Route::get('/info', [
+                'as'    => 'info',
+                'uses'  => 'ProfessorController@getInfoOfStudent'
+            ]);
+
             // 지정한 학생이 해당 강의에서 취득한 성적 목록 조회
             Route::get('/score', [
                 'as'    => 'score',
@@ -482,6 +494,18 @@ Route::group([
             'as'        => 'analyse.',
             'prefix'    => 'analyse'
         ], function() {
+            // 학생 분류기준 조회
+            Route::get('/select_criteria', [
+                'as'    => 'select_criteria',
+                'uses'  => 'TutorController@getCriteriaOfEvaluation'
+            ]);
+
+            // 학생 분류기준 수정
+            Route::post('/update_criteria', [
+                'as'    => 'update_criteria',
+                'uses'  => 'TutorController@updateCriteriaOfEvaluation'
+            ]);
+
             // 알고리즘에 의해 분류된 학생 목록 조회
             Route::get('/student_list', [
                 'as'    => 'student_list',
@@ -489,11 +513,10 @@ Route::group([
             ]);
 
             // 분석 조건으로 사용할 속성 목록 획득
-            /*
-            Route::post('/option_list', [
+            Route::get('/option_list', [
                 'as'    => 'option_list',
-                'uses'  => 'TutorController@'
-            ]);*/
+                'uses'  => 'TutorController@getOptionForStudent'
+            ]);
         });
 
 

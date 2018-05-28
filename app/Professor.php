@@ -70,6 +70,22 @@ class Professor extends Model
          return $this->belongsTo('App\User', 'id', 'id');
     }
 
+    /**
+     *  함수명:                         students
+     *  함수 설명:                      교수 테이블의 반 테이블을 중계한 학생테이블과이 1:* 역관계를 정의
+     *  만든날:                         2018년 4월 26일
+     */
+    public function students() {
+        return $this->hasManyThrough(
+            'App\Student',
+            'App\StudyClass',
+            'tutor',
+            'study_class',
+            'id',
+            'id'
+        );
+    }
+
 
 
     // 03. 스코프 정의
@@ -114,9 +130,21 @@ class Professor extends Model
         }
     }
 
-    // 해당 학생이 사용자의 지도 학생인지 확인
+    // 해당 학생이 사용자의 지도 학생 혹은 수강 학생인지 확인
     public function isMyStudent($stdId) {
-        $students = $this->studyClass->students()->where('id', $stdId)->get()->all();
+        // 01. 수강학생 여부 확인
+        $subjects = $this->subjects;
+
+        foreach($subjects->all() as $subject) {
+            $joinLists = $subject->students()->where('students.id', $stdId)->get()->all();
+
+            if(sizeof($joinLists) > 0) {
+                return $joinLists[0];
+            }
+        }
+
+        // 02. 지도학생 여부 확인
+        $students = $this->students()->where('students.id', $stdId)->get()->all();
 
         if(sizeof($students) > 0) {
             return $students[0];

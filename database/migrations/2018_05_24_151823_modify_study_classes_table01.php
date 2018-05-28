@@ -25,8 +25,8 @@ class ModifyStudyClassesTable01 extends Migration
             $table->unsignedSmallInteger('lateness_count')->default(3);
             $table->unsignedSmallInteger('early_leave_count')->default(3);
             $table->unsignedSmallInteger('absence_count')->default(1);
-            $table->unsignedTinyInteger('study_usual')->default(20);
-            $table->unsignedTinyInteger('study_recent')->default(5);
+            $table->unsignedSmallInteger('study_usual')->default(20);
+            $table->unsignedSmallInteger('study_recent')->default(5);
             $table->unsignedDecimal('low_reflection', 3, 2)->default(0.15);
             $table->unsignedTinyInteger('low_score')->default(20);
             $table->unsignedDecimal('recent_reflection', 3, 2)->default(0.1);

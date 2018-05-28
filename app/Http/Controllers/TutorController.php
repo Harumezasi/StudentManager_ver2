@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\NeedCareAlert;
 use App\Score;
+use App\Term;
+use ArrayObject;
 use Validator;
 use App\Exceptions\NotValidatedException;
 use Illuminate\Http\Request;
@@ -64,7 +66,7 @@ class TutorController extends Controller
     public function getAttendanceRecordsOfToday() {
         // 01. 데이터 획득
         $professor          = Professor::find(session()->get('user')->id);
-        $myStudents         = $professor->studyClass->students()
+        $myStudents         = $professor->students()
                                 ->join('users', 'users.id', 'students.id')
                                 ->get(['students.id', 'users.name'])->all();
         $needCareAlerts     = $professor->needCareAlerts;
@@ -327,13 +329,58 @@ class TutorController extends Controller
     // 학생 분석
 
     // 학생 분류기준 조회
-    public function getCriteriaOfEvaluation(Request $request) {
+    public function getCriteriaOfEvaluation() {
+        // 01. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get("user")->id);
+        $criteria   = $professor->studyClass()->get([
+            'ada_search_period', 'lateness_count', 'early_leave_count', 'absence_count',
+            'study_usual', 'study_recent', 'low_reflection', 'low_score', 'recent_reflection', 'recent_score'
+        ])->all()[0];
 
+        $criteria->low_reflection *= 100;
+        $criteria->recent_reflection *= 100;
+
+        return response()->json(new ResponseObject(
+            true, $criteria
+        ), 200);
     }
 
     // 학생 분류기준 수정
     public function updateCriteriaOfEvaluation(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'ada_search_period'     => 'required|numeric|min:1|max:999',
+            'lateness_count'        => 'required|numeric|min:1|max:999',
+            'early_leave_count'     => 'required|numeric|min:1|max:999',
+            'absence_count'         => 'required|numeric|min:1|max:999',
+            'study_usual'           => 'required|numeric|min:1|max:999',
+            'study_recent'          => 'required|numeric|min:1|max:999',
+            'low_reflection'        => 'required|numeric|min:0|max:100',
+            'low_score'             => 'required|numeric|min:0|max:100',
+            'recent_reflection'     => 'required|numeric|min:0|max:100',
+            'recent_score'          => 'required|numeric|min:0|max:100'
+        ]);
 
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $studyClass = $professor->studyClass;
+        $data = new ArrayObject($request->all());
+        $data['low_reflection'] /= 100;
+        $data['recent_reflection'] /= 100;
+
+        if($studyClass->updateCriteria($data->getArrayCopy())) {
+            return response()->json(new Responseobject(
+                true, "갱신 성공하였습니다."
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, '갱신에 실패하였습니다.'
+            ), 200);
+        }
     }
 
     // 유형별 학생 리스트 출력
@@ -353,9 +400,9 @@ class TutorController extends Controller
         // 02. 데이터 획득
         $professor      = Professor::findOrFail(session()->get('user')->id);
         $studyClass     = $professor->studyClass;
-        $students       = $studyClass->students->all();
-        $type           = $request->post('type');
-        $order          = $request->post('order');
+        $students       = $professor->students->all();
+        $type           = $request->get('type');
+        $order          = $request->get('order');
 
         // 03. 분류 기준에 따른 학생 분류
         foreach($students as $student) {
@@ -382,8 +429,8 @@ class TutorController extends Controller
 
             // 03-02. 하위권 학생 & 최근 문제 학생 분류
             // 전공 & 일본어의 수강목록 획득
-            $japaneseSubjects       = $student->selectSubjectList()->japanese()->pluck('id')->all();
-            $majorSubjects          = $student->selectSubjectList()->major()->pluck('id')->all();
+            $japaneseSubjects       = $student->subjects()->japanese()->pluck('subjects.id')->all();
+            $majorSubjects          = $student->subjects()->major()->pluck('subjects.id')->all();
 
             // 문제점을 분석하는 알고리즘 정의
             $algorithm = function($type, $subjects) use ($studyClass, $student) {
@@ -496,9 +543,33 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 분석에 사용할 속성 목록 획득
-    public function getOptionList(Request $request) {
+    // 해당 학생의 분석조건 옵션 출력 => 해당 기간동안 수강한 강의목록을 출력
+    public function getOptionForStudent(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'std_id'        => 'required|exists:students,id',
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|date|after:start_date'
+        ]);
 
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get("user")->id);
+        $student    = $professor->isMyStudent($request->get('std_id'));
+        $terms      = Term::termsIncludePeriod($request->get('start_date'), $request->get('end_date'))->get()->all();
+        $subjects   = [];
+        foreach($terms as $term) {
+            $joinSubject = $student->subjects()->where([['year', $term->year], ['term', $term->term]])->get()->all();
+
+            $subjects = array_merge($subjects, $joinSubject);
+        }
+
+        return response()->json(new ResponseObject(
+            true, $subjects
+        ), 200);
     }
 
     // 출석 그래프 데이터 획득
@@ -528,7 +599,7 @@ class TutorController extends Controller
 
         // 02. 데이터 획득
         $professor  = Professor::find(session()->get('user')->id);
-        $students   = $professor->studyClass->students()->get()->all();
+        $students   = $professor->students()->get()->all();
         $argPeriod  = $request->exists('period') ? $request->get('period') : null;
         $period     = $this->getTermValue($argPeriod);
 

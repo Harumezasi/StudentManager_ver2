@@ -28,7 +28,7 @@ class CreateCommentsTable extends Migration
             $table->string('prof_id', 30);
             $table->text('content');
             $table->year('year');
-            $table->enum('term', ['1st_term', '2ed_term', 'summer_vacation', 'winter_vacation']);
+            $table->enum('term', ['1st_term', '2nd_term', 'summer_vacation', 'winter_vacation']);
 
             /**
              *  02. 제약조건 설정

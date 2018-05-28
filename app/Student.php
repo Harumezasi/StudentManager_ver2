@@ -84,6 +84,17 @@ class Student extends Model
         return $this->hasMany('App\GainedScore', 'std_id', 'id');
     }
 
+    public function subjects() {
+        return $this->hasManyThrough(
+            'App\Subject',
+            'App\JoinList',
+            'std_id',
+            'id',
+            'id',
+            'subject_id'
+        );
+    }
+
 
 
     // 03. 스코프 정의

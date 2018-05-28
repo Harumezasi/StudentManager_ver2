@@ -41,6 +41,15 @@ class Comment extends Model
         return $this->belongsTo('App\Student', 'std_id', 'id');
     }
 
+    /**
+     *  함수명:                         student
+     *  함수 설명:                      코멘트 테이블의 학생 테이블에 대한 1:* 역관계를 정의
+     *  만든날:                         2018년 4월 25일
+     */
+    public function terms() {
+        return $this->belongsTo('App\Term', ['year', 'term'], ['year', 'term']);
+    }
+
 
 
     // 03. 스코프 정의

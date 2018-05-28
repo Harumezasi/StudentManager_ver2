@@ -78,4 +78,22 @@ class StudyClass extends Model
                 'subjects.name as subject_name', 'users.name as prof_name'
             ]);
     }
+
+    // 학생분류 기준 수정
+    public function updateCriteria(Array $data) {
+        // 01. 데이터 설정
+        $this->ada_search_period    = $data['ada_search_period'];
+        $this->lateness_count       = $data['lateness_count'];
+        $this->early_leave_count    = $data['early_leave_count'];
+        $this->absence_count        = $data['absence_count'];
+        $this->study_usual          = $data['study_usual'];
+        $this->study_recent         = $data['study_recent'];
+        $this->low_reflection       = $data['low_reflection'];
+        $this->low_score            = $data['low_score'];
+        $this->recent_reflection    = $data['recent_reflection'];
+        $this->recent_score         = $data['recent_score'];
+
+        // 02. 갱신
+        return $this->save();
+    }
 }

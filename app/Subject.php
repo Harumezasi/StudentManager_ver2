@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Subject extends Model
 {
+    use Compoships;
+
     // 01. 모델 속성 설정
     protected   $table = 'subjects';
     protected   $fillable = [
@@ -65,8 +68,30 @@ class Subject extends Model
      *  만든날:                         2018년 5월 8일
      */
     public function studyClass() {
-        return $this->belongsTo('App\StudyClass', 'join_class', id);
+        return $this->belongsTo('App\StudyClass', 'join_class', 'id');
     }
+
+    /**
+     *  함수명:                         term
+     *  함수 설명:                      강의 테이블의 학기 테이블에 대한 1:* 역관계를 정의
+     *  만든날:                         2018년 5월 28일
+     */
+    public function term() {
+        return $this->belongsTo('App\Term', ['year', 'term'], ['year', 'term']);
+    }
+
+    public function students() {
+        return $this->hasManyThrough(
+            'App\Student',
+            'App\JoinList',
+            'subject_id',
+            'id',
+            'id',
+            'std_id'
+        );
+    }
+
+
 
     // 03. 스코프 정의
     /**
@@ -83,6 +108,8 @@ class Subject extends Model
 
         return $query->where([['year', $period[0]], ['term', $period[1]]]);
     }
+
+
 
     /**
      *  함수명:                         scopeJapanese

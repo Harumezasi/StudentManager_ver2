@@ -23,7 +23,7 @@ class CreateSubjectsTable extends Migration
             /**
              *  01. 칼럼 정의
              */
-            $term = ['1st_term', '2ed_term', 'summer_vacation', 'winter_vacation'];
+            $term = ['1st_term', '2nd_term', 'summer_vacation', 'winter_vacation'];
 
             $table->increments('id');
             $table->year('year');
