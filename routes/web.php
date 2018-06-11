@@ -598,10 +598,40 @@ Route::group([
 
     // 로그인 이후 사용 가능 기능
     Route::middleware(['check.admin'])->group(function() {
-        // 교수 메인 페이지
+        // 관리자 메인 페이지
         Route::get('/main', [
             'as'    => 'index',
             'uses'  => 'AdminController@index'
         ]);
+
+
+
+        // 회원관리
+
+
+
+        // 일정 관리
+        Route::group([
+            'as'        => 'schedule.',
+            'prefix'    => 'schedule'
+        ], function() {
+            // 일정 등록
+            Route::post('/insert', [
+                'as'    => 'insert',
+                'uses'  => 'AdminController@insertCommonSchedule'
+            ]);
+
+            // 일정 갱신
+            Route::post('/update', [
+                'as'    => 'update',
+                'uses'  => 'AdminController@updateCommonSchedule'
+            ]);
+
+            // 일정 삭제
+            Route::post('/delete', [
+                'as'    => 'delete',
+                'uses'  => 'AdminController@deleteCommonSchedule'
+            ]);
+        });
     });
 });

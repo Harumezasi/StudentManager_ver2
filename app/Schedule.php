@@ -42,4 +42,11 @@ class Schedule extends Model
 
 
     // 05. 멤버 메서드 정의
+    public function typeCheck($type) {
+        if($this->type == $type) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
