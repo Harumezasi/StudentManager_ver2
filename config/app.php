@@ -161,7 +161,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-
     ],
 
     /*
@@ -213,4 +212,16 @@ return [
 
     ],
 
+    /**
+     *  ------------------------------
+     *  국가공휴일 데이터 조회용 인증키
+     *  ------------------------------
+     *
+     *  국가공휴일 데이터를 얻기 위해 필요한 인증키를 정의.
+     *  인증키 유효기한은 발급 후 2년. (2018년 기준)
+     *
+     *  ### 국가공휴일 데이터 획득 URL : https://www.data.go.kr/dataset/15012690/openapi.do
+     */
+
+    'holiday_data_key' => env('HOLIDAY_DATA_KEY', NULL),
 ];

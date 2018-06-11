@@ -12,6 +12,7 @@ use App\User;
 use App\StudyClass;
 use Illuminate\Support\Carbon;
 
+
 /**
  *  클래스명:               HomeController
  *  설명:                   홈 화면에서 제공하는 관련 기능들을 정의 클래스
@@ -468,5 +469,10 @@ class HomeController extends Controller
 
     public function request(Request $request) {
         return response()->json(['header' => $request->header(), 'body' => $request->all()], 200);
+    }
+
+    // 시험용 메서드
+    public function test() {
+
     }
 }

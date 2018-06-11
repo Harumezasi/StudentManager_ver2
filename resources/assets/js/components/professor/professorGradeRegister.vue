@@ -45,7 +45,7 @@
                     </v-card-title>
                     <v-flex d-flex xs12 sm6 md4>
                       <!-- form 양식 -->
-                      <v-form action='/professor/subject/score/excel/download' method='post'>
+                      <v-form action='/professor/subject/excel/download' method='post'>
                         <!-- <input type="hidden" name="_token" :value="csrf"> -->
                         <!-- 강의 번호 -->
                         <input type="hidden" name="subject_id" value="5">
@@ -251,7 +251,7 @@
             submitFile(){
                 let formData = new FormData();
                 formData.append('upload_file', this.file);
-                axios.post( '/professor/subject/score/excel/upload',
+                axios.post( '/professor/subject/excel/upload',
                     formData,
                     {
                         headers: {

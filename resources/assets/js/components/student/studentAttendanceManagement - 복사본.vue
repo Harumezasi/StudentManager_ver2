@@ -62,9 +62,11 @@
                             </v-flex>
                             <!-- 한 달 동안 출,지,결,조 를 몇번 했나에 대한 그래프 -->
                             <v-flex xs12 md9>
-                                <!-- 막대 그래프 -->
-                                <bar-chart :data="dataChart" :opitons="{ responsive: true, maintainAspectRatio: false }"></bar-chart>
+                              <div id="app">
+                                <bar-chart></bar-chart>
 
+
+                              </div>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -107,56 +109,88 @@
     import VueChartJs from 'vue-chartjs'
     import {Bar} from 'vue-chartjs'
 
+
     /*-- bar --*/
     Vue.component('bar-chart', {
         extends : VueChartJs.HorizontalBar,
-        props: ['data', 'options'],
-        mounted(){
-          this.renderBarChart();
-        },
-        /* props 의 값을 채워준다. */
-        computed: {
-          dataChart: function(){
-            return this.data
-          }
-        },
-        methods: {
-          renderBarChart : function(){
-            this.renderChart({
-              labels:['출석', '지각', '결석', '조퇴'],
-              datasets:[{
-                  backgroundColor: ['#009a92', '#f6c202', '#f53e3e', '#787878'],
-                  pointBackgroundColor: 'white',
-                  pointBorderColor: '#249EBF',
-                  data: this.dataChart
-                }],
-              options:{
-                legend: {
-                  display: false
-                },
-                scales: {
-                     xAxes: [{
-                       ticks: {
-                        min: 0,
-                        max: 25,
-                       }
-                     }]
-                   },
-                responsive: true,
-                maintainAspectRatio: false,
-                height: 100
+        data () {
+           return {
+             attendance_this : attendanceDatas.attendance_this,
+             datacollection: {
+               labels: ['출석', '지각', '결석', '조퇴'],
+                 datasets: [
+                     {
+                         backgroundColor: ['#009a92', '#f6c202', '#f53e3e', '#787878'],
+                         pointBackgroundColor: 'white',
+                         pointBorderColor: '#249EBF',
+                         data: [attendanceDatas.attendance, attendanceDatas.late, attendanceDatas.absence, attendanceDatas.early]
+                     }
+                 ]
+             },
+             options: {
+               legend: {
+                 display: false
+               },
+               scales: {
+                    xAxes: [{
+                      ticks: {
+                       min: 0,
+                       max: 5,
+                      }
+                    }]
+                  },
+               responsive: true,
+               maintainAspectRatio: false,
+               height: 100
+             },
+
+           }
+         },
+         mounted () {
+           this.editGraph();
+           setInterval(this.editGraph,1000);
+         },
+         methods : {
+           editGraph() {
+             // 값의 변경을 감지
+             if(this.attendance_this != attendanceDatas.attendance_this){
+               // 값 변경
+               this.attendance_this = attendanceDatas.attendance_this;
+               // 출결정보 교체
+              this.datacollection.datasets[0].data[0] = attendanceDatas.attendance;
+              this.datacollection.datasets[0].data[1] = attendanceDatas.late;
+              this.datacollection.datasets[0].data[2] = attendanceDatas.absence;
+              this.datacollection.datasets[0].data[3] = attendanceDatas.early;
+
+              // 주간 월간 체크
+              if(attendanceDatas.attendance_period == 'weekly'){
+                this.options.scales.xAxes[0].ticks.max = 5;
+              }else if(attendanceDatas.attendance_period == 'monthly'){
+                this.options.scales.xAxes[0].ticks.max = 25;
               }
-            },
-            { responsive: true, maintainAspectRatio: false }
-          )
-        }
-      },
-      watch: {
-        /* 값 변경을 감지하면 실행 */
-        /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
-        data : function(){
-          this.$data._chart.destroy();
-          this.renderBarChart();
+
+               // 재실행
+               this.renderChart(this.datacollection, this.options);
+
+             }
+           }
+         }
+      }
+    )
+
+    var attendanceDatas = new Vue({
+      data () {
+        return {
+          attendance_period : 'weekly',
+          attendance_this : null,
+          // 출석
+          attendance : 0,
+          // 지각
+          late : 0,
+          // 결석
+          absence : 0,
+          // 조퇴
+          early : 0
         }
       }
     });
@@ -184,8 +218,7 @@
                 period : null,
                 date : null, // 쿼리를 실행할 때, 클릭 이벤트에 맞춰서 값을 넣어준다.
                 nextDate : null,
-                prevDate : null,
-                dataChart: [1,2,3,15]
+                prevDate : null
             }
         },
         mounted() {
@@ -219,6 +252,8 @@
                   }
                 })
                 .then((response) => {
+                      console.log(response);
+                      
                     if(response.data.status === true) {
                         // 서버와의 통신에 정상적으로 성공했을 경우
                         // 출결 데이터 저장
@@ -234,12 +269,17 @@
                         this.nextDate = response.data.message.pagination.next;
                         this.prevDate = response.data.message.pagination.prev;
 
-                        // /* 막대 그래프 값 */
-                        this.dataChart = [response.data.message['sign_in'], response.data.message['lateness'], response.data.message['absence'], response.data.message['early_leave']];
+                        attendanceDatas.attendance_period = response.data.message.pagination.period;
+                        attendanceDatas.attendance_this = response.data.message.pagination.this;
+
+                        /* 막대 그래프 값 */
+                        attendanceDatas.attendance = response.data.message['sign_in'];
+                        attendanceDatas.late = response.data.message['lateness'];
+                        attendanceDatas.absence = response.data.message['absence'];
+                        attendanceDatas.early = response.data.message['early_leave'];
 
                     } else {
                         // 조회된 기록이 없을 경우
-                        alert('조회된 기록이 없습니다.')
                     }
                 }).catch((error) => {
                 console.log('getDataErr :' + error);

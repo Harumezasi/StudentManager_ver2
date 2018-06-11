@@ -1118,9 +1118,13 @@ class ProfessorController extends Controller
             $comments = "조회된 코멘트가 없습니다.";
 
         } else {
-            // 글쓴이 여부 검사
+            // 필요 데이터 추가 등록
             foreach ($comments as $key => $comment) {
-                $comments[$key]->isOwner = $comment->prof_id === $professor->id;
+                // 코멘트 주인 여부 확인
+                $comments[$key]->isOwner    = $comment->prof_id === $professor->id;
+
+                // 사진 URL 추가
+                $comments[$key]->photo_url  = Professor::findOrFail($comment->prof_id)->user->selectUserInfo()->photo_url;
             }
         }
 

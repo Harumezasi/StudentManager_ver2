@@ -175,7 +175,7 @@ class Student extends Model
                 'scores.perfect_score', 'gained_scores.score AS gained_score',
                 DB::raw("(CASE scores.type WHEN 'final' THEN '기말' WHEN 'midterm' THEN '중간'
                     WHEN 'homework' THEN '과제' WHEN 'quiz' THEN '쪽지' END) AS type")
-            ]);
+            ])->orderBy('scores.execute_date', 'desc');
     }
 
     /**

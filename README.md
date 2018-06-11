@@ -1,5 +1,5 @@
 # StudentManager_ver2
-2018 Capstone Design Project- Student Manage System -  Ver 0.2
+2018 Capstone Design Project - Student Management System -  Ver 0.2
 
 ## Requirement
 #### PHP Extensions
@@ -29,6 +29,10 @@ composer require martinlindhe/laravel-vue-i18n-generator
 // Eloquent 모델 확장 기능 
 /* https://github.com/topclaudy/compoships */
 composer require awobaz/compoships
+
+// CURL을 이용한 HTTP Request 라이브러리
+/* https://github.com/guzzle/guzzle */
+composer require guzzlehttp/guzzle
 </pre>
 
 #### Vue.js
@@ -51,3 +55,10 @@ npm install moment
 npm install vue-chart-js
 npm install vue-chartjs
 </pre>
+
+## Maintenance
+
+#### 국가공휴일 데이터 획득 권한 갱신
+국가공휴일 데이터 획득을 위해서, 서비스 요청키를 주기적으로 갱신할 필요가 있음.<br>
+참고 URL : https://www.data.go.kr/dataset/15012690/openapi.do<br>
+마지막 갱신일 : 2018년 6월

@@ -107,22 +107,51 @@
         $(document).ready(function() {
             // 01. 클래스 정의
             // 01-01. 학생 객체 정의
-            $.Student = function() {
-
+            /**
+             * @param       stdId:          학번
+             * @param       name:           이름
+             * @param       photoUrl:       사진 URL
+             * @param       atLevel:        관심도
+             * @param       atReason:       관심 사유
+             * @constructor
+             */
+            $.Student = function(stdId, name, photoUrl, atLevel, atReason) {
+                this.stdId      = stdId;
+                this.name       = name;
+                this.photoUrl   = photoUrl;
+                this.atLevel    = atLevel;
+                this.atReason   = atReason;
             };
 
+            // 학생 객체 프로토타입 정의
             $.Student.prototype = {
+                /**
+                 *  함수명:        printElement
+                 *  설명:          학생 목록에 학생 객체를 출력
+                 */
+                printElement: function() {
+                    // 01. 엘리멘트 호출
+                    let stdListDiv  = $('#std_list');
+                    let selfDiv     = $("<div>");
 
-            }
+
+                    // 02. 엘리멘트 내부속성 정의
+
+                },
+
+                selectEvent: function() {
+
+                }
+            };
 
             // 01-02. 옵션 객체 정의
             $.Option = function() {
 
-            }
+            };
 
             $.Option.prototype = {
 
-            }
+            };
 
             // 02. 학생 목록 호출 함수 정의
 

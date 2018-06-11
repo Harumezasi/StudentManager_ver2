@@ -42,14 +42,16 @@
                                  :items="student_lists"
                                  :search="search"
                                  :pagination.sync="pagination"
-                                 hide-actions
                                  >
                                <template slot="items" slot-scope="props">
                                  <td class="text-xs-center">{{ props.item.id }}</td>
                                  <td class="text-xs-center">{{ props.item.name }}</td>
-                                 <td class="text-xs-center">{{ props.item.achievement}}</td>
+                                 <td class="text-xs-center">{{ props.item.average_achievement}}</td>
+                                 <td class="text-xs-center">{{ props.item.minimum_achievement}}</td>
                                  <td class="text-xs-center">
-                                   <v-btn color="light-green" slot="activator" normal target="_blank">상세보기</v-btn>
+                                     <v-btn color="light-green" slot="activator" normal :onclick="props.item.infoLink">
+                                       상세보기
+                                     </v-btn>
                                  </td>
                                </template>
                               </v-data-table>
@@ -111,6 +113,10 @@ export default {
        pagination: {},
        selected: [],
        e1: null,
+       pagination: {
+         /* 테이블에 표시될 데이터 수, 기본 값*/
+         rowsPerPage: 10
+       },
        semester: [{
            text: '2016년 1학기'
          },
@@ -128,7 +134,8 @@ export default {
          },
        ],
        headers: [
-         { text: '학번',
+         {
+          text: '학번',
           value: 'studentNum',
           align: 'center'
          },
@@ -149,23 +156,25 @@ export default {
           align: 'center'
         }
        ],
-       student_lists: []
+       student_lists: [],
      }
    },
    created() {
-       this.student_lists = [];
        this.getData();
    },
    methods: {
      getData() {
-       axios.get('/tutor/myclass/manage')
+       axios.get('/tutor/class/student_list')
        .then((response) => {
-         this.student_lists = response.data;
-         console.log(this.student_lists);
-       }).catch((error) => {
+        this.student_lists = response.data.message.students;
+        /* 학생정보페이지 작업 / url 생성 및 연결 */
+        for(var start = 0; start < this.student_lists.length; start++){
+            this.$set(this.student_lists[start], 'infoLink', "window.open('/studentManagement/main?getInfoIdType="+ this.student_lists[start].id +"', 'newwindow', 'width=1000,height=700'); return false;");
+        }
+        }).catch((error) => {
          console.log(error);
-       });
-     }
+        });
+      }
    },
    computed: {
      pages () {

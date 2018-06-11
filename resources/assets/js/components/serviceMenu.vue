@@ -7,7 +7,7 @@
     <v-list dense>
       <!-- LOGO IMAGE -->
       <v-list-tile-content>
-         <router-link to="/tutor/main"><img class="logo-box" src="/images/grit.png" /></router-link>
+         <router-link :to="link"><img class="logo-box" src="/images/grit.png" /></router-link>
       </v-list-tile-content>
 
       <!-- 현재 접속 된 유저 정보 -->
@@ -15,7 +15,7 @@
         <!-- 유저 이미지 -->
         <v-list-tile avatar>
           <v-list-tile-avatar class = "userBox" size="70px">
-            <img src="/images/sample.jpg" style="border:2px solid white;" />
+            <img :src="userInfoData.photo" style="border:2px solid white;" />
           </v-list-tile-avatar>
         </v-list-tile>
         <!-- 유저 이름 -->
@@ -26,7 +26,7 @@
         </div>
         <!-- 유저 정보 버튼 -->
         <div class = "userButton">
-          <v-btn flat icon color="white" small to="userInfo">
+          <v-btn flat icon color="white" small :to="infoLink">
             <v-icon class = "userIcon" small>
               info_outline
             </v-icon>
@@ -157,6 +157,10 @@
 <script>
 export default {
   data: () => ({
+    /* 메인 로고 링크 */
+    link : null,
+    /* 회원정보 버튼 링크 */
+    infoLink : null,
     /*-- Left Menu --*/
     drawer: null,
     /* 메뉴 색상 조정 */
@@ -188,12 +192,18 @@ export default {
             ],
       /* 교과목 교수 */
       /* 교과목 교수는 강의 데이터를 함수로부터 받아와야한다. */
-      professor : [],
+      professor : [{
+            action: 'subject',
+            title: '강의 관리',
+            active: true,
+            listSet : true,
+            subMenu: []
+      }],
       /* 지도 교수 */
       tutor : [{
             action: 'check',
             title: '출결 관리',
-            active: true,
+            active: false,
             listSet : true,
             subMenu: [
               {
@@ -215,15 +225,30 @@ export default {
             path: '/tutor/studentManagement'
           },
           {
-            listSet : false,
             action: 'settings',
             title: '학생 분석 예측',
-            path: '/tutorMaster'
+            active: false,
+            listSet : true,
+            subMenu: [
+              {
+                title: '지도반 분석',
+                path: '/tutor/classAnalyticPrediction'
+              },
+              {
+                title: '학생 분석',
+                path: '/tutor/studentAnalyticPrediction'
+              },
+              {
+                title: '기준설정',
+                path: '/tutor/studentAnalyticPredictionSetting'
+              }
+            ]
           }
       ]
     }],
     /* 사용자 정보 */
-    userInfoData : []
+    userInfoData : [],
+    paramsData : null
   }),
   methods : {
       getUserInfo() {
@@ -231,17 +256,23 @@ export default {
         .then((response) => {
           /* 유저 정보를 저장 (이름, 이미지) */
           this.userInfoData = response.data.message;
-
           /* 학생, 교수 판단*/
           switch (response.data.message.type) {
             case 'student' :
               /* 학생일 경우, 바로 메뉴 타입을 설정한다.*/
               this.MenuDatas = this.MenuDataList[0].student;
               this.menuClassType = this.menuClassTypeList[0].student;
+              /* 메인 로고 링크 설정 */
+              this.link = "/student/main";
+              /* 회원정보 링크 설정 */
+              this.infoLink = "/student/userInfo";
               break;
             case 'professor' :
               /* 교수권한을 확인 후, 해당 함수에서 메뉴타입을 설정한다. 함수는 바로 아래에 존재 */
               this.checkTutor();
+              this.getSubjectList();
+              /* 메인 로고 링크 설정 */
+              this.link = "/professor/main";
               break;
           }
         })
@@ -249,30 +280,57 @@ export default {
           console.log('getInfo Error : ' + error);
         })
       },
+      /* 교수 권한 확인 */
       checkTutor(){
         axios.post('/professor/is_tutor')
         .then((response) => {
           /* 지도교수 권한이 있는지에 대한 boolean값이 반환된다. */
           /* true 이면 지도교수의 메뉴를 활성화, false이면 비활성화한다. */
           if(response.data){
-            this.MenuDatas = this.MenuDataList[0].tutor;
+            /* 메뉴 정보 */
+            this.MenuDatas = this.MenuDataList[0].professor;
+            /* 지도교수 메뉴를 추가 */
+            for(let start = 0; start < this.MenuDataList[0].tutor.length; start++){
+              this.MenuDatas.push(this.MenuDataList[0].tutor[start]);
+            }
+            /* 메뉴 색상 */
             this.menuClassType = this.menuClassTypeList[0].tutor;
+            /* 회원정보 링크 설정 */
+            this.infoLink = "/tutor/userInfo";
           }else{
             /* 교과목 교수는 강의 리스트를 받아와서 제작한다. */
+            /* 메뉴 정보 */
             this.MenuDatas = this.MenuDataList[0].professor;
+            /* 메뉴 색상 */
             this.menuClassType = this.menuClassTypeList[0].professor;
+            /* 회원정보 링크 설정 */
+            this.infoLink = "/professor/userInfo";
           }
         })
         .catch((error) => {
           console.log("tutorCheck Error : " + error);
         })
+      },
+      /* 과목리스트를 얻어온다. */
+      getSubjectList(){
+        /* 교수인지 확인 필수 */
+        axios.get('/professor/subject/list')
+        .then((response) => {
+          let subjects = response.data.message.subjects;
+          /* 강의 메뉴 생성 */
+          for(let start = 0; start < subjects.length; start++){
+            this.MenuDataList[0].professor[0].subMenu
+            .push({
+              title: subjects[start].name,
+              path: '/professor/studentManagement?subjectName=' + subjects[start].id
+            })
+          }
+        })
+        .catch((error) => { console.log('subError : ' + error);})
       }
   },
   created(){
     this.getUserInfo();
-  },
-  props: {
-    source: String
   }
 }
 </script>

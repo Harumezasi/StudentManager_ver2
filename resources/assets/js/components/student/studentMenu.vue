@@ -5,7 +5,7 @@
   <v-navigation-drawer class = "black" fixed v-model="drawer" app dark>
     <v-list dense>
       <v-list-tile-content>
-         <router-link to="/tutor/main"><img class="logo-box" src="/images/grit.png" /></router-link>
+         <router-link to="/student/main"><img class="logo-box" src="/images/grit.png" /></router-link>
       </v-list-tile-content>
 
       <v-divider></v-divider>

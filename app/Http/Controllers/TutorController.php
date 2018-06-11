@@ -6,6 +6,7 @@ use App\NeedCareAlert;
 use App\Score;
 use App\Term;
 use ArrayObject;
+use Illuminate\Validation\Rule;
 use Validator;
 use App\Exceptions\NotValidatedException;
 use Illuminate\Http\Request;
@@ -67,8 +68,8 @@ class TutorController extends Controller
         // 01. 데이터 획득
         $professor          = Professor::find(session()->get('user')->id);
         $myStudents         = $professor->students()
-                                ->join('users', 'users.id', 'students.id')
-                                ->get(['students.id', 'users.name'])->all();
+            ->join('users', 'users.id', 'students.id')
+            ->get(['students.id', 'users.name'])->all();
         $needCareAlerts     = $professor->needCareAlerts;
         $attendanceRecords  = [
             'sign_in'   => [],
@@ -87,8 +88,8 @@ class TutorController extends Controller
         foreach($myStudents as $student) {
             // 출석 데이터 획득
             $attendance = $student->attendances()
-                            ->start($searchTime->format('Y-m-d'))->end($searchTime->format('Y-m-d'))
-                            ->get()->all();
+                ->start($searchTime->format('Y-m-d'))->end($searchTime->format('Y-m-d'))
+                ->get()->all();
 
             // ###### 조회된 출석 기록이 없다면 => 아직 학교에 안왔으므로 결석 ######
             if(sizeof($attendance) <= 0) {
@@ -153,8 +154,10 @@ class TutorController extends Controller
                 }
             }
 
-            // 지각, 등교, 하교 필터링
-            if($attendance->lateness_flag != 'good') {
+            // 결석, 지각, 등교, 하교 필터링
+            if($attendance->absence_flag != 'good') {
+                $attendanceRecords['absence'][] = $student;
+            } else if($attendance->lateness_flag != 'good') {
                 // 지각 => 등교 시각 첨부
                 $student->sign_in_time = $attendance->sign_in_time;
                 $attendanceRecords['lateness'][] = $student;
@@ -572,14 +575,50 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 출석 그래프 데이터 획득
-    public function getDataOfAdaGraph(Request $request) {
+    // 그래프 데이터 획득
+    public function getDataOfGraph(Request $request) {
+        // 01. 요청 유효성 확인
+        $validMinorClass    = [
+            'ada'           => [
 
-    }
+            ],
+            'subject_type'  => [
+                'japanese', 'major'
+            ],
+            'study_type'    => [
+                'midterm', 'final', 'quiz', 'homework'
+            ]
+        ];
 
-    // 학업 그래프 데이터 획득
-    public function getDataOfStudyGraph(Request $request) {
+        $validator = Validator::make($request->all(), [
+            // 유형 조합
+            'major_class'   => [
+                'required',
+                Rule::in([['ada', 'study']])
+            ],
+            'period_type'   => [
+                'required',
+                Rule::in(['day', 'week', 'month', 'term', 'year', 'recent'])
+            ],
 
+            // 설정 기간
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|before_or_equal:start_date',
+        ]);
+
+        // 대분류가 출석 유형인 경우
+        $validator->sometimes('minor_type', [
+            'required', Rule::in(['lateness', 'early_leave', 'absence'])
+        ], function($input) {
+            return $input->major_class = 'ada';
+        });
+
+        // 대분류가 학업 유형인 경우
+        /*$validator->sometimes('minor_type', [
+            'required', Rule
+        ], function($input) {
+            return $input->major_class = 'study';
+        });*/
     }
 
 
@@ -850,7 +889,7 @@ class TutorController extends Controller
             true, $data
         ), 200);
     }
-    
+
 
     // 해당 학생의 수강목록 획득
     public function getDetailsOfSubjects(Request $request) {

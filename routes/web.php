@@ -27,6 +27,15 @@ Route::name('test.')->group(function() {
         'as'    => 'session',
         'uses'  => 'HomeController@request',
     ]);
+
+    Route::match(['GET', 'POST'], '/test', [
+        'as'    => 'index',
+        /*'uses'  => function (){
+            return view('test');
+        }*/
+
+        'uses'  => 'HomeController@test'
+    ]);
 });
 
 /**
@@ -595,24 +604,4 @@ Route::group([
             'uses'  => 'AdminController@index'
         ]);
     });
-});
-
-
-
-// test URL
-Route::group([
-    'as'        => 'test.',
-    'prefix'    => 'test'
-], function() {
-    Route::get('/', [
-        'as'    => 'index',
-        'uses'  => function (){
-            return view('test');
-        }
-    ]);
-
-    Route::post('/sign_in', [
-        'as'    => 'sign_in',
-        'uses'  => 'StudentController@signInOfHardware'
-    ]);
 });

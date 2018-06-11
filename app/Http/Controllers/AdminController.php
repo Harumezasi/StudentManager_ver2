@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Schedule;
+use Validator;
 
 /**
  *  클래스명:               AdminController
@@ -37,5 +39,41 @@ class AdminController extends Controller
      */
     public function index() {
         return view('index');
+    }
+
+    // 회원 관리
+
+
+    // 일정 관리
+    // 공통일정 조회
+    public function selectCommonSchedule() {
+
+    }
+
+    // 공통일정 추가
+    public function insertCommonSchedule(Request $request) {
+        // 01. 요청 유효성 검증
+        //$validTypes = implode(',', Schedule::TYPE);
+        $validator = Validator::make($request->all(), [
+            'start_date'        => 'required|date',
+            'end_date'          => 'required|date|after:start_date',
+            'name'              => 'required|string|min:2',
+            'holiday_flag'      => 'required|boolean',
+            'sign_in_time'      => 'required_if:holiday_flag,0,false|date',
+            'sign_out_time'     => 'required_if:holiday_flag,0,false|date|after:sign_in_time',
+            //'contents'          => 'string'
+        ]);
+
+        //if
+    }
+
+    // 공통일정 수정
+    public function updateCommonSchedule() {
+
+    }
+
+    // 공통일정 삭제
+    public function deleteCommonSchedule() {
+
     }
 }

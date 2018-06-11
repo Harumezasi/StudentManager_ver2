@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        //'\App\Console\Commands\CronJobExam',
+        '\App\Console\Commands\AddHolidayYearly',
     ];
 
     /**
@@ -24,8 +26,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+//         $schedule->command('inspire')
+//                  ->everyMinute();
+
+        // 연습용
+        /*$schedule->command('command:exam')
+            ->everyMinute();*/
+
+        // 01. 매년 국가공휴일을 등록하는 스케쥴 설정
+        $schedule->command('holiday:add')->yearly();
     }
 
     /**
