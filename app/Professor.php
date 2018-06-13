@@ -110,10 +110,10 @@ class Professor extends Model
      *  만든날:                         2018년 4월 30일
      */
     public function isMySubject($subjectId) {
-        $subjects = $this->subjects()->where('id', $subjectId)->get()->all();
+        $subjects = $this->subjects()->where('id', $subjectId);
 
-        if(sizeof($subjects) > 0) {
-            return $subjects[0];
+        if($subjects->exists()) {
+            return $subjects->first();
         } else {
             throw new NotValidatedException("해당 강의에 접근할 권한이 없습니다.");
         }
@@ -121,25 +121,26 @@ class Professor extends Model
 
     // 사용자가 해당 관심학생알림 설정의 소유자인지 확인
     public function isMyNeedCareAlert($needCareAlertId) {
-        $needCareAlerts = $this->needCareAlerts()->where('id', $needCareAlertId)->get()->all();
+        $needCareAlerts = $this->needCareAlerts()->where('id', $needCareAlertId);
 
-        if(sizeof($needCareAlerts) > 0) {
-            return $needCareAlerts[0];
+        if($needCareAlerts->exists()) {
+            return $needCareAlerts->first();
         } else {
             throw new NotValidatedException("해당 알림에 접근할 권한이 없습니다.");
         }
     }
 
     // 해당 학생이 사용자의 지도 학생 혹은 수강 학생인지 확인
+    // ★★★★★★★★★★★★★★★★★★★★★★★★ 논리가 맞지 않으니 수정할 것 ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
     public function isMyStudent($stdId) {
         // 01. 수강학생 여부 확인
         $subjects = $this->subjects;
 
         foreach($subjects->all() as $subject) {
-            $joinLists = $subject->students()->where('students.id', $stdId)->get()->all();
+            $joinList = $subject->students()->where('students.id', $stdId)->first();
 
-            if(sizeof($joinLists) > 0) {
-                return $joinLists[0];
+            if(!is_null($joinList)) {
+                return $joinList;
             }
         }
 

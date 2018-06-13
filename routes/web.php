@@ -526,6 +526,12 @@ Route::group([
                 'as'    => 'option_list',
                 'uses'  => 'TutorController@getOptionForStudent'
             ]);
+
+            // 조건 조합에 의한 분석 결과 반환
+            Route::get('/result', [
+                'as'    => 'result',
+                'uses'  => 'TutorController@getDataOfGraph'
+            ]);
         });
 
 

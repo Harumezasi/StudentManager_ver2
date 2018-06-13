@@ -61,14 +61,16 @@ class Attendance extends Model
 
 
     // 03. 스코프 정의
+
     /**
      *  함수명:                         scopeStart
      *  함수 설명:                      조회 시작시기를 설정
      *  만든날:                         2018년 4월 25일
      *
      *  매개변수 목록
-     *  @param $query:                  질의
-     *  @param $start:                  조회 시작시점
+     *  @param $query :                  질의
+     *  @param $start :                  조회 시작시점
+     *  @return
      */
     public function scopeStart($query, $start) {
         return $query->where('reg_date', '>=', $start);

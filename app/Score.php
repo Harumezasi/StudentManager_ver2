@@ -70,6 +70,19 @@ class Score extends Model
         return $query->where('execute_date', '<=', $end);
     }
 
+    // 성적 유형을 중간고사 & 기말고사로 한정
+    public function scopeExam($query) {
+        return $query->whereIn('type', ['midterm', 'final']);
+    }
+
+    // 성적 유형을 시험이 아닌 것으로 한정 (과제, 쪽지시험)
+    public function scopeNotExam($query) {
+        return $query->whereIn('type', ['homework', 'quiz']);
+    }
+
+
+
+
 
 
     // 04. 클래스 메서드 정의

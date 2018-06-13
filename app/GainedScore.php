@@ -47,7 +47,15 @@ class GainedScore extends Model
 
 
     // 03. 스코프 정의
+    // 조회 데이터의 최저 취득점수를 제한
+    public function scopeMinScore($query, $score) {
+        return $query->where('score', '>=', $score);
+    }
 
+    // 조회 데이터의 최고 취득점수를 제한
+    public function scopeMaxScore($query, $score) {
+        return $query->where('score', '<=', $score);
+    }
 
 
     // 04. 클래스 메서드 정의

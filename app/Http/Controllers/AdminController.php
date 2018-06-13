@@ -48,8 +48,21 @@ class AdminController extends Controller
 
     // 일정 관리
     // 공통일정 조회
-    public function selectCommonSchedule() {
-        // 01
+    public function selectCommonSchedule(Request $request) {
+        // 01. 요청 메시지 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|date|after_or_equal:start_date'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $startDate  = Carbon::parse($request->post('start_date'));
+        $endDate    = Carbon::parse($request->post('end_date'));
+
     }
 
     // 공통일정 추가

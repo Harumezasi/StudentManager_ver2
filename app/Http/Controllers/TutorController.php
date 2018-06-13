@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\NeedCareAlert;
 use App\Score;
+use App\Subject;
 use App\Term;
 use ArrayObject;
 use Illuminate\Validation\Rule;
@@ -14,6 +15,7 @@ use App\Professor;
 use App\Student;
 use App\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -550,7 +552,7 @@ class TutorController extends Controller
     public function getOptionForStudent(Request $request) {
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
-            'std_id'        => 'required|exists:students,id',
+            'std_id'        => 'exists:students,id',
             'start_date'    => 'required|date',
             'end_date'      => 'required|date|after:start_date'
         ]);
@@ -561,11 +563,33 @@ class TutorController extends Controller
 
         // 02. 데이터 획득
         $professor  = Professor::findOrFail(session()->get("user")->id);
-        $student    = $professor->isMyStudent($request->get('std_id'));
+        $student    = $request->exists('std_id') ? $professor->isMyStudent($request->get('std_id')) : null;
         $terms      = Term::termsIncludePeriod($request->get('start_date'), $request->get('end_date'))->get()->all();
         $subjects   = [];
+
+        // 각 학기별로 수강한 강의를 조회
         foreach($terms as $term) {
-            $joinSubject = $student->subjects()->where([['year', $term->year], ['term', $term->term]])->get()->all();
+            if(!is_null($student)) {
+                // 학번을 수신했을 때 -> 해당 학생의 수강 목록을 조회
+                $joinSubject = $student->subjects()->where([['year', $term->year], ['term', $term->term]])
+                    ->get()->all();
+            } else {
+                // 학번을 수신하지 않았을 때 => 내 반의 수강목록을 조회
+                $joinSubject = $professor->studyClass->subjects()->where([['year', $term->year], ['term', $term->term]])
+                    ->get()->all();
+
+                // 해당 강의에서 제출된 성적 목록을 조회
+                foreach($joinSubject as $key => $value) {
+                    $scores = $value->scores()->orderBy('execute_date', 'desc')
+                        ->get(['id', 'execute_date', 'detail', 'type'])->all();
+
+                    // 다국어 언어팩 적용
+                    foreach($scores as $scoreKey => $scoreValue) {
+                        $scores[$scoreKey]->type = __("study.{$scoreValue->type}");
+                    }
+                    $joinSubject[$key]->scores = $scores;
+                }
+            }
 
             $subjects = array_merge($subjects, $joinSubject);
         }
@@ -575,57 +599,323 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 그래프 데이터 획득
-    public function getDataOfGraph(Request $request) {
-        // 01. 요청 유효성 확인
-        $validMinorClass    = [
-            'ada'           => [
+    // 조건 조합에 의한 분석 결과 반환
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws NotValidatedException
+     */
+    public function getDataOfGraph(Request $request)
+    {
+        // 01. 요청 유효성 확인
+        $validMinorClass = [
+            'ada' => [
+                'lateness', 'early_leave', 'absence'
             ],
-            'subject_type'  => [
+            'subject_type' => [
                 'japanese', 'major'
             ],
-            'study_type'    => [
+            'study_type' => [
                 'midterm', 'final', 'quiz', 'homework'
             ]
         ];
+        $validGraphType = implode(',', [
+            'single_line', 'double_line', 'compare_average', 'pie', 'donut', 'box_and_whisker', 'histogram'
+        ]);
 
         $validator = Validator::make($request->all(), [
             // 유형 조합
             'major_class'   => [
                 'required',
-                Rule::in([['ada', 'study']])
-            ],
-            'period_type'   => [
-                'required',
-                Rule::in(['day', 'week', 'month', 'term', 'year', 'recent'])
+                Rule::in(['ada', 'study'])
             ],
 
+            // 최근 데이터 조회 여부
+            'recent_flag'   => 'required|boolean',
+
             // 설정 기간
-            'start_date'    => 'required|date',
-            'end_date'      => 'required|before_or_equal:start_date',
+            'start_date'    => 'required_if:recent_flag,0,false|date',
+            'end_date'      => 'required_if:recent_flag,0,false|after_or_equal:start_date',
+
+            // 그래프 유형 선택
+            'graph_type'    => "required|in:{$validGraphType}",
+
+            // 대상 학생
+            'std_id'        => 'exists:students,id'
         ]);
 
         // 대분류가 출석 유형인 경우
-        $validator->sometimes('minor_type', [
-            'required', Rule::in(['lateness', 'early_leave', 'absence'])
-        ], function($input) {
-            return $input->major_class = 'ada';
+        $validator->sometimes('minor_class', [
+            'required', Rule::in($validMinorClass['ada'])
+        ], function ($input) {
+            return $input->major_class == 'ada';
         });
 
         // 대분류가 학업 유형인 경우
         /*$validator->sometimes('minor_type', [
             'required', Rule
         ], function($input) {
-            return $input->major_class = 'study';
+            return $input->major_class == 'study';
         });*/
+
+        // 기간 단위가 최근인 경우
+        //$validator->sometimes(['start_date', 'end_date'], 'required|')
+
+        if ($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor = Professor::findOrFail(session()->get('user')->id);
+        $student = $request->has('std_id') ? $professor->isMyStudent($request->get('std_id')) : null;
+
+        $majorClass = $request->get('major_class');
+        $recent_flag = $request->get('recent_flag');
+        $minorClass = $request->get('minor_class');
+        $graphType = $request->get('graph_type');
+        $startDate = $recent_flag ? today()->subMonth() : Carbon::parse($request->get('start_date'));
+        $endDate = $recent_flag ? today() : Carbon::parse($request->get('end_date'));
+
+        $result = [];
+
+        // 03. 지정 옵션에 따른 데이터 도출
+        if (is_null($student)) {
+            // 지도반 분석
+            switch ($majorClass) {
+                case 'ada':
+                    // 지도반 출결 기록 분석
+                    switch ($graphType) {
+                        case 'pie':
+                            // (지각|조퇴|결석) 횟수별 비율 구하기
+                            $query = DB::select("
+                                select out_s.id, u.name, ifnull(count, 0) as count
+                                from students out_s
+                                left join (
+                                    select std_id, count(*) as count
+                                    from students in_s
+                                    join attendances ada
+                                    on in_s.id = ada.std_id
+                                    where ada.reg_date >= '{$startDate->format('Y-m-d')}'
+                                    and ada.reg_date <= '{$endDate->format('Y-m-d')}'
+                                    and ada.{$minorClass}_flag != 'good'
+                                    group by std_id
+                                ) a
+                                on out_s.id = a.std_id
+                                join study_classes sc
+                                on out_s.study_class = sc.id
+                                join professors p
+                                on p.id = sc.tutor
+                                join users u 
+                                on u.id = out_s.id
+                                where p.id = '{$professor->id}'
+                                ");
+
+                            // 그래프 데이터 구하기
+                            $graph = [];
+                            foreach($query as $value) {
+                                // 단위 설정
+                                $unit = $minorClass == 'absence' ? 1 : 5;
+                                $temp = intval($value->count / $unit);
+
+                                // 횟수 단위별 인원수 도출
+                                $key = $minorClass == 'absence' ? $temp : ($temp * 5). '~' .(($temp * $unit) + ($unit - 1));
+                                $key .= '번';
+                                if(isset($graph[$key])) {
+                                    $graph[$key]['value']++;
+                                } else {
+                                    $graph[$key]['value'] = 1;
+                                }
+                                $graph[$key]['detail'][] = $value;
+
+                                // 그래프 정렬
+                                arsort($graph);
+                            }
+
+                            $result = $graph;
+                            break;
+
+                        case 'single_line':
+                            // 평균 (지각|조퇴) 시각 / 결석 인원수
+                            // 소분류에 따른 질의 조건문 설정
+                            $joinWhere = [
+                                // 조회 시작/종료 기간 설정
+                                ['attendances.reg_date', '>=', $startDate->format('Y-m-d')],
+                                ['attendances.reg_date', '<=', $endDate->format('Y-m-d')],
+
+                                // 출석 유형 설정
+                                ["{$minorClass}_flag", '!=', 'good']
+                            ];
+
+                            // 질의 실행
+                            $query = $professor->students()->leftJoin('attendances', function($join) use($joinWhere) {
+                                $join->on('students.id', 'attendances.std_id')->where($joinWhere); })
+                                ->join('users', 'users.id', 'students.id')
+                                ->whereNotNull('attendances.reg_date')
+                                ->orderBy('attendances.reg_date');
+
+                            // 소분류에 따른 반환 데이터 구분
+                            switch($minorClass) {
+                                case 'absence':
+                                    // 일자에 따른 결석 인원수 도출
+                                    $stats = with(clone $query)->groupBy('attendances.reg_date')
+                                        ->select('attendances.reg_date', DB::raw("count('*') as value"));
+
+                                    if($stats->exists()) {
+                                        // 각 일자의 결석인원 목록 조회
+                                        $stats = $stats->get()->keyBy('reg_date')->all();
+                                        foreach ($stats as $key => $stat) {
+                                            $stats[$key]->detail = with(clone $query)->where('attendances.reg_date', $key)
+                                                ->select('students.id', 'users.name', 'attendances.absence_flag')
+                                                ->get()->all();
+                                            // 결석 사유 데이터에 다국어 언어팩 적용
+                                            foreach ($stats[$key]->detail as $value) {
+                                                $value->absence_flag = __("attendance.{$value->absence_flag}");
+                                            }
+                                        }
+
+                                        $result = $stats;
+                                    } else {
+                                        return response()->json(new ResponseObject(
+                                            false, '조회된 데이터가 없습니다.'
+                                        ), 200);
+                                    }
+                                    break;
+
+                                case 'lateness':
+                                case 'early_leave':
+                                    // 일자별 지각/조퇴 인원수 도출
+                                    $stats = with(clone $query)->select('attendances.reg_date', 'students.id', 'users.name', 'attendances.detail');
+
+                                    // 각 학생별 지각/조퇴 시각 도출
+                                    if($stats->exists()) {
+                                        foreach ($stats->get()->all() as $key => $stat) {
+                                            $detail = json_decode($stat->detail);
+                                            /** @noinspection PhpSillyAssignmentInspection */
+                                            $stat->time = $detail->{"{$minorClass}_time"} = $detail->{"{$minorClass}_time"};
+                                            unset($stat->detail);
+
+                                            if (isset($result[$stat->reg_date])) {
+                                                $result[$stat->reg_date]['value'] += $stat->time;
+                                            } else {
+                                                $result[$stat->reg_date]['value'] = $stat->time;
+                                            }
+
+                                            $result[$stat->reg_date]['detail'][] = $stat;
+                                        }
+
+                                        // 평균 지각/조퇴시간 계산
+                                        foreach ($result as $key => $value) {
+                                            $result[$key]['value'] = number_format($value['value'] / sizeof($value['detail']), 0, '.', '');
+                                        }
+                                    } else {
+                                        return response()->json(new ResponseObject(
+                                            false, '조회된 데이터가 없습니다.'
+                                        ), 200);
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+
+                    break;
+                case 'study':
+                    // 지도반의 해당 강의에 대한 학업성취현황 분석
+                    $query = Subject::findOrFail($minorClass)->scores()
+                        ->start($startDate->format('Y-m-d'))->end($endDate->format('Y-m-d'))
+                        ->orderBy('execute_date', 'desc');
+
+                    switch($graphType) {
+                        case 'box_and_whisker':
+                            // 해당 강의에서 제출된 성적에 대한 상자수염그림
+                            if($query->exists()) {
+                                // 해당 기간에 조회된 성적 데이터가 있을 경우
+                                foreach($query->get()->all() as $score) {
+                                    $temp           = [];
+                                    $gainedScores   = $score->gainedScores()->orderBy('score', 'desc');
+
+                                    // 수치 설정
+                                    $temp['value']['max'] = $gainedScores->max('score');
+                                    $temp['value']['25%'] = with(clone $gainedScores)->get()[ceil($gainedScores->count() * 1/4)]->score;
+                                    $temp['value']['avg'] = ceil($gainedScores->avg('score'));
+                                    $temp['value']['75%'] = with(clone $gainedScores)->get()[ceil($gainedScores->count() * 3/4)]->score;
+                                    $temp['value']['min'] = $gainedScores->min('score');
+
+                                    // 이외의 값 설정
+                                    $temp['score_id']       = $score->id;
+                                    $temp['execute_date']   = $score->execute_date;
+                                    $temp['name']           = $score->detail;
+                                    $temp['type']           = __("study.{$score->type}");
+
+                                    $result[] = $temp;
+                                }
+
+                            } else {
+                                // 해당 기간에 조회된 데이터가 없을 경우
+                                return response()->json(new ResponseObject(
+                                    false, '조회된 데이터가 없습니다.'
+                                ), 200);
+                            }
+                            break;
+
+                        case 'histogram':
+                            // 해당 성적에 대한 취득점수분포 히스토그램을 계산
+                            // 시험 데이터 획득
+                            $score = Score::findOrFail($minorClass);
+                            $gainedScores = $score->gainedScores()->join('users', 'gained_scores.std_id', 'users.id');
+
+                            // 해당 성적의 만점/최소 취득점수/점수구간 설정
+                            $maxScore = $score->perfect_score;
+                            $minGainedScore = $gainedScores->min('score');
+                            $range = ceil(($maxScore - $minGainedScore) / 11);
+
+                            // 해당 성적에 대한 상세 데이터 삽입
+                            $result['subject']          = $score->subject->name;
+                            $result['name']             = $score->detail;
+                            $result['perfect_score']    = $score->perfect_score;
+
+                            // 구간별 취득점수 현황 계산
+                            for($scoreCount = $maxScore; $scoreCount >= $minGainedScore; $scoreCount -= ($range + 1)) {
+                                // 해당 점수
+                                $start  = $scoreCount;
+                                $end    = $scoreCount - $range;
+                                $query = with(clone $gainedScores)->maxScore($start)->minScore($end)
+                                    ->select('gained_scores.std_id', 'users.name', 'gained_scores.score');
+
+                                // 조회 결과 설정
+                                $key = "{$start}~{$end}";
+                                $result['value'][$key]['count'] = $query->count();
+                                $result['value'][$key]['detail'] = $query->get()->all();
+                            }
+                            break;
+                    }
+                    break;
+            }
+
+        } else {
+            // 학생 분석
+            switch ($majorClass) {
+                case 'ada':
+                    
+                    break;
+
+                case 'study':
+                    break;
+            }
+        }
+
+        // 04. 결과 반환
+        return response()->json(new ResponseObject(
+            true, $result
+        ), 200);
     }
 
 
 
-    // 학생 관리
 
-    // 내 지도학생 목록 조회
+// 학생 관리
+
+// 내 지도학생 목록 조회
     public function getMyStudentsList(Request $request) {
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
@@ -671,8 +961,8 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 학생별 상세 관리
-    // 해당 학생의 출결 통계 목록 획득
+// 학생별 상세 관리
+// 해당 학생의 출결 통계 목록 획득
     public function getDetailsOfAttendanceStats(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
@@ -811,7 +1101,7 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 모바일 : 학생 출결정보 그래프 출력
+// 모바일 : 학생 출결정보 그래프 출력
     public function getGraphOfAttendance(Request $request) {
         // 01. 데이터 획득
         $data = $this->getDetailsOfAttendanceStats($request)->original->message;
@@ -825,7 +1115,7 @@ class TutorController extends Controller
         ]);
     }
 
-    // 해당 학생의 출석 데이터 목록 획득
+// 해당 학생의 출석 데이터 목록 획득
     public function getDetailsOfAttendanceRecords(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
@@ -855,7 +1145,7 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 해당 학생의 출결 분석 결과 획득
+// 해당 학생의 출결 분석 결과 획득
     public function getDetailsOfAnalyseAttendance(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
@@ -891,7 +1181,7 @@ class TutorController extends Controller
     }
 
 
-    // 해당 학생의 수강목록 획득
+// 해당 학생의 수강목록 획득
     public function getDetailsOfSubjects(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
@@ -930,7 +1220,7 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 학생이 해당 강의에서 취득한 성적통계 획득
+// 학생이 해당 강의에서 취득한 성적통계 획득
     public function getDetailsOfScoreStat(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
@@ -958,7 +1248,7 @@ class TutorController extends Controller
         ), 200);
     }
 
-    // 학생이 해당 강의에서 취득한 성적 목록 조회
+// 학생이 해당 강의에서 취득한 성적 목록 조회
     public function getDetailsOfScoreList(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
