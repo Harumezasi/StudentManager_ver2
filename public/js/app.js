@@ -31409,6 +31409,11 @@ var routes = [
     components: {
       body: __WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue___default.a
     }
+  }, {
+    path: '/professor/userInfo',
+    components: {
+      body: __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue___default.a
+    }
   }]
 },
 /* 등록된 성적 확인 (새창)*/

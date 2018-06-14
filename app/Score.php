@@ -70,14 +70,24 @@ class Score extends Model
         return $query->where('execute_date', '<=', $end);
     }
 
-    // 성적 유형을 중간고사 & 기말고사로 한정
-    public function scopeExam($query) {
-        return $query->whereIn('type', ['midterm', 'final']);
+    // 성적 유형을 과제로 한정
+    public function scopeHomework($query) {
+        return $query->where('type', 'homework');
     }
 
-    // 성적 유형을 시험이 아닌 것으로 한정 (과제, 쪽지시험)
-    public function scopeNotExam($query) {
-        return $query->whereIn('type', ['homework', 'quiz']);
+    // 성적 유형을 쪽지시험으로 한정
+    public function scopeQuiz($query) {
+        return $query->where('type', 'quiz');
+    }
+
+    // 성적 유형을 기말고사로 한정
+    public function scopeFinal($query) {
+        return $query->where('type', 'final');
+    }
+
+    // 성적 유형을 중간고사로 한정
+    public function scopeMidterm($query) {
+        return $query->where('type', 'midterm');
     }
 
 
@@ -105,13 +115,12 @@ class Score extends Model
 
                 // 학업 성취도 갱신
                 //Student::find($stdId)->joinLists()->subject($this->subject_id)->get()[0]->updateAchievement();
-
-                // 석차 백분율 갱신
-                $this->updateStandingOrder();
-
-                // 수강학생 평균 점수 등록
-                $this->updateAverageScore();
             }
+            // 석차 백분율 갱신
+            $this->updateStandingOrder();
+
+            // 수강학생 평균 점수 등록
+            $this->updateAverageScore();
 
             return true;
         } else {

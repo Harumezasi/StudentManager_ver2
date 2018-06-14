@@ -16,6 +16,25 @@ class TermsTableSeeder extends Seeder
     {
         //
         $terms = [
+            '2017-1st_term'     => [
+                'start'     => Carbon::createFromDate(2018, 3, 2),
+                'end'       => Carbon::createFromDate(2018, 6, 23)
+            ],
+
+            '2017-summer_vacation'     => [
+                'start'     => Carbon::createFromDate(2018, 6, 24),
+                'end'       => Carbon::createFromDate(2018, 8, 27)
+            ],
+
+            '2017-2nd_term'     => [
+                'start'     => Carbon::createFromDate(2018, 8, 28),
+                'end'       => Carbon::createFromDate(2017, 12, 15)
+            ],
+
+            '2017-winter_vacation'     => [
+                'start'     => Carbon::createFromDate(2017, 12, 16),
+                'end'       => Carbon::createFromDate(2018, 3, 1)
+            ],
             '2018-1st_term'     => [
                 'start'     => Carbon::createFromDate(2018, 3, 2),
                 'end'       => Carbon::createFromDate(2018, 6, 25)
@@ -33,7 +52,7 @@ class TermsTableSeeder extends Seeder
 
             '2018-winter_vacation'     => [
                 'start'     => Carbon::createFromDate(2018, 12, 18),
-                'end'       => Carbon::createFromDate(2019, 3, 2)
+                'end'       => Carbon::createFromDate(2019, 3, 1)
             ],
         ];
 

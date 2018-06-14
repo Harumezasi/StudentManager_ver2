@@ -115,15 +115,11 @@ Route::name('home.')->group(function() {
             return view('index');
         });
 
-        Route::get('/studentManagement/info', function(){
+        Route::get('/studentManagement/grade', function(){
             return view('index');
         });
 
-        Route::get('/studentManagement/Grade', function(){
-            return view('index');
-        });
-
-        Route::get('/studentManagement/Comment', function(){
+        Route::get('/studentManagement/comment', function(){
             return view('index');
         });
         /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 end ■■■■■■■■■■■■■■■■■■■■■■■■ */
@@ -164,6 +160,21 @@ Route::group([
 
     // 로그인 이후 사용 가능 기능
     Route::middleware(['check.student'])->group(function() {
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 start ■■■■■■■■■■■■■■■■■■■■■■■■ */
+        Route::get('/attendanceManagement', function(){
+            return view('index');
+        });
+
+        Route::get('/gradeManagement', function(){
+            return view('index');
+        });
+
+        Route::get('/userInfo', function(){
+            return view('index');
+        });
+
+        /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 end ■■■■■■■■■■■■■■■■■■■■■■■■ */
+
         // 학생 메인 페이지
         Route::get('/main', [
             'as'    => 'index',
@@ -433,6 +444,15 @@ Route::group([
         Route::get('/studentManagement', function(){
             return view('index');
         });
+
+        Route::get('/studentAnalyticPrediction', function(){
+            return view('index');
+        });
+
+        Route::get('/studentAnalyticPredictionSetting', function(){
+            return view('index');
+        });
+
         /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 End ■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 

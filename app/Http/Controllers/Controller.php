@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotValidatedException;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -112,7 +113,7 @@ class Controller extends BaseController
             // 이번주
             $thisMonth = Carbon::createFromDate($data[0], $data[1], 1);
         } else {
-            //throw new ErrorException();
+            throw new NotValidatedException('데이터 형식이 맞지 않습니다.');
         }
 
         // 지난달
