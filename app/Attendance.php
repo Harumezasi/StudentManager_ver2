@@ -138,6 +138,10 @@ class Attendance extends Model
         return $query->where('absence_flag', '!=', 'good');
     }
 
+    public function scopeSignInGood($query) {
+        return $query->where([['lateness_flag', 'good'], ['absence_flag', 'good']]);
+    }
+
     // 등록일자 역순 정렬
     public function scopeOrderDesc($query) {
         return $query->orderBy('reg_date', 'desc');

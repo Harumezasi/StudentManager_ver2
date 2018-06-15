@@ -17,17 +17,17 @@ class TermsTableSeeder extends Seeder
         //
         $terms = [
             '2017-1st_term'     => [
-                'start'     => Carbon::createFromDate(2018, 3, 2),
-                'end'       => Carbon::createFromDate(2018, 6, 23)
+                'start'     => Carbon::createFromDate(2017, 3, 2),
+                'end'       => Carbon::createFromDate(2017, 6, 23)
             ],
 
             '2017-summer_vacation'     => [
-                'start'     => Carbon::createFromDate(2018, 6, 24),
-                'end'       => Carbon::createFromDate(2018, 8, 27)
+                'start'     => Carbon::createFromDate(2017, 6, 24),
+                'end'       => Carbon::createFromDate(2017, 8, 27)
             ],
 
             '2017-2nd_term'     => [
-                'start'     => Carbon::createFromDate(2018, 8, 28),
+                'start'     => Carbon::createFromDate(2017, 8, 28),
                 'end'       => Carbon::createFromDate(2017, 12, 15)
             ],
 

@@ -18,5 +18,9 @@ return [
     'midterm'           => '중간',
     'final'             => '기말',
     'homework'          => '과제',
-    'quiz'              => '쪽지'
+    'quiz'              => '쪽지',
+
+    // 성적 유형
+    'gained_score'      => '취득점수',
+    'class_average'     => '반 평균',
 ];

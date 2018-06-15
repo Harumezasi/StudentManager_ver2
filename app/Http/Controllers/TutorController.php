@@ -419,17 +419,17 @@ class TutorController extends Controller
 
             // 지각
             if(($latenessCount = with(clone $attendances)->lateness()->count()) >= $studyClass->lateness_count) {
-                $trouble[__('ada.ada')][] = __('tutor.lateness_count', ['count' => $latenessCount]);
+                $trouble['ada'][] = __('tutor.lateness_count', ['count' => $latenessCount]);
             }
 
             // 조퇴
             if(($earlyLeaveCount = with(clone $attendances)->earlyLeave()->count()) >= $studyClass->early_leave_count) {
-                $trouble[__('ada.ada')][] = __('tutor.early_leave_count', ['count' => $earlyLeaveCount]);
+                $trouble['ada'][] = __('tutor.early_leave_count', ['count' => $earlyLeaveCount]);
             }
 
             // 결석
             if(($absenceCount = with(clone $attendances)->absence()->count()) >= $studyClass->absence_count) {
-                $trouble[__('ada.ada')][] = __('tutor.absence_count', ['count' => $absenceCount]);
+                $trouble['ada'][] = __('tutor.absence_count', ['count' => $absenceCount]);
             }
 
 
@@ -473,11 +473,11 @@ class TutorController extends Controller
                 $recentStandingOrder = number_format(array_sum($recentStandingOrders) / sizeof($recentStandingOrders), 2);
                 // 하위권 판단
                 if ((1 - $studyClass->low_reflection) <= $standingOrder) {
-                    $result[__('tutor.low_level')][] = __("tutor.{$type}_low_ref", ['ref' => $standingOrder * 100]);
+                    $result['low_level'][] = __("tutor.{$type}_low_ref", ['ref' => $standingOrder * 100]);
                 }
                 // 최근 문제 판단
                 if (($standingOrderGap = $recentStandingOrder - $standingOrder) >= $studyClass->recent_reflection) {
-                    $result[__('tutor.recent_trouble')][] = __("tutor.{$type}_recent_ref", ['ref' => $standingOrderGap * 100]);
+                    $result['recent_trouble'][] = __("tutor.{$type}_recent_ref", ['ref' => $standingOrderGap * 100]);
                 }
 
                 /*
@@ -610,27 +610,26 @@ class TutorController extends Controller
     public function getDataOfGraph(Request $request)
     {
         // 01. 요청 유효성 확인
+        $validMajorClass = implode(',', ['ada', 'study']);
+
         $validMinorClass = [
-            'ada' => [
+            'ada' => implode(',', [
                 'lateness', 'early_leave', 'absence'
-            ],
-            'subject_type' => [
+            ]),
+            'subject_type' => implode(',', [
                 'japanese', 'major'
-            ],
-            'study_type' => [
+            ]),
+            'study_type' => implode(',' ,[
                 'midterm', 'final', 'quiz', 'homework'
-            ]
+            ])
         ];
         $validGraphType = implode(',', [
-            'single_line', 'double_line', 'compare_average', 'pie', 'donut', 'box_and_whisker', 'histogram'
+            'single_line', 'double_line', 'compare', 'pie', 'donut', 'box_and_whisker', 'histogram'
         ]);
 
         $validator = Validator::make($request->all(), [
             // 유형 조합
-            'major_class'   => [
-                'required',
-                Rule::in(['ada', 'study'])
-            ],
+            'major_class'   => "required|in:{$validMajorClass}",
 
             // 최근 데이터 조회 여부
             //'period_date'   => 'required|in:',
@@ -699,8 +698,9 @@ class TutorController extends Controller
                 break;
             case 'recently':
                 // 최근 기간 조회
-                $startDate  = today()->subMonth();
+                $startDate  = today()->subWeeks(10);
                 $endDate    = today();
+                $period     = 'week';
                 break;
         }
         $ucPeriod   = ucfirst($period);
@@ -724,8 +724,8 @@ class TutorController extends Controller
                                     from students in_s
                                     join attendances ada
                                     on in_s.id = ada.std_id
-                                    where ada.reg_date >= '{$startDate->format('Y-m-d')}'
-                                    and ada.reg_date <= '{$endDate->format('Y-m-d')}'
+                                    where ada.reg_date >= '{$startDate->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d')}'
+                                    and ada.reg_date <= '{$endDate->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d')}'
                                     and ada.{$minorClass}_flag != 'good'
                                     group by std_id
                                 ) a
@@ -747,10 +747,12 @@ class TutorController extends Controller
                                 $temp = intval($value->count / $unit);
 
                                 // 횟수 단위별 인원수 도출
+                                // 결석인 경우 : 1번 단위로 끊어서 출력 / 그 이외: 5번 단위로 끊어서 출력
                                 $key = $minorClass == 'absence' ? $temp : ($temp * 5). '~' .(($temp * $unit) + ($unit - 1));
                                 $key .= '번';
                                 if(isset($graph[$key])) {
                                     $graph[$key]['value']++;
+                                    $graph[$key]['name'] = $key;
                                 } else {
                                     $graph[$key]['value'] = 1;
                                 }
@@ -760,7 +762,7 @@ class TutorController extends Controller
                                 arsort($graph);
                             }
 
-                            $result = $graph;
+                            $result[] = $graph;
                             break;
 
                         case 'single_line':
@@ -768,8 +770,8 @@ class TutorController extends Controller
                             // 소분류에 따른 질의 조건문 설정
                             $joinWhere = [
                                 // 조회 시작/종료 기간 설정
-                                ['attendances.reg_date', '>=', $startDate->format('Y-m-d')],
-                                ['attendances.reg_date', '<=', $endDate->format('Y-m-d')],
+                                ['attendances.reg_date', '>=', $startDate->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d')],
+                                ['attendances.reg_date', '<=', $endDate->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d')],
 
                                 // 출석 유형 설정
                                 ["{$minorClass}_flag", '!=', 'good']
@@ -850,12 +852,16 @@ class TutorController extends Controller
                     }
 
                     break;
+
+
+
                 case 'study':
                     switch($graphType) {
                         case 'box_and_whisker':
                             // 지도반의 해당 강의에 대한 학업성취현황 분석
                             $query = Subject::findOrFail($minorClass)->scores()
-                                ->start($startDate->format('Y-m-d'))->end($endDate->format('Y-m-d'))
+                                ->start($startDate->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d'))
+                                ->end($endDate->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d'))
                                 ->orderBy('execute_date', 'desc');
                             // 해당 강의에서 제출된 성적에 대한 상자수염그림
                             if($query->exists()) {
@@ -865,17 +871,17 @@ class TutorController extends Controller
                                     $gainedScores   = $score->gainedScores()->orderBy('score', 'desc');
 
                                     // 수치 설정
-                                    $temp['value']['max'] = $gainedScores->max('score');
-                                    $temp['value']['25%'] = with(clone $gainedScores)->get()[ceil($gainedScores->count() * 1/4)]->score;
-                                    $temp['value']['avg'] = ceil($gainedScores->avg('score'));
-                                    $temp['value']['75%'] = with(clone $gainedScores)->get()[ceil($gainedScores->count() * 3/4)]->score;
-                                    $temp['value']['min'] = $gainedScores->min('score');
+                                    $temp['y-point']['max'] = $gainedScores->max('score');
+                                    $temp['y-point']['25%'] = with(clone $gainedScores)->get()[ceil($gainedScores->count() * 1/4)]->score;
+                                    $temp['y-point']['avg'] = ceil($gainedScores->avg('score'));
+                                    $temp['y-point']['75%'] = with(clone $gainedScores)->get()[ceil($gainedScores->count() * 3/4)]->score;
+                                    $temp['y-point']['min'] = $gainedScores->min('score');
 
                                     // 이외의 값 설정
                                     $temp['score_id']       = $score->id;
-                                    $temp['execute_date']   = $score->execute_date;
-                                    $temp['name']           = $score->detail;
-                                    $temp['type']           = __("study.{$score->type}");
+                                    $temp['x-point']        = $score->execute_date;
+                                    $temp['detail']['name'] = $score->detail;
+                                    $temp['detail']['type'] = __("study.{$score->type}");
 
                                     $result[] = $temp;
                                 }
@@ -913,14 +919,18 @@ class TutorController extends Controller
                                     ->select('gained_scores.std_id', 'users.name', 'gained_scores.score');
 
                                 // 조회 결과 설정
-                                $key = "{$start}~{$end}";
-                                $result['value'][$key]['count'] = $query->count();
-                                $result['value'][$key]['detail'] = $query->get()->all();
+                                $data['x-point']    = "{$start}~{$end}";
+                                $data['y-point']    = $query->count();
+                                $data['detail']     = $query->get()->all();
+
+                                $result['value'][]  = $data;
                             }
                             break;
                     }
                     break;
             }
+
+
 
         } else {
             // 학생 분석
@@ -928,12 +938,194 @@ class TutorController extends Controller
                 case 'ada':
                     // 출석 분석
                     // 출석 기록 획득
-                    $attendances = $student->attendances()->start($startDate->format('Y-m-d'))
-                        ->end($endDate->format('Y-m-d'))->orderBy('attendances.reg_date');
+                    $query = $student->attendances()->orderBy('attendances.reg_date');
 
-                    // 소분류에 따른 그래프
+                    // 소분류에 따른 알고리즘 변경
+                    switch($minorClass) {
+                        case 'sign_in':
+                        case 'sign_out':
+                            // 등/하교 관련
+                            // 기준 있는 꺾은선 : 등/하교 시간 변화량
+                            switch($graphType) {
+                                case 'compare':
+                                    // 등/하교 기준 조회
+                                    $result['limit'] = $professor->studyClass->{"{$minorClass}_time"};
 
+                                    // 각 기간별 평균 등/하교 시간량 변화
+                                    for($dateCount = $startDate->copy(); $dateCount->lte($endDate); $dateCount->{"add{$ucPeriod}"}()) {
+                                        // 질의문 설정
+                                        $queryResult = with(clone $query)
+                                            ->start($dateCount->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d'))
+                                            ->end($dateCount->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d'))
+                                            ->signInGood();
+
+                                        // 질의 결과 획득
+                                        $time   = null;
+                                        $detail = null;
+                                        if($queryResult->exists()) {
+                                            // 평균 등/하교 시간 구하기
+                                            $time = with(clone $queryResult)
+                                                ->select(
+                                                    DB::raw("date_format(sec_to_time(avg(time_to_sec({$minorClass}_time))), '%H:%i:%s') as avg_time")
+                                                )->pluck('avg_time')->first();
+
+                                            // 상세 내역 구하기
+                                            $selectList = ['reg_date', "{$minorClass}_time"];
+                                            switch($minorClass) {
+                                                case 'sign_in':
+                                                    $selectList[] = 'lateness_flag';
+                                                    break;
+                                                case 'sign_out':
+                                                    $selectList[] = 'early_leave_flag';
+                                                    break;
+                                            }
+                                            $detail = with(clone $queryResult)->get($selectList)->all();
+                                            foreach($detail as $key => $val) {
+                                                if(isset($val->lateness_flag)) {
+                                                    $detail[$key]->lateness_flag = __("ada.{$val->lateness_flag}");
+                                                }
+
+                                                if(isset($val->early_leave_flag)) {
+                                                    $detail[$key]->early_leave_flag = __("ada.{$val->early_leave_flag}");
+                                                }
+                                            }
+                                        }
+
+                                        // 기간 단위에 따른 데이터 획득
+                                        switch($periodType) {
+                                            case 'daily':
+                                                $data['x-point'] = $dateCount->format('Y-m-d');
+                                                $data['y-point'] = $time;
+                                                $data['detail']  = $detail;
+                                                break;
+                                            case 'weekly':
+                                            case 'recently':
+                                                $data['x-point'] = sprintf('%d-%02d-%d', $dateCount->year, $dateCount->month, $dateCount->weekOfMonth);
+                                                $data['y-point'] = $time;
+                                                $data['detail']  = $detail;
+                                                break;
+                                            case 'monthly':
+                                                $data['x-point'] = $dateCount->format('Y-m');
+                                                $data['y-point'] = $time;
+                                                $data['detail']  = $detail;
+                                                break;
+                                        }
+
+                                        $result['value'][] = $data;
+                                    }
+                                    break;
+                            }
+                            break;
+
+
+
+                        case 'lateness':
+                        case 'early_leave':
+                        case 'absence':
+                            // 지각/결석/조퇴 관련
+                            // 단일 꺾은선 : (지각|조퇴|결석) 횟수 변화량
+                            switch($graphType) {
+                                case 'single_line':
+                                    // 각 기간별 지각/조퇴/결석 횟수 구하기
+                                    for($dateCount = $startDate->copy(); $dateCount->lte($endDate); $dateCount->{"add{$ucPeriod}"}()) {
+                                        $queryResult = with(clone $query)
+                                            ->start($dateCount->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d'))
+                                            ->end($dateCount->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d'))
+                                            ->{camel_case($minorClass)}();
+
+                                        // 질의 결과 획득
+                                        $count = null;
+                                        if($queryResult->exists()) {
+                                            $count = with(clone $queryResult)->count();
+                                        }
+
+                                        // 기간 단위에 따른 데이터 획득
+                                        $data = ['x-point' => null, 'y-point' => null];
+                                        $data['detail'] = $queryResult->get()->all();
+                                        switch($periodType) {
+                                            case 'weekly':
+                                            case 'recently':
+                                                $data['x-point'] = sprintf('%d-%02d-%d', $dateCount->year, $dateCount->month, $dateCount->weekOfMonth);
+                                                $data['y-point'] = $count;
+                                                break;
+                                            case 'monthly':
+                                                $data['x-point'] = $dateCount->format('Y-m');
+                                                $data['y-point'] = $count;
+                                                break;
+                                        }
+
+                                        $result['value'][] = $data;
+                                    }
+                                    break;
+                            }
+                            break;
+
+
+
+                        default:
+                            // 그 이외
+                            // 도넛: 조회 기간동안의 등교 유형별 비율 + 조퇴 횟수
+                            // 그래프에 사용하는 기본정보 설정
+                            $query = with(clone $query)->start($startDate->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d'))
+                                ->end($endDate->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d'));
+
+                            $data['graph']['good']          = with(clone $query)->signInGood()->count();
+                            $data['graph']['lateness']      = with(clone $query)->lateness()->count();
+                            $data['graph']['absence']       = with(clone $query)->absence()->count();
+                            $data['graph']['early_leave']   = with(clone $query)->earlyLeave()->count();
+
+                            // 그래프 상세정보 설정
+                            foreach(['lateness', 'absence', 'early_leave'] as $type) {
+                                // 출석 유형에 따른 선택문 변경
+                                $select[] = 'detail';
+                                $select[] = "{$type}_flag";
+                                switch($type) {
+                                    case 'lateness':
+                                        $select[] = 'sign_in_time';
+                                        break;
+                                    case 'early_leave':
+                                        $select[] = 'sign_out_time';
+                                        break;
+                                }
+                                $temp = with(clone $query)->{camel_case($type)}()
+                                    ->select()->get($select)->all();
+
+                                // 각 데이터를 수정
+                                foreach($temp as $key => $value) {
+                                    $detail = json_decode($value->detail);
+                                    switch($type) {
+                                        case 'lateness':
+                                            $temp[$key] = [
+                                                'sign_in_time'      => $value->sign_in_time,
+                                                'lateness_flag'     => __("ada.{$value->lateness_flag}"),
+                                                'sign_in_message'   => $detail->sign_in_message
+                                            ];
+                                            break;
+                                        case 'absence':
+                                            $temp[$key] = [
+                                                'absence_flag'      => __("ada.{$value->absence_flag}"),
+                                                'absence_message'   => $detail->absence_message
+                                            ];
+                                            break;
+                                        case 'early_leave':
+                                            $temp[$key] = [
+                                                'sign_out_time'     => $value->sign_out_time,
+                                                'early_leave_flag'  => __("ada.{$value->early_leave_flag}"),
+                                                'sign_out_message'  => $detail->sign_out_message
+                                            ];
+                                            break;
+                                    }
+                                }
+
+                                $data['detail'][$type] = $temp;
+                            }
+
+                            $result['value'] = $data;
+                            break;
+                    }
                     break;
+
+
 
                 case 'study':
                     // 학업 분석
@@ -975,7 +1167,7 @@ class TutorController extends Controller
                                             'std_id'        => $student->id
                                         ]))->original->message;
 
-                                        $result[__("study.{$value}")] = $data;
+                                        $result[$value] = $data;
                                     }
 
                                     // 결과값 반환
@@ -984,10 +1176,12 @@ class TutorController extends Controller
                                     ), 200);
                             }
                             break;
+
                         case is_numeric($minorClass):
                             // 해당 강의에 대한 성적 변화 그래프
                             array_push($subjects, $minorClass);
                             break;
+
                         case (preg_match('/\d+_(homework|quiz|final|midterm)/', $minorClass) ? true : false) :
                             // 성적에 대한 성적 변화 그래프
                             $explode    = explode('_', $minorClass);
@@ -999,71 +1193,99 @@ class TutorController extends Controller
                             break;
                     }
 
-                    // 그래프 유형에 따른 데이터 설정
-                    switch($graphType) {
-                        case 'single_line':
-                            // 기간 단위에 따라 석차백분율 도출
-                            // 각 기간별 석차백분율 도출
-                            for ($dateCount = $startDate->copy(); $dateCount->lte($endDate); $dateCount->{"add{$ucPeriod}"}()) {
-                                // 성적 유형 질의문 설정
-                                $scoreQuery = Score::whereIn('subject_id', $subjects)
-                                    ->start($dateCount->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d'))
-                                    ->end($dateCount->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d'));
-                                if(isset($scoreTypeQuery)) {
-                                    // 소분류에서 성적 분류를 지정했을 때
-                                    $scoreQuery = $scoreQuery->{$scoreTypeQuery['type']}()->pluck('id')->all();
-                                } else {
-                                    // 이외의 경우
-                                    $scoreQuery = $scoreQuery->pluck('id')->all();
-                                }
+                    // 기간 단위에 따른 성적 데이터 도출
+                    for ($dateCount = $startDate->copy(); $dateCount->lte($endDate); $dateCount->{"add{$ucPeriod}"}()) {
+                        // 성적 유형 질의문 설정
+                        $scoreQuery = Score::whereIn('subject_id', $subjects)
+                            ->start($dateCount->copy()->{"startOf{$ucPeriod}"}()->format('Y-m-d'))
+                            ->end($dateCount->copy()->{"endOf{$ucPeriod}"}()->format('Y-m-d'));
 
 
-                                $query = $student->gainedScores()->whereIn('score_type', $scoreQuery);
+                        if (isset($scoreTypeQuery)) {
+                            // 소분류에서 성적 분류를 지정했을 때
+                            $scoreQuery = $scoreQuery->{$scoreTypeQuery['type']}()->pluck('id')->all();
+                        } else {
+                            // 이외의 경우
+                            $scoreQuery = $scoreQuery->pluck('id')->all();
+                        }
 
-                                // 각 월별 취득 성적목록 획득
-                                $data = ['x-point' => null, 'y-point' => null];
-                                if($query->exists()) {
+
+
+                        $query = $student->gainedScores()->whereIn('score_type', $scoreQuery);
+                        $data = ['x-point' => null, 'y-point' => null];     // 데이터 표시점
+                        // 그래프 유형에 따른 데이터 설정
+                        switch ($graphType) {
+                            case 'single_line':
+                                // 각 기간별 석차백분율 도출
+                                // 각 기간별 취득 성적목록 획득
+                                if ($query->exists()) {
                                     $data['y-point'] = ceil($query->avg('standing_order') * 100);
-                                    $data['detail'] = $query->join('scores', 'scores.id', 'gained_scores.score_type')
+                                    $data['detail']  = $query->join('scores', 'scores.id', 'gained_scores.score_type')
                                         ->orderBy('scores.execute_date')
                                         ->select(
-                                            'scores.detail', 'scores.execute_date', 'scores.type',
-                                            DB::raw('gained_scores.standing_order * 100 as standing_order')
+                                            'scores.detail', 'scores.execute_date', 'scores.type'
                                         )->get()->all();
                                 }
 
                                 // 결과값의 x-포인트 지정
-                                switch($periodType) {
+                                switch ($periodType) {
                                     case 'monthly':
                                         $data['x-point'] = $dateCount->format('Y-m');
                                         break;
                                     case 'weekly':
+                                    case 'recently':
                                         $data['x-point'] = sprintf('%d-%02d-%d', $dateCount->year, $dateCount->month, $dateCount->weekOfMonth);
                                         break;
                                 }
-
                                 $result['value'][] = $data;
-                            }
 
-//                            // x축의 시작점 & 끝점 지정
-//                            switch($periodType) {
-//                                case 'monthly':
-//                                    $result['x-start']  = $startDate->format('Y-m');
-//                                    $result['x-end']    = $endDate->format('Y-m');
-//                                    break;
-//                                case 'weekly':
-//                                    $result['x-start']  = sprintf('%d-%02d-%d', $startDate->year, $startDate->month, $startDate->weekOfMonth);
-//                                    $result['x-end']    = sprintf('%d-%02d-%d', $endDate->year, $endDate->month, $endDate->weekOfMonth);
-//                                    break;
-//                            }
-                            break;
-                        case 'double_line':
-                            // 기간 단위에 따른 반 평균 대비 취득점수 그래프
-                            // 각 기간별 반 평균/취득 점수 도출
-                            
-                            break;
+                                break;
+
+                            case 'double_line':
+                                // 기간 단위에 따른 반 평균 대비 취득점수 그래프
+                                foreach(['class_average', 'gained_score'] as $value) {
+                                    if($value == 'gained_score') {
+                                        // 해당 학생의 취득점수를 조회
+                                        if ($query->exists()) {
+                                            $queryResult = with(clone $query)->join('scores', 'scores.id', 'gained_scores.score_type')
+                                                ->orderBy('scores.execute_date')
+                                                ->select(
+                                                    'scores.detail', 'scores.execute_date', 'scores.type',
+                                                    'gained_scores.score', 'scores.perfect_score'
+                                                );
+
+                                            $data['y-point'] = ceil(($queryResult->sum('score') / $queryResult->sum('perfect_score')) * 100);
+                                            $data['detail'] = $queryResult->get()->all();
+                                        }
+                                    } else {
+                                        // 해당학생의 소속반 평균 점수를 조회
+                                        if ($query->exists()) {
+                                            $queryResult = Score::whereIn('id', $scoreQuery)->orderBy('scores.execute_date')
+                                                ->select(
+                                                    'scores.detail', 'scores.execute_date', 'scores.type',
+                                                    'scores.average_score', 'scores.perfect_score'
+                                                );
+
+                                            $data['y-point'] = ceil(($queryResult->sum('average_score') / $queryResult->sum('perfect_score')) * 100);
+                                            $data['detail'] = $queryResult->get()->all();
+                                        }
+                                    }
+
+                                    // 결과값의 x-포인트 지정
+                                    switch ($periodType) {
+                                        case 'monthly':
+                                            $data['x-point'] = $dateCount->format('Y-m');
+                                            break;
+                                        case 'weekly':
+                                        case 'recently':
+                                            $data['x-point'] = sprintf('%d-%02d-%d', $dateCount->year, $dateCount->month, $dateCount->weekOfMonth);
+                                            break;
+                                    }
+                                    $result['value'][$value][] = $data;
+                                }
+                                break;
+                        }
                     }
-
                     break;
             }
         }

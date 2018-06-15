@@ -61,9 +61,9 @@ class AttendancesTableSeeder extends Seeder
                         'early_leave_flag'  => 'good',
                         'absence_flag'      => 'unreason',
                         'detail'            => json_encode(new class(){
-                            public $sign_in;
-                            public function __construct($detail = '') {
-                                $this->sign_in = $detail;
+                            public $absence_message;
+                            public function __construct($detail = 'absence_message') {
+                                $this->absence_message = $detail;
                             }
                         })
                     ]);
@@ -107,7 +107,7 @@ class AttendancesTableSeeder extends Seeder
                 // 메시지에 첨부할 내용 추가
                 $detailObj = new class(){
                     public $sign_in_message, $sign_out_message;
-                    public function __construct($signInDetail = '', $signOutDetail = '') {
+                    public function __construct($signInDetail = 'sign_in_message', $signOutDetail = 'sign_out_message') {
                         $this->sign_in_message  = $signInDetail;
                         $this->sign_out_message = $signOutDetail;
                     }
