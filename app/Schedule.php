@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  *  클래스명:               Schedule
@@ -33,6 +34,25 @@ class Schedule extends Model
 
 
     // 03. 스코프 정의
+    // 국가 공휴일을 조회
+    public function scopeHoliday($query) {
+        return $query->where('type', 'holidays');
+    }
+
+    // 계열 공통일정을 조회
+    public function scopeCommon($query) {
+        return $query->where('type', 'common');
+    }
+
+    // 일정이 생성된 반을 지정
+    public function scopeClass($query, $classId) {
+        return $query->where('class_id', $classId);
+    }
+
+    // 해당 일자가 포함된 일정 데이터를 조회
+    public function scopeDate($query, $date) {
+        return $query->where([['start_date', '<=', $date], ['end_date', '>=', $date]]);
+    }
 
 
 
@@ -40,8 +60,8 @@ class Schedule extends Model
 
 
 
-
     // 05. 멤버 메서드 정의
+    // 해당 일정의 관리 유형을 확인
     public function typeCheck($type) {
         if($this->type == $type) {
             return true;

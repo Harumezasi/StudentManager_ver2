@@ -30,5 +30,13 @@ return [
     'schedule'                  => '일정',
     'schedule_holiday'          => '공휴일',
     'schedule_common'           => '공통 일정',
-    'schedule_class'            => '지도반 일정'
+    'schedule_class'            => '지도반 일정',
+    'workday'                   => '등교일',
+    'holiday'                   => '휴일',
+    'weekday'                   => '평일',
+    'weekend'                   => '주말',
+
+
+    // 기타
+    'count'                     => ':count 번',
 ];
