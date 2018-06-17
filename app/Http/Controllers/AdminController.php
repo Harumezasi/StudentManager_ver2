@@ -62,7 +62,12 @@ class AdminController extends Controller
         // 02. 데이터 획득
         $startDate  = Carbon::parse($request->post('start_date'));
         $endDate    = Carbon::parse($request->post('end_date'));
+        $schedules  = Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))
+                        ->whereNull('class_id')->orderBy('start_date')->get()->all();
 
+        return response()->json(new ResponseObject(
+            true, $schedules
+        ), 200);
     }
 
     // 공통일정 추가
@@ -108,6 +113,11 @@ class AdminController extends Controller
         $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
         $contents       = $request->has('contents') ? $request->post('contents') : '';
 
+        // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 삽입 거부
+        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
+            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+        }
+
         // 03. 스케쥴 등록
         $setData = [
             'start_date'        => $startDate->format('Y-m-d'),
@@ -124,11 +134,11 @@ class AdminController extends Controller
         if(Schedule::insert($setData)) {
             // 일정 등록 성공 => 성공 메시지 반환
             return response()->json(new ResponseObject(
-                true, __('response_message.insert_success', ['element' => __('attendance.schedule_common')])
+                true, __('response_message.insert_success', ['element' => __('ada.schedule_common')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, __('response_message.insert_failed', ['element' => __('attendance.schedule_class')])
+                false, __('response_message.insert_failed', ['element' => __('ada.schedule_class')])
             ), 200);
         }
     }
@@ -166,6 +176,12 @@ class AdminController extends Controller
         $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
         $contents       = $request->has('contents') ? $request->post('contents') : '';
 
+        // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 수정 거부
+        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
+            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+        }
+
+
         // 03. 일정 갱신
         $setData = [
             'start_date'        => $startDate->format('Y-m-d'),
@@ -182,12 +198,12 @@ class AdminController extends Controller
         if($schedule->update($setData)) {
             // 갱신 성공
             return response()->json(new ResponseObject(
-                true, __('response_message.update_success', ['element' => __('attendance.schedule_common')])
+                true, __('response_message.update_success', ['element' => __('ada.schedule_common')])
             ), 200);
         } else {
             // 갱신 실패
             return response()->json(new ResponseObject(
-                false, __('response_message.update_failed', ['element' => __('attendance.schedule_common')])
+                false, __('response_message.update_failed', ['element' => __('ada.schedule_common')])
             ), 200);
         }
     }
@@ -213,12 +229,12 @@ class AdminController extends Controller
         if($schedule->delete()) {
             // 갱신 성공
             return response()->json(new ResponseObject(
-                true, __('response_message.delete_success', ['element' => __('attendance.schedule_common')])
+                true, __('response_message.delete_success', ['element' => __('ada.schedule_common')])
             ), 200);
         } else {
             // 갱신 실패
             return response()->json(new ResponseObject(
-                false, __('response_message.delete_failed', ['element' => __('attendance.schedule_common')])
+                false, __('response_message.delete_failed', ['element' => __('ada.schedule_common')])
             ), 200);
         }
     }

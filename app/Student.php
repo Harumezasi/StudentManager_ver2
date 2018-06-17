@@ -84,6 +84,11 @@ class Student extends Model
         return $this->hasMany('App\GainedScore', 'std_id', 'id');
     }
 
+    /**
+     *  함수명:                         subjects
+     *  함수 설명:                      학생 테이블의 강의 테이블에 대한 1:* 소유 관계를 정의
+     *  만든날:                         2018년 5월 26일
+     */
     public function subjects() {
         return $this->hasManyThrough(
             'App\Subject',
@@ -506,25 +511,6 @@ class Student extends Model
 
     // 내가 수강하는 강의 목록 조회
     public function selectSubjectList() {
-        /*
-        // 01. 수강목록 조회
-        $joinLists = $this->joinLists()->pluck('subject_id')->all();
-
-        // 02. 강의 데이터 획득
-        $data = [];
-        foreach($joinLists as $subjectId) {
-            $subject = Subject::findOrFail($subjectId);
-
-            if(!is_null($type)) {
-                if($subject->type != $type) continue;
-            }
-
-            $data[] = $subject;
-        }
-
-        return $data;
-        */
-
         return Subject::whereIn('id', $this->joinLists()->pluck('subject_id')->all());
     }
 }

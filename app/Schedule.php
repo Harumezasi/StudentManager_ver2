@@ -55,8 +55,12 @@ class Schedule extends Model
     }
 
 
-
     // 04. 클래스 메서드 정의
+    // 지정된 기간 이내의 일정 데이터를 조회
+    public static function selectBetweenDate($startDate, $endDate) {
+        return self::whereBetween('start_date', [$startDate, $endDate])
+            ->where('end_date', '<=', $endDate);
+    }
 
 
 

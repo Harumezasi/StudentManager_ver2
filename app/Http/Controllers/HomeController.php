@@ -385,7 +385,7 @@ class HomeController extends Controller
         ]);
         $validator = Validator::make($request->all(), [
             'class_id'      => 'required|exists:study_classes,id',
-            'day_of_week'   => "in:{$validDayOfWeek}"
+            'day_of_week'   => "required|in:{$validDayOfWeek}"
         ]);
 
         if($validator->fails()) {
@@ -395,7 +395,7 @@ class HomeController extends Controller
         // 02. 데이터 설정
         $studyClass = StudyClass::findOrFail($request->get('class_id'));
         $term       = $this->getTermValue()['this'];
-        $dayOfWeek  = $request->exists('day_of_week') ? $request->get('day_of_week') : null;
+        $dayOfWeek  = $request->get('day_of_week');
         $timetables = $studyClass->selectTimetables($term);
         if(is_null($dayOfWeek)) {
             $timetables = $timetables->get()->all();

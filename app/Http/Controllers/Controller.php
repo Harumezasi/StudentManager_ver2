@@ -188,7 +188,7 @@ class Controller extends BaseController
             $year = today()->year;
             $term = $nowTerm;
 
-        } else if(preg_match("/^(19|20)\d{2}-[1-2]?[a-zA-z_]+$/", $argThisTerm)) {
+        } else if(preg_match("/(19|20)\d{2}-((1st|2nd)_term|(summer|winter)_vacation)/", $argThisTerm)) {
             $data = explode('-', $argThisTerm);
 
             $year = $data[0];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
 use App\GainedScore;
+use App\Timetable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Validator;
@@ -111,6 +112,45 @@ class ProfessorController extends Controller
         } else {
             return response()->json(false, 200);
         }
+    }
+
+    /**
+     *  함수명:                         getTimetable
+     *  함수 설명:                      시간표를 획득
+     *  만든날:                         2018년 6월 17일
+     *
+     *  매개변수 목록
+     *  @param $request:                요청 메시지
+     *
+     *  지역변수 목록
+     *  null
+     *
+     *  반환값
+     *  @return                         \Illuminate\Http\JsonResponse
+     *
+     *  예외
+     *  @throws NotValidatedException
+     */
+    public function getTimetable(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'term'          => ['required', 'regex:/(19|20)\d{2}-((1st|2nd)_term|(summer|winter)_vacation)/']
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $timetables = Timetable::whereIn('subject_id', $professor->subjects()->term($request->get("term"))->pluck('id')->all())
+                ->join('subjects', 'subjects.id', 'timetables.subject_id')->orderBy('day_of_week')->orderBy('period')
+                ->select('day_of_week', 'period', 'name', 'classroom')
+                ->get()->all();
+
+        return response()->json(new ResponseObject(
+            true, $timetables
+        ), 200);
     }
 
 
@@ -991,7 +1031,27 @@ class ProfessorController extends Controller
         ), 200);
     }
 
+    // 해당 학생의 수강 목록 중 자신의 강의 조회
+    public function getJoinListOfStudent(Request $request) {
+        // 01. 요청 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'std_id'    => 'required|exists:students,id',
+            'term'      => ['required', 'regex:/(19|20)\d{2}-((1st|2nd)_term|(summer|winter)_vacation)/']
+        ]);
 
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get("user")->id);
+        $student    = Student::findOrFail($request->get("std_id"));
+        $term       = $request->get("term");
+        $subjects   = $student->subjects()->where("professor", $professor->id)
+                        ->term($term)->select('subjects.id', 'subjects.name')->get()->all();
+
+        return response()->json($subjects);
+    }
 
     // 코멘트 관리
 

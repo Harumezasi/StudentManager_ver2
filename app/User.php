@@ -68,10 +68,19 @@ class User extends Model
 
         switch($this->type) {
             case 'student':
+                $getList = ['users.id', 'users.name', 'phone', 'email', 'type', 'study_classes.name as study_class', 'photo'];
+
+                // 지도 교수가 해당 학생의 정보를 조회할 경우 => 관심 레벨 & 관심 사유 추가조회
+                if($this->student->studyClass->tutor == session()->get("user")->id) {
+                    $getList[] = 'attention_level';
+                    $getList[] = 'attention_reason';
+                }
+
                 // 학생 회원의 상세정보 조회
                 $data = $this->join('students', function($join) use($id) {
                         $join->on('students.id', 'users.id')->where('users.id', $id);
-                })->get(['users.id', 'name', 'phone', 'email', 'type', 'study_class', 'photo'])
+                })->join('study_classes', 'study_classes.id', 'students.study_class')
+                ->get($getList)
                 ->all()[0];
 
                 // 사용자 사진이 등록되어 있다면

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\NeedCareAlert;
+use App\Schedule;
 use App\Score;
 use App\Subject;
 use App\Term;
@@ -329,6 +330,8 @@ class TutorController extends Controller
             ), 200);
         }
     }
+
+
 
 
 
@@ -684,7 +687,7 @@ class TutorController extends Controller
 
     // 조건 조합에 의한 분석 결과 반환
 
-    /**
+    /**localhost:8000/admin/schedule/select
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws NotValidatedException
@@ -829,6 +832,7 @@ class TutorController extends Controller
                                     }
 
                                     $result['value'] = $graph;
+                                    $result['length'] = sizeof($graph);
                                     break;
 
                                 case 'single_line':
@@ -1608,6 +1612,38 @@ class TutorController extends Controller
         ), 200);
     }
 
+    // 지도반 강의 관리
+    public function selectSubjectsList(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'term'  => ['regex:/(19|20)\d{2}-((1st|2nd)_term|(summer|winter)_vacation)/']
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $term       = $this->getTermValue($request->get('term'));
+        $subjects   = $professor->studyClass->subjects()->term($term['this'])
+                        ->orderBy('name');
+
+        // 03. 반환 데이터
+        $data = [
+            'subjects'      => $subjects->get()->all(),
+            'pagination'    => [
+                'this'  => $term['this_format'],
+                'prev'  => $term['prev'],
+                'next'  => $term['next']
+            ]
+        ];
+
+        return response()->json(new ResponseObject(
+            true, $data
+        ), 200);
+    }
+
     // 학생별 상세 관리
     // 해당 학생의 출결 통계 목록 획득
     public function getDetailsOfAttendanceStats(Request $request) {
@@ -1941,5 +1977,47 @@ class TutorController extends Controller
         return response()->json(new ResponseObject(
             true, $scores
         ), 200);
+    }
+
+    // 지도반 일정 관리
+
+    // 일정 조회
+    public function selectSchedule(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+           'start_date'     => 'required|date',
+           'end_date'       => 'required|date|after_or_equal:start_date'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get('user')->id);
+        $startDate  = Carbon::parse($request->get('start_date'));
+        $endDate    = Carbon::parse($request->get('end_date'));
+        $schedule   = Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))
+                        ->whereNull('class_id')->orWhere('class_id', $professor->studyClass->id)
+                        ->orderBy('start_date')->get()->all();
+
+        return response()->json(new ResponseObject(
+            true, $schedule
+        ), 200);
+    }
+
+    // 일정 삽입
+    public function insertSchedule(Request $request) {
+
+    }
+
+    // 일정 갱신
+    public function updateSchedule(Request $request) {
+
+    }
+
+    // 일정 삭제
+    public function deleteSchedule(Request $request) {
+
     }
 }

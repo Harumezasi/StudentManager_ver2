@@ -262,7 +262,11 @@ Route::group([
             'uses'  => 'ProfessorController@isTutor'
         ]);
 
-
+        // 내 담당강의 시간표 확인
+        Route::get("/timetable", [
+            'as'    => 'timetable',
+            'uses'  => 'ProfessorController@getTimetable'
+        ]);
 
         // 내 정보 관리
         Route::group([
@@ -379,6 +383,12 @@ Route::group([
             Route::get('/info', [
                 'as'    => 'info',
                 'uses'  => 'ProfessorController@getInfoOfStudent'
+            ]);
+
+            // 지정한 학생의 수강 목록 중 자신의 강의를 조회
+            Route::get('/join_list', [
+                'as'    => 'join_list',
+                'uses'  => 'ProfessorController@getJoinListOfStudent'
             ]);
 
             // 지정한 학생이 해당 강의에서 취득한 성적 목록 조회
@@ -514,6 +524,12 @@ Route::group([
                 'as'    => 'student_list',
                 'uses'  => 'TutorController@getMyStudentsList'
             ]);
+
+            // 강의 목록 조회
+            Route::get('/subject_list', [
+                'as'    => 'subject_list',
+                'uses'  => 'TutorController@selectSubjectsList'
+            ]);
         });
 
 
@@ -610,6 +626,38 @@ Route::group([
                 'uses'  => 'TutorController@getDetailsOfScoreList'
             ]);
         });
+
+
+
+        // 일정 관리
+        Route::group([
+            'as'        => 'schedule.',
+            'prefix'    => 'schedule'
+        ], function() {
+            // 일정 조회
+            Route::get("/select", [
+                'as'    => 'select',
+                'uses'  => 'TutorController@selectSchedule'
+            ]);
+
+            // 일정 삽입
+            Route::post("/insert", [
+                'as'    => 'select',
+                'uses'  => 'TutorController@insertSchedule'
+            ]);
+
+            // 일정 갱신
+            Route::get("/update", [
+                'as'    => 'select',
+                'uses'  => 'TutorController@updateSchedule'
+            ]);
+
+            // 일정 삭제
+            Route::get("/select", [
+                'as'    => 'select',
+                'uses'  => 'TutorController@deleteSchedule'
+            ]);
+        });
     });
 });
 
@@ -641,6 +689,12 @@ Route::group([
             'as'        => 'schedule.',
             'prefix'    => 'schedule'
         ], function() {
+            // 일정 조회
+            Route::get('/select', [
+                'as'    => 'select',
+                'uses'  => 'AdminController@selectCommonSchedule'
+            ]);
+
             // 일정 등록
             Route::post('/insert', [
                 'as'    => 'insert',
