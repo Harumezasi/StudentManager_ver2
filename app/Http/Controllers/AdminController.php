@@ -138,7 +138,7 @@ class AdminController extends Controller
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, __('response_message.insert_failed', ['element' => __('ada.schedule_class')])
+                false, __('response_message.insert_failed', ['element' => __('ada.schedule_common')])
             ), 200);
         }
     }

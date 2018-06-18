@@ -512,10 +512,11 @@ class TutorController extends Controller
             $trouble = array_merge_recursive($trouble, $studyTrouble);
 
             // 03-04. 학생에 대한 필요 정보를 결합
-            $stdInfo            = with(clone $student)->user->selectUserInfo();
-            $student->name      = $stdInfo->name;
-            $student->photo_url = $stdInfo->photo_url;
-            $student->trouble   = $trouble;
+            $stdInfo                    = with(clone $student)->user->selectUserInfo();
+            $student->name              = $stdInfo->name;
+            $student->photo_url         = $stdInfo->photo_url;
+            $student->attention_reason  = $stdInfo->attention_reason;
+            $student->trouble           = $trouble;
         }
 
         // 조회 유형에 따른 학생 데이터 필터링
@@ -1798,7 +1799,7 @@ class TutorController extends Controller
         ]);
     }
 
-// 해당 학생의 출석 데이터 목록 획득
+    // 해당 학생의 출석 데이터 목록 획득
     public function getDetailsOfAttendanceRecords(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
@@ -2008,12 +2009,125 @@ class TutorController extends Controller
 
     // 일정 삽입
     public function insertSchedule(Request $request) {
+        // 01. 요청 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'start_date'        => 'required|date',
+            'end_date'          => 'required|date|after_or_equal:start_date',
+            'name'              => 'required|string|min:2',
+            'holiday_flag'      => 'required|boolean',
+            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
+            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
+            'contents'          => 'string'
+        ]);
 
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $studyClass     = Professor::findOrFail(session()->get('user')->id)->studyClass;
+        $startDate      = Carbon::parse($request->post('start_date'));
+        $endDate        = Carbon::parse($request->post('end_date'));
+        $name           = $request->post('name');
+        $holidayFlag    = $request->post('holiday_flag');
+        $signInTime     = $request->has('sign_in_time') ? Carbon::parse($request->post('sign_in_time')) : NULL;
+        $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
+        $contents       = $request->has('contents') ? $request->post('contents') : '';
+
+        // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 삽입 거부
+        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
+            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+        }
+
+        // 03. 스케쥴 등록
+        $setData = [
+            'start_date'        => $startDate->format('Y-m-d'),
+            'end_date'          => $endDate->format('Y-m-d'),
+            'name'              => $name,
+            'type'              => Schedule::TYPE['common'],
+            'class_id'          => $studyClass->id,
+            'holiday_flag'      => $holidayFlag,
+            'sign_in_time'      => is_null($signInTime) ? $signInTime : $signInTime->format('H:i:s'),
+            'sign_out_time'     => is_null($signOutTime) ? $signOutTime : $signOutTime->format('H:i:s'),
+            'contents'          => $contents
+        ];
+
+        if(Schedule::insert($setData)) {
+            // 일정 등록 성공 => 성공 메시지 반환
+            return response()->json(new ResponseObject(
+                true, __('response_message.insert_success', ['element' => __('ada.schedule_class')])
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, __('response_message.insert_failed', ['element' => __('ada.schedule_class')])
+            ), 200);
+        }
     }
 
     // 일정 갱신
     public function updateSchedule(Request $request) {
+// 01. 요청 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'id'                => 'required|exists:schedules,id',
+            'start_date'        => 'required|date',
+            'end_date'          => 'required|date|after_or_equal:start_date',
+            'name'              => 'required|string|min:2',
+            'holiday_flag'      => 'required|boolean',
+            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
+            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
+            'contents'          => 'string'
+        ]);
 
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $studyClass     = Professor::findOrFail(session()->get('user')->id)->studyClass;
+        $schedule       = Schedule::findOrFail($request->post('id'));
+        if(!$schedule->typeCheck($studyClass->id)) {
+            // 일정 유형이 공통이 아닌 경우 => 데이터에 대한 접근 거부
+            throw new NotValidatedException('해당 데이터에 접근할 권한이 없습니다.');
+        }
+
+        $startDate      = Carbon::parse($request->post('start_date'));
+        $endDate        = Carbon::parse($request->post('end_date'));
+        $name           = $request->post('name');
+        $holidayFlag    = $request->post('holiday_flag');
+        $signInTime     = $request->has('sign_in_time') ? Carbon::parse($request->post('sign_in_time')) : NULL;
+        $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
+        $contents       = $request->has('contents') ? $request->post('contents') : '';
+
+        // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 수정 거부
+        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
+            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+        }
+
+
+        // 03. 일정 갱신
+        $setData = [
+            'start_date'        => $startDate->format('Y-m-d'),
+            'end_date'          => $endDate->format('Y-m-d'),
+            'name'              => $name,
+            'type'              => Schedule::TYPE['common'],
+            'class_id'          => $studyClass->id,
+            'holiday_flag'      => $holidayFlag,
+            'sign_in_time'      => is_null($signInTime) ? $signInTime : $signInTime->format('H:i:s'),
+            'sign_out_time'     => is_null($signOutTime) ? $signOutTime : $signOutTime->format('H:i:s'),
+            'contents'          => $contents
+        ];
+
+        if($schedule->update($setData)) {
+            // 갱신 성공
+            return response()->json(new ResponseObject(
+                true, __('response_message.update_success', ['element' => __('ada.schedule_common')])
+            ), 200);
+        } else {
+            // 갱신 실패
+            return response()->json(new ResponseObject(
+                false, __('response_message.update_failed', ['element' => __('ada.schedule_common')])
+            ), 200);
+        }
     }
 
     // 일정 삭제

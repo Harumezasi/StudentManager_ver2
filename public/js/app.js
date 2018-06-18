@@ -78093,11 +78093,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
         case 'save':
           /* 날짜 예외처리 = 정상 값 확인 */
           /* 기본 날짜는 watch 로 1차 확인 */
-          if (!this.dateCheck) {
+          if (!this.dateCheck && this.setPeriod_type != 'recently') {
             /* 잘못된 값 */
             this.sDate = null;
             this.fDate = null;
-            this.setPeriod_type = value;
+            this.setPeriod_type = 'recently';
             this.periodSelected = '최근';
             this.dateCheck = false;
             /* 알림 */
@@ -79139,7 +79139,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  width : 400px;\r\n  max-height : 1000px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\r\n\r\n/*-- 차트 --*/\n.chartCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 1000px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n/* */\n.studentInfoDiv {\r\n  overflow-y : scroll;\r\n  height : 800px;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  width : 400px;\r\n  max-height : 1000px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\r\n\r\n/*-- 차트 --*/\n.chartCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 1000px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n/* */\n.studentInfoDiv {\r\n  overflow-y : scroll;\r\n  height : 800px;\n}\r\n", ""]);
 
 // exports
 
@@ -79153,6 +79153,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(9);
+//
+//
 //
 //
 //
@@ -79771,9 +79773,14 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      /* 선택 상태 */
+      setSign: '등교',
+      setAtt: '지각',
+      setLec: null,
+      setSub: '쪽지',
       /* 기간 */
-      dialog: false,
       periodSelected: '최근',
+      dialog: false,
       fDate: null,
       sDate: null,
       startDate: null,
@@ -79784,6 +79791,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
 
       /* 학생 목록 */
       studnetInfo: [],
+      studentsType: 'total',
 
       /* 강의 목록 */
       subjectList: [{ id: '', name: '' }],
@@ -79870,22 +79878,26 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
     },
 
     /* 하위 메뉴 조작 */
-    selectMinorType: function selectMinorType(value, set) {
+    selectMinorType: function selectMinorType(value, set, name) {
       switch (set) {
         case 'sign':
           this.setMinor_type[0]['sign'] = value;
+          this.setSign = name;
           this.getStudentInfoRenderGraph('sign');
           break;
         case 'attendance':
           this.setMinor_type[0]['attendance'] = value;
+          this.setAtt = name;
           this.getStudentInfoRenderGraph('attendance');
           break;
         case 'code':
           this.setMinor_type[0]['code'] = value;
+          this.setLec = name;
           this.getStudentInfoRenderGraph('code');
           break;
         case 'detailCode':
           this.setMinor_type[0]['detailCode'] = value;
+          this.setSub = name;
           this.getStudentInfoRenderGraph('detailCode');
           break;
       }
@@ -79919,11 +79931,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
         case 'save':
           /* 날짜 예외처리 = 정상 값 확인 */
           /* 기본 날짜는 watch 로 1차 확인 */
-          if (!this.dateCheck) {
+          if (!this.dateCheck && this.setPeriod_type != 'recently') {
             /* 잘못된 값 */
             this.sDate = null;
             this.fDate = null;
-            this.setPeriod_type = value;
+            this.setPeriod_type = 'recently';
             this.periodSelected = '최근';
             this.dateCheck = false;
             /* 알림 */
@@ -79965,12 +79977,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
     getStudentInfo: function getStudentInfo(typeSelect) {
       var _this = this;
 
+      this.studnetInfo = [];
+      this.studentsType = typeSelect;
+
       axios.get('/tutor/analyse/student_list', {
         params: {
-          type: typeSelect,
+          type: this.studentsType,
           order: 'id'
         }
       }).then(function (response) {
+        console.log(response.data.message);
         _this.studnetInfo = response.data.message;
       }).catch(function (error) {
         console.log("getStuInfo Err : " + error);
@@ -79993,6 +80009,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
         }
         /* 과목 코드 기본 값 설정 */
         _this2.setMinor_type[0]['code'] = _this2.subjectList[0].id;
+        _this2.setLec = _this2.subjectList[0].name;
         _this2.getStudentInfoRenderGraph();
       }).catch(function (error) {
         console.log('getSub Err :' + error);
@@ -80297,7 +80314,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
       });
 
       /* 종류 별 석차백분율 */
-
       var paramDataSecond = [{
         major_class: 'study',
         graph_type: 'single_line',
@@ -80414,7 +80430,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
     }
   },
   mounted: function mounted() {
-    this.getStudentInfo('total');
+    this.getStudentInfo(this.studentsType);
   },
 
   watch: {
@@ -80695,6 +80711,11 @@ var render = function() {
                                     round: "",
                                     outline: "",
                                     color: "blue accent-2"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.getStudentInfo("total")
+                                    }
                                   }
                                 },
                                 [_vm._v("전체")]
@@ -80707,6 +80728,11 @@ var render = function() {
                                     round: "",
                                     outline: "",
                                     color: "blue accent-2"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.getStudentInfo("filter")
+                                    }
                                   }
                                 },
                                 [_vm._v("주목")]
@@ -80719,6 +80745,11 @@ var render = function() {
                                     round: "",
                                     outline: "",
                                     color: "blue accent-2"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.getStudentInfo("attention")
+                                    }
                                   }
                                 },
                                 [_vm._v("사랑")]
@@ -80774,31 +80805,64 @@ var render = function() {
                                                 )
                                               ]),
                                               _vm._v(" "),
-                                              _c("v-icon", {
-                                                attrs: {
-                                                  small: "",
-                                                  color: "red"
-                                                },
-                                                domProps: {
-                                                  innerHTML: _vm._s(
-                                                    datas.attention_level
-                                                  )
-                                                }
-                                              }),
+                                              datas.attention_level > 0
+                                                ? _c("v-icon", {
+                                                    attrs: {
+                                                      small: "",
+                                                      color: "red"
+                                                    },
+                                                    domProps: {
+                                                      innerHTML: _vm._s(
+                                                        _vm.favorite
+                                                      )
+                                                    }
+                                                  })
+                                                : _vm._e(),
                                               _vm._v(" "),
-                                              _c("v-btn", {
-                                                attrs: {
-                                                  small: "",
-                                                  depressed: "",
-                                                  round: "",
-                                                  color: "light-green lighten-1"
-                                                },
-                                                domProps: {
-                                                  innerHTML: _vm._s(
-                                                    datas.attention_reason
-                                                  )
-                                                }
-                                              })
+                                              datas.attention_level > 1
+                                                ? _c("v-icon", {
+                                                    attrs: {
+                                                      small: "",
+                                                      color: "red"
+                                                    },
+                                                    domProps: {
+                                                      innerHTML: _vm._s(
+                                                        _vm.favorite
+                                                      )
+                                                    }
+                                                  })
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              datas.attention_level > 2
+                                                ? _c("v-icon", {
+                                                    attrs: {
+                                                      small: "",
+                                                      color: "red"
+                                                    },
+                                                    domProps: {
+                                                      innerHTML: _vm._s(
+                                                        _vm.favorite
+                                                      )
+                                                    }
+                                                  })
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              datas.attention_reason != ""
+                                                ? _c("v-btn", {
+                                                    attrs: {
+                                                      small: "",
+                                                      depressed: "",
+                                                      round: "",
+                                                      color:
+                                                        "light-green lighten-1"
+                                                    },
+                                                    domProps: {
+                                                      innerHTML: _vm._s(
+                                                        datas.attention_reason
+                                                      )
+                                                    }
+                                                  })
+                                                : _vm._e()
                                             ],
                                             1
                                           )
@@ -80846,7 +80910,8 @@ var render = function() {
                                             click: function($event) {
                                               _vm.selectMinorType(
                                                 "sign_in",
-                                                "sign"
+                                                "sign",
+                                                "등교"
                                               )
                                             }
                                           }
@@ -80870,7 +80935,8 @@ var render = function() {
                                             click: function($event) {
                                               _vm.selectMinorType(
                                                 "sign_out",
-                                                "sign"
+                                                "sign",
+                                                "하교"
                                               )
                                             }
                                           }
@@ -80886,7 +80952,13 @@ var render = function() {
                                       ),
                                   _vm._v(" "),
                                   _c("div", [
-                                    _c("h2", [_vm._v("등교, 하교 시간")])
+                                    _c("h2", [
+                                      _vm._v(
+                                        "등하교 시간 변화량 ( " +
+                                          _vm._s(_vm.setSign) +
+                                          " ) "
+                                      )
+                                    ])
                                   ]),
                                   _vm._v(" "),
                                   _c("attendance-time-lineChart", {
@@ -80915,7 +80987,8 @@ var render = function() {
                                             click: function($event) {
                                               _vm.selectMinorType(
                                                 "lateness",
-                                                "attendance"
+                                                "attendance",
+                                                "지각"
                                               )
                                             }
                                           }
@@ -80939,7 +81012,8 @@ var render = function() {
                                             click: function($event) {
                                               _vm.selectMinorType(
                                                 "absence",
-                                                "attendance"
+                                                "attendance",
+                                                "결석"
                                               )
                                             }
                                           }
@@ -80963,7 +81037,8 @@ var render = function() {
                                             click: function($event) {
                                               _vm.selectMinorType(
                                                 "early_leave",
-                                                "attendance"
+                                                "attendance",
+                                                "조퇴"
                                               )
                                             }
                                           }
@@ -80979,7 +81054,13 @@ var render = function() {
                                       ),
                                   _vm._v(" "),
                                   _c("div", [
-                                    _c("h2", [_vm._v("출결 횟수 변화")])
+                                    _c("h2", [
+                                      _vm._v(
+                                        "출결 횟수 변화 ( " +
+                                          _vm._s(_vm.setAtt) +
+                                          " )"
+                                      )
+                                    ])
                                   ]),
                                   _vm._v(" "),
                                   _c("attendance-count-lineChart", {
@@ -81050,7 +81131,8 @@ var render = function() {
                                             click: function($event) {
                                               _vm.selectMinorType(
                                                 sub.id,
-                                                "code"
+                                                "code",
+                                                sub.name
                                               )
                                             }
                                           }
@@ -81072,7 +81154,15 @@ var render = function() {
                               _c(
                                 "v-card",
                                 [
-                                  _c("div", [_c("h2")]),
+                                  _c("div", [
+                                    _c("h2", [
+                                      _vm._v(
+                                        "강의 취득 점수 ( " +
+                                          _vm._s(_vm.setLec) +
+                                          " )"
+                                      )
+                                    ])
+                                  ]),
                                   _vm._v(" "),
                                   _c("study-lecture-score-lineChart", {
                                     attrs: {
@@ -81091,7 +81181,15 @@ var render = function() {
                               _c(
                                 "v-card",
                                 [
-                                  _c("div", [_c("h2")]),
+                                  _c("div", [
+                                    _c("h2", [
+                                      _vm._v(
+                                        "강의 석차백분율 ( " +
+                                          _vm._s(_vm.setLec) +
+                                          " )"
+                                      )
+                                    ])
+                                  ]),
                                   _vm._v(" "),
                                   _c("study-lecture-ranking-lineChart", {
                                     attrs: {
@@ -81117,10 +81215,11 @@ var render = function() {
                                           attrs: { color: "info" },
                                           on: {
                                             click: function($event) {
-                                              _vm.selectMinorType(
-                                                "_quiz",
-                                                "detailCode"
-                                              )
+                                              ;(_vm.setSub = "쪽지"),
+                                                _vm.selectMinorType(
+                                                  "_quiz",
+                                                  "detailCode"
+                                                )
                                             }
                                           }
                                         },
@@ -81137,10 +81236,11 @@ var render = function() {
                                           attrs: { color: "info" },
                                           on: {
                                             click: function($event) {
-                                              _vm.selectMinorType(
-                                                "_homework",
-                                                "detailCode"
-                                              )
+                                              ;(_vm.setSub = "과제"),
+                                                _vm.selectMinorType(
+                                                  "_homework",
+                                                  "detailCode"
+                                                )
                                             }
                                           }
                                         },
@@ -81157,10 +81257,11 @@ var render = function() {
                                           attrs: { color: "info" },
                                           on: {
                                             click: function($event) {
-                                              _vm.selectMinorType(
-                                                "_midterm",
-                                                "detailCode"
-                                              )
+                                              ;(_vm.setSub = "중간"),
+                                                _vm.selectMinorType(
+                                                  "_midterm",
+                                                  "detailCode"
+                                                )
                                             }
                                           }
                                         },
@@ -81177,10 +81278,11 @@ var render = function() {
                                           attrs: { color: "info" },
                                           on: {
                                             click: function($event) {
-                                              _vm.selectMinorType(
-                                                "_final",
-                                                "detailCode"
-                                              )
+                                              ;(_vm.setSub = "기말"),
+                                                _vm.selectMinorType(
+                                                  "_final",
+                                                  "detailCode"
+                                                )
                                             }
                                           }
                                         },
@@ -81196,7 +81298,15 @@ var render = function() {
                               _c(
                                 "v-card",
                                 [
-                                  _c("div", [_c("h2")]),
+                                  _c("div", [
+                                    _c("h2", [
+                                      _vm._v(
+                                        "종목별 취득 점수 ( " +
+                                          _vm._s(_vm.setSub) +
+                                          " )"
+                                      )
+                                    ])
+                                  ]),
                                   _vm._v(" "),
                                   _c("study-subject-score-lineChart", {
                                     attrs: {
@@ -81215,7 +81325,15 @@ var render = function() {
                               _c(
                                 "v-card",
                                 [
-                                  _c("div", [_c("h2")]),
+                                  _c("div", [
+                                    _c("h2", [
+                                      _vm._v(
+                                        "종목별 석차백분율 ( " +
+                                          _vm._s(_vm.setSub) +
+                                          " )"
+                                      )
+                                    ])
+                                  ]),
                                   _vm._v(" "),
                                   _c("study-subject-ranking-lineChart", {
                                     attrs: {

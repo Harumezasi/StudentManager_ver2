@@ -536,11 +536,11 @@ export default {
           case 'save' :
             /* 날짜 예외처리 = 정상 값 확인 */
             /* 기본 날짜는 watch 로 1차 확인 */
-            if(!this.dateCheck){
+            if(!this.dateCheck && this.setPeriod_type != 'recently'){
               /* 잘못된 값 */
               this.sDate = null;
               this.fDate = null;
-              this.setPeriod_type = value;
+              this.setPeriod_type = 'recently';
               this.periodSelected = '최근';
               this.dateCheck = false;
               /* 알림 */

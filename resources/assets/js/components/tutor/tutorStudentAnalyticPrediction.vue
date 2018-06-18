@@ -77,9 +77,9 @@
               </v-card-text>
               <!-- 학생 분류 버튼 -->
               <v-card-text class = "buttonBox">
-                <v-btn round outline color="blue accent-2">전체</v-btn>
-                <v-btn round outline color="blue accent-2">주목</v-btn>
-                <v-btn round outline color="blue accent-2">사랑</v-btn>
+                <v-btn round outline color="blue accent-2" @click="getStudentInfo('total')">전체</v-btn>
+                <v-btn round outline color="blue accent-2" @click="getStudentInfo('filter')">주목</v-btn>
+                <v-btn round outline color="blue accent-2" @click="getStudentInfo('attention')">사랑</v-btn>
               </v-card-text>
               <!-- 학생 목록 -->
               <v-list three-line>
@@ -100,9 +100,11 @@
                              <!-- 학생의 이름과 학번 -->
                              <v-list-tile-title> {{ datas.id }} {{ datas.name }}</v-list-tile-title>
                              <!-- 사랑 -->
-                             <v-icon small v-html="datas.attention_level" color = "red"></v-icon>
+                             <v-icon v-if="datas.attention_level > 0" small v-html="favorite" color = "red"></v-icon>
+                             <v-icon v-if="datas.attention_level > 1" small v-html="favorite" color = "red"></v-icon>
+                             <v-icon v-if="datas.attention_level > 2" small v-html="favorite" color = "red"></v-icon>
                              <!-- 주목된 이유 -->
-                             <v-btn small depressed v-html="datas.attention_reason" round color="light-green lighten-1" ></v-btn>
+                             <v-btn small depressed v-if="datas.attention_reason !='' " v-html="datas.attention_reason" round color="light-green lighten-1" ></v-btn>
                            </v-list-tile-content>
                          </v-list-tile>
                        </template>
@@ -116,25 +118,25 @@
                     <v-layout row wrap align-center>
                       <v-card>
                         <!-- 등하교 버튼 -->
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('sign_in', 'sign')">등교</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('sign_in', 'sign', '등교')">등교</v-btn>
                         <v-btn color="info" v-else disabled>등교</v-btn>
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('sign_out', 'sign')">하교</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('sign_out', 'sign', '하교')">하교</v-btn>
                         <v-btn color="info" v-else disabled>하교</v-btn>
 
-                        <div><h2>등교, 하교 시간</h2></div>
+                        <div><h2>등하교 시간 변화량 ( {{ setSign }} ) </h2></div>
                         <!-- 등교 하교 시간 변화량 그래프 -->
                         <attendance-time-lineChart :data="timeLineData" :labels="timeLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></attendance-time-lineChart>
                       </v-card>
 
                       <v-card>
                         <!-- 출결 버튼 -->
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('lateness', 'attendance')">지각</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('lateness', 'attendance', '지각')">지각</v-btn>
                         <v-btn color="info" v-else disabled>지각</v-btn>
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('absence', 'attendance')">결석</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('absence', 'attendance', '결석')">결석</v-btn>
                         <v-btn color="info" v-else disabled>결석</v-btn>
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('early_leave', 'attendance')">조퇴</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('early_leave', 'attendance', '조퇴')">조퇴</v-btn>
                         <v-btn color="info" v-else disabled>조퇴</v-btn>
-                        <div><h2>출결 횟수 변화</h2></div>
+                        <div><h2>출결 횟수 변화 ( {{ setAtt }} )</h2></div>
                         <!-- 지각 조퇴 결석 ~ 횟수 변화량 그래프 (3 중 1 선택) -->
                         <attendance-count-lineChart :data="countLineData" :labels="countLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></attendance-count-lineChart>
                       </v-card>
@@ -156,7 +158,7 @@
                           v-for = "sub in subjectList"
                           :key="sub.key"
                           color = "info"
-                          v-on:click="selectMinorType(sub.id, 'code')"
+                          v-on:click="selectMinorType(sub.id, 'code', sub.name)"
                           v-if="btnLock"
                         >
                         {{ sub.name }}
@@ -165,35 +167,35 @@
                       </v-toolbar>
 
                       <v-card>
-                        <div><h2></h2></div>
+                        <div><h2>강의 취득 점수 ( {{ setLec }} )</h2></div>
                         <!-- 강의 취득점수 비교 그래프 (강의 중 1택) -->
                         <study-lecture-score-lineChart :datasets="lectureScoreDataSets" :labels="lectureScoreLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-lecture-score-lineChart>
                       </v-card>
 
                       <v-card>
-                        <div><h2></h2></div>
+                        <div><h2>강의 석차백분율 ( {{ setLec }} )</h2></div>
                         <study-lecture-ranking-lineChart :data="lectureRankingData" :labels="lectureRankingLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-lecture-ranking-lineChart>
                       </v-card>
 
                       <v-toolbar>
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('_quiz', 'detailCode')">쪽지</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="setSub ='쪽지', selectMinorType('_quiz', 'detailCode')">쪽지</v-btn>
                         <v-btn v-else disabled>쪽지</v-btn>
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('_homework', 'detailCode')">과제</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="setSub ='과제', selectMinorType('_homework', 'detailCode')">과제</v-btn>
                         <v-btn v-else disabled>과제</v-btn>
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('_midterm', 'detailCode')">중간</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="setSub ='중간', selectMinorType('_midterm', 'detailCode')">중간</v-btn>
                         <v-btn v-else disabled>중간</v-btn>
-                        <v-btn color="info" v-if="btnLock" v-on:click="selectMinorType('_final', 'detailCode')">기말</v-btn>
+                        <v-btn color="info" v-if="btnLock" v-on:click="setSub ='기말', selectMinorType('_final', 'detailCode')">기말</v-btn>
                         <v-btn v-else disabled>기말</v-btn>
                       </v-toolbar>
 
                       <v-card>
-                        <div><h2></h2></div>
+                        <div><h2>종목별 취득 점수 ( {{ setSub }} )</h2></div>
                         <!-- 강의의 항목(중간 기말 쪽지 과제) 별 취득점수 비교 그래프 (4중 1택) -->
                         <study-subject-score-lineChart :datasets="subjectScoreDataSets" :labels="subjectScoreLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-subject-score-lineChart>
                       </v-card>
 
                       <v-card>
-                        <div><h2></h2></div>
+                        <div><h2>종목별 석차백분율 ( {{ setSub }} )</h2></div>
                         <study-subject-ranking-lineChart :data="subjectRankingData" :labels="subjectRankingLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-subject-ranking-lineChart>
                       </v-card>
 
@@ -623,9 +625,14 @@ watch: {
 export default {
     data () {
       return {
+        /* 선택 상태 */
+        setSign : '등교',
+        setAtt : '지각',
+        setLec : null,
+        setSub : '쪽지',
         /* 기간 */
-        dialog : false,
         periodSelected : '최근',
+        dialog : false,
         fDate : null,
         sDate : null,
         startDate : null,
@@ -636,6 +643,7 @@ export default {
 
         /* 학생 목록 */
         studnetInfo: [],
+        studentsType : 'total',
 
         /* 강의 목록 */
         subjectList : [{ id : '', name : ''}],
@@ -723,22 +731,26 @@ export default {
         // this.getStudentInfoRenderGraph();
     },
     /* 하위 메뉴 조작 */
-    selectMinorType(value, set){
+    selectMinorType(value, set, name){
         switch (set) {
           case 'sign' :
             this.setMinor_type[0]['sign'] = value;
+            this.setSign = name;
             this.getStudentInfoRenderGraph('sign');
             break;
           case 'attendance' :
             this.setMinor_type[0]['attendance'] = value;
+            this.setAtt = name;
             this.getStudentInfoRenderGraph('attendance');
             break;
           case 'code' :
             this.setMinor_type[0]['code'] = value;
+            this.setLec = name;
             this.getStudentInfoRenderGraph('code');
             break;
           case 'detailCode' :
             this.setMinor_type[0]['detailCode'] = value;
+            this.setSub = name;
             this.getStudentInfoRenderGraph('detailCode');
             break;
         }
@@ -772,11 +784,11 @@ export default {
         case 'save' :
           /* 날짜 예외처리 = 정상 값 확인 */
           /* 기본 날짜는 watch 로 1차 확인 */
-          if(!this.dateCheck){
+          if(!this.dateCheck && this.setPeriod_type != 'recently'){
             /* 잘못된 값 */
             this.sDate = null;
             this.fDate = null;
-            this.setPeriod_type = value;
+            this.setPeriod_type = 'recently';
             this.periodSelected = '최근';
             this.dateCheck = false;
             /* 알림 */
@@ -815,12 +827,16 @@ export default {
     },
     /* 학생 목록 */
     getStudentInfo(typeSelect){
+      this.studnetInfo = [];
+      this.studentsType = typeSelect;
+
       axios.get('/tutor/analyse/student_list', {
         params : {
-          type  : typeSelect,
+          type  : this.studentsType,
           order : 'id'
         }
       }).then((response) => {
+        console.log(response.data.message);
         this.studnetInfo = response.data.message;
       }).catch((error) => {
         console.log("getStuInfo Err : " + error);
@@ -840,6 +856,7 @@ export default {
         }
         /* 과목 코드 기본 값 설정 */
         this.setMinor_type[0]['code'] = this.subjectList[0].id;
+        this.setLec = this.subjectList[0].name;
         this.getStudentInfoRenderGraph();
       }).catch((error) => {
         console.log('getSub Err :' + error);
@@ -1139,7 +1156,6 @@ export default {
       })
 
       /* 종류 별 석차백분율 */
-
       let paramDataSecond = [{
         major_class : 'study',
         graph_type  : 'single_line',
@@ -1255,7 +1271,7 @@ export default {
     }
   },
   mounted(){
-    this.getStudentInfo('total');
+    this.getStudentInfo(this.studentsType);
   },
   watch : {
     fDate : function(){

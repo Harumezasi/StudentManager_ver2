@@ -131,24 +131,23 @@ class Professor extends Model
     }
 
     // 해당 학생이 사용자의 지도 학생 혹은 수강 학생인지 확인
-    // ★★★★★★★★★★★★★★★★★★★★★★★★ 논리가 맞지 않으니 수정할 것 ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
     public function isMyStudent($stdId) {
         // 01. 수강학생 여부 확인
         $subjects = $this->subjects;
 
         foreach($subjects->all() as $subject) {
-            $joinList = $subject->students()->where('students.id', $stdId)->first();
+            $joinList = $subject->students()->where('students.id', $stdId);
 
-            if(!is_null($joinList)) {
-                return $joinList;
+            if($joinList->exists()) {
+                return $joinList->fitst();
             }
         }
 
         // 02. 지도학생 여부 확인
-        $students = $this->students()->where('students.id', $stdId)->get()->all();
+        $students = $this->students()->where('students.id', $stdId);
 
-        if(sizeof($students) > 0) {
-            return $students[0];
+        if($students->exists()) {
+            return $students->first();
         } else {
             throw new NotValidatedException("해당 학생의 정보에 접근할 권한이 없습니다.");
         }

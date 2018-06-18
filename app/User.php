@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -81,13 +82,17 @@ class User extends Model
                         $join->on('students.id', 'users.id')->where('users.id', $id);
                 })->join('study_classes', 'study_classes.id', 'students.study_class')
                 ->get($getList)
-                ->all()[0];
+                ->first();
 
                 // 사용자 사진이 등록되어 있다면
                 if(Storage::disk('std_photo')->exists($data->photo)) {
                     $data->photo_url = Storage::url('source/std_face/') . $data->photo;
                 } else {
                     $data->photo_url = Storage::url('source/std_face/').'default.png';
+                }
+
+                if(strlen($data->attention_reason) <= 0) {
+                    $data->attention_reason = null;
                 }
 
                 return $data;
