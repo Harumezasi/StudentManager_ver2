@@ -9,18 +9,18 @@
 
     <!-- Parallax Scroll -->
     <v-parallax :src="images[numbers].link" height="870" class="bgi">
-      <div class="shadow">
-        <!-- 흐림 효과 -->
-        <div class="loginArea">
-          <!-- 프로젝트 명 -->
-          <div class="loginText">J-Class Project, Start。</div>
-          <br>
-          <!-- 로그인 버튼-->
-          <div class="loginButton">
-            <v-btn v-on:click="loginPage=true" round outline color="white--text" class="loginVButton">LOGIN & JOIN</v-btn>
+        <div class="shadow">
+          <!-- 흐림 효과 -->
+          <div class="loginArea">
+            <!-- 프로젝트 명 -->
+            <div class="loginText">J-Class Project, Start。</div>
+            <br>
+            <!-- 로그인 버튼-->
+            <div class="loginButton">
+              <v-btn v-on:click="loginPage=true" round outline color="white--text" class="loginVButton">LOGIN & JOIN</v-btn>
+            </div>
           </div>
         </div>
-      </div>
     </v-parallax>
 
     <!-- Main Contents Section -->
@@ -73,6 +73,7 @@
     <!-- 로그인 창 -->
     <transition name="fade">
       <div v-if="loginPage == true" class="loginDivArea">
+
         <!-- 반투명 영역 -->
         <div class="loginShadowArea" v-on:click="loginPage = false">
         </div>

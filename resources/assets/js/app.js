@@ -137,12 +137,12 @@ const routes = [
           body : professorStudentManagement
         }
       },
-        {
-            path: '/professor/userInfo',
-            components : {
-                body : tutorUserInfo
-            }
-        },
+      {
+        path: '/professor/userInfo',
+        components : {
+          body : tutorUserInfo
+        }
+      }
     ]
   },
   /* 등록된 성적 확인 (새창)*/

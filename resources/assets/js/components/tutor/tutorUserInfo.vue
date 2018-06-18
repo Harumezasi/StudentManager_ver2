@@ -9,8 +9,8 @@
         style = "box-shadow:  0 4px 12px 0 rgba(244, 149, 24, 0.36)"
         >
           <v-card-text style="padding-bottom: 5px;">
-            <h2 style="color: white">회원정보</h2>
-            <p>정보확인 및 수정</p>
+            <h1 style="color: white">회원정보</h1>
+            <p style="font-size:20px">정보확인 및 수정</p>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -49,6 +49,7 @@
                  <v-text-field
                    v-model="userInfoDatas.name"
                    label="Name"
+                   id="fontSetting"
                    required
                  ></v-text-field>
 
@@ -56,6 +57,7 @@
                  <v-text-field
                    v-model="userInfoDatas.email"
                    label="E-mail"
+                   id="fontSetting"
                    required
                  ></v-text-field>
 
@@ -64,6 +66,7 @@
                    v-model="userInfoDatas.phone"
                    label="Phone"
                    mask="phone"
+                   id="fontSetting"
                    required
                  ></v-text-field>
 
@@ -71,6 +74,7 @@
                  <v-text-field
                    v-model="userInfoDatas.office"
                    label="Office"
+                   id="fontSetting"
                    required
                  ></v-text-field>
 
@@ -79,6 +83,7 @@
                    v-model="userPassword"
                    label="Password"
                    type="password"
+                   id="fontSetting"
                    required
                  ></v-text-field>
 
@@ -87,13 +92,14 @@
                    v-model="userPasswordCheck"
                    label="Password Check"
                    type="password"
+                   id="fontSetting"
                    required
                  ></v-text-field>
 
                </v-form>
              </v-card-text>
              <v-card-text class = "updateBtn text-xs-right">
-               <v-btn color = "amber darken-2" dark v-on:click="setUserInfo()">회원정보 변경</v-btn>
+               <v-btn color = "amber darken-2" dark v-on:click="setUserInfo()" class="fontSetting">회원정보 변경</v-btn>
              </v-card-text>
            </v-flex>
          </div>
@@ -107,6 +113,16 @@
 </template>
 
 <style>
+
+.fontSetting {
+  font-size: 25px;
+  font-style: 'Gothic A1';
+}
+
+#fontSetting {
+  font-size: 30px;
+  font-style: 'Gothic A1';
+}
 
 .profileTitleBox {
   border-radius: 0.2975rem;

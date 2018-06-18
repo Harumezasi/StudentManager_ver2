@@ -23,12 +23,12 @@
             </v-card-text>
 
             <!-- 기간 설정 (ex. 일주일, 한달) 부분 -->
-            <v-flex xs2 text-xs-center>
+            <v-flex xs2 text-xs-center class="fontSetting">
               <v-select :items="period" v-model="set_days" label="Select" single-line></v-select>동안
             </v-flex>
 
             <!-- 상태 (ex. 출석, 결석 등) -->
-            <v-flex xs2 text-xs-center>
+            <v-flex xs2 text-xs-center class="fontSetting">
               <v-select :items="attendance" v-model="set_ada" label="Select" single-line></v-select>을
             </v-flex>
 
@@ -38,7 +38,7 @@
             </v-flex>
 
             <!-- 횟수 (ex. 3회, 4회) -->
-            <v-flex xs2 text-xs-center>
+            <v-flex xs2 text-xs-center class="fontSetting">
               <v-text-field
                 v-model="set_count"
                 id="num"
@@ -48,14 +48,14 @@
             </v-flex>
 
             <!-- 알림 보낼 대상 설정 (ex. 교수, 학생) -->
-            <v-flex xs2 text-xs-center>
+            <v-flex xs2 text-xs-center class="fontSetting">
               <v-select :items="noticeTarget" v-model="set_alert_std" label="Select" single-line></v-select>
               에게 알림
             </v-flex>
 
             <!-- 알림 추가 버튼 -->
             <v-flex xs2 text-xs-center>
-              <v-btn color="primary" v-on:click="setAlert()">추가</v-btn>
+              <v-btn color="primary" v-on:click="setAlert()" class="fontSetting">추가</v-btn>
             </v-flex>
           </v-layout>
         </v-container>
@@ -80,9 +80,9 @@
                 class = "setAlertDataArea"
                 v-for = "setAlertData in settingAlertData"
               >
-                <v-flex xs12 md8>
+                <v-flex xs12 md8 class="fontSetting">
                   {{ setAlertData.alert_condition }}
-                  <v-btn color = "red" v-on:click="delAlert(setAlertData.alert_id)">삭제</v-btn>
+                  <v-btn color = "red" v-on:click="delAlert(setAlertData.alert_id)" style="color:white" class="fontSetting">삭제</v-btn>
                 </v-flex>
               </div>
             </v-layout>
@@ -97,6 +97,16 @@
 <style>
 body {
   background-color: rgb(255, 255, 255);
+}
+
+.fontSetting {
+  font-size: 25px;
+  font-style: 'Gothic A1';
+}
+
+#fontSetting td {
+  font-size: 25px;
+  font-style: 'Gothic A1';
 }
 
 .setAlertDataArea {

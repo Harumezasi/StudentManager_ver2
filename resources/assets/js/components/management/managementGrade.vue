@@ -1,5 +1,5 @@
 <template>
-  <div class = "tutorStudentGrade">
+  <div class = "tutorStudentGrade fontSetting">
 
     <!-- 성적조회 간략히 영역 -->
     <v-flex xs12>
@@ -9,7 +9,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">성적조회 (간략히 보기)</h2>
+                <h1 class = "cardInsideTitle">성적조회 (간략히 보기)</h1>
               </v-card-text>
 
               <v-card-text>
@@ -36,7 +36,7 @@
               </v-card-text>
 
               <v-card-text>
-                <h3 class = "cardInsideTitle">{{ subjectStstsName }}</h3>
+                <h2 class = "cardInsideTitle">{{ subjectStstsName }}</h2>
               </v-card-text>
 
               <v-container fluid grid-list-md>
@@ -47,24 +47,24 @@
                 >
                   <v-flex slot="item" slot-scope="props">
                     <v-card>
-                      <v-card-title><h4>{{ props.item.type }}</h4></v-card-title>
+                      <v-card-title><h3>{{ props.item.type }}</h3></v-card-title>
                       <v-divider></v-divider>
                       <v-list dense>
                         <v-list-tile>
-                          <v-list-tile-content>횟수</v-list-tile-content>
-                          <v-list-tile-content class="align-end">{{ props.item.count }}</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">횟수</v-list-tile-content>
+                          <v-list-tile-content class="align-end fontSetting">{{ props.item.count }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content>취득 가능 점수</v-list-tile-content>
-                          <v-list-tile-content class="align-end">{{ props.item.perfect_score }}</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">총 점수</v-list-tile-content>
+                          <v-list-tile-content class="align-end fontSetting">{{ props.item.perfect_score }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content>취득 점수</v-list-tile-content>
-                          <v-list-tile-content class="align-end">{{ props.item.gained_score }}</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">취득 점수</v-list-tile-content>
+                          <v-list-tile-content class="align-end fontSetting">{{ props.item.gained_score }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content>평균</v-list-tile-content>
-                          <v-list-tile-content class="align-end">{{ props.item.average }}</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">평균</v-list-tile-content>
+                          <v-list-tile-content class="align-end fontSetting">{{ props.item.average }}</v-list-tile-content>
                         </v-list-tile>
                       </v-list>
                     </v-card>
@@ -86,7 +86,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">성적조회 (상세보기)</h2>
+                <h1 class = "cardInsideTitle">성적조회 (상세보기)</h1>
               </v-card-text>
               <v-card-text>
                 <v-container grid-list-xl>
@@ -112,7 +112,7 @@
               </v-card-text>
 
               <v-card-text>
-                <h3 class = "cardInsideTitle">{{ subjectScoreName }}</h3>
+                <h2 class = "cardInsideTitle">{{ subjectScoreName }}</h2>
               </v-card-text>
 
               <!-- 테이블 -->
@@ -121,6 +121,7 @@
                  :items="subjectScore"
                  :search="search"
                  page
+                 id="fontSetting"
                >
                  <template slot="items" slot-scope="props">
                    <td>{{ props.item.execute_date }}</td>
@@ -141,6 +142,15 @@
 </template>
 
 <style>
+.fontSetting {
+  font-size: 25px;
+  font-style: 'Gothic A1';
+}
+
+#fontSetting td {
+  font-size: 25px;
+  font-style: 'Gothic A1';
+}
 
 </style>
 

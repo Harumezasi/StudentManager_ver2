@@ -82,7 +82,7 @@
                 <v-chip color = "amber" v-for="late in lateData" :key="late.name" class="studentInfoArea">
                     <v-card-title>
                       <div>
-                        <span>{{ late.name }}</span><br>
+                        <span class="fontSetting">{{ late.name }}</span><br>
                         <span>{{ late.sign_in_time }}</span>
                       </div>
                     </v-card-title>
@@ -101,7 +101,7 @@
                 <v-chip color = "red" v-for="absence in absenceData" :key="absence.name" class="studentInfoArea">
                     <v-card-title>
                       <div>
-                        <span>{{ absence.id }}</span>
+                        <span class="fontSetting">{{ absence.id }}</span>
                         <span>{{ absence.name }}</span>
                       </div>
                     </v-card-title>
@@ -120,7 +120,7 @@
                 <v-chip color = "pink lighten-3" v-for="loveStudent in loveStudentData" :key="loveStudent.name" class="studentInfoArea">
                     <v-card-title>
                       <div>
-                        <span>{{ loveStudent.name }}</span><br>
+                        <span class="fontSetting">{{ loveStudent.name }}</span><br>
                         <span>{{ loveStudent.come }}</span>
                       </div>
                     </v-card-title>
@@ -146,7 +146,7 @@
                 <v-chip color = "green" v-for="attendance in attendanceData" :key="attendance.name" class="studentInfoArea">
                     <v-card-title>
                       <div>
-                        <span>{{ attendance.name }}</span><br>
+                        <span class="fontSetting">{{ attendance.name }}</span><br>
                         <span>{{ attendance.sign_in_time }}</span>
                       </div>
                     </v-card-title>
@@ -165,7 +165,7 @@
                 <v-chip color = "green" v-for="returnHome in returnHomeData" :key="returnHome.name" class="studentInfoArea">
                     <v-card-title>
                       <div>
-                        <span>{{ returnHome.name }}</span><br>
+                        <span class="fontSetting">{{ returnHome.name }}</span><br>
                         <span>{{ returnHome.sign_out_time }}</span>
                       </div>
                     </v-card-title>
@@ -181,6 +181,10 @@
 </template>
 
 <style>
+.fontSetting {
+  font-size: 30px;
+  font-style: 'Gothic A1';
+}
 .leftLine {
   border-right: 1px solid;
   border-color: #d2d2d2;

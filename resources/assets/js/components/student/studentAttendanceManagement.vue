@@ -114,7 +114,7 @@
         mounted(){
           this.renderBarChart();
         },
-        /* props 의 값을 채워준다. */
+        /* 선언된 chart 의 data 속성에 값을 반환한다. */
         computed: {
           dataChart: function(){
             return this.data
@@ -181,7 +181,7 @@
                 // 조회기간
                 pagiNationInfo : [],
                 // 조회단위, 상세
-                period : null,
+                period : 'weekly',
                 date : null, // 쿼리를 실행할 때, 클릭 이벤트에 맞춰서 값을 넣어준다.
                 nextDate : null,
                 prevDate : null,

@@ -36,6 +36,7 @@
                          :items="student_lists"
                          :search="search"
                          :pagination.sync="pagination"
+                         id="fontSetting"
                          >
                        <template slot="items" slot-scope="props">
                          <td class="text-xs-center">{{ props.item.id }}</td>
@@ -65,7 +66,7 @@
         <v-layout column class="my-5" align-center>
           <v-flex xs12 sm4 class="my-3">
             <div class="text-xs-center">
-              <h2 class="headline"> 성적 등록 및 확인 </h2>
+              <h1 class="headline"> 성적 등록 및 확인 </h1>
             </div>
           </v-flex>
 
@@ -253,6 +254,10 @@
 </template>
 
 <style>
+  #fontSetting td {
+    font-size: 25px;
+    font-style: 'Gothic A1';
+  }
   .panel-header {
     height: 200px;
     padding-top: 80px;
@@ -339,24 +344,21 @@ export default {
       },
       headers: [
         {
+          class: 'display-1',
           text: '학번',
           value: 'studentNum',
           sortable: true,
           align: 'center'
         },
         {
+          class: 'display-1',
           text: '이름',
           sortable: true,
           value: 'name',
           align: 'center'
         },
-        {
-         text: '학업성취도',
-         value: 'gradePersent',
-         sortable: true,
-         align: 'center'
-       },
        {
+         class: 'display-1',
          text: '',
          value: 'detailInfo',
          align: 'center'

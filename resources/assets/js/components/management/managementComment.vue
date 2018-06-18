@@ -103,6 +103,10 @@
 .professorPic {
   margin: 0 0 10px 7px;
 }
+.fontSetting {
+  font-size: 30px;
+  font-style: 'Gothic A1';
+}
 /*-- 코멘트용 말풍선 --*/
 .box3 {
   width: 300px;

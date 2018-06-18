@@ -4583,7 +4583,7 @@
 "use strict";
 
 
-module.exports = __webpack_require__(11);
+module.exports = __webpack_require__(13);
 module.exports.easing = __webpack_require__(187);
 module.exports.canvas = __webpack_require__(188);
 module.exports.options = __webpack_require__(189);
@@ -5034,7 +5034,7 @@ function applyToTag (styleElement, obj) {
 "use strict";
 
 
-var bind = __webpack_require__(17);
+var bind = __webpack_require__(18);
 var isBuffer = __webpack_require__(164);
 
 /*global toString:true*/
@@ -5344,7 +5344,7 @@ module.exports = {
 "use strict";
 
 
-var color = __webpack_require__(146);
+var color = __webpack_require__(147);
 var helpers = __webpack_require__(1);
 
 function interpolate(start, view, model, ease) {
@@ -5475,986 +5475,43 @@ module.exports.Rectangle = __webpack_require__(198);
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-var helpers = __webpack_require__(1);
-
-function filterByPosition(array, position) {
-	return helpers.where(array, function(v) {
-		return v.position === position;
-	});
-}
-
-function sortByWeight(array, reverse) {
-	array.forEach(function(v, i) {
-		v._tmpIndex_ = i;
-		return v;
-	});
-	array.sort(function(a, b) {
-		var v0 = reverse ? b : a;
-		var v1 = reverse ? a : b;
-		return v0.weight === v1.weight ?
-			v0._tmpIndex_ - v1._tmpIndex_ :
-			v0.weight - v1.weight;
-	});
-	array.forEach(function(v) {
-		delete v._tmpIndex_;
-	});
-}
-
-/**
- * @interface ILayoutItem
- * @prop {String} position - The position of the item in the chart layout. Possible values are
- * 'left', 'top', 'right', 'bottom', and 'chartArea'
- * @prop {Number} weight - The weight used to sort the item. Higher weights are further away from the chart area
- * @prop {Boolean} fullWidth - if true, and the item is horizontal, then push vertical boxes down
- * @prop {Function} isHorizontal - returns true if the layout item is horizontal (ie. top or bottom)
- * @prop {Function} update - Takes two parameters: width and height. Returns size of item
- * @prop {Function} getPadding -  Returns an object with padding on the edges
- * @prop {Number} width - Width of item. Must be valid after update()
- * @prop {Number} height - Height of item. Must be valid after update()
- * @prop {Number} left - Left edge of the item. Set by layout system and cannot be used in update
- * @prop {Number} top - Top edge of the item. Set by layout system and cannot be used in update
- * @prop {Number} right - Right edge of the item. Set by layout system and cannot be used in update
- * @prop {Number} bottom - Bottom edge of the item. Set by layout system and cannot be used in update
- */
-
-// The layout service is very self explanatory.  It's responsible for the layout within a chart.
-// Scales, Legends and Plugins all rely on the layout service and can easily register to be placed anywhere they need
-// It is this service's responsibility of carrying out that layout.
-module.exports = {
-	defaults: {},
-
-	/**
-	 * Register a box to a chart.
-	 * A box is simply a reference to an object that requires layout. eg. Scales, Legend, Title.
-	 * @param {Chart} chart - the chart to use
-	 * @param {ILayoutItem} item - the item to add to be layed out
-	 */
-	addBox: function(chart, item) {
-		if (!chart.boxes) {
-			chart.boxes = [];
-		}
-
-		// initialize item with default values
-		item.fullWidth = item.fullWidth || false;
-		item.position = item.position || 'top';
-		item.weight = item.weight || 0;
-
-		chart.boxes.push(item);
-	},
-
-	/**
-	 * Remove a layoutItem from a chart
-	 * @param {Chart} chart - the chart to remove the box from
-	 * @param {Object} layoutItem - the item to remove from the layout
-	 */
-	removeBox: function(chart, layoutItem) {
-		var index = chart.boxes ? chart.boxes.indexOf(layoutItem) : -1;
-		if (index !== -1) {
-			chart.boxes.splice(index, 1);
-		}
-	},
-
-	/**
-	 * Sets (or updates) options on the given `item`.
-	 * @param {Chart} chart - the chart in which the item lives (or will be added to)
-	 * @param {Object} item - the item to configure with the given options
-	 * @param {Object} options - the new item options.
-	 */
-	configure: function(chart, item, options) {
-		var props = ['fullWidth', 'position', 'weight'];
-		var ilen = props.length;
-		var i = 0;
-		var prop;
-
-		for (; i < ilen; ++i) {
-			prop = props[i];
-			if (options.hasOwnProperty(prop)) {
-				item[prop] = options[prop];
-			}
-		}
-	},
-
-	/**
-	 * Fits boxes of the given chart into the given size by having each box measure itself
-	 * then running a fitting algorithm
-	 * @param {Chart} chart - the chart
-	 * @param {Number} width - the width to fit into
-	 * @param {Number} height - the height to fit into
-	 */
-	update: function(chart, width, height) {
-		if (!chart) {
-			return;
-		}
-
-		var layoutOptions = chart.options.layout || {};
-		var padding = helpers.options.toPadding(layoutOptions.padding);
-		var leftPadding = padding.left;
-		var rightPadding = padding.right;
-		var topPadding = padding.top;
-		var bottomPadding = padding.bottom;
-
-		var leftBoxes = filterByPosition(chart.boxes, 'left');
-		var rightBoxes = filterByPosition(chart.boxes, 'right');
-		var topBoxes = filterByPosition(chart.boxes, 'top');
-		var bottomBoxes = filterByPosition(chart.boxes, 'bottom');
-		var chartAreaBoxes = filterByPosition(chart.boxes, 'chartArea');
-
-		// Sort boxes by weight. A higher weight is further away from the chart area
-		sortByWeight(leftBoxes, true);
-		sortByWeight(rightBoxes, false);
-		sortByWeight(topBoxes, true);
-		sortByWeight(bottomBoxes, false);
-
-		// Essentially we now have any number of boxes on each of the 4 sides.
-		// Our canvas looks like the following.
-		// The areas L1 and L2 are the left axes. R1 is the right axis, T1 is the top axis and
-		// B1 is the bottom axis
-		// There are also 4 quadrant-like locations (left to right instead of clockwise) reserved for chart overlays
-		// These locations are single-box locations only, when trying to register a chartArea location that is already taken,
-		// an error will be thrown.
-		//
-		// |----------------------------------------------------|
-		// |                  T1 (Full Width)                   |
-		// |----------------------------------------------------|
-		// |    |    |                 T2                  |    |
-		// |    |----|-------------------------------------|----|
-		// |    |    | C1 |                           | C2 |    |
-		// |    |    |----|                           |----|    |
-		// |    |    |                                     |    |
-		// | L1 | L2 |           ChartArea (C0)            | R1 |
-		// |    |    |                                     |    |
-		// |    |    |----|                           |----|    |
-		// |    |    | C3 |                           | C4 |    |
-		// |    |----|-------------------------------------|----|
-		// |    |    |                 B1                  |    |
-		// |----------------------------------------------------|
-		// |                  B2 (Full Width)                   |
-		// |----------------------------------------------------|
-		//
-		// What we do to find the best sizing, we do the following
-		// 1. Determine the minimum size of the chart area.
-		// 2. Split the remaining width equally between each vertical axis
-		// 3. Split the remaining height equally between each horizontal axis
-		// 4. Give each layout the maximum size it can be. The layout will return it's minimum size
-		// 5. Adjust the sizes of each axis based on it's minimum reported size.
-		// 6. Refit each axis
-		// 7. Position each axis in the final location
-		// 8. Tell the chart the final location of the chart area
-		// 9. Tell any axes that overlay the chart area the positions of the chart area
-
-		// Step 1
-		var chartWidth = width - leftPadding - rightPadding;
-		var chartHeight = height - topPadding - bottomPadding;
-		var chartAreaWidth = chartWidth / 2; // min 50%
-		var chartAreaHeight = chartHeight / 2; // min 50%
-
-		// Step 2
-		var verticalBoxWidth = (width - chartAreaWidth) / (leftBoxes.length + rightBoxes.length);
-
-		// Step 3
-		var horizontalBoxHeight = (height - chartAreaHeight) / (topBoxes.length + bottomBoxes.length);
-
-		// Step 4
-		var maxChartAreaWidth = chartWidth;
-		var maxChartAreaHeight = chartHeight;
-		var minBoxSizes = [];
-
-		function getMinimumBoxSize(box) {
-			var minSize;
-			var isHorizontal = box.isHorizontal();
-
-			if (isHorizontal) {
-				minSize = box.update(box.fullWidth ? chartWidth : maxChartAreaWidth, horizontalBoxHeight);
-				maxChartAreaHeight -= minSize.height;
-			} else {
-				minSize = box.update(verticalBoxWidth, maxChartAreaHeight);
-				maxChartAreaWidth -= minSize.width;
-			}
-
-			minBoxSizes.push({
-				horizontal: isHorizontal,
-				minSize: minSize,
-				box: box,
-			});
-		}
-
-		helpers.each(leftBoxes.concat(rightBoxes, topBoxes, bottomBoxes), getMinimumBoxSize);
-
-		// If a horizontal box has padding, we move the left boxes over to avoid ugly charts (see issue #2478)
-		var maxHorizontalLeftPadding = 0;
-		var maxHorizontalRightPadding = 0;
-		var maxVerticalTopPadding = 0;
-		var maxVerticalBottomPadding = 0;
-
-		helpers.each(topBoxes.concat(bottomBoxes), function(horizontalBox) {
-			if (horizontalBox.getPadding) {
-				var boxPadding = horizontalBox.getPadding();
-				maxHorizontalLeftPadding = Math.max(maxHorizontalLeftPadding, boxPadding.left);
-				maxHorizontalRightPadding = Math.max(maxHorizontalRightPadding, boxPadding.right);
-			}
-		});
-
-		helpers.each(leftBoxes.concat(rightBoxes), function(verticalBox) {
-			if (verticalBox.getPadding) {
-				var boxPadding = verticalBox.getPadding();
-				maxVerticalTopPadding = Math.max(maxVerticalTopPadding, boxPadding.top);
-				maxVerticalBottomPadding = Math.max(maxVerticalBottomPadding, boxPadding.bottom);
-			}
-		});
-
-		// At this point, maxChartAreaHeight and maxChartAreaWidth are the size the chart area could
-		// be if the axes are drawn at their minimum sizes.
-		// Steps 5 & 6
-		var totalLeftBoxesWidth = leftPadding;
-		var totalRightBoxesWidth = rightPadding;
-		var totalTopBoxesHeight = topPadding;
-		var totalBottomBoxesHeight = bottomPadding;
-
-		// Function to fit a box
-		function fitBox(box) {
-			var minBoxSize = helpers.findNextWhere(minBoxSizes, function(minBox) {
-				return minBox.box === box;
-			});
-
-			if (minBoxSize) {
-				if (box.isHorizontal()) {
-					var scaleMargin = {
-						left: Math.max(totalLeftBoxesWidth, maxHorizontalLeftPadding),
-						right: Math.max(totalRightBoxesWidth, maxHorizontalRightPadding),
-						top: 0,
-						bottom: 0
-					};
-
-					// Don't use min size here because of label rotation. When the labels are rotated, their rotation highly depends
-					// on the margin. Sometimes they need to increase in size slightly
-					box.update(box.fullWidth ? chartWidth : maxChartAreaWidth, chartHeight / 2, scaleMargin);
-				} else {
-					box.update(minBoxSize.minSize.width, maxChartAreaHeight);
-				}
-			}
-		}
-
-		// Update, and calculate the left and right margins for the horizontal boxes
-		helpers.each(leftBoxes.concat(rightBoxes), fitBox);
-
-		helpers.each(leftBoxes, function(box) {
-			totalLeftBoxesWidth += box.width;
-		});
-
-		helpers.each(rightBoxes, function(box) {
-			totalRightBoxesWidth += box.width;
-		});
-
-		// Set the Left and Right margins for the horizontal boxes
-		helpers.each(topBoxes.concat(bottomBoxes), fitBox);
-
-		// Figure out how much margin is on the top and bottom of the vertical boxes
-		helpers.each(topBoxes, function(box) {
-			totalTopBoxesHeight += box.height;
-		});
-
-		helpers.each(bottomBoxes, function(box) {
-			totalBottomBoxesHeight += box.height;
-		});
-
-		function finalFitVerticalBox(box) {
-			var minBoxSize = helpers.findNextWhere(minBoxSizes, function(minSize) {
-				return minSize.box === box;
-			});
-
-			var scaleMargin = {
-				left: 0,
-				right: 0,
-				top: totalTopBoxesHeight,
-				bottom: totalBottomBoxesHeight
-			};
-
-			if (minBoxSize) {
-				box.update(minBoxSize.minSize.width, maxChartAreaHeight, scaleMargin);
-			}
-		}
-
-		// Let the left layout know the final margin
-		helpers.each(leftBoxes.concat(rightBoxes), finalFitVerticalBox);
-
-		// Recalculate because the size of each layout might have changed slightly due to the margins (label rotation for instance)
-		totalLeftBoxesWidth = leftPadding;
-		totalRightBoxesWidth = rightPadding;
-		totalTopBoxesHeight = topPadding;
-		totalBottomBoxesHeight = bottomPadding;
-
-		helpers.each(leftBoxes, function(box) {
-			totalLeftBoxesWidth += box.width;
-		});
-
-		helpers.each(rightBoxes, function(box) {
-			totalRightBoxesWidth += box.width;
-		});
-
-		helpers.each(topBoxes, function(box) {
-			totalTopBoxesHeight += box.height;
-		});
-		helpers.each(bottomBoxes, function(box) {
-			totalBottomBoxesHeight += box.height;
-		});
-
-		// We may be adding some padding to account for rotated x axis labels
-		var leftPaddingAddition = Math.max(maxHorizontalLeftPadding - totalLeftBoxesWidth, 0);
-		totalLeftBoxesWidth += leftPaddingAddition;
-		totalRightBoxesWidth += Math.max(maxHorizontalRightPadding - totalRightBoxesWidth, 0);
-
-		var topPaddingAddition = Math.max(maxVerticalTopPadding - totalTopBoxesHeight, 0);
-		totalTopBoxesHeight += topPaddingAddition;
-		totalBottomBoxesHeight += Math.max(maxVerticalBottomPadding - totalBottomBoxesHeight, 0);
-
-		// Figure out if our chart area changed. This would occur if the dataset layout label rotation
-		// changed due to the application of the margins in step 6. Since we can only get bigger, this is safe to do
-		// without calling `fit` again
-		var newMaxChartAreaHeight = height - totalTopBoxesHeight - totalBottomBoxesHeight;
-		var newMaxChartAreaWidth = width - totalLeftBoxesWidth - totalRightBoxesWidth;
-
-		if (newMaxChartAreaWidth !== maxChartAreaWidth || newMaxChartAreaHeight !== maxChartAreaHeight) {
-			helpers.each(leftBoxes, function(box) {
-				box.height = newMaxChartAreaHeight;
-			});
-
-			helpers.each(rightBoxes, function(box) {
-				box.height = newMaxChartAreaHeight;
-			});
-
-			helpers.each(topBoxes, function(box) {
-				if (!box.fullWidth) {
-					box.width = newMaxChartAreaWidth;
-				}
-			});
-
-			helpers.each(bottomBoxes, function(box) {
-				if (!box.fullWidth) {
-					box.width = newMaxChartAreaWidth;
-				}
-			});
-
-			maxChartAreaHeight = newMaxChartAreaHeight;
-			maxChartAreaWidth = newMaxChartAreaWidth;
-		}
-
-		// Step 7 - Position the boxes
-		var left = leftPadding + leftPaddingAddition;
-		var top = topPadding + topPaddingAddition;
-
-		function placeBox(box) {
-			if (box.isHorizontal()) {
-				box.left = box.fullWidth ? leftPadding : totalLeftBoxesWidth;
-				box.right = box.fullWidth ? width - rightPadding : totalLeftBoxesWidth + maxChartAreaWidth;
-				box.top = top;
-				box.bottom = top + box.height;
-
-				// Move to next point
-				top = box.bottom;
-
-			} else {
-
-				box.left = left;
-				box.right = left + box.width;
-				box.top = totalTopBoxesHeight;
-				box.bottom = totalTopBoxesHeight + maxChartAreaHeight;
-
-				// Move to next point
-				left = box.right;
-			}
-		}
-
-		helpers.each(leftBoxes.concat(topBoxes), placeBox);
-
-		// Account for chart width and height
-		left += maxChartAreaWidth;
-		top += maxChartAreaHeight;
-
-		helpers.each(rightBoxes, placeBox);
-		helpers.each(bottomBoxes, placeBox);
-
-		// Step 8
-		chart.chartArea = {
-			left: totalLeftBoxesWidth,
-			top: totalTopBoxesHeight,
-			right: totalLeftBoxesWidth + maxChartAreaWidth,
-			bottom: totalTopBoxesHeight + maxChartAreaHeight
-		};
-
-		// Step 9
-		helpers.each(chartAreaBoxes, function(box) {
-			box.left = chart.chartArea.left;
-			box.top = chart.chartArea.top;
-			box.right = chart.chartArea.right;
-			box.bottom = chart.chartArea.bottom;
-
-			box.update(maxChartAreaWidth, maxChartAreaHeight);
-		});
-	}
+/* unused harmony export VueCharts */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseCharts__ = __webpack_require__(254);
+/* unused harmony reexport Bar */
+/* unused harmony reexport HorizontalBar */
+/* unused harmony reexport Doughnut */
+/* unused harmony reexport Line */
+/* unused harmony reexport Pie */
+/* unused harmony reexport PolarArea */
+/* unused harmony reexport Radar */
+/* unused harmony reexport Bubble */
+/* unused harmony reexport Scatter */
+/* unused harmony reexport mixins */
+/* unused harmony reexport generateChart */
+
+
+var VueCharts = {
+  Bar: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["a" /* Bar */],
+  HorizontalBar: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["d" /* HorizontalBar */],
+  Doughnut: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["c" /* Doughnut */],
+  Line: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["e" /* Line */],
+  Pie: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["f" /* Pie */],
+  PolarArea: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["g" /* PolarArea */],
+  Radar: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["h" /* Radar */],
+  Bubble: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["b" /* Bubble */],
+  Scatter: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["i" /* Scatter */],
+  mixins: __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__["a" /* default */],
+  generateChart: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["j" /* generateChart */]
 };
+/* harmony default export */ __webpack_exports__["a"] = (VueCharts);
 
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var helpers = __webpack_require__(1);
-
-/**
- * Namespace to hold static tick generation functions
- * @namespace Chart.Ticks
- */
-module.exports = {
-	/**
-	 * Namespace to hold formatters for different types of ticks
-	 * @namespace Chart.Ticks.formatters
-	 */
-	formatters: {
-		/**
-		 * Formatter for value labels
-		 * @method Chart.Ticks.formatters.values
-		 * @param value the value to display
-		 * @return {String|Array} the label to display
-		 */
-		values: function(value) {
-			return helpers.isArray(value) ? value : '' + value;
-		},
-
-		/**
-		 * Formatter for linear numeric ticks
-		 * @method Chart.Ticks.formatters.linear
-		 * @param tickValue {Number} the value to be formatted
-		 * @param index {Number} the position of the tickValue parameter in the ticks array
-		 * @param ticks {Array<Number>} the list of ticks being converted
-		 * @return {String} string representation of the tickValue parameter
-		 */
-		linear: function(tickValue, index, ticks) {
-			// If we have lots of ticks, don't use the ones
-			var delta = ticks.length > 3 ? ticks[2] - ticks[1] : ticks[1] - ticks[0];
-
-			// If we have a number like 2.5 as the delta, figure out how many decimal places we need
-			if (Math.abs(delta) > 1) {
-				if (tickValue !== Math.floor(tickValue)) {
-					// not an integer
-					delta = tickValue - Math.floor(tickValue);
-				}
-			}
-
-			var logDelta = helpers.log10(Math.abs(delta));
-			var tickString = '';
-
-			if (tickValue !== 0) {
-				var numDecimal = -1 * Math.floor(logDelta);
-				numDecimal = Math.max(Math.min(numDecimal, 20), 0); // toFixed has a max of 20 decimal places
-				tickString = tickValue.toFixed(numDecimal);
-			} else {
-				tickString = '0'; // never show decimal places for 0
-			}
-
-			return tickString;
-		},
-
-		logarithmic: function(tickValue, index, ticks) {
-			var remain = tickValue / (Math.pow(10, Math.floor(helpers.log10(tickValue))));
-
-			if (tickValue === 0) {
-				return '0';
-			} else if (remain === 1 || remain === 2 || remain === 5 || index === 0 || index === ticks.length - 1) {
-				return tickValue.toExponential();
-			}
-			return '';
-		}
-	}
-};
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * @namespace Chart.helpers
- */
-var helpers = {
-	/**
-	 * An empty function that can be used, for example, for optional callback.
-	 */
-	noop: function() {},
-
-	/**
-	 * Returns a unique id, sequentially generated from a global variable.
-	 * @returns {Number}
-	 * @function
-	 */
-	uid: (function() {
-		var id = 0;
-		return function() {
-			return id++;
-		};
-	}()),
-
-	/**
-	 * Returns true if `value` is neither null nor undefined, else returns false.
-	 * @param {*} value - The value to test.
-	 * @returns {Boolean}
-	 * @since 2.7.0
-	 */
-	isNullOrUndef: function(value) {
-		return value === null || typeof value === 'undefined';
-	},
-
-	/**
-	 * Returns true if `value` is an array, else returns false.
-	 * @param {*} value - The value to test.
-	 * @returns {Boolean}
-	 * @function
-	 */
-	isArray: Array.isArray ? Array.isArray : function(value) {
-		return Object.prototype.toString.call(value) === '[object Array]';
-	},
-
-	/**
-	 * Returns true if `value` is an object (excluding null), else returns false.
-	 * @param {*} value - The value to test.
-	 * @returns {Boolean}
-	 * @since 2.7.0
-	 */
-	isObject: function(value) {
-		return value !== null && Object.prototype.toString.call(value) === '[object Object]';
-	},
-
-	/**
-	 * Returns `value` if defined, else returns `defaultValue`.
-	 * @param {*} value - The value to return if defined.
-	 * @param {*} defaultValue - The value to return if `value` is undefined.
-	 * @returns {*}
-	 */
-	valueOrDefault: function(value, defaultValue) {
-		return typeof value === 'undefined' ? defaultValue : value;
-	},
-
-	/**
-	 * Returns value at the given `index` in array if defined, else returns `defaultValue`.
-	 * @param {Array} value - The array to lookup for value at `index`.
-	 * @param {Number} index - The index in `value` to lookup for value.
-	 * @param {*} defaultValue - The value to return if `value[index]` is undefined.
-	 * @returns {*}
-	 */
-	valueAtIndexOrDefault: function(value, index, defaultValue) {
-		return helpers.valueOrDefault(helpers.isArray(value) ? value[index] : value, defaultValue);
-	},
-
-	/**
-	 * Calls `fn` with the given `args` in the scope defined by `thisArg` and returns the
-	 * value returned by `fn`. If `fn` is not a function, this method returns undefined.
-	 * @param {Function} fn - The function to call.
-	 * @param {Array|undefined|null} args - The arguments with which `fn` should be called.
-	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
-	 * @returns {*}
-	 */
-	callback: function(fn, args, thisArg) {
-		if (fn && typeof fn.call === 'function') {
-			return fn.apply(thisArg, args);
-		}
-	},
-
-	/**
-	 * Note(SB) for performance sake, this method should only be used when loopable type
-	 * is unknown or in none intensive code (not called often and small loopable). Else
-	 * it's preferable to use a regular for() loop and save extra function calls.
-	 * @param {Object|Array} loopable - The object or array to be iterated.
-	 * @param {Function} fn - The function to call for each item.
-	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
-	 * @param {Boolean} [reverse] - If true, iterates backward on the loopable.
-	 */
-	each: function(loopable, fn, thisArg, reverse) {
-		var i, len, keys;
-		if (helpers.isArray(loopable)) {
-			len = loopable.length;
-			if (reverse) {
-				for (i = len - 1; i >= 0; i--) {
-					fn.call(thisArg, loopable[i], i);
-				}
-			} else {
-				for (i = 0; i < len; i++) {
-					fn.call(thisArg, loopable[i], i);
-				}
-			}
-		} else if (helpers.isObject(loopable)) {
-			keys = Object.keys(loopable);
-			len = keys.length;
-			for (i = 0; i < len; i++) {
-				fn.call(thisArg, loopable[keys[i]], keys[i]);
-			}
-		}
-	},
-
-	/**
-	 * Returns true if the `a0` and `a1` arrays have the same content, else returns false.
-	 * @see http://stackoverflow.com/a/14853974
-	 * @param {Array} a0 - The array to compare
-	 * @param {Array} a1 - The array to compare
-	 * @returns {Boolean}
-	 */
-	arrayEquals: function(a0, a1) {
-		var i, ilen, v0, v1;
-
-		if (!a0 || !a1 || a0.length !== a1.length) {
-			return false;
-		}
-
-		for (i = 0, ilen = a0.length; i < ilen; ++i) {
-			v0 = a0[i];
-			v1 = a1[i];
-
-			if (v0 instanceof Array && v1 instanceof Array) {
-				if (!helpers.arrayEquals(v0, v1)) {
-					return false;
-				}
-			} else if (v0 !== v1) {
-				// NOTE: two different object instances will never be equal: {x:20} != {x:20}
-				return false;
-			}
-		}
-
-		return true;
-	},
-
-	/**
-	 * Returns a deep copy of `source` without keeping references on objects and arrays.
-	 * @param {*} source - The value to clone.
-	 * @returns {*}
-	 */
-	clone: function(source) {
-		if (helpers.isArray(source)) {
-			return source.map(helpers.clone);
-		}
-
-		if (helpers.isObject(source)) {
-			var target = {};
-			var keys = Object.keys(source);
-			var klen = keys.length;
-			var k = 0;
-
-			for (; k < klen; ++k) {
-				target[keys[k]] = helpers.clone(source[keys[k]]);
-			}
-
-			return target;
-		}
-
-		return source;
-	},
-
-	/**
-	 * The default merger when Chart.helpers.merge is called without merger option.
-	 * Note(SB): this method is also used by configMerge and scaleMerge as fallback.
-	 * @private
-	 */
-	_merger: function(key, target, source, options) {
-		var tval = target[key];
-		var sval = source[key];
-
-		if (helpers.isObject(tval) && helpers.isObject(sval)) {
-			helpers.merge(tval, sval, options);
-		} else {
-			target[key] = helpers.clone(sval);
-		}
-	},
-
-	/**
-	 * Merges source[key] in target[key] only if target[key] is undefined.
-	 * @private
-	 */
-	_mergerIf: function(key, target, source) {
-		var tval = target[key];
-		var sval = source[key];
-
-		if (helpers.isObject(tval) && helpers.isObject(sval)) {
-			helpers.mergeIf(tval, sval);
-		} else if (!target.hasOwnProperty(key)) {
-			target[key] = helpers.clone(sval);
-		}
-	},
-
-	/**
-	 * Recursively deep copies `source` properties into `target` with the given `options`.
-	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
-	 * @param {Object} target - The target object in which all sources are merged into.
-	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
-	 * @param {Object} [options] - Merging options:
-	 * @param {Function} [options.merger] - The merge method (key, target, source, options)
-	 * @returns {Object} The `target` object.
-	 */
-	merge: function(target, source, options) {
-		var sources = helpers.isArray(source) ? source : [source];
-		var ilen = sources.length;
-		var merge, i, keys, klen, k;
-
-		if (!helpers.isObject(target)) {
-			return target;
-		}
-
-		options = options || {};
-		merge = options.merger || helpers._merger;
-
-		for (i = 0; i < ilen; ++i) {
-			source = sources[i];
-			if (!helpers.isObject(source)) {
-				continue;
-			}
-
-			keys = Object.keys(source);
-			for (k = 0, klen = keys.length; k < klen; ++k) {
-				merge(keys[k], target, source, options);
-			}
-		}
-
-		return target;
-	},
-
-	/**
-	 * Recursively deep copies `source` properties into `target` *only* if not defined in target.
-	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
-	 * @param {Object} target - The target object in which all sources are merged into.
-	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
-	 * @returns {Object} The `target` object.
-	 */
-	mergeIf: function(target, source) {
-		return helpers.merge(target, source, {merger: helpers._mergerIf});
-	},
-
-	/**
-	 * Applies the contents of two or more objects together into the first object.
-	 * @param {Object} target - The target object in which all objects are merged into.
-	 * @param {Object} arg1 - Object containing additional properties to merge in target.
-	 * @param {Object} argN - Additional objects containing properties to merge in target.
-	 * @returns {Object} The `target` object.
-	 */
-	extend: function(target) {
-		var setFn = function(value, key) {
-			target[key] = value;
-		};
-		for (var i = 1, ilen = arguments.length; i < ilen; ++i) {
-			helpers.each(arguments[i], setFn);
-		}
-		return target;
-	},
-
-	/**
-	 * Basic javascript inheritance based on the model created in Backbone.js
-	 */
-	inherits: function(extensions) {
-		var me = this;
-		var ChartElement = (extensions && extensions.hasOwnProperty('constructor')) ? extensions.constructor : function() {
-			return me.apply(this, arguments);
-		};
-
-		var Surrogate = function() {
-			this.constructor = ChartElement;
-		};
-
-		Surrogate.prototype = me.prototype;
-		ChartElement.prototype = new Surrogate();
-		ChartElement.extend = helpers.inherits;
-
-		if (extensions) {
-			helpers.extend(ChartElement.prototype, extensions);
-		}
-
-		ChartElement.__super__ = me.prototype;
-		return ChartElement;
-	}
-};
-
-module.exports = helpers;
-
-// DEPRECATIONS
-
-/**
- * Provided for backward compatibility, use Chart.helpers.callback instead.
- * @function Chart.helpers.callCallback
- * @deprecated since version 2.6.0
- * @todo remove at version 3
- * @private
- */
-helpers.callCallback = helpers.callback;
-
-/**
- * Provided for backward compatibility, use Array.prototype.indexOf instead.
- * Array.prototype.indexOf compatibility: Chrome, Opera, Safari, FF1.5+, IE9+
- * @function Chart.helpers.indexOf
- * @deprecated since version 2.7.0
- * @todo remove at version 3
- * @private
- */
-helpers.indexOf = function(array, item, fromIndex) {
-	return Array.prototype.indexOf.call(array, item, fromIndex);
-};
-
-/**
- * Provided for backward compatibility, use Chart.helpers.valueOrDefault instead.
- * @function Chart.helpers.getValueOrDefault
- * @deprecated since version 2.7.0
- * @todo remove at version 3
- * @private
- */
-helpers.getValueOrDefault = helpers.valueOrDefault;
-
-/**
- * Provided for backward compatibility, use Chart.helpers.valueAtIndexOrDefault instead.
- * @function Chart.helpers.getValueAtIndexOrDefault
- * @deprecated since version 2.7.0
- * @todo remove at version 3
- * @private
- */
-helpers.getValueAtIndexOrDefault = helpers.valueAtIndexOrDefault;
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(6);
-var normalizeHeaderName = __webpack_require__(166);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(18);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(18);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17417,10 +16474,990 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(155).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(155).setImmediate))
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var helpers = __webpack_require__(1);
+
+function filterByPosition(array, position) {
+	return helpers.where(array, function(v) {
+		return v.position === position;
+	});
+}
+
+function sortByWeight(array, reverse) {
+	array.forEach(function(v, i) {
+		v._tmpIndex_ = i;
+		return v;
+	});
+	array.sort(function(a, b) {
+		var v0 = reverse ? b : a;
+		var v1 = reverse ? a : b;
+		return v0.weight === v1.weight ?
+			v0._tmpIndex_ - v1._tmpIndex_ :
+			v0.weight - v1.weight;
+	});
+	array.forEach(function(v) {
+		delete v._tmpIndex_;
+	});
+}
+
+/**
+ * @interface ILayoutItem
+ * @prop {String} position - The position of the item in the chart layout. Possible values are
+ * 'left', 'top', 'right', 'bottom', and 'chartArea'
+ * @prop {Number} weight - The weight used to sort the item. Higher weights are further away from the chart area
+ * @prop {Boolean} fullWidth - if true, and the item is horizontal, then push vertical boxes down
+ * @prop {Function} isHorizontal - returns true if the layout item is horizontal (ie. top or bottom)
+ * @prop {Function} update - Takes two parameters: width and height. Returns size of item
+ * @prop {Function} getPadding -  Returns an object with padding on the edges
+ * @prop {Number} width - Width of item. Must be valid after update()
+ * @prop {Number} height - Height of item. Must be valid after update()
+ * @prop {Number} left - Left edge of the item. Set by layout system and cannot be used in update
+ * @prop {Number} top - Top edge of the item. Set by layout system and cannot be used in update
+ * @prop {Number} right - Right edge of the item. Set by layout system and cannot be used in update
+ * @prop {Number} bottom - Bottom edge of the item. Set by layout system and cannot be used in update
+ */
+
+// The layout service is very self explanatory.  It's responsible for the layout within a chart.
+// Scales, Legends and Plugins all rely on the layout service and can easily register to be placed anywhere they need
+// It is this service's responsibility of carrying out that layout.
+module.exports = {
+	defaults: {},
+
+	/**
+	 * Register a box to a chart.
+	 * A box is simply a reference to an object that requires layout. eg. Scales, Legend, Title.
+	 * @param {Chart} chart - the chart to use
+	 * @param {ILayoutItem} item - the item to add to be layed out
+	 */
+	addBox: function(chart, item) {
+		if (!chart.boxes) {
+			chart.boxes = [];
+		}
+
+		// initialize item with default values
+		item.fullWidth = item.fullWidth || false;
+		item.position = item.position || 'top';
+		item.weight = item.weight || 0;
+
+		chart.boxes.push(item);
+	},
+
+	/**
+	 * Remove a layoutItem from a chart
+	 * @param {Chart} chart - the chart to remove the box from
+	 * @param {Object} layoutItem - the item to remove from the layout
+	 */
+	removeBox: function(chart, layoutItem) {
+		var index = chart.boxes ? chart.boxes.indexOf(layoutItem) : -1;
+		if (index !== -1) {
+			chart.boxes.splice(index, 1);
+		}
+	},
+
+	/**
+	 * Sets (or updates) options on the given `item`.
+	 * @param {Chart} chart - the chart in which the item lives (or will be added to)
+	 * @param {Object} item - the item to configure with the given options
+	 * @param {Object} options - the new item options.
+	 */
+	configure: function(chart, item, options) {
+		var props = ['fullWidth', 'position', 'weight'];
+		var ilen = props.length;
+		var i = 0;
+		var prop;
+
+		for (; i < ilen; ++i) {
+			prop = props[i];
+			if (options.hasOwnProperty(prop)) {
+				item[prop] = options[prop];
+			}
+		}
+	},
+
+	/**
+	 * Fits boxes of the given chart into the given size by having each box measure itself
+	 * then running a fitting algorithm
+	 * @param {Chart} chart - the chart
+	 * @param {Number} width - the width to fit into
+	 * @param {Number} height - the height to fit into
+	 */
+	update: function(chart, width, height) {
+		if (!chart) {
+			return;
+		}
+
+		var layoutOptions = chart.options.layout || {};
+		var padding = helpers.options.toPadding(layoutOptions.padding);
+		var leftPadding = padding.left;
+		var rightPadding = padding.right;
+		var topPadding = padding.top;
+		var bottomPadding = padding.bottom;
+
+		var leftBoxes = filterByPosition(chart.boxes, 'left');
+		var rightBoxes = filterByPosition(chart.boxes, 'right');
+		var topBoxes = filterByPosition(chart.boxes, 'top');
+		var bottomBoxes = filterByPosition(chart.boxes, 'bottom');
+		var chartAreaBoxes = filterByPosition(chart.boxes, 'chartArea');
+
+		// Sort boxes by weight. A higher weight is further away from the chart area
+		sortByWeight(leftBoxes, true);
+		sortByWeight(rightBoxes, false);
+		sortByWeight(topBoxes, true);
+		sortByWeight(bottomBoxes, false);
+
+		// Essentially we now have any number of boxes on each of the 4 sides.
+		// Our canvas looks like the following.
+		// The areas L1 and L2 are the left axes. R1 is the right axis, T1 is the top axis and
+		// B1 is the bottom axis
+		// There are also 4 quadrant-like locations (left to right instead of clockwise) reserved for chart overlays
+		// These locations are single-box locations only, when trying to register a chartArea location that is already taken,
+		// an error will be thrown.
+		//
+		// |----------------------------------------------------|
+		// |                  T1 (Full Width)                   |
+		// |----------------------------------------------------|
+		// |    |    |                 T2                  |    |
+		// |    |----|-------------------------------------|----|
+		// |    |    | C1 |                           | C2 |    |
+		// |    |    |----|                           |----|    |
+		// |    |    |                                     |    |
+		// | L1 | L2 |           ChartArea (C0)            | R1 |
+		// |    |    |                                     |    |
+		// |    |    |----|                           |----|    |
+		// |    |    | C3 |                           | C4 |    |
+		// |    |----|-------------------------------------|----|
+		// |    |    |                 B1                  |    |
+		// |----------------------------------------------------|
+		// |                  B2 (Full Width)                   |
+		// |----------------------------------------------------|
+		//
+		// What we do to find the best sizing, we do the following
+		// 1. Determine the minimum size of the chart area.
+		// 2. Split the remaining width equally between each vertical axis
+		// 3. Split the remaining height equally between each horizontal axis
+		// 4. Give each layout the maximum size it can be. The layout will return it's minimum size
+		// 5. Adjust the sizes of each axis based on it's minimum reported size.
+		// 6. Refit each axis
+		// 7. Position each axis in the final location
+		// 8. Tell the chart the final location of the chart area
+		// 9. Tell any axes that overlay the chart area the positions of the chart area
+
+		// Step 1
+		var chartWidth = width - leftPadding - rightPadding;
+		var chartHeight = height - topPadding - bottomPadding;
+		var chartAreaWidth = chartWidth / 2; // min 50%
+		var chartAreaHeight = chartHeight / 2; // min 50%
+
+		// Step 2
+		var verticalBoxWidth = (width - chartAreaWidth) / (leftBoxes.length + rightBoxes.length);
+
+		// Step 3
+		var horizontalBoxHeight = (height - chartAreaHeight) / (topBoxes.length + bottomBoxes.length);
+
+		// Step 4
+		var maxChartAreaWidth = chartWidth;
+		var maxChartAreaHeight = chartHeight;
+		var minBoxSizes = [];
+
+		function getMinimumBoxSize(box) {
+			var minSize;
+			var isHorizontal = box.isHorizontal();
+
+			if (isHorizontal) {
+				minSize = box.update(box.fullWidth ? chartWidth : maxChartAreaWidth, horizontalBoxHeight);
+				maxChartAreaHeight -= minSize.height;
+			} else {
+				minSize = box.update(verticalBoxWidth, maxChartAreaHeight);
+				maxChartAreaWidth -= minSize.width;
+			}
+
+			minBoxSizes.push({
+				horizontal: isHorizontal,
+				minSize: minSize,
+				box: box,
+			});
+		}
+
+		helpers.each(leftBoxes.concat(rightBoxes, topBoxes, bottomBoxes), getMinimumBoxSize);
+
+		// If a horizontal box has padding, we move the left boxes over to avoid ugly charts (see issue #2478)
+		var maxHorizontalLeftPadding = 0;
+		var maxHorizontalRightPadding = 0;
+		var maxVerticalTopPadding = 0;
+		var maxVerticalBottomPadding = 0;
+
+		helpers.each(topBoxes.concat(bottomBoxes), function(horizontalBox) {
+			if (horizontalBox.getPadding) {
+				var boxPadding = horizontalBox.getPadding();
+				maxHorizontalLeftPadding = Math.max(maxHorizontalLeftPadding, boxPadding.left);
+				maxHorizontalRightPadding = Math.max(maxHorizontalRightPadding, boxPadding.right);
+			}
+		});
+
+		helpers.each(leftBoxes.concat(rightBoxes), function(verticalBox) {
+			if (verticalBox.getPadding) {
+				var boxPadding = verticalBox.getPadding();
+				maxVerticalTopPadding = Math.max(maxVerticalTopPadding, boxPadding.top);
+				maxVerticalBottomPadding = Math.max(maxVerticalBottomPadding, boxPadding.bottom);
+			}
+		});
+
+		// At this point, maxChartAreaHeight and maxChartAreaWidth are the size the chart area could
+		// be if the axes are drawn at their minimum sizes.
+		// Steps 5 & 6
+		var totalLeftBoxesWidth = leftPadding;
+		var totalRightBoxesWidth = rightPadding;
+		var totalTopBoxesHeight = topPadding;
+		var totalBottomBoxesHeight = bottomPadding;
+
+		// Function to fit a box
+		function fitBox(box) {
+			var minBoxSize = helpers.findNextWhere(minBoxSizes, function(minBox) {
+				return minBox.box === box;
+			});
+
+			if (minBoxSize) {
+				if (box.isHorizontal()) {
+					var scaleMargin = {
+						left: Math.max(totalLeftBoxesWidth, maxHorizontalLeftPadding),
+						right: Math.max(totalRightBoxesWidth, maxHorizontalRightPadding),
+						top: 0,
+						bottom: 0
+					};
+
+					// Don't use min size here because of label rotation. When the labels are rotated, their rotation highly depends
+					// on the margin. Sometimes they need to increase in size slightly
+					box.update(box.fullWidth ? chartWidth : maxChartAreaWidth, chartHeight / 2, scaleMargin);
+				} else {
+					box.update(minBoxSize.minSize.width, maxChartAreaHeight);
+				}
+			}
+		}
+
+		// Update, and calculate the left and right margins for the horizontal boxes
+		helpers.each(leftBoxes.concat(rightBoxes), fitBox);
+
+		helpers.each(leftBoxes, function(box) {
+			totalLeftBoxesWidth += box.width;
+		});
+
+		helpers.each(rightBoxes, function(box) {
+			totalRightBoxesWidth += box.width;
+		});
+
+		// Set the Left and Right margins for the horizontal boxes
+		helpers.each(topBoxes.concat(bottomBoxes), fitBox);
+
+		// Figure out how much margin is on the top and bottom of the vertical boxes
+		helpers.each(topBoxes, function(box) {
+			totalTopBoxesHeight += box.height;
+		});
+
+		helpers.each(bottomBoxes, function(box) {
+			totalBottomBoxesHeight += box.height;
+		});
+
+		function finalFitVerticalBox(box) {
+			var minBoxSize = helpers.findNextWhere(minBoxSizes, function(minSize) {
+				return minSize.box === box;
+			});
+
+			var scaleMargin = {
+				left: 0,
+				right: 0,
+				top: totalTopBoxesHeight,
+				bottom: totalBottomBoxesHeight
+			};
+
+			if (minBoxSize) {
+				box.update(minBoxSize.minSize.width, maxChartAreaHeight, scaleMargin);
+			}
+		}
+
+		// Let the left layout know the final margin
+		helpers.each(leftBoxes.concat(rightBoxes), finalFitVerticalBox);
+
+		// Recalculate because the size of each layout might have changed slightly due to the margins (label rotation for instance)
+		totalLeftBoxesWidth = leftPadding;
+		totalRightBoxesWidth = rightPadding;
+		totalTopBoxesHeight = topPadding;
+		totalBottomBoxesHeight = bottomPadding;
+
+		helpers.each(leftBoxes, function(box) {
+			totalLeftBoxesWidth += box.width;
+		});
+
+		helpers.each(rightBoxes, function(box) {
+			totalRightBoxesWidth += box.width;
+		});
+
+		helpers.each(topBoxes, function(box) {
+			totalTopBoxesHeight += box.height;
+		});
+		helpers.each(bottomBoxes, function(box) {
+			totalBottomBoxesHeight += box.height;
+		});
+
+		// We may be adding some padding to account for rotated x axis labels
+		var leftPaddingAddition = Math.max(maxHorizontalLeftPadding - totalLeftBoxesWidth, 0);
+		totalLeftBoxesWidth += leftPaddingAddition;
+		totalRightBoxesWidth += Math.max(maxHorizontalRightPadding - totalRightBoxesWidth, 0);
+
+		var topPaddingAddition = Math.max(maxVerticalTopPadding - totalTopBoxesHeight, 0);
+		totalTopBoxesHeight += topPaddingAddition;
+		totalBottomBoxesHeight += Math.max(maxVerticalBottomPadding - totalBottomBoxesHeight, 0);
+
+		// Figure out if our chart area changed. This would occur if the dataset layout label rotation
+		// changed due to the application of the margins in step 6. Since we can only get bigger, this is safe to do
+		// without calling `fit` again
+		var newMaxChartAreaHeight = height - totalTopBoxesHeight - totalBottomBoxesHeight;
+		var newMaxChartAreaWidth = width - totalLeftBoxesWidth - totalRightBoxesWidth;
+
+		if (newMaxChartAreaWidth !== maxChartAreaWidth || newMaxChartAreaHeight !== maxChartAreaHeight) {
+			helpers.each(leftBoxes, function(box) {
+				box.height = newMaxChartAreaHeight;
+			});
+
+			helpers.each(rightBoxes, function(box) {
+				box.height = newMaxChartAreaHeight;
+			});
+
+			helpers.each(topBoxes, function(box) {
+				if (!box.fullWidth) {
+					box.width = newMaxChartAreaWidth;
+				}
+			});
+
+			helpers.each(bottomBoxes, function(box) {
+				if (!box.fullWidth) {
+					box.width = newMaxChartAreaWidth;
+				}
+			});
+
+			maxChartAreaHeight = newMaxChartAreaHeight;
+			maxChartAreaWidth = newMaxChartAreaWidth;
+		}
+
+		// Step 7 - Position the boxes
+		var left = leftPadding + leftPaddingAddition;
+		var top = topPadding + topPaddingAddition;
+
+		function placeBox(box) {
+			if (box.isHorizontal()) {
+				box.left = box.fullWidth ? leftPadding : totalLeftBoxesWidth;
+				box.right = box.fullWidth ? width - rightPadding : totalLeftBoxesWidth + maxChartAreaWidth;
+				box.top = top;
+				box.bottom = top + box.height;
+
+				// Move to next point
+				top = box.bottom;
+
+			} else {
+
+				box.left = left;
+				box.right = left + box.width;
+				box.top = totalTopBoxesHeight;
+				box.bottom = totalTopBoxesHeight + maxChartAreaHeight;
+
+				// Move to next point
+				left = box.right;
+			}
+		}
+
+		helpers.each(leftBoxes.concat(topBoxes), placeBox);
+
+		// Account for chart width and height
+		left += maxChartAreaWidth;
+		top += maxChartAreaHeight;
+
+		helpers.each(rightBoxes, placeBox);
+		helpers.each(bottomBoxes, placeBox);
+
+		// Step 8
+		chart.chartArea = {
+			left: totalLeftBoxesWidth,
+			top: totalTopBoxesHeight,
+			right: totalLeftBoxesWidth + maxChartAreaWidth,
+			bottom: totalTopBoxesHeight + maxChartAreaHeight
+		};
+
+		// Step 9
+		helpers.each(chartAreaBoxes, function(box) {
+			box.left = chart.chartArea.left;
+			box.top = chart.chartArea.top;
+			box.right = chart.chartArea.right;
+			box.bottom = chart.chartArea.bottom;
+
+			box.update(maxChartAreaWidth, maxChartAreaHeight);
+		});
+	}
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var helpers = __webpack_require__(1);
+
+/**
+ * Namespace to hold static tick generation functions
+ * @namespace Chart.Ticks
+ */
+module.exports = {
+	/**
+	 * Namespace to hold formatters for different types of ticks
+	 * @namespace Chart.Ticks.formatters
+	 */
+	formatters: {
+		/**
+		 * Formatter for value labels
+		 * @method Chart.Ticks.formatters.values
+		 * @param value the value to display
+		 * @return {String|Array} the label to display
+		 */
+		values: function(value) {
+			return helpers.isArray(value) ? value : '' + value;
+		},
+
+		/**
+		 * Formatter for linear numeric ticks
+		 * @method Chart.Ticks.formatters.linear
+		 * @param tickValue {Number} the value to be formatted
+		 * @param index {Number} the position of the tickValue parameter in the ticks array
+		 * @param ticks {Array<Number>} the list of ticks being converted
+		 * @return {String} string representation of the tickValue parameter
+		 */
+		linear: function(tickValue, index, ticks) {
+			// If we have lots of ticks, don't use the ones
+			var delta = ticks.length > 3 ? ticks[2] - ticks[1] : ticks[1] - ticks[0];
+
+			// If we have a number like 2.5 as the delta, figure out how many decimal places we need
+			if (Math.abs(delta) > 1) {
+				if (tickValue !== Math.floor(tickValue)) {
+					// not an integer
+					delta = tickValue - Math.floor(tickValue);
+				}
+			}
+
+			var logDelta = helpers.log10(Math.abs(delta));
+			var tickString = '';
+
+			if (tickValue !== 0) {
+				var numDecimal = -1 * Math.floor(logDelta);
+				numDecimal = Math.max(Math.min(numDecimal, 20), 0); // toFixed has a max of 20 decimal places
+				tickString = tickValue.toFixed(numDecimal);
+			} else {
+				tickString = '0'; // never show decimal places for 0
+			}
+
+			return tickString;
+		},
+
+		logarithmic: function(tickValue, index, ticks) {
+			var remain = tickValue / (Math.pow(10, Math.floor(helpers.log10(tickValue))));
+
+			if (tickValue === 0) {
+				return '0';
+			} else if (remain === 1 || remain === 2 || remain === 5 || index === 0 || index === ticks.length - 1) {
+				return tickValue.toExponential();
+			}
+			return '';
+		}
+	}
+};
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @namespace Chart.helpers
+ */
+var helpers = {
+	/**
+	 * An empty function that can be used, for example, for optional callback.
+	 */
+	noop: function() {},
+
+	/**
+	 * Returns a unique id, sequentially generated from a global variable.
+	 * @returns {Number}
+	 * @function
+	 */
+	uid: (function() {
+		var id = 0;
+		return function() {
+			return id++;
+		};
+	}()),
+
+	/**
+	 * Returns true if `value` is neither null nor undefined, else returns false.
+	 * @param {*} value - The value to test.
+	 * @returns {Boolean}
+	 * @since 2.7.0
+	 */
+	isNullOrUndef: function(value) {
+		return value === null || typeof value === 'undefined';
+	},
+
+	/**
+	 * Returns true if `value` is an array, else returns false.
+	 * @param {*} value - The value to test.
+	 * @returns {Boolean}
+	 * @function
+	 */
+	isArray: Array.isArray ? Array.isArray : function(value) {
+		return Object.prototype.toString.call(value) === '[object Array]';
+	},
+
+	/**
+	 * Returns true if `value` is an object (excluding null), else returns false.
+	 * @param {*} value - The value to test.
+	 * @returns {Boolean}
+	 * @since 2.7.0
+	 */
+	isObject: function(value) {
+		return value !== null && Object.prototype.toString.call(value) === '[object Object]';
+	},
+
+	/**
+	 * Returns `value` if defined, else returns `defaultValue`.
+	 * @param {*} value - The value to return if defined.
+	 * @param {*} defaultValue - The value to return if `value` is undefined.
+	 * @returns {*}
+	 */
+	valueOrDefault: function(value, defaultValue) {
+		return typeof value === 'undefined' ? defaultValue : value;
+	},
+
+	/**
+	 * Returns value at the given `index` in array if defined, else returns `defaultValue`.
+	 * @param {Array} value - The array to lookup for value at `index`.
+	 * @param {Number} index - The index in `value` to lookup for value.
+	 * @param {*} defaultValue - The value to return if `value[index]` is undefined.
+	 * @returns {*}
+	 */
+	valueAtIndexOrDefault: function(value, index, defaultValue) {
+		return helpers.valueOrDefault(helpers.isArray(value) ? value[index] : value, defaultValue);
+	},
+
+	/**
+	 * Calls `fn` with the given `args` in the scope defined by `thisArg` and returns the
+	 * value returned by `fn`. If `fn` is not a function, this method returns undefined.
+	 * @param {Function} fn - The function to call.
+	 * @param {Array|undefined|null} args - The arguments with which `fn` should be called.
+	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
+	 * @returns {*}
+	 */
+	callback: function(fn, args, thisArg) {
+		if (fn && typeof fn.call === 'function') {
+			return fn.apply(thisArg, args);
+		}
+	},
+
+	/**
+	 * Note(SB) for performance sake, this method should only be used when loopable type
+	 * is unknown or in none intensive code (not called often and small loopable). Else
+	 * it's preferable to use a regular for() loop and save extra function calls.
+	 * @param {Object|Array} loopable - The object or array to be iterated.
+	 * @param {Function} fn - The function to call for each item.
+	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
+	 * @param {Boolean} [reverse] - If true, iterates backward on the loopable.
+	 */
+	each: function(loopable, fn, thisArg, reverse) {
+		var i, len, keys;
+		if (helpers.isArray(loopable)) {
+			len = loopable.length;
+			if (reverse) {
+				for (i = len - 1; i >= 0; i--) {
+					fn.call(thisArg, loopable[i], i);
+				}
+			} else {
+				for (i = 0; i < len; i++) {
+					fn.call(thisArg, loopable[i], i);
+				}
+			}
+		} else if (helpers.isObject(loopable)) {
+			keys = Object.keys(loopable);
+			len = keys.length;
+			for (i = 0; i < len; i++) {
+				fn.call(thisArg, loopable[keys[i]], keys[i]);
+			}
+		}
+	},
+
+	/**
+	 * Returns true if the `a0` and `a1` arrays have the same content, else returns false.
+	 * @see http://stackoverflow.com/a/14853974
+	 * @param {Array} a0 - The array to compare
+	 * @param {Array} a1 - The array to compare
+	 * @returns {Boolean}
+	 */
+	arrayEquals: function(a0, a1) {
+		var i, ilen, v0, v1;
+
+		if (!a0 || !a1 || a0.length !== a1.length) {
+			return false;
+		}
+
+		for (i = 0, ilen = a0.length; i < ilen; ++i) {
+			v0 = a0[i];
+			v1 = a1[i];
+
+			if (v0 instanceof Array && v1 instanceof Array) {
+				if (!helpers.arrayEquals(v0, v1)) {
+					return false;
+				}
+			} else if (v0 !== v1) {
+				// NOTE: two different object instances will never be equal: {x:20} != {x:20}
+				return false;
+			}
+		}
+
+		return true;
+	},
+
+	/**
+	 * Returns a deep copy of `source` without keeping references on objects and arrays.
+	 * @param {*} source - The value to clone.
+	 * @returns {*}
+	 */
+	clone: function(source) {
+		if (helpers.isArray(source)) {
+			return source.map(helpers.clone);
+		}
+
+		if (helpers.isObject(source)) {
+			var target = {};
+			var keys = Object.keys(source);
+			var klen = keys.length;
+			var k = 0;
+
+			for (; k < klen; ++k) {
+				target[keys[k]] = helpers.clone(source[keys[k]]);
+			}
+
+			return target;
+		}
+
+		return source;
+	},
+
+	/**
+	 * The default merger when Chart.helpers.merge is called without merger option.
+	 * Note(SB): this method is also used by configMerge and scaleMerge as fallback.
+	 * @private
+	 */
+	_merger: function(key, target, source, options) {
+		var tval = target[key];
+		var sval = source[key];
+
+		if (helpers.isObject(tval) && helpers.isObject(sval)) {
+			helpers.merge(tval, sval, options);
+		} else {
+			target[key] = helpers.clone(sval);
+		}
+	},
+
+	/**
+	 * Merges source[key] in target[key] only if target[key] is undefined.
+	 * @private
+	 */
+	_mergerIf: function(key, target, source) {
+		var tval = target[key];
+		var sval = source[key];
+
+		if (helpers.isObject(tval) && helpers.isObject(sval)) {
+			helpers.mergeIf(tval, sval);
+		} else if (!target.hasOwnProperty(key)) {
+			target[key] = helpers.clone(sval);
+		}
+	},
+
+	/**
+	 * Recursively deep copies `source` properties into `target` with the given `options`.
+	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
+	 * @param {Object} target - The target object in which all sources are merged into.
+	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
+	 * @param {Object} [options] - Merging options:
+	 * @param {Function} [options.merger] - The merge method (key, target, source, options)
+	 * @returns {Object} The `target` object.
+	 */
+	merge: function(target, source, options) {
+		var sources = helpers.isArray(source) ? source : [source];
+		var ilen = sources.length;
+		var merge, i, keys, klen, k;
+
+		if (!helpers.isObject(target)) {
+			return target;
+		}
+
+		options = options || {};
+		merge = options.merger || helpers._merger;
+
+		for (i = 0; i < ilen; ++i) {
+			source = sources[i];
+			if (!helpers.isObject(source)) {
+				continue;
+			}
+
+			keys = Object.keys(source);
+			for (k = 0, klen = keys.length; k < klen; ++k) {
+				merge(keys[k], target, source, options);
+			}
+		}
+
+		return target;
+	},
+
+	/**
+	 * Recursively deep copies `source` properties into `target` *only* if not defined in target.
+	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
+	 * @param {Object} target - The target object in which all sources are merged into.
+	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
+	 * @returns {Object} The `target` object.
+	 */
+	mergeIf: function(target, source) {
+		return helpers.merge(target, source, {merger: helpers._mergerIf});
+	},
+
+	/**
+	 * Applies the contents of two or more objects together into the first object.
+	 * @param {Object} target - The target object in which all objects are merged into.
+	 * @param {Object} arg1 - Object containing additional properties to merge in target.
+	 * @param {Object} argN - Additional objects containing properties to merge in target.
+	 * @returns {Object} The `target` object.
+	 */
+	extend: function(target) {
+		var setFn = function(value, key) {
+			target[key] = value;
+		};
+		for (var i = 1, ilen = arguments.length; i < ilen; ++i) {
+			helpers.each(arguments[i], setFn);
+		}
+		return target;
+	},
+
+	/**
+	 * Basic javascript inheritance based on the model created in Backbone.js
+	 */
+	inherits: function(extensions) {
+		var me = this;
+		var ChartElement = (extensions && extensions.hasOwnProperty('constructor')) ? extensions.constructor : function() {
+			return me.apply(this, arguments);
+		};
+
+		var Surrogate = function() {
+			this.constructor = ChartElement;
+		};
+
+		Surrogate.prototype = me.prototype;
+		ChartElement.prototype = new Surrogate();
+		ChartElement.extend = helpers.inherits;
+
+		if (extensions) {
+			helpers.extend(ChartElement.prototype, extensions);
+		}
+
+		ChartElement.__super__ = me.prototype;
+		return ChartElement;
+	}
+};
+
+module.exports = helpers;
+
+// DEPRECATIONS
+
+/**
+ * Provided for backward compatibility, use Chart.helpers.callback instead.
+ * @function Chart.helpers.callCallback
+ * @deprecated since version 2.6.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.callCallback = helpers.callback;
+
+/**
+ * Provided for backward compatibility, use Array.prototype.indexOf instead.
+ * Array.prototype.indexOf compatibility: Chrome, Opera, Safari, FF1.5+, IE9+
+ * @function Chart.helpers.indexOf
+ * @deprecated since version 2.7.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.indexOf = function(array, item, fromIndex) {
+	return Array.prototype.indexOf.call(array, item, fromIndex);
+};
+
+/**
+ * Provided for backward compatibility, use Chart.helpers.valueOrDefault instead.
+ * @function Chart.helpers.getValueOrDefault
+ * @deprecated since version 2.7.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.getValueOrDefault = helpers.valueOrDefault;
+
+/**
+ * Provided for backward compatibility, use Chart.helpers.valueAtIndexOrDefault instead.
+ * @function Chart.helpers.getValueAtIndexOrDefault
+ * @deprecated since version 2.7.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.getValueAtIndexOrDefault = helpers.valueAtIndexOrDefault;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(6);
+var normalizeHeaderName = __webpack_require__(166);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(19);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(19);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -17610,13 +17647,13 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(163);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17634,7 +17671,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17645,7 +17682,7 @@ var settle = __webpack_require__(167);
 var buildURL = __webpack_require__(169);
 var parseHeaders = __webpack_require__(170);
 var isURLSameOrigin = __webpack_require__(171);
-var createError = __webpack_require__(19);
+var createError = __webpack_require__(20);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(172);
 
 module.exports = function xhrAdapter(config) {
@@ -17821,7 +17858,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17846,7 +17883,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17858,7 +17895,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17884,7 +17921,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17961,7 +17998,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18100,7 +18137,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18163,7 +18200,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18226,7 +18263,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18352,7 +18389,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18415,7 +18452,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18523,7 +18560,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18586,7 +18623,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18695,7 +18732,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18831,7 +18868,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18925,7 +18962,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18987,7 +19024,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19110,7 +19147,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19233,7 +19270,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19345,7 +19382,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19500,7 +19537,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19592,7 +19629,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19775,7 +19812,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19842,7 +19879,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19926,7 +19963,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19990,7 +20027,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20070,7 +20107,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20150,7 +20187,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20230,7 +20267,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20333,7 +20370,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20437,7 +20474,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20508,7 +20545,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20575,7 +20612,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20646,7 +20683,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20717,7 +20754,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20783,7 +20820,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20854,7 +20891,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20929,7 +20966,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21025,7 +21062,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21121,7 +21158,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21208,7 +21245,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21292,7 +21329,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21362,7 +21399,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21472,7 +21509,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21585,7 +21622,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21649,7 +21686,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21736,7 +21773,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21814,7 +21851,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21896,7 +21933,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21975,7 +22012,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22055,7 +22092,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22136,7 +22173,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22263,7 +22300,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22391,7 +22428,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22492,7 +22529,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22620,7 +22657,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22778,7 +22815,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22892,7 +22929,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22991,7 +23028,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23077,7 +23114,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23213,7 +23250,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23286,7 +23323,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23382,7 +23419,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23468,7 +23505,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23561,7 +23598,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23652,7 +23689,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23766,7 +23803,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23896,7 +23933,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23981,7 +24018,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24072,7 +24109,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24212,7 +24249,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24286,7 +24323,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24408,7 +24445,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24509,7 +24546,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24625,7 +24662,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24693,7 +24730,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24787,7 +24824,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24872,7 +24909,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24980,7 +25017,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25144,7 +25181,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25230,7 +25267,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25316,7 +25353,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25380,7 +25417,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25477,7 +25514,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25543,7 +25580,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25670,7 +25707,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25761,7 +25798,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25852,7 +25889,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25916,7 +25953,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26044,7 +26081,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26174,7 +26211,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26243,7 +26280,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26308,7 +26345,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26387,7 +26424,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26573,7 +26610,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26675,7 +26712,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26739,7 +26776,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26814,7 +26851,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26974,7 +27011,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27151,7 +27188,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27223,7 +27260,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27338,7 +27375,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27453,7 +27490,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27545,7 +27582,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27618,7 +27655,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27681,7 +27718,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27814,7 +27851,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27907,7 +27944,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27978,7 +28015,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28098,7 +28135,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28169,7 +28206,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28235,7 +28272,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28361,7 +28398,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -28459,7 +28496,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28554,7 +28591,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28616,7 +28653,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28678,7 +28715,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js language configuration
@@ -28801,7 +28838,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28956,7 +28993,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29058,7 +29095,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29120,7 +29157,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29182,7 +29219,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29265,7 +29302,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29337,7 +29374,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29401,7 +29438,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29515,7 +29552,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29622,7 +29659,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29729,7 +29766,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -29745,11 +29782,11 @@ __webpack_require__(190)(Chart);
 Chart.defaults = __webpack_require__(2);
 Chart.Element = __webpack_require__(7);
 Chart.elements = __webpack_require__(8);
-Chart.Interaction = __webpack_require__(147);
-Chart.layouts = __webpack_require__(9);
-Chart.platform = __webpack_require__(148);
-Chart.plugins = __webpack_require__(149);
-Chart.Ticks = __webpack_require__(10);
+Chart.Interaction = __webpack_require__(148);
+Chart.layouts = __webpack_require__(11);
+Chart.platform = __webpack_require__(149);
+Chart.plugins = __webpack_require__(150);
+Chart.Ticks = __webpack_require__(12);
 
 __webpack_require__(201)(Chart);
 __webpack_require__(202)(Chart);
@@ -29857,7 +29894,7 @@ Chart.layoutService = Chart.layouts;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
@@ -30348,7 +30385,7 @@ module.exports = Color;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30685,7 +30722,7 @@ module.exports = {
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30766,7 +30803,7 @@ module.exports = helpers.extend({
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31155,43 +31192,6 @@ module.exports = {
 
 
 /***/ }),
-/* 150 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export VueCharts */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__ = __webpack_require__(253);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseCharts__ = __webpack_require__(254);
-/* unused harmony reexport Bar */
-/* unused harmony reexport HorizontalBar */
-/* unused harmony reexport Doughnut */
-/* unused harmony reexport Line */
-/* unused harmony reexport Pie */
-/* unused harmony reexport PolarArea */
-/* unused harmony reexport Radar */
-/* unused harmony reexport Bubble */
-/* unused harmony reexport Scatter */
-/* unused harmony reexport mixins */
-/* unused harmony reexport generateChart */
-
-
-var VueCharts = {
-  Bar: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["a" /* Bar */],
-  HorizontalBar: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["d" /* HorizontalBar */],
-  Doughnut: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["c" /* Doughnut */],
-  Line: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["e" /* Line */],
-  Pie: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["f" /* Pie */],
-  PolarArea: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["g" /* PolarArea */],
-  Radar: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["h" /* Radar */],
-  Bubble: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["b" /* Bubble */],
-  Scatter: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["i" /* Scatter */],
-  mixins: __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__["a" /* default */],
-  generateChart: __WEBPACK_IMPORTED_MODULE_1__BaseCharts__["j" /* generateChart */]
-};
-/* harmony default export */ __webpack_exports__["a"] = (VueCharts);
-
-
-/***/ }),
 /* 151 */
 /***/ (function(module, exports) {
 
@@ -31208,7 +31208,7 @@ module.exports = "/images/registration.png?259ed0c770439a8f46dba6896ce5d500";
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(154);
-module.exports = __webpack_require__(344);
+module.exports = __webpack_require__(347);
 
 
 /***/ }),
@@ -31217,7 +31217,7 @@ module.exports = __webpack_require__(344);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuetify__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuetify__);
@@ -31226,7 +31226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_axios__ = __webpack_require__(181);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
@@ -31268,19 +31268,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorClassAnalyticPrediction_vue__ = __webpack_require__(311);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorClassAnalyticPrediction_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorClassAnalyticPrediction_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue__ = __webpack_require__(316);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue__ = __webpack_require__(318);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue__ = __webpack_require__(321);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue__ = __webpack_require__(323);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue__ = __webpack_require__(331);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue__ = __webpack_require__(333);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue__ = __webpack_require__(336);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue__ = __webpack_require__(338);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue__ = __webpack_require__(341);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_test_vue__ = __webpack_require__(343);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_test_vue__ = __webpack_require__(346);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_test_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_32__components_test_vue__);
 /* import vue's */
 
@@ -31290,7 +31290,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuet
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_vue_router__["a" /* default */]);
-window.axios = __webpack_require__(16);
+window.axios = __webpack_require__(17);
 
 
 
@@ -31555,7 +31555,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
 /* 156 */
@@ -31748,7 +31748,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(15)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(16)))
 
 /***/ }),
 /* 157 */
@@ -52563,9 +52563,9 @@ if (inBrowser && window.Vue) {
 
 
 var utils = __webpack_require__(6);
-var bind = __webpack_require__(17);
+var bind = __webpack_require__(18);
 var Axios = __webpack_require__(165);
-var defaults = __webpack_require__(13);
+var defaults = __webpack_require__(15);
 
 /**
  * Create an instance of Axios
@@ -52598,9 +52598,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(21);
+axios.Cancel = __webpack_require__(22);
 axios.CancelToken = __webpack_require__(179);
-axios.isCancel = __webpack_require__(20);
+axios.isCancel = __webpack_require__(21);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -52648,7 +52648,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(13);
+var defaults = __webpack_require__(15);
 var utils = __webpack_require__(6);
 var InterceptorManager = __webpack_require__(174);
 var dispatchRequest = __webpack_require__(175);
@@ -52753,7 +52753,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(19);
+var createError = __webpack_require__(20);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -53186,8 +53186,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(6);
 var transformData = __webpack_require__(176);
-var isCancel = __webpack_require__(20);
-var defaults = __webpack_require__(13);
+var isCancel = __webpack_require__(21);
+var defaults = __webpack_require__(15);
 var isAbsoluteURL = __webpack_require__(177);
 var combineURLs = __webpack_require__(178);
 
@@ -53346,7 +53346,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(21);
+var Cancel = __webpack_require__(22);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -53478,252 +53478,252 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 22,
-	"./af.js": 22,
-	"./ar": 23,
-	"./ar-dz": 24,
-	"./ar-dz.js": 24,
-	"./ar-kw": 25,
-	"./ar-kw.js": 25,
-	"./ar-ly": 26,
-	"./ar-ly.js": 26,
-	"./ar-ma": 27,
-	"./ar-ma.js": 27,
-	"./ar-sa": 28,
-	"./ar-sa.js": 28,
-	"./ar-tn": 29,
-	"./ar-tn.js": 29,
-	"./ar.js": 23,
-	"./az": 30,
-	"./az.js": 30,
-	"./be": 31,
-	"./be.js": 31,
-	"./bg": 32,
-	"./bg.js": 32,
-	"./bm": 33,
-	"./bm.js": 33,
-	"./bn": 34,
-	"./bn.js": 34,
-	"./bo": 35,
-	"./bo.js": 35,
-	"./br": 36,
-	"./br.js": 36,
-	"./bs": 37,
-	"./bs.js": 37,
-	"./ca": 38,
-	"./ca.js": 38,
-	"./cs": 39,
-	"./cs.js": 39,
-	"./cv": 40,
-	"./cv.js": 40,
-	"./cy": 41,
-	"./cy.js": 41,
-	"./da": 42,
-	"./da.js": 42,
-	"./de": 43,
-	"./de-at": 44,
-	"./de-at.js": 44,
-	"./de-ch": 45,
-	"./de-ch.js": 45,
-	"./de.js": 43,
-	"./dv": 46,
-	"./dv.js": 46,
-	"./el": 47,
-	"./el.js": 47,
-	"./en-au": 48,
-	"./en-au.js": 48,
-	"./en-ca": 49,
-	"./en-ca.js": 49,
-	"./en-gb": 50,
-	"./en-gb.js": 50,
-	"./en-ie": 51,
-	"./en-ie.js": 51,
-	"./en-il": 52,
-	"./en-il.js": 52,
-	"./en-nz": 53,
-	"./en-nz.js": 53,
-	"./eo": 54,
-	"./eo.js": 54,
-	"./es": 55,
-	"./es-do": 56,
-	"./es-do.js": 56,
-	"./es-us": 57,
-	"./es-us.js": 57,
-	"./es.js": 55,
-	"./et": 58,
-	"./et.js": 58,
-	"./eu": 59,
-	"./eu.js": 59,
-	"./fa": 60,
-	"./fa.js": 60,
-	"./fi": 61,
-	"./fi.js": 61,
-	"./fo": 62,
-	"./fo.js": 62,
-	"./fr": 63,
-	"./fr-ca": 64,
-	"./fr-ca.js": 64,
-	"./fr-ch": 65,
-	"./fr-ch.js": 65,
-	"./fr.js": 63,
-	"./fy": 66,
-	"./fy.js": 66,
-	"./gd": 67,
-	"./gd.js": 67,
-	"./gl": 68,
-	"./gl.js": 68,
-	"./gom-latn": 69,
-	"./gom-latn.js": 69,
-	"./gu": 70,
-	"./gu.js": 70,
-	"./he": 71,
-	"./he.js": 71,
-	"./hi": 72,
-	"./hi.js": 72,
-	"./hr": 73,
-	"./hr.js": 73,
-	"./hu": 74,
-	"./hu.js": 74,
-	"./hy-am": 75,
-	"./hy-am.js": 75,
-	"./id": 76,
-	"./id.js": 76,
-	"./is": 77,
-	"./is.js": 77,
-	"./it": 78,
-	"./it.js": 78,
-	"./ja": 79,
-	"./ja.js": 79,
-	"./jv": 80,
-	"./jv.js": 80,
-	"./ka": 81,
-	"./ka.js": 81,
-	"./kk": 82,
-	"./kk.js": 82,
-	"./km": 83,
-	"./km.js": 83,
-	"./kn": 84,
-	"./kn.js": 84,
-	"./ko": 85,
-	"./ko.js": 85,
-	"./ky": 86,
-	"./ky.js": 86,
-	"./lb": 87,
-	"./lb.js": 87,
-	"./lo": 88,
-	"./lo.js": 88,
-	"./lt": 89,
-	"./lt.js": 89,
-	"./lv": 90,
-	"./lv.js": 90,
-	"./me": 91,
-	"./me.js": 91,
-	"./mi": 92,
-	"./mi.js": 92,
-	"./mk": 93,
-	"./mk.js": 93,
-	"./ml": 94,
-	"./ml.js": 94,
-	"./mn": 95,
-	"./mn.js": 95,
-	"./mr": 96,
-	"./mr.js": 96,
-	"./ms": 97,
-	"./ms-my": 98,
-	"./ms-my.js": 98,
-	"./ms.js": 97,
-	"./mt": 99,
-	"./mt.js": 99,
-	"./my": 100,
-	"./my.js": 100,
-	"./nb": 101,
-	"./nb.js": 101,
-	"./ne": 102,
-	"./ne.js": 102,
-	"./nl": 103,
-	"./nl-be": 104,
-	"./nl-be.js": 104,
-	"./nl.js": 103,
-	"./nn": 105,
-	"./nn.js": 105,
-	"./pa-in": 106,
-	"./pa-in.js": 106,
-	"./pl": 107,
-	"./pl.js": 107,
-	"./pt": 108,
-	"./pt-br": 109,
-	"./pt-br.js": 109,
-	"./pt.js": 108,
-	"./ro": 110,
-	"./ro.js": 110,
-	"./ru": 111,
-	"./ru.js": 111,
-	"./sd": 112,
-	"./sd.js": 112,
-	"./se": 113,
-	"./se.js": 113,
-	"./si": 114,
-	"./si.js": 114,
-	"./sk": 115,
-	"./sk.js": 115,
-	"./sl": 116,
-	"./sl.js": 116,
-	"./sq": 117,
-	"./sq.js": 117,
-	"./sr": 118,
-	"./sr-cyrl": 119,
-	"./sr-cyrl.js": 119,
-	"./sr.js": 118,
-	"./ss": 120,
-	"./ss.js": 120,
-	"./sv": 121,
-	"./sv.js": 121,
-	"./sw": 122,
-	"./sw.js": 122,
-	"./ta": 123,
-	"./ta.js": 123,
-	"./te": 124,
-	"./te.js": 124,
-	"./tet": 125,
-	"./tet.js": 125,
-	"./tg": 126,
-	"./tg.js": 126,
-	"./th": 127,
-	"./th.js": 127,
-	"./tl-ph": 128,
-	"./tl-ph.js": 128,
-	"./tlh": 129,
-	"./tlh.js": 129,
-	"./tr": 130,
-	"./tr.js": 130,
-	"./tzl": 131,
-	"./tzl.js": 131,
-	"./tzm": 132,
-	"./tzm-latn": 133,
-	"./tzm-latn.js": 133,
-	"./tzm.js": 132,
-	"./ug-cn": 134,
-	"./ug-cn.js": 134,
-	"./uk": 135,
-	"./uk.js": 135,
-	"./ur": 136,
-	"./ur.js": 136,
-	"./uz": 137,
-	"./uz-latn": 138,
-	"./uz-latn.js": 138,
-	"./uz.js": 137,
-	"./vi": 139,
-	"./vi.js": 139,
-	"./x-pseudo": 140,
-	"./x-pseudo.js": 140,
-	"./yo": 141,
-	"./yo.js": 141,
-	"./zh-cn": 142,
-	"./zh-cn.js": 142,
-	"./zh-hk": 143,
-	"./zh-hk.js": 143,
-	"./zh-tw": 144,
-	"./zh-tw.js": 144
+	"./af": 23,
+	"./af.js": 23,
+	"./ar": 24,
+	"./ar-dz": 25,
+	"./ar-dz.js": 25,
+	"./ar-kw": 26,
+	"./ar-kw.js": 26,
+	"./ar-ly": 27,
+	"./ar-ly.js": 27,
+	"./ar-ma": 28,
+	"./ar-ma.js": 28,
+	"./ar-sa": 29,
+	"./ar-sa.js": 29,
+	"./ar-tn": 30,
+	"./ar-tn.js": 30,
+	"./ar.js": 24,
+	"./az": 31,
+	"./az.js": 31,
+	"./be": 32,
+	"./be.js": 32,
+	"./bg": 33,
+	"./bg.js": 33,
+	"./bm": 34,
+	"./bm.js": 34,
+	"./bn": 35,
+	"./bn.js": 35,
+	"./bo": 36,
+	"./bo.js": 36,
+	"./br": 37,
+	"./br.js": 37,
+	"./bs": 38,
+	"./bs.js": 38,
+	"./ca": 39,
+	"./ca.js": 39,
+	"./cs": 40,
+	"./cs.js": 40,
+	"./cv": 41,
+	"./cv.js": 41,
+	"./cy": 42,
+	"./cy.js": 42,
+	"./da": 43,
+	"./da.js": 43,
+	"./de": 44,
+	"./de-at": 45,
+	"./de-at.js": 45,
+	"./de-ch": 46,
+	"./de-ch.js": 46,
+	"./de.js": 44,
+	"./dv": 47,
+	"./dv.js": 47,
+	"./el": 48,
+	"./el.js": 48,
+	"./en-au": 49,
+	"./en-au.js": 49,
+	"./en-ca": 50,
+	"./en-ca.js": 50,
+	"./en-gb": 51,
+	"./en-gb.js": 51,
+	"./en-ie": 52,
+	"./en-ie.js": 52,
+	"./en-il": 53,
+	"./en-il.js": 53,
+	"./en-nz": 54,
+	"./en-nz.js": 54,
+	"./eo": 55,
+	"./eo.js": 55,
+	"./es": 56,
+	"./es-do": 57,
+	"./es-do.js": 57,
+	"./es-us": 58,
+	"./es-us.js": 58,
+	"./es.js": 56,
+	"./et": 59,
+	"./et.js": 59,
+	"./eu": 60,
+	"./eu.js": 60,
+	"./fa": 61,
+	"./fa.js": 61,
+	"./fi": 62,
+	"./fi.js": 62,
+	"./fo": 63,
+	"./fo.js": 63,
+	"./fr": 64,
+	"./fr-ca": 65,
+	"./fr-ca.js": 65,
+	"./fr-ch": 66,
+	"./fr-ch.js": 66,
+	"./fr.js": 64,
+	"./fy": 67,
+	"./fy.js": 67,
+	"./gd": 68,
+	"./gd.js": 68,
+	"./gl": 69,
+	"./gl.js": 69,
+	"./gom-latn": 70,
+	"./gom-latn.js": 70,
+	"./gu": 71,
+	"./gu.js": 71,
+	"./he": 72,
+	"./he.js": 72,
+	"./hi": 73,
+	"./hi.js": 73,
+	"./hr": 74,
+	"./hr.js": 74,
+	"./hu": 75,
+	"./hu.js": 75,
+	"./hy-am": 76,
+	"./hy-am.js": 76,
+	"./id": 77,
+	"./id.js": 77,
+	"./is": 78,
+	"./is.js": 78,
+	"./it": 79,
+	"./it.js": 79,
+	"./ja": 80,
+	"./ja.js": 80,
+	"./jv": 81,
+	"./jv.js": 81,
+	"./ka": 82,
+	"./ka.js": 82,
+	"./kk": 83,
+	"./kk.js": 83,
+	"./km": 84,
+	"./km.js": 84,
+	"./kn": 85,
+	"./kn.js": 85,
+	"./ko": 86,
+	"./ko.js": 86,
+	"./ky": 87,
+	"./ky.js": 87,
+	"./lb": 88,
+	"./lb.js": 88,
+	"./lo": 89,
+	"./lo.js": 89,
+	"./lt": 90,
+	"./lt.js": 90,
+	"./lv": 91,
+	"./lv.js": 91,
+	"./me": 92,
+	"./me.js": 92,
+	"./mi": 93,
+	"./mi.js": 93,
+	"./mk": 94,
+	"./mk.js": 94,
+	"./ml": 95,
+	"./ml.js": 95,
+	"./mn": 96,
+	"./mn.js": 96,
+	"./mr": 97,
+	"./mr.js": 97,
+	"./ms": 98,
+	"./ms-my": 99,
+	"./ms-my.js": 99,
+	"./ms.js": 98,
+	"./mt": 100,
+	"./mt.js": 100,
+	"./my": 101,
+	"./my.js": 101,
+	"./nb": 102,
+	"./nb.js": 102,
+	"./ne": 103,
+	"./ne.js": 103,
+	"./nl": 104,
+	"./nl-be": 105,
+	"./nl-be.js": 105,
+	"./nl.js": 104,
+	"./nn": 106,
+	"./nn.js": 106,
+	"./pa-in": 107,
+	"./pa-in.js": 107,
+	"./pl": 108,
+	"./pl.js": 108,
+	"./pt": 109,
+	"./pt-br": 110,
+	"./pt-br.js": 110,
+	"./pt.js": 109,
+	"./ro": 111,
+	"./ro.js": 111,
+	"./ru": 112,
+	"./ru.js": 112,
+	"./sd": 113,
+	"./sd.js": 113,
+	"./se": 114,
+	"./se.js": 114,
+	"./si": 115,
+	"./si.js": 115,
+	"./sk": 116,
+	"./sk.js": 116,
+	"./sl": 117,
+	"./sl.js": 117,
+	"./sq": 118,
+	"./sq.js": 118,
+	"./sr": 119,
+	"./sr-cyrl": 120,
+	"./sr-cyrl.js": 120,
+	"./sr.js": 119,
+	"./ss": 121,
+	"./ss.js": 121,
+	"./sv": 122,
+	"./sv.js": 122,
+	"./sw": 123,
+	"./sw.js": 123,
+	"./ta": 124,
+	"./ta.js": 124,
+	"./te": 125,
+	"./te.js": 125,
+	"./tet": 126,
+	"./tet.js": 126,
+	"./tg": 127,
+	"./tg.js": 127,
+	"./th": 128,
+	"./th.js": 128,
+	"./tl-ph": 129,
+	"./tl-ph.js": 129,
+	"./tlh": 130,
+	"./tlh.js": 130,
+	"./tr": 131,
+	"./tr.js": 131,
+	"./tzl": 132,
+	"./tzl.js": 132,
+	"./tzm": 133,
+	"./tzm-latn": 134,
+	"./tzm-latn.js": 134,
+	"./tzm.js": 133,
+	"./ug-cn": 135,
+	"./ug-cn.js": 135,
+	"./uk": 136,
+	"./uk.js": 136,
+	"./ur": 137,
+	"./ur.js": 137,
+	"./uz": 138,
+	"./uz-latn": 139,
+	"./uz-latn.js": 139,
+	"./uz.js": 138,
+	"./vi": 140,
+	"./vi.js": 140,
+	"./x-pseudo": 141,
+	"./x-pseudo.js": 141,
+	"./yo": 142,
+	"./yo.js": 142,
+	"./zh-cn": 143,
+	"./zh-cn.js": 143,
+	"./zh-hk": 144,
+	"./zh-hk.js": 144,
+	"./zh-tw": 145,
+	"./zh-tw.js": 145
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -54721,7 +54721,7 @@ webpackContext.id = 183;
 /* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-!function(t,e){ true?module.exports=e(__webpack_require__(145)):"function"==typeof define&&define.amd?define("VueChart",["chart.js"],e):"object"==typeof exports?exports.VueChart=e(require("chart.js")):t.VueChart=e(t.Chart)}(this,function(t){return function(t){function e(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return t[n].call(o.exports,o,o.exports,e),o.l=!0,o.exports}var r={};return e.m=t,e.c=r,e.d=function(t,r,n){e.o(t,r)||Object.defineProperty(t,r,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var r=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(r,"a",r),r},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=0)}([function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(1),o=function(t){return t&&t.__esModule?t:{default:t}}(n),a={install:function(t){t.component(o.default.name,o.default)}};o.default.install=a.install,e.default=o.default},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(3),o=r.n(n),a=r(5),u=r(2),i=u(o.a,a.a,null,null,null);e.default=i.exports},function(t,e){t.exports=function(t,e,r,n,o){var a,u=t=t||{},i=typeof t.default;"object"!==i&&"function"!==i||(a=t,u=t.default);var s="function"==typeof u?u.options:u;e&&(s.render=e.render,s.staticRenderFns=e.staticRenderFns),n&&(s._scopeId=n);var c;if(o?(c=function(t){t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,t||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),r&&r.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(o)},s._ssrRegister=c):r&&(c=r),c){var f=s.functional,d=f?s.render:s.beforeCreate;f?s.render=function(t,e){return c.call(e),d(t,e)}:s.beforeCreate=d?[].concat(d,c):[c]}return{esModule:a,exports:u,options:s}}},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(4),o=function(t){return t&&t.__esModule?t:{default:t}}(n);e.default={name:"vue-chart",props:{type:{required:!0,type:String},data:{required:!0,type:[Object,Array]},options:Object,width:Number,height:Number},data:function(){return{chart:""}},watch:{"data.labels":function(){this.chart.update()},"data.datasets":function(){this.chart.update()}},methods:{createChart:function(){this.chart=new o.default(this.$refs.chart,{type:this.type,data:this.data,options:this.options})}},mounted:function(){this.createChart()},beforeDestroy:function(){this.chart.destroy()}}},function(e,r){e.exports=t},function(t,e,r){"use strict";var n=function(){var t=this,e=t.$createElement;return(t._self._c||e)("canvas",{ref:"chart",attrs:{width:t.width,height:t.height}})},o=[],a={render:n,staticRenderFns:o};e.a=a}])});
+!function(t,e){ true?module.exports=e(__webpack_require__(146)):"function"==typeof define&&define.amd?define("VueChart",["chart.js"],e):"object"==typeof exports?exports.VueChart=e(require("chart.js")):t.VueChart=e(t.Chart)}(this,function(t){return function(t){function e(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return t[n].call(o.exports,o,o.exports,e),o.l=!0,o.exports}var r={};return e.m=t,e.c=r,e.d=function(t,r,n){e.o(t,r)||Object.defineProperty(t,r,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var r=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(r,"a",r),r},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=0)}([function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(1),o=function(t){return t&&t.__esModule?t:{default:t}}(n),a={install:function(t){t.component(o.default.name,o.default)}};o.default.install=a.install,e.default=o.default},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(3),o=r.n(n),a=r(5),u=r(2),i=u(o.a,a.a,null,null,null);e.default=i.exports},function(t,e){t.exports=function(t,e,r,n,o){var a,u=t=t||{},i=typeof t.default;"object"!==i&&"function"!==i||(a=t,u=t.default);var s="function"==typeof u?u.options:u;e&&(s.render=e.render,s.staticRenderFns=e.staticRenderFns),n&&(s._scopeId=n);var c;if(o?(c=function(t){t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,t||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),r&&r.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(o)},s._ssrRegister=c):r&&(c=r),c){var f=s.functional,d=f?s.render:s.beforeCreate;f?s.render=function(t,e){return c.call(e),d(t,e)}:s.beforeCreate=d?[].concat(d,c):[c]}return{esModule:a,exports:u,options:s}}},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(4),o=function(t){return t&&t.__esModule?t:{default:t}}(n);e.default={name:"vue-chart",props:{type:{required:!0,type:String},data:{required:!0,type:[Object,Array]},options:Object,width:Number,height:Number},data:function(){return{chart:""}},watch:{"data.labels":function(){this.chart.update()},"data.datasets":function(){this.chart.update()}},methods:{createChart:function(){this.chart=new o.default(this.$refs.chart,{type:this.type,data:this.data,options:this.options})}},mounted:function(){this.createChart()},beforeDestroy:function(){this.chart.destroy()}}},function(e,r){e.exports=t},function(t,e,r){"use strict";var n=function(){var t=this,e=t.$createElement;return(t._self._c||e)("canvas",{ref:"chart",attrs:{width:t.width,height:t.height}})},o=[],a={render:n,staticRenderFns:o};e.a=a}])});
 
 /***/ }),
 /* 186 */
@@ -54786,7 +54786,7 @@ module.exports = function() {
 "use strict";
 
 
-var helpers = __webpack_require__(11);
+var helpers = __webpack_require__(13);
 
 /**
  * Easing functions adapted from Robert Penner's easing equations.
@@ -55043,7 +55043,7 @@ helpers.easingEffects = effects;
 "use strict";
 
 
-var helpers = __webpack_require__(11);
+var helpers = __webpack_require__(13);
 
 /**
  * @namespace Chart.helpers.canvas
@@ -55264,7 +55264,7 @@ helpers.drawRoundedRectangle = function(ctx) {
 "use strict";
 
 
-var helpers = __webpack_require__(11);
+var helpers = __webpack_require__(13);
 
 /**
  * @alias Chart.helpers.options
@@ -55369,7 +55369,7 @@ module.exports = {
 /* global document: false */
 
 
-var color = __webpack_require__(146);
+var color = __webpack_require__(147);
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
 
@@ -58387,10 +58387,10 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var Interaction = __webpack_require__(147);
-var layouts = __webpack_require__(9);
-var platform = __webpack_require__(148);
-var plugins = __webpack_require__(149);
+var Interaction = __webpack_require__(148);
+var layouts = __webpack_require__(11);
+var platform = __webpack_require__(149);
+var plugins = __webpack_require__(150);
 
 module.exports = function(Chart) {
 
@@ -59678,7 +59678,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var layouts = __webpack_require__(9);
+var layouts = __webpack_require__(11);
 
 module.exports = function(Chart) {
 
@@ -59732,7 +59732,7 @@ module.exports = function(Chart) {
 var defaults = __webpack_require__(2);
 var Element = __webpack_require__(7);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(10);
+var Ticks = __webpack_require__(12);
 
 defaults._set('scale', {
 	display: true,
@@ -61962,7 +61962,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(10);
+var Ticks = __webpack_require__(12);
 
 module.exports = function(Chart) {
 
@@ -62159,7 +62159,7 @@ module.exports = function(Chart) {
 
 
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(10);
+var Ticks = __webpack_require__(12);
 
 /**
  * Generate a set of logarithmic ticks
@@ -62514,7 +62514,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(10);
+var Ticks = __webpack_require__(12);
 
 module.exports = function(Chart) {
 
@@ -66098,7 +66098,7 @@ module.exports = {
 var defaults = __webpack_require__(2);
 var Element = __webpack_require__(7);
 var helpers = __webpack_require__(1);
-var layouts = __webpack_require__(9);
+var layouts = __webpack_require__(11);
 
 var noop = helpers.noop;
 
@@ -66681,7 +66681,7 @@ module.exports = {
 var defaults = __webpack_require__(2);
 var Element = __webpack_require__(7);
 var helpers = __webpack_require__(1);
-var layouts = __webpack_require__(9);
+var layouts = __webpack_require__(11);
 
 var noop = helpers.noop;
 
@@ -67127,6 +67127,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -68706,9 +68707,9 @@ exports.push([module.i, "\n.panel-header {\n    height: 200px;\n    padding-top:
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(9);
 //
 //
 //
@@ -68826,7 +68827,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
     this.renderBarChart();
   },
 
-  /* props 의 값을 채워준다. */
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
   computed: {
     dataChart: function dataChart() {
       return this.data;
@@ -68882,7 +68883,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
       // 조회기간
       pagiNationInfo: [],
       // 조회단위, 상세
-      period: null,
+      period: 'weekly',
       date: null, // 쿼리를 실행할 때, 클릭 이벤트에 맞춰서 값을 넣어준다.
       nextDate: null,
       prevDate: null,
@@ -69053,7 +69054,7 @@ var reactiveProp = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return Radar; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Bubble; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return Scatter; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(146);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_chart_js__);
 
 function generateChart(chartId, chartType) {
@@ -71946,7 +71947,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80px;\n  padding-bottom: 45px;\n  background: #141E30;\n  /* fallback for old browsers */\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\n  position: relative;\n  overflow: hidden;\n}\n.panel-header .header .title {\n  color: #FFFFFF;\n}\n.panel-header .header .category {\n  max-width: 600px;\n  color: rgba(255, 255, 255, 0.5);\n  margin: 0 auto;\n  font-size: 13px;\n}\n.panel-header .header .category a {\n  color: #FFFFFF;\n}\n.panel-header-sm {\n  height: 135px;\n}\n.panel-header-lg {\n  height: 380px;\n}\n/* 성적 업로드 부분 css */\n.upload_input {\n  border: 1px solid black;\n  width : 300px;\n}\n.upload_button {\n  border: 1px solid black;\n  width: 100px;\n  height: 50px;\n  border-radius: 10px;\n  background-color: gray;\n  font-weight: bold;\n  font-size: 15px;\n}\n.contents {\n  text-align: center;\n}\n.attendanceCheckTitleEng {\n  color: white;\n  font-family: inherit;\n}\n.attendanceCheckTitleJap {\n  color: rgb(0, 0, 0);\n  font-size: 20px;\n  font-family: MS Gothic;\n}\n.custom-loader {\n  -webkit-animation: loader 1s infinite;\n          animation: loader 1s infinite;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n", ""]);
+exports.push([module.i, "\n#fontSetting td {\n  font-size: 25px;\n  font-style: 'Gothic A1';\n}\n.panel-header {\n  height: 200px;\n  padding-top: 80px;\n  padding-bottom: 45px;\n  background: #141E30;\n  /* fallback for old browsers */\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\n  position: relative;\n  overflow: hidden;\n}\n.panel-header .header .title {\n  color: #FFFFFF;\n}\n.panel-header .header .category {\n  max-width: 600px;\n  color: rgba(255, 255, 255, 0.5);\n  margin: 0 auto;\n  font-size: 13px;\n}\n.panel-header .header .category a {\n  color: #FFFFFF;\n}\n.panel-header-sm {\n  height: 135px;\n}\n.panel-header-lg {\n  height: 380px;\n}\n/* 성적 업로드 부분 css */\n.upload_input {\n  border: 1px solid black;\n  width : 300px;\n}\n.upload_button {\n  border: 1px solid black;\n  width: 100px;\n  height: 50px;\n  border-radius: 10px;\n  background-color: gray;\n  font-weight: bold;\n  font-size: 15px;\n}\n.contents {\n  text-align: center;\n}\n.attendanceCheckTitleEng {\n  color: white;\n  font-family: inherit;\n}\n.attendanceCheckTitleJap {\n  color: rgb(0, 0, 0);\n  font-size: 20px;\n  font-family: MS Gothic;\n}\n.custom-loader {\n  -webkit-animation: loader 1s infinite;\n          animation: loader 1s infinite;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n", ""]);
 
 // exports
 
@@ -71959,6 +71960,11 @@ exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80p
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -72299,21 +72305,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         rowsPerPage: 10
       },
       headers: [{
+        class: 'display-1',
         text: '학번',
         value: 'studentNum',
         sortable: true,
         align: 'center'
       }, {
+        class: 'display-1',
         text: '이름',
         sortable: true,
         value: 'name',
         align: 'center'
       }, {
-        text: '학업성취도',
-        value: 'gradePersent',
-        sortable: true,
-        align: 'center'
-      }, {
+        class: 'display-1',
         text: '',
         value: 'detailInfo',
         align: 'center'
@@ -72551,7 +72555,8 @@ var render = function() {
                               headers: _vm.headers,
                               items: _vm.student_lists,
                               search: _vm.search,
-                              pagination: _vm.pagination
+                              pagination: _vm.pagination,
+                              id: "fontSetting"
                             },
                             on: {
                               "update:pagination": function($event) {
@@ -72677,7 +72682,7 @@ var render = function() {
                 { staticClass: "my-3", attrs: { xs12: "", sm4: "" } },
                 [
                   _c("div", { staticClass: "text-xs-center" }, [
-                    _c("h2", { staticClass: "headline" }, [
+                    _c("h1", { staticClass: "headline" }, [
                       _vm._v(" 성적 등록 및 확인 ")
                     ])
                   ])
@@ -74622,7 +74627,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.leftLine {\r\n  border-right: 1px solid;\r\n  border-color: #d2d2d2;\n}\n.category1 {\r\n    color: #FFFFFF;\r\n    font-size: 30px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\n}\n.category {\r\n    max-width: 600px;\r\n    color: rgba(255, 255, 255, 0.5);\r\n    margin: 0 auto;\r\n    font-size: 17px;\r\n    font-family: \"Montserrat\"\n}\n.panel-header {\r\n  height: 200px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\n.cardLineOne {\r\n  height: 90px;\r\n  width: 0px;\r\n  margin-left: 0;\n}\n.attendanceNumBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 50px;\n}\nh2 {\r\n  font-family: \"Montserrat\";\r\n  font-weight: \"Extra-Bold\";\n}\nh3 {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: rgb(136, 136, 136);\r\n  margin-bottom: 5px;\n}\n.firstLineCards {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 70px;\n}\n.secondLineCards {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 3;\r\n  bottom: 80px;\n}\n.attendanceTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n/**/\n.attendanceInfoArea {\r\n  min-height: 500px;\r\n  max-height: 500px;\r\n  overflow-y: scroll;\n}\n.studentInfoArea {\r\n  width : 200px;\r\n  height : 100px;\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  text-align: center;\r\n  overflow: hidden;\n}\n.studentInfoScreen {\r\n  text-align:center;\n}\r\n\r\n\r\n", ""]);
+exports.push([module.i, "\n.fontSetting {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\n.leftLine {\r\n  border-right: 1px solid;\r\n  border-color: #d2d2d2;\n}\n.category1 {\r\n    color: #FFFFFF;\r\n    font-size: 30px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\n}\n.category {\r\n    max-width: 600px;\r\n    color: rgba(255, 255, 255, 0.5);\r\n    margin: 0 auto;\r\n    font-size: 17px;\r\n    font-family: \"Montserrat\"\n}\n.panel-header {\r\n  height: 200px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\n.cardLineOne {\r\n  height: 90px;\r\n  width: 0px;\r\n  margin-left: 0;\n}\n.attendanceNumBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 50px;\n}\nh2 {\r\n  font-family: \"Montserrat\";\r\n  font-weight: \"Extra-Bold\";\n}\nh3 {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: rgb(136, 136, 136);\r\n  margin-bottom: 5px;\n}\n.firstLineCards {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 70px;\n}\n.secondLineCards {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 3;\r\n  bottom: 80px;\n}\n.attendanceTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n/**/\n.attendanceInfoArea {\r\n  min-height: 500px;\r\n  max-height: 500px;\r\n  overflow-y: scroll;\n}\n.studentInfoArea {\r\n  width : 200px;\r\n  height : 100px;\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  text-align: center;\r\n  overflow: hidden;\n}\n.studentInfoScreen {\r\n  text-align:center;\n}\r\n\r\n\r\n", ""]);
 
 // exports
 
@@ -74633,6 +74638,10 @@ exports.push([module.i, "\n.leftLine {\r\n  border-right: 1px solid;\r\n  border
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -75251,7 +75260,11 @@ var render = function() {
                                 [
                                   _c("v-card-title", [
                                     _c("div", [
-                                      _c("span", [_vm._v(_vm._s(late.name))]),
+                                      _c(
+                                        "span",
+                                        { staticClass: "fontSetting" },
+                                        [_vm._v(_vm._s(late.name))]
+                                      ),
                                       _c("br"),
                                       _vm._v(" "),
                                       _c("span", [
@@ -75302,7 +75315,11 @@ var render = function() {
                                 [
                                   _c("v-card-title", [
                                     _c("div", [
-                                      _c("span", [_vm._v(_vm._s(absence.id))]),
+                                      _c(
+                                        "span",
+                                        { staticClass: "fontSetting" },
+                                        [_vm._v(_vm._s(absence.id))]
+                                      ),
                                       _vm._v(" "),
                                       _c("span", [_vm._v(_vm._s(absence.name))])
                                     ])
@@ -75350,9 +75367,11 @@ var render = function() {
                                 [
                                   _c("v-card-title", [
                                     _c("div", [
-                                      _c("span", [
-                                        _vm._v(_vm._s(loveStudent.name))
-                                      ]),
+                                      _c(
+                                        "span",
+                                        { staticClass: "fontSetting" },
+                                        [_vm._v(_vm._s(loveStudent.name))]
+                                      ),
                                       _c("br"),
                                       _vm._v(" "),
                                       _c("span", [
@@ -75424,9 +75443,11 @@ var render = function() {
                                 [
                                   _c("v-card-title", [
                                     _c("div", [
-                                      _c("span", [
-                                        _vm._v(_vm._s(attendance.name))
-                                      ]),
+                                      _c(
+                                        "span",
+                                        { staticClass: "fontSetting" },
+                                        [_vm._v(_vm._s(attendance.name))]
+                                      ),
                                       _c("br"),
                                       _vm._v(" "),
                                       _c("span", [
@@ -75477,9 +75498,11 @@ var render = function() {
                                 [
                                   _c("v-card-title", [
                                     _c("div", [
-                                      _c("span", [
-                                        _vm._v(_vm._s(returnHome.name))
-                                      ]),
+                                      _c(
+                                        "span",
+                                        { staticClass: "fontSetting" },
+                                        [_vm._v(_vm._s(returnHome.name))]
+                                      ),
                                       _c("br"),
                                       _vm._v(" "),
                                       _c("span", [
@@ -75607,7 +75630,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.panel-header {\r\n  height: 200px;\r\n  padding-top: 80px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header .header .title {\r\n    color: #FFFFFF;\n}\n.panel-header .header .category {\r\n    max-width: 600px;\r\n    color: rgba(255, 255, 255, 0.5);\r\n    margin: 0 auto;\r\n    font-size: 13px;\n}\n.panel-header .header .category a {\r\n    color: #FFFFFF;\n}\n.panel-header-sm {\r\n    height: 135px;\n}\n.panel-header-lg {\r\n    height: 380px;\n}\r\n", ""]);
+exports.push([module.i, "\n#fontSetting td {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\n.fontSetting {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\n.panel-header {\r\n  height: 200px;\r\n  padding-top: 80px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header .header .title {\r\n    color: #FFFFFF;\n}\n.panel-header .header .category {\r\n    max-width: 600px;\r\n    color: rgba(255, 255, 255, 0.5);\r\n    margin: 0 auto;\r\n    font-size: 13px;\n}\n.panel-header .header .category a {\r\n    color: #FFFFFF;\n}\n.panel-header-sm {\r\n    height: 135px;\n}\n.panel-header-lg {\r\n    height: 380px;\n}\r\n", ""]);
 
 // exports
 
@@ -75620,6 +75643,15 @@ exports.push([module.i, "\n.panel-header {\r\n  height: 200px;\r\n  padding-top:
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -75751,19 +75783,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       text: '2018년 1학기'
     }]), _defineProperty(_ref, 'headers', [{
+      class: 'display-1',
       text: '학번',
+      sortable: true,
       value: 'studentNum',
       align: 'center'
     }, {
+      class: 'display-1',
       text: '이름',
       sortable: true,
       value: 'name',
       align: 'center'
-    }, { text: '학업성취도',
-      value: 'gradePersent',
-      sortable: true,
-      align: 'center'
     }, {
+      class: 'display-1',
       text: '',
       value: 'detailInfo',
       align: 'center'
@@ -75907,6 +75939,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("v-data-table", {
                             attrs: {
+                              id: "fontSetting",
                               headers: _vm.headers,
                               items: _vm.student_lists,
                               search: _vm.search,
@@ -75932,16 +75965,6 @@ var render = function() {
                                       "td",
                                       { staticClass: "text-xs-center" },
                                       [_vm._v(_vm._s(props.item.name))]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [
-                                        _vm._v(
-                                          _vm._s(props.item.average_achievement)
-                                        )
-                                      ]
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -76136,7 +76159,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\nbody {\r\n  background-color: rgb(255, 255, 255);\n}\n.setAlertDataArea {\r\n  width: 100%\n}\n.category1 {\r\n    color: #FFFFFF;\r\n    font-size: 30px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\n}\n.category {\r\n    max-width: 600px;\r\n    color: rgba(255, 255, 255, 0.5);\r\n    margin: 0 auto;\r\n    font-size: 17px;\r\n    font-family: \"Montserrat\"\n}\n.panel-header {\r\n  height: 200px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\n.notificationsAddBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 50px;\n}\n.notificationsConfirmBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 60px;\n}\n.cardInsideTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n", ""]);
+exports.push([module.i, "\nbody {\r\n  background-color: rgb(255, 255, 255);\n}\n.fontSetting {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\n#fontSetting td {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\n.setAlertDataArea {\r\n  width: 100%\n}\n.category1 {\r\n    color: #FFFFFF;\r\n    font-size: 30px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\n}\n.category {\r\n    max-width: 600px;\r\n    color: rgba(255, 255, 255, 0.5);\r\n    margin: 0 auto;\r\n    font-size: 17px;\r\n    font-family: \"Montserrat\"\n}\n.panel-header {\r\n  height: 200px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\n.notificationsAddBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 50px;\n}\n.notificationsConfirmBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 60px;\n}\n.cardInsideTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n", ""]);
 
 // exports
 
@@ -76147,6 +76170,16 @@ exports.push([module.i, "\nbody {\r\n  background-color: rgb(255, 255, 255);\n}\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -76517,7 +76550,10 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-flex",
-                            { attrs: { xs2: "", "text-xs-center": "" } },
+                            {
+                              staticClass: "fontSetting",
+                              attrs: { xs2: "", "text-xs-center": "" }
+                            },
                             [
                               _c("v-select", {
                                 attrs: {
@@ -76540,7 +76576,10 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-flex",
-                            { attrs: { xs2: "", "text-xs-center": "" } },
+                            {
+                              staticClass: "fontSetting",
+                              attrs: { xs2: "", "text-xs-center": "" }
+                            },
                             [
                               _c("v-select", {
                                 attrs: {
@@ -76585,7 +76624,10 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-flex",
-                            { attrs: { xs2: "", "text-xs-center": "" } },
+                            {
+                              staticClass: "fontSetting",
+                              attrs: { xs2: "", "text-xs-center": "" }
+                            },
                             [
                               _c("v-text-field", {
                                 attrs: { id: "num" },
@@ -76604,7 +76646,10 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-flex",
-                            { attrs: { xs2: "", "text-xs-center": "" } },
+                            {
+                              staticClass: "fontSetting",
+                              attrs: { xs2: "", "text-xs-center": "" }
+                            },
                             [
                               _c("v-select", {
                                 attrs: {
@@ -76632,6 +76677,7 @@ var render = function() {
                               _c(
                                 "v-btn",
                                 {
+                                  staticClass: "fontSetting",
                                   attrs: { color: "primary" },
                                   on: {
                                     click: function($event) {
@@ -76696,7 +76742,10 @@ var render = function() {
                               [
                                 _c(
                                   "v-flex",
-                                  { attrs: { xs12: "", md8: "" } },
+                                  {
+                                    staticClass: "fontSetting",
+                                    attrs: { xs12: "", md8: "" }
+                                  },
                                   [
                                     _vm._v(
                                       "\n                " +
@@ -76706,6 +76755,8 @@ var render = function() {
                                     _c(
                                       "v-btn",
                                       {
+                                        staticClass: "fontSetting",
+                                        staticStyle: { color: "white" },
                                         attrs: { color: "red" },
                                         on: {
                                           click: function($event) {
@@ -76837,7 +76888,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.profileTitleBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 35px;\r\n  top: 60px;\n}\n.profileBox {\r\n  padding: 60px 10px 30px 20px;\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 40px;\n}\n.profilePic {\r\n  position: relative;\r\n  bottom: 70px;\n}\n.uploadBtn {\r\n  position: relative;\r\n  bottom: 90px;\n}\n.updateBtn {\r\n  position: relative;\r\n  top: 30px;\n}\r\n/**/\n.userImageArea {\r\n  width:10%;\r\n  min-width:250px;\n}\n.userInfoDataArea {\r\n  width:60%;\r\n  min-width:400px;\n}\r\n", ""]);
+exports.push([module.i, "\n.fontSetting {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\n#fontSetting {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\n.profileTitleBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 35px;\r\n  top: 60px;\n}\n.profileBox {\r\n  padding: 60px 10px 30px 20px;\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 40px;\n}\n.profilePic {\r\n  position: relative;\r\n  bottom: 70px;\n}\n.uploadBtn {\r\n  position: relative;\r\n  bottom: 90px;\n}\n.updateBtn {\r\n  position: relative;\r\n  top: 30px;\n}\r\n/**/\n.userImageArea {\r\n  width:10%;\r\n  min-width:250px;\n}\n.userInfoDataArea {\r\n  width:60%;\r\n  min-width:400px;\n}\r\n", ""]);
 
 // exports
 
@@ -76848,6 +76899,22 @@ exports.push([module.i, "\n.profileTitleBox {\r\n  border-radius: 0.2975rem;\r\n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -77099,11 +77166,13 @@ var render = function() {
                     "v-card-text",
                     { staticStyle: { "padding-bottom": "5px" } },
                     [
-                      _c("h2", { staticStyle: { color: "white" } }, [
+                      _c("h1", { staticStyle: { color: "white" } }, [
                         _vm._v("회원정보")
                       ]),
                       _vm._v(" "),
-                      _c("p", [_vm._v("정보확인 및 수정")])
+                      _c("p", { staticStyle: { "font-size": "20px" } }, [
+                        _vm._v("정보확인 및 수정")
+                      ])
                     ]
                   )
                 ],
@@ -77224,6 +77293,7 @@ var render = function() {
                                           _c("v-text-field", {
                                             attrs: {
                                               label: "Name",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -77242,6 +77312,7 @@ var render = function() {
                                           _c("v-text-field", {
                                             attrs: {
                                               label: "E-mail",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -77261,6 +77332,7 @@ var render = function() {
                                             attrs: {
                                               label: "Phone",
                                               mask: "phone",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -77279,6 +77351,7 @@ var render = function() {
                                           _c("v-text-field", {
                                             attrs: {
                                               label: "Office",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -77298,6 +77371,7 @@ var render = function() {
                                             attrs: {
                                               label: "Password",
                                               type: "password",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -77313,6 +77387,7 @@ var render = function() {
                                             attrs: {
                                               label: "Password Check",
                                               type: "password",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -77337,6 +77412,7 @@ var render = function() {
                                       _c(
                                         "v-btn",
                                         {
+                                          staticClass: "fontSetting",
                                           attrs: {
                                             color: "amber darken-2",
                                             dark: ""
@@ -77391,15 +77467,19 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(312)
+}
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(314)
 /* template */
-var __vue_template__ = __webpack_require__(312)
+var __vue_template__ = __webpack_require__(315)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -77437,22 +77517,1533 @@ module.exports = Component.exports
 /* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(313);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("53c5bb52", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60f2e4fb\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./tutorClassAnalyticPrediction.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60f2e4fb\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./tutorClassAnalyticPrediction.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 314 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(9);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* 출결 현황 비교 그래프 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('pie-chart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Pie,
+  props: ['data', 'backgroundColor', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderPieChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  /* 지정된 변수명 : 실행할 함수 */
+  /* props 에 선언된 속성에 지정된 변수가 공유된다.? */
+  computed: {
+    attendanceData: function attendanceData() {
+      return this.data;
+    },
+    attendanceColor: function attendanceColor() {
+      return this.backgroundColor;
+    },
+    attendanceLabelData: function attendanceLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderPieChart: function renderPieChart() {
+      this.renderChart({
+        labels: this.attendanceLabelData,
+        datasets: [{
+          backgroundColor: this.attendanceColor,
+          pointBackgroundColor: 'white',
+          pointBorderColor: '#249EBF',
+          data: this.attendanceData
+        }],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, { responsive: true, maintainAspectRatio: false });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    attendanceData: function attendanceData() {
+      this.$data._chart.destroy();
+      this.renderPieChart();
+    }
+  }
+});
+
+/*  평균 출결 인원 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('line-chart-lateness', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['data', 'labels', 'borderColor', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    attendanceLineData: function attendanceLineData() {
+      return this.data;
+    },
+    attendanceLineLabelData: function attendanceLineLabelData() {
+      return this.labels;
+    },
+    attendanceLineColor: function attendanceLineColor() {
+      return this.borderColor;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        /* 기간 내의 날짜 */
+        labels: this.attendanceLineLabelData,
+        datasets: [{
+          label: '지각',
+          backgroundColor: false,
+          borderColor: '#f6c202',
+          fill: false,
+          data: this.attendanceLineData
+        }]
+      },
+      /* 옵션이 들어갈 영역 */
+      {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 60
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    attendanceLineData: function attendanceLineData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 지각 시간 비교 그래프  */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('line-chart-holiday', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['data', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    holidayData: function holidayData() {
+      return this.data;
+    },
+    holidayLabelData: function holidayLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        /* 기간 내의 날짜 */
+        labels: this.holidayLabelData,
+        datasets: [{
+          label: '휴일 등교인원',
+          borderColor: '#f53e3e',
+          fill: false,
+          data: this.holidayData
+        }]
+      },
+      /* 옵션이 들어갈 영역 */
+      {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    holidayData: function holidayData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 취득점수 분포 범위 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-plot-chart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Bar,
+  props: ['datasets', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderBarPlotChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    plotDataSets: function plotDataSets() {
+      return this.datasets;
+    },
+    plotLabelData: function plotLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderBarPlotChart: function renderBarPlotChart() {
+      this.renderChart({
+        /* 기간 내의 날짜 */
+        labels: this.plotLabelData,
+        datasets: this.plotDataSets
+      }, {
+        scales: {
+          yAxes: [{
+            stacked: true,
+            ticks: {
+              min: 0
+            }
+          }],
+          xAxes: [{
+            stacked: true
+          }]
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    plotDataSets: function plotDataSets() {
+      this.$data._chart.destroy();
+      this.renderBarPlotChart();
+    },
+    plotLabelData: function plotLabelData() {
+      this.$data._chart.destroy();
+      this.renderBarPlotChart();
+    }
+  }
+});
+
+/* 취득점수 분포도 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Bar,
+  props: ['data', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderBarChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    gradeData: function gradeData() {
+      return this.data;
+    },
+    gradeLabelData: function gradeLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderBarChart: function renderBarChart() {
+      this.renderChart({
+        /* 기간 내의 날짜 */
+        labels: this.gradeLabelData,
+        datasets: [{
+          label: "취득점수 분포도",
+          backgroundColor: false,
+          borderColor: '#f6c202',
+          fill: false,
+          data: this.gradeData
+        }]
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0
+            }
+          }]
+        },
+        width: 300,
+        responsive: true,
+        maintainAspectRatio: false
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    gradeData: function gradeData() {
+      this.$data._chart.destroy();
+      this.renderBarChart();
+    }
+  }
+});
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      /* 기간 설정 */
+      dialog: false,
+      periodSelected: '최근',
+      fDate: null,
+      sDate: null,
+      startDate: null,
+      endDate: null,
+      dateCheck: false,
+      setPeriod_type: 'recently',
+      selectAtt: 'lateness',
+      /* 상태 */
+      attendanceChartStat: '',
+      studyChartStat: '',
+      studysChartStat: '',
+      /* 과목 */
+      subjectList: [{ id: '', name: '진행중인 강의가 없습니다.' }],
+      subjectsList: [{ id: '', name: '조회된 시험이 없습니다.' }],
+      subjectCode: null,
+      subjectsCode: null,
+      /* 그래프 값 변수들*/
+
+      attendanceData: [],
+      attendanceLabelData: [],
+      attendanceColor: [],
+
+      attendanceLineData: [],
+      attendanceLineLabelData: [],
+
+      holidayData: [],
+      holidayLabelData: [],
+
+      plotDataSets: [],
+      plotLabelData: [],
+
+      gradeData: [],
+      gradeLabelData: []
+    };
+  },
+
+  methods: {
+    adaChartController: function adaChartController(select) {
+      /* 상태표시 */
+      switch (select) {
+        case 'lateness':
+          this.attendanceChartStat = '지각';
+          this.selectAtt = 'lateness';
+          break;
+        case 'early_leave':
+          this.attendanceChartStat = '조퇴';
+          this.selectAtt = 'early_leave';
+          break;
+        case 'absence':
+          this.attendanceChartStat = '결석';
+          this.selectAtt = 'absence';
+          break;
+      }
+
+      this.getAttendancePieData();
+      this.getAttendanceLineData();
+      this.getHolidayLineData();
+    },
+
+    /* 강의 그래프 컨트롤러 */
+    studyChartController: function studyChartController(value, name, set) {
+      switch (set) {
+        case 'subject':
+          this.studyChartStat = name;
+          this.subjectCode = value;
+          this.getStudyScore();
+          this.getStudeySubScore();
+          break;
+        case 'subjects':
+          this.studysChartStat = name;
+          this.subjectsCode = value;
+          this.getStudeySubScore();
+          break;
+      }
+    },
+
+    /* 날짜 */
+    selectPeriod: function selectPeriod(value) {
+      switch (value) {
+        case 'daily':
+          // 사용대기
+          break;
+        case 'weekly':
+          this.sDate = null;
+          this.fDate = null;
+          this.dateCheck = false;
+          this.setPeriod_type = value;
+          this.periodSelected = '주간';
+          break;
+        case 'monthly':
+          this.sDate = null;
+          this.fDate = null;
+          this.dateCheck = false;
+          this.setPeriod_type = value;
+          this.periodSelected = '월간';
+          break;
+        case 'recently':
+          this.sDate = null;
+          this.fDate = null;
+          this.dateCheck = false;
+          this.setPeriod_type = value;
+          this.periodSelected = '최근';
+          break;
+        case 'save':
+          /* 날짜 예외처리 = 정상 값 확인 */
+          /* 기본 날짜는 watch 로 1차 확인 */
+          if (!this.dateCheck) {
+            /* 잘못된 값 */
+            this.sDate = null;
+            this.fDate = null;
+            this.setPeriod_type = value;
+            this.periodSelected = '최근';
+            this.dateCheck = false;
+            /* 알림 */
+            alert('(초기화)정상적인 입력이 아닙니다.');
+          } else {
+            this.adaChartController();
+            this.getStudyScore();
+            this.getStudeySubScore();
+          }
+      }
+    },
+
+    /* 수강 강의 목록 */
+    getSubjectList: function getSubjectList() {
+      var _this = this;
+
+      axios.get('/tutor/class/subject_list').then(function (response) {
+        /* 초기화 */
+        _this.subjectList = [];
+        for (var start = 0; start < response.data.message.subjects.length; start++) {
+          _this.subjectList.push(response.data.message.subjects[start]);
+        }
+        /* 과목 코드 기본 값 설정 */
+        _this.subjectCode = _this.subjectList[0].id;
+        _this.studyChartStat = _this.subjectList[0].name;
+        _this.getStudyScore();
+      }).catch(function (error) {
+        console.log('getSub Err :' + error);
+      });
+    },
+
+    /* 출결 비율 pie 그래프 함수 */
+    getAttendancePieData: function getAttendancePieData(select) {
+      var _this2 = this;
+
+      var paramData = [{
+        major_class: 'ada',
+        graph_type: 'pie',
+        period_type: 'recently',
+        minor_class: this.selectAtt
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+        /* label 데이터 */
+        var labels = Object.keys(response.data.message.value);
+
+        _this2.attendanceLabelData = [];
+        for (var start = 1; start <= labels.length; start++) {
+          _this2.attendanceLabelData.push(response.data.message.value[start].name);
+        }
+        /* color 생성 */
+        _this2.attendanceColor = _this2.createdColor(labels.length);
+        /* 그래프의 값 생성 */
+        /* 라벨의 갯수 만큼 하나하나 확인하여 값을 추가 (해당 인원수) */
+        var tempValue = [];
+        for (var _start = 1; _start <= labels.length; _start++) {
+          tempValue.push(response.data.message.value[_start].count);
+        }
+        _this2.attendanceData = tempValue;
+      }).catch(function (error) {
+        console.log("getAttPieErr :" + error);
+      });
+    },
+
+    /* 평균 출결 인원 그래프 함수 */
+    getAttendanceLineData: function getAttendanceLineData() {
+      var _this3 = this;
+
+      var paramData = [{
+        major_class: 'ada',
+        graph_type: 'single_line',
+        period_type: 'recently',
+        minor_class: this.selectAtt
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+
+        var label = [];
+        var data = [];
+
+        for (var start = 0; start < response.data.message.value.length; start++) {
+          if (response.data.message.value[start]['y-point'] == null) {
+            data.push(0);
+          } else {
+            data.push(response.data.message.value[start]['y-point']);
+          }
+          label.push(response.data.message.value[start]['x-point']);
+        }
+
+        _this3.attendanceLineData = data;
+        _this3.attendanceLineLabelData = label;
+      }).catch(function (error) {
+        console.log('attLine Error :' + error);
+      });
+    },
+
+    /* 휴일 등교 인원 그래프 함수 */
+    getHolidayLineData: function getHolidayLineData() {
+      var _this4 = this;
+
+      var paramData = [{
+        major_class: 'ada',
+        graph_type: 'single_line',
+        period_type: 'recently',
+        minor_class: 'holiday'
+      }];
+
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+
+        var label = [];
+        var data = [];
+
+        for (var start = 0; start < response.data.message.value.length; start++) {
+          if (response.data.message.value[start]['y-point'] == null) {
+            data.push(0);
+          } else {
+            data.push(response.data.message.value[start]['y-point']);
+          }
+          label.push(response.data.message.value[start]['x-point']);
+        }
+
+        _this4.holidayData = data;
+        _this4.holidayLabelData = label;
+      }).catch(function (error) {
+        console.log('holiday Error :' + error);
+      });
+    },
+
+    /* 강의별 취득점수 분포 */
+    getStudyScore: function getStudyScore() {
+      var _this5 = this;
+
+      var paramData = [{
+        major_class: 'study',
+        graph_type: 'box_and_whisker',
+        period_type: 'recently',
+        minor_class: 'subject_' + this.subjectCode
+      }];
+
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+        console.log(response.data.message);
+        /* 기본 데이터 생성 */
+        var data = [];
+        var label = [];
+        var setting = [{
+          'red': [2, 4, 6, 8, 10],
+          'none': [1, 3, 7, 9, 11],
+          'blue': [5, 7]
+        }];
+
+        for (var start = 1; start <= 11; start++) {
+          if (setting[0]['red'].indexOf(start) != -1) {
+            data.push({ data: [], backgroundColor: "#ff0000" });
+          } else if (setting[0]['blue'].indexOf(start) != -1) {
+            data.push({ data: [], backgroundColor: "#0080ff" });
+          } else if (setting[0]['none'].indexOf(start) != -1) {
+            data.push({ fill: false, data: [] });
+          }
+        }
+
+        /* 그래프 데이터 가공 */
+        for (var _start2 = 0; _start2 < response.data.message.value.length; _start2++) {
+          /* 라벨 저장 */
+          label.push(response.data.message.value[_start2]['x-point']);
+          /* 데이터 연산 = 저장 */
+          data[0]['data'].push(response.data.message.value[_start2]['y-point']['min'] - 1);
+          data[1]['data'].push(3);
+          data[2]['data'].push(response.data.message.value[_start2]['y-point']['75%'] - response.data.message.value[_start2]['y-point']['min'] - 2);
+          data[3]['data'].push(3);
+          data[4]['data'].push(response.data.message.value[_start2]['y-point']['avg'] - response.data.message.value[_start2]['y-point']['75%'] - 2);
+          data[5]['data'].push(3);
+          data[6]['data'].push(response.data.message.value[_start2]['y-point']['25%'] - response.data.message.value[_start2]['y-point']['avg'] - 2);
+          data[7]['data'].push(3);
+          data[8]['data'].push(response.data.message.value[_start2]['y-point']['max'] - response.data.message.value[_start2]['y-point']['25%'] - 2);
+          data[9]['data'].push(3);
+          data[10]['data'].push(250 - (data[0]['data'][_start2] + data[1]['data'][_start2] + data[2]['data'][_start2] + data[3]['data'][_start2] + data[4]['data'][_start2] + data[5]['data'][_start2] + data[6]['data'][_start2] + data[7]['data'][_start2] + data[8]['data'][_start2] + data[9]['data'][_start2]));
+        }
+
+        _this5.plotDataSets = data;
+        _this5.plotLabelData = label;
+
+        console.log(_this5.plotDataSets);
+        console.log(_this5.plotLabelData);
+
+        /* 종목별 메뉴 데이터 추출 */
+        _this5.subjectsList = [];
+        for (var _start3 = 0; _start3 < response.data.message.value.length; _start3++) {
+          _this5.subjectsList.push({
+            'id': response.data.message.value[_start3]['score_id'],
+            'name': response.data.message.value[_start3]['x-point'] + '(' + response.data.message.value[_start3]['detail'].type + ')'
+          });
+        }
+        /* 기본값 설정 */
+        _this5.subjectsCode = _this5.subjectsList[0].id;
+        _this5.studysChartStat = _this5.subjectsList[0].name;
+        _this5.getStudeySubScore();
+      }).catch(function (error) {
+        console.log('box Error :' + error);
+      });
+    },
+
+    /* 성적별 취득점수 분포도 */
+    getStudeySubScore: function getStudeySubScore() {
+      var _this6 = this;
+
+      var paramData = [{
+        major_class: 'study',
+        graph_type: 'histogram',
+        period_type: 'recently',
+        minor_class: 'score_' + this.subjectsCode
+      }];
+
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+
+        var label = [];
+        var data = [];
+
+        for (var start = 0; start < response.data.message.value.length; start++) {
+          label.push(response.data.message.value[start]['x-point']);
+          data.push(response.data.message.value[start]['y-point']);
+        }
+        _this6.gradeData = data;
+        _this6.gradeLabelData = label;
+      }).catch(function (error) {
+        console.log('subSubject Error :' + error);
+      });
+    },
+
+    /* 색상 랜덤 함수 ( int 수 만큼 생성 )*/
+    createdColor: function createdColor(count) {
+      // 색상 저장 변수
+      var rgbColor = [];
+      // 지정한 수 만큼 반복
+      for (var start = 0; start < count; start++) {
+        // 변수 초기화
+        rgbColor[start] = '#';
+        // 1회당 2문자씩 총 6문자의 RGB 색상을 만든다.
+        for (var rgb = 0; rgb < 6; rgb++) {
+          var ranValue = Math.ceil(Math.random() * 16) - 1;
+          switch (ranValue) {
+            case 10:
+              rgbColor[start] += 'a';
+              break;
+            case 11:
+              rgbColor[start] += 'b';
+              break;
+            case 12:
+              rgbColor[start] += 'c';
+              break;
+            case 13:
+              rgbColor[start] += 'd';
+              break;
+            case 14:
+              rgbColor[start] += 'e';
+              break;
+            case 15:
+              rgbColor[start] += 'f';
+              break;
+            default:
+              rgbColor[start] += ranValue;
+          }
+          ranValue = null;
+        }
+        // 중복검사
+        for (var dupCheck = 0; dupCheck < start - 1; dupCheck++) {
+          // 지금 만들어 낸 것과 이전의 값을 비교
+          if (rgbColor[dupCheck] == rgbColor[start]) {
+            console.log('중복확인 :' + start + ':' + rgbColor[start]);
+            // 중복 확인시, 초기화 -> 재생성
+            rgbColor[start] = '';
+            start--;
+          }
+        }
+      }
+      // 만들어진 색상을 반환
+      return rgbColor;
+    },
+
+    /* 주차 계산기 */
+    createWeekTime: function createWeekTime(value) {
+      /* 시간 크기 비교 */
+      /* 같은 값 허용 */
+      /* 말라초로 변환 후 비교한다. */
+      var minute = 1000 * 60;
+      var hour = minute * 60;
+      var day = hour * 24;
+
+      /* 연도 획득 */
+      var splitDate = value.split('-');
+      /* 시작점 획득 */
+      var start = new Date(splitDate[0] + "-01-01");
+      start = start.getTime();
+      /* 지정일 획득 */
+      var date = new Date(value);
+      date = date.getTime();
+      /* 지정일 - 시작점 + 주차보정 = 현재까지의 시간 */
+      /* 음수가 나올 수 없다. */
+      var days = date - start + (splitDate[0] - 2017) * day;
+      /* 양수가 나오면 주(7) 단위로 나누기 */
+      var week = Math.ceil(days / (day * 7)) + 1;
+      /* 주차 조합 */
+      var setTime = splitDate[0] + "-" + week;
+
+      return setTime;
+    },
+
+    /* 날짜 예외확인 */
+    checkDate: function checkDate(value) {
+      /* 정상 값인지 비교 */
+      if (this.fDate != null && this.sDate != null && value != 'save') {
+
+        var sDate = new Date(this.fDate);
+        sDate = sDate.getTime();
+        var eDate = new Date(this.sDate);
+        eDate = eDate.getTime();
+
+        if (sDate > eDate) {
+          if (value == "start") {
+            /* 경고 -> 값 초기화 */
+            alert('시작일이 종료일보다 늦을 수 없습니다.');
+            console.log('시작일이 종료일보다 늦을 수 없습니다.');
+            this.fDate = null;
+          } else if (value == "end") {
+            /* 경고 -> 값 초기화 */
+            alert('종료일이 시작일보다 빠를 수 없습니다.');
+            console.log('종료일이 시작일보다 빠를 수 없습니다.');
+            this.sDate = null;
+          }
+          this.dateCheck = false;
+        } else {
+          /* 값이 정상일 경우 */
+          switch (this.setPeriod_type) {
+            case 'daily':
+              /* 사용보류 */
+              break;
+            case 'weekly':
+              this.startDate = this.createWeekTime(this.fDate);
+              this.endDate = this.createWeekTime(this.sDate);
+              break;
+            case 'monthly':
+              this.startDate = this.fDate;
+              this.endDate = this.sDate;
+              break;
+          }
+          this.dateCheck = true;
+        }
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.adaChartController('lateness');
+    this.getSubjectList();
+  },
+
+  watch: {
+    fDate: function fDate() {
+      this.checkDate('start');
+    },
+    sDate: function sDate() {
+      this.checkDate('end');
+    }
+  }
+});
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "panel-header" }, [
+        _c(
+          "div",
+          { staticClass: "header text-center" },
+          [
+            _c(
+              "v-layout",
+              {
+                attrs: { column: "", "align-center": "", "justify-center": "" }
+              },
+              [
+                _c("h1", { staticStyle: { color: "white" } }, [
+                  _vm._v(" 지도반 분석 ")
+                ])
+              ]
+            )
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { width: "750px" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", { staticClass: "grey lighten-4 py-4 title" }, [
+                _vm._v("\n           분석 기간 설정\n          ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-container",
+                { staticClass: "pa-4", attrs: { "grid-list-sm": "" } },
+                [
+                  _c(
+                    "v-toolbar",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.selectPeriod("recently")
+                            }
+                          }
+                        },
+                        [_vm._v("최근")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.selectPeriod("weekly")
+                            }
+                          }
+                        },
+                        [_vm._v("주간")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.selectPeriod("monthly")
+                            }
+                          }
+                        },
+                        [_vm._v("월간")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c(
+                    "v-layout",
+                    { attrs: { row: "", wrap: "" } },
+                    [
+                      _c(
+                        "v-flex",
+                        { attrs: { xs10: "" } },
+                        [
+                          _vm.setPeriod_type == "monthly"
+                            ? _c("v-date-picker", {
+                                attrs: { type: "month", min: "2018-01" },
+                                model: {
+                                  value: _vm.fDate,
+                                  callback: function($$v) {
+                                    _vm.fDate = $$v
+                                  },
+                                  expression: "fDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "monthly"
+                            ? _c("v-date-picker", {
+                                attrs: { type: "month", min: "2018-01" },
+                                model: {
+                                  value: _vm.sDate,
+                                  callback: function($$v) {
+                                    _vm.sDate = $$v
+                                  },
+                                  expression: "sDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "weekly"
+                            ? _c("v-date-picker", {
+                                attrs: { min: "2018-01" },
+                                model: {
+                                  value: _vm.fDate,
+                                  callback: function($$v) {
+                                    _vm.fDate = $$v
+                                  },
+                                  expression: "fDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "weekly"
+                            ? _c("v-date-picker", {
+                                attrs: { min: "2018-01" },
+                                model: {
+                                  value: _vm.sDate,
+                                  callback: function($$v) {
+                                    _vm.sDate = $$v
+                                  },
+                                  expression: "sDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "recently"
+                            ? _c("div", [
+                                _c("h2", [
+                                  _vm._v(
+                                    "최근(10주)은 기간을 지정할 수 없습니다."
+                                  )
+                                ])
+                              ])
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "primary" },
+                      on: {
+                        click: function($event) {
+                          _vm.selectPeriod("save"), (_vm.dialog = false)
+                        }
+                      }
+                    },
+                    [_vm._v("확인")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-flex",
+        { attrs: { xs12: "" } },
+        [
+          _c(
+            "v-container",
+            { attrs: { "grid-list-xl": "" } },
+            [
+              _c(
+                "v-layout",
+                { attrs: { row: "", wrap: "", "align-center": "" } },
+                [
+                  _c(
+                    "v-toolbar",
+                    [
+                      _c("h1", { staticStyle: { "margin-left": "30px" } }, [
+                        _vm._v(" 지도반 : 출결 정보 분석 ")
+                      ]),
+                      _vm._v(" "),
+                      !_vm.dateCheck
+                        ? _c(
+                            "v-btn",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  _vm.dialog = !_vm.dialog
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(this.periodSelected))]
+                          )
+                        : _c(
+                            "v-btn",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  _vm.dialog = !_vm.dialog
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(this.periodSelected) +
+                                  "\n                  ( " +
+                                  _vm._s(this.startDate) +
+                                  " ~ " +
+                                  _vm._s(this.endDate) +
+                                  ")\n                "
+                              )
+                            ]
+                          )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "primary" },
+                          on: {
+                            click: function($event) {
+                              _vm.adaChartController("lateness")
+                            }
+                          }
+                        },
+                        [_vm._v("지각")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "primary" },
+                          on: {
+                            click: function($event) {
+                              _vm.adaChartController("absence")
+                            }
+                          }
+                        },
+                        [_vm._v("결석")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "primary" },
+                          on: {
+                            click: function($event) {
+                              _vm.adaChartController("early_leave")
+                            }
+                          }
+                        },
+                        [_vm._v("조퇴")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    [
+                      _c("div", [
+                        _c("h2", [
+                          _vm._v(
+                            "출결 횟수 비율 ( " +
+                              _vm._s(this.attendanceChartStat) +
+                              " )"
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("pie-chart", {
+                        attrs: {
+                          width: 500,
+                          data: _vm.attendanceData,
+                          backgroundColor: _vm.attendanceColor,
+                          labels: _vm.attendanceLabelData,
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    [
+                      _c("div", [
+                        _c("h2", [
+                          _vm._v(
+                            "평균 출결 인원 ( " +
+                              _vm._s(this.attendanceChartStat) +
+                              " )"
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("line-chart-lateness", {
+                        attrs: {
+                          width: 500,
+                          data: _vm.attendanceLineData,
+                          borderColor: _vm.attendanceLineColor,
+                          labels: _vm.attendanceLineLabelData,
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    [
+                      _c("div", [_c("h2", [_vm._v("휴일 등교 인원")])]),
+                      _vm._v(" "),
+                      _c("line-chart-holiday", {
+                        attrs: {
+                          width: 500,
+                          data: _vm.holidayData,
+                          labels: _vm.holidayLabelData,
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-flex",
+        { attrs: { xs12: "" } },
+        [
+          _c(
+            "v-container",
+            { attrs: { "grid-list-xl": "" } },
+            [
+              _c(
+                "v-layout",
+                { attrs: { row: "", wrap: "", "align-center": "" } },
+                [
+                  _c("v-toolbar", [
+                    _c("h1", { staticStyle: { "margin-left": "30px" } }, [
+                      _vm._v(" 지도반 : 학업 정보 분석 ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar",
+                    _vm._l(_vm.subjectList, function(sub) {
+                      return _c(
+                        "v-btn",
+                        {
+                          key: sub.key,
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.studyChartController(
+                                sub.id,
+                                sub.name,
+                                "subject"
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(sub.name) +
+                              "\n              "
+                          )
+                        ]
+                      )
+                    })
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    [
+                      _c("div", [
+                        _c("h2", [
+                          _vm._v(
+                            "취득점수 분포 범위 ( " +
+                              _vm._s(this.studyChartStat) +
+                              " )"
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("bar-plot-chart", {
+                        attrs: {
+                          width: 2000,
+                          datasets: _vm.plotDataSets,
+                          labels: _vm.plotLabelData,
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar",
+                    _vm._l(_vm.subjectsList, function(sub) {
+                      return _c(
+                        "v-btn",
+                        {
+                          key: sub.key,
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.studyChartController(
+                                sub.id,
+                                sub.name,
+                                "subjects"
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(sub.name) +
+                              "\n              "
+                          )
+                        ]
+                      )
+                    })
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    [
+                      _c("div", [
+                        _c("h2", [
+                          _vm._v(
+                            "취득점수 분포도 ( " +
+                              _vm._s(this.studysChartStat) +
+                              " )"
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("bar-chart", {
+                        attrs: {
+                          width: 2000,
+                          data: _vm.gradeData,
+                          labels: _vm.gradeLabelData,
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-header" }, [
-      _c("div", { staticClass: "header text-center" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -77463,19 +79054,19 @@ if (false) {
 }
 
 /***/ }),
-/* 313 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(314)
+  __webpack_require__(317)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(316)
+var __vue_script__ = __webpack_require__(319)
 /* template */
-var __vue_template__ = __webpack_require__(317)
+var __vue_template__ = __webpack_require__(320)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -77514,13 +79105,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 314 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(315);
+var content = __webpack_require__(318);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -77540,7 +79131,7 @@ if(false) {
 }
 
 /***/ }),
-/* 315 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -77548,87 +79139,20 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  left: -30px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  width: 250px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  width : 400px;\r\n  max-height : 1000px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\r\n\r\n/*-- 차트 --*/\n.chartCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 1000px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n/* */\n.studentInfoDiv {\r\n  overflow-y : scroll;\r\n  height : 800px;\n}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 316 */
+/* 319 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(9);
 //
 //
 //
@@ -77839,49 +79363,1072 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-time-lineChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['data', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    timeLineData: function timeLineData() {
+      return this.data;
+    },
+    timeLineLabelData: function timeLineLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        labels: this.timeLineLabelData,
+        datasets: [{
+          label: '시간(00:00)',
+          borderColor: '#249EBF',
+          fill: false,
+          data: this.timeLineData
+        }],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 2400
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    timeLineData: function timeLineData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 출결 횟수 그래프 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-count-lineChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['data', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    countLineData: function countLineData() {
+      return this.data;
+    },
+    countLineLabelData: function countLineLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        labels: this.countLineLabelData,
+        datasets: [{
+          label: '횟수',
+          borderColor: '#33ff66',
+          fill: false,
+          data: this.countLineData
+        }],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    countLineData: function countLineData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 등교 유형 및 조퇴 횟수 */
+/* 출결 횟수 그래프 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-count-pieChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Pie,
+  props: ['data', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderPieChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    countPieData: function countPieData() {
+      return this.data;
+    }
+  },
+  methods: {
+    renderPieChart: function renderPieChart() {
+      this.renderChart({
+        labels: ['출석', '지각', '결석', '조퇴'],
+        datasets: [{
+          backgroundColor: ['#33ff66', '#ffff00', '#ff3333', '#808080'],
+          fill: false,
+          data: this.countPieData
+        }],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    countPieData: function countPieData() {
+      this.$data._chart.destroy();
+      this.renderPieChart();
+    }
+  }
+});
+
+/* 전공 일본어 비교 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-japenese-Major-lineChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['datasets', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    jmLineDataSets: function jmLineDataSets() {
+      return this.datasets;
+    },
+    jmLineLabelData: function jmLineLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        labels: this.jmLineLabelData,
+        datasets: this.jmLineDataSets,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 100
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    jmLineLabelData: function jmLineLabelData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 과목 득점 비교 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-lecture-score-lineChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['datasets', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    lectureScoreDataSets: function lectureScoreDataSets() {
+      return this.datasets;
+    },
+    lectureScoreLabelData: function lectureScoreLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        labels: this.lectureScoreLabelData,
+        datasets: this.lectureScoreDataSets,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    lectureScoreLabelData: function lectureScoreLabelData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 개인 석차 백분율 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-lecture-ranking-lineChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['data', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    lectureRankingData: function lectureRankingData() {
+      return this.data;
+    },
+    lectureRankingLabelData: function lectureRankingLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        labels: this.lectureRankingLabelData,
+        datasets: [{
+          label: "석차 백분율",
+          borderColor: ['#33ff66'],
+          fill: false,
+          data: this.lectureRankingData
+        }],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 100
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    lectureRankingData: function lectureRankingData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 강의 = 종류별 석차 백분율 비교 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-score-lineChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['datasets', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    subjectScoreDataSets: function subjectScoreDataSets() {
+      return this.datasets;
+    },
+    subjectScoreLabelData: function subjectScoreLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        labels: this.subjectScoreLabelData,
+        datasets: this.subjectScoreDataSets,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    subjectScoreLabelData: function subjectScoreLabelData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
+
+/* 강의 = 개인 석차 백분율 */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lineChart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['data', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    subjectRankingData: function subjectRankingData() {
+      return this.data;
+    },
+    subjectRankingLabelData: function subjectRankingLabelData() {
+      return this.labels;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        labels: this.subjectRankingLabelData,
+        datasets: [{
+          label: "석차 백분율",
+          borderColor: ['#33ff66'],
+          fill: false,
+          data: this.subjectRankingData
+        }],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          height: 100
+        }
+      }, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 100
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    /* 값 변경을 감지하면 실행 */
+    /* 지정 변수가 바뀌어야한다. 하위의 값이 바뀌는 것은 해당하지 않는다. */
+    subjectRankingData: function subjectRankingData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      /*-- 분류 조건 설정 --*/
+      /* 기간 */
       dialog: false,
-      /*-- 학생 목록 --*/
-      items: [{ header: '전체' }, {
-        avatar: '/images/studentSample.jpg',
-        name: '1601231 이승민',
-        interest: 'favorite',
-        attention: '하위권'
-      }, { divider: true, inset: true }, {
-        avatar: '/images/studentSample2.jpg',
-        name: '1601342 박주용',
-        interest: 'favorite',
-        attention: '하위권'
-      }, { divider: true, inset: true }, {
-        avatar: '/images/studentSample3.jpg',
-        name: '1602345 장세원',
-        interest: 'favorite',
-        attention: '하위권'
-      }, { divider: true, inset: true }, {
-        avatar: '/images/studentSample4.jpg',
-        name: '1601121 염세환',
-        interest: 'favorite',
-        attention: '하위권'
-      }, { divider: true, inset: true }, {
-        avatar: '/images/studentSample5.png',
-        name: '1602211 박효동',
-        interest: 'favorite',
-        attention: '하위권'
+      periodSelected: '최근',
+      fDate: null,
+      sDate: null,
+      startDate: null,
+      endDate: null,
+      dateCheck: false,
+      /* 우측 버튼 잠금 해제 */
+      btnLock: false,
+
+      /* 학생 목록 */
+      studnetInfo: [],
+
+      /* 강의 목록 */
+      subjectList: [{ id: '', name: '' }],
+
+      /* 그래프 조회 기본 값*/
+      setStd_id: null,
+      setMinor_type: [{
+        'sign': 'sign_in',
+        'attendance': 'lateness',
+        'code': null,
+        'detailCode': '_homework'
       }],
-      /*-- 분류 조건 설정 : 출석 --*/
-      attendanceSelected: ['allCheck', 'checkLate', 'checkEarlyLeave', 'checkAbsence'],
-      /*-- 분류 조건 설정 : 학업 --*/
-      studySelected: ['allCheck', 'checkJapanese', 'checkAllMajor', 'checkJava', 'checkDB', 'checkNetwork']
+      setPeriod_type: 'recently',
+
+      /* 그래프에 사용될 데이터 변수 */
+      /* 01. 등하교 시간 변화 */
+      timeLineData: [],
+      timeLineLabelData: [],
+      /* 02. 출결 횟수 변화 */
+      countLineData: [],
+      countLineLabelData: [],
+      /* 03. 출결별 횟수 */
+      countPieData: [],
+      /* 04. 전공 일본어 비교 */
+      jmLineDataSets: [{
+        label: '일본어',
+        borderColor: '#0000ff',
+        fill: false,
+        data: []
+      }, {
+        label: '전공',
+        borderColor: '#ff3333',
+        fill: false,
+        data: []
+      }],
+      jmLineLabelData: [],
+
+      /* 05. 강의 득점 평균 비교 및 석차백분율 변화 */
+      lectureScoreDataSets: [{
+        label: '내 평균',
+        borderColor: '#ff3333',
+        fill: false,
+        data: []
+      }, {
+        label: '반 평균',
+        borderColor: '#0000ff',
+        fill: false,
+        data: []
+      }],
+      lectureScoreLabelData: [],
+
+      lectureRankingData: [],
+      lectureRankingLabelData: [],
+      /* 06. 강의 = 상세 종목별 득점 평균 비교 및 석차백분율 변화 */
+      subjectScoreDataSets: [{
+        label: '내 평균',
+        borderColor: '#ff3333',
+        fill: false,
+        data: []
+      }, {
+        label: '반 평균',
+        borderColor: '#0000ff',
+        fill: false,
+        data: []
+      }],
+      subjectScoreLabelData: [],
+
+      subjectRankingData: [],
+      subjectRankingLabelData: []
     };
+  },
+
+  methods: {
+    /* 학생 선택 */
+    selectStudent: function selectStudent(value) {
+      /* 우측 버튼 잠금 해제 */
+      this.btnLock = true;
+      /* 학번 변경 */
+      this.setStd_id = value;
+      /* 과목 불러오기 : 첫번째 과목을 기본 값으로 설정 => 중계함수 호출 */
+      this.getSubjectList();
+      /* 그래프 중계함수 호출*/
+      // this.getStudentInfoRenderGraph();
+    },
+
+    /* 하위 메뉴 조작 */
+    selectMinorType: function selectMinorType(value, set) {
+      switch (set) {
+        case 'sign':
+          this.setMinor_type[0]['sign'] = value;
+          this.getStudentInfoRenderGraph('sign');
+          break;
+        case 'attendance':
+          this.setMinor_type[0]['attendance'] = value;
+          this.getStudentInfoRenderGraph('attendance');
+          break;
+        case 'code':
+          this.setMinor_type[0]['code'] = value;
+          this.getStudentInfoRenderGraph('code');
+          break;
+        case 'detailCode':
+          this.setMinor_type[0]['detailCode'] = value;
+          this.getStudentInfoRenderGraph('detailCode');
+          break;
+      }
+    },
+    selectPeriod: function selectPeriod(value) {
+      switch (value) {
+        case 'daily':
+          // 사용대기
+          break;
+        case 'weekly':
+          this.sDate = null;
+          this.fDate = null;
+          this.setPeriod_type = value;
+          this.periodSelected = '주간';
+          this.dateCheck = false;
+          break;
+        case 'monthly':
+          this.sDate = null;
+          this.fDate = null;
+          this.setPeriod_type = value;
+          this.periodSelected = '월간';
+          this.dateCheck = false;
+          break;
+        case 'recently':
+          this.sDate = null;
+          this.fDate = null;
+          this.setPeriod_type = value;
+          this.periodSelected = '최근';
+          this.dateCheck = false;
+          break;
+        case 'save':
+          /* 날짜 예외처리 = 정상 값 확인 */
+          /* 기본 날짜는 watch 로 1차 확인 */
+          if (!this.dateCheck) {
+            /* 잘못된 값 */
+            this.sDate = null;
+            this.fDate = null;
+            this.setPeriod_type = value;
+            this.periodSelected = '최근';
+            this.dateCheck = false;
+            /* 알림 */
+            alert('(초기화)정상적인 입력이 아닙니다.');
+          }
+          /* 학생이 선택된 상태라면 그래프를 그린다. */
+          else if (this.btnLock) {
+              this.getStudentInfoRenderGraph();
+            }
+      }
+    },
+    getStudentInfoRenderGraph: function getStudentInfoRenderGraph(set) {
+
+      switch (set) {
+        case 'sign':
+          this.getSignData();
+          break;
+        case 'attendance':
+          this.getAttendanceData();
+          break;
+        case 'code':
+          this.getLectureData();
+          this.getSubjectData();
+          break;
+        case 'detailCode':
+          this.getSubjectData();
+          break;
+        default:
+          this.getSignData();
+          this.getAttendanceData();
+          this.getAttendanceDoughnutData();
+          this.getJmLineData();
+          this.getLectureData();
+          this.getSubjectData();
+      }
+    },
+
+    /* 학생 목록 */
+    getStudentInfo: function getStudentInfo(typeSelect) {
+      var _this = this;
+
+      axios.get('/tutor/analyse/student_list', {
+        params: {
+          type: typeSelect,
+          order: 'id'
+        }
+      }).then(function (response) {
+        _this.studnetInfo = response.data.message;
+      }).catch(function (error) {
+        console.log("getStuInfo Err : " + error);
+      });
+    },
+
+    /* 수강 강의 목록 */
+    getSubjectList: function getSubjectList() {
+      var _this2 = this;
+
+      axios.get('/tutor/detail/join_list', {
+        params: {
+          std_id: this.setStd_id
+        }
+      }).then(function (response) {
+        /* 초기화 */
+        _this2.subjectList = [];
+        for (var start = 0; start < response.data.message.subjects.length; start++) {
+          _this2.subjectList.push(response.data.message.subjects[start]);
+        }
+        /* 과목 코드 기본 값 설정 */
+        _this2.setMinor_type[0]['code'] = _this2.subjectList[0].id;
+        _this2.getStudentInfoRenderGraph();
+      }).catch(function (error) {
+        console.log('getSub Err :' + error);
+      });
+    },
+
+    /* 등하교 시간 변화량 */
+    getSignData: function getSignData(std_id) {
+      var _this3 = this;
+
+      var paramData = [{
+        major_class: 'ada',
+        graph_type: 'compare',
+        minor_class: this.setMinor_type[0]['sign'],
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+
+        var data = [];
+        var label = [];
+
+        for (var start = 0; start < response.data.message.value.length; start++) {
+          label.push(response.data.message.value[start]['x-point']);
+          data.push(_this3.cutTime(response.data.message.value[start]['y-point']));
+        }
+        _this3.timeLineLabelData = label;
+        _this3.timeLineData = data;
+      }).catch(function (error) {
+        console.log("getSign Err :" + error);
+      });
+    },
+
+    /* 출결 횟수 변화량 */
+    getAttendanceData: function getAttendanceData() {
+      var _this4 = this;
+
+      var paramData = [{
+        major_class: 'ada',
+        graph_type: 'single_line',
+        minor_class: this.setMinor_type[0]['attendance'],
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+
+        var data = [];
+        var label = [];
+
+        for (var start = 0; start < response.data.message.value.length; start++) {
+          label.push(response.data.message.value[start]['x-point']);
+          if (response.data.message.value[start]['y-point'] == null) {
+            data.push(0);
+          } else {
+            data.push(response.data.message.value[start]['y-point']);
+          }
+        }
+        _this4.countLineLabelData = label;
+        _this4.countLineData = data;
+      }).catch(function (error) {
+        console.log("getAtt Err :" + error);
+      });
+    },
+
+    /* 출결 유형 비율 */
+    getAttendanceDoughnutData: function getAttendanceDoughnutData() {
+      var _this5 = this;
+
+      var paramData = [{
+        major_class: 'ada',
+        graph_type: 'donut',
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+
+        var data = response.data.message.value.graph;
+
+        _this5.countPieData = [data.good, data.lateness, data.absence, data.early_leave];
+      }).catch(function (error) {
+        console.log("getPie Err :" + error);
+      });
+    },
+
+    /* 전공 일본어 비교 */
+    getJmLineData: function getJmLineData() {
+      var _this6 = this;
+
+      var paramData = [{
+        major_class: 'study',
+        graph_type: 'double_line',
+        minor_class: 'japanese',
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramData[0], 'start_date', this.startDate);
+        this.$set(paramData[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramData[0]
+      }).then(function (response) {
+
+        var label = [];
+        var japanese = [];
+        var major = [];
+
+        for (var start = 0; start < response.data.message.japanese.value.length; start++) {
+          label.push(response.data.message.japanese.value[start]['x-point']);
+          /* 일본어 */
+          /* 기록이 없을 경우 */
+          if (response.data.message.japanese.value[start]['y-point'] == null && start != 0) {
+            /* 이전 기록을 가지고 온다.*/
+            japanese.push(japanese[start - 1]);
+          } else if (response.data.message.japanese.value[start]['y-point'] == null) {
+            /* 기록에 완전 없을 경우, 0으로 등록한다.*/
+            japanese.push(0);
+          } else {
+            /* 기록이 있을 경우 */
+            japanese.push(response.data.message.japanese.value[start]['y-point']);
+          }
+          /* 전공 */
+          /* 기록이 없을 경우 */
+          if (response.data.message.japanese.value[start]['y-point'] == null && start != 0) {
+            /* 이전 기록을 가지고 온다.*/
+            major.push(major[start - 1]);
+          } else if (response.data.message.japanese.value[start]['y-point'] == null) {
+            /* 기록에 완전 없을 경우, 0으로 등록한다.*/
+            major.push(0);
+          } else {
+            /* 기록이 있을 경우 */
+            major.push(response.data.message.major.value[start]['y-point']);
+          }
+        }
+        _this6.jmLineDataSets[0]['data'] = japanese;
+        _this6.jmLineDataSets[1]['data'] = major;
+        /* watch */
+        _this6.jmLineLabelData = label;
+      }).catch(function (error) {
+        console.log('getJM Err :' + error);
+      });
+    },
+
+    /* 강의 별 득점 비교 및 석차 변화 */
+    getLectureData: function getLectureData() {
+      var _this7 = this;
+
+      var paramDataFirst = [{
+        major_class: 'study',
+        graph_type: 'double_line',
+        minor_class: 'subject_' + this.setMinor_type[0]['code'],
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramDataFirst[0], 'start_date', this.startDate);
+        this.$set(paramDataFirst[0], 'end_date', this.endDate);
+      }
+
+      /* 득점 비교 */
+      axios.get('/tutor/analyse/result', {
+        params: paramDataFirst[0]
+      }).then(function (response) {
+
+        var label = [];
+        var gained = [];
+        var classAve = [];
+
+        for (var start = 0; start < response.data.message.value.gained_score.length; start++) {
+
+          /* 개인점수 */
+          if (response.data.message.value.gained_score[start]['y-point'] != null) {
+
+            label.push(response.data.message.value.gained_score[start]['x-point']);
+
+            gained.push(response.data.message.value.gained_score[start]['y-point']);
+          }
+
+          /* 반 점수 */
+          if (response.data.message.value.class_average[start]['y-point'] != null) {
+            classAve.push(response.data.message.value.class_average[start]['y-point']);
+          }
+        }
+
+        _this7.lectureScoreDataSets[0]['data'] = gained;
+        _this7.lectureScoreDataSets[1]['data'] = classAve;
+        /* watch */
+        _this7.lectureScoreLabelData = label;
+      }).catch(function (error) {
+        console.log('getLecSingle Err :' + error);
+      });
+
+      /* 석차 백분율 */
+      var paramDataSecond = [{
+        major_class: 'study',
+        graph_type: 'single_line',
+        minor_class: 'subject_' + this.setMinor_type[0]['code'],
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramDataSecond[0], 'start_date', this.startDate);
+        this.$set(paramDataSecond[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramDataSecond[0]
+      }).then(function (response) {
+
+        var label = [];
+        var gained = [];
+
+        for (var start = 0; start < response.data.message.value.length; start++) {
+
+          /* 석차 백분율 */
+          if (response.data.message.value[start]['y-point'] != null) {
+            label.push(response.data.message.value[start]['x-point']);
+            gained.push(response.data.message.value[start]['y-point']);
+          }
+        }
+        _this7.lectureRankingLabelData = label;
+        _this7.lectureRankingData = gained;
+      }).catch(function (error) {
+        console.log('getLecDouble Err :' + error);
+      });
+    },
+
+    /* 강의 = 종류별 득점 비교 및 석차 변화 */
+    getSubjectData: function getSubjectData() {
+      var _this8 = this;
+
+      var paramDatafirst = [{
+        major_class: 'study',
+        graph_type: 'double_line',
+        minor_class: this.setMinor_type[0]['code'] + this.setMinor_type[0]['detailCode'],
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramDatafirst[0], 'start_date', this.startDate);
+        this.$set(paramDatafirst[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramDatafirst[0]
+      }).then(function (response) {
+
+        var label = [];
+        var gained = [];
+        var classAve = [];
+
+        for (var start = 0; start < response.data.message.value.gained_score.length; start++) {
+          /* 개인점수 */
+          if (response.data.message.value.gained_score[start]['y-point'] != null) {
+
+            label.push(response.data.message.value.gained_score[start]['x-point']);
+
+            gained.push(response.data.message.value.gained_score[start]['y-point']);
+          }
+
+          /* 반 점수 */
+          if (response.data.message.value.class_average[start]['y-point'] != null) {
+            classAve.push(response.data.message.value.class_average[start]['y-point']);
+          }
+        }
+
+        _this8.subjectScoreDataSets[0]['data'] = gained;
+        _this8.subjectScoreDataSets[1]['data'] = classAve;
+        /* watch */
+        _this8.subjectScoreLabelData = label;
+      }).catch(function (error) {
+        console.log('getSubSingle Err :' + error);
+      });
+
+      /* 종류 별 석차백분율 */
+
+      var paramDataSecond = [{
+        major_class: 'study',
+        graph_type: 'single_line',
+        minor_class: this.setMinor_type[0]['code'] + this.setMinor_type[0]['detailCode'],
+        period_type: this.setPeriod_type,
+        std_id: this.setStd_id
+      }];
+      /* 날짜 데이터 추가 */
+      if (this.setPeriod_type != 'recently') {
+        this.$set(paramDataSecond[0], 'start_date', this.startDate);
+        this.$set(paramDataSecond[0], 'end_date', this.endDate);
+      }
+
+      axios.get('/tutor/analyse/result', {
+        params: paramDataSecond[0]
+      }).then(function (response) {
+
+        var label = [];
+        var gained = [];
+
+        for (var start = 0; start < response.data.message.value.length; start++) {
+          /* 석차 백분율 */
+          if (response.data.message.value[start]['y-point'] != null) {
+            label.push(response.data.message.value[start]['x-point']);
+            gained.push(response.data.message.value[start]['y-point']);
+          }
+        }
+        _this8.subjectRankingLabelData = label;
+        _this8.subjectRankingData = gained;
+      }).catch(function (error) {
+        console.log('getSubDouble Err :' + error);
+      });
+    },
+    cutTime: function cutTime(value) {
+      /* 값 변경 시작 */
+      if (value != null) {
+        var timeData = value.split(':');
+        var time = timeData[0] + timeData[1];
+
+        return time;
+      }
+      return [];
+    },
+
+    /* 주차 계산기 */
+    createWeekTime: function createWeekTime(value) {
+      /* 시간 크기 비교 */
+      /* 같은 값 허용 */
+      /* 말라초로 변환 후 비교한다. */
+      var minute = 1000 * 60;
+      var hour = minute * 60;
+      var day = hour * 24;
+
+      /* 연도 획득 */
+      var splitDate = value.split('-');
+      /* 시작점 획득 */
+      var start = new Date(splitDate[0] + "-01-01");
+      start = start.getTime();
+      /* 지정일 획득 */
+      var date = new Date(value);
+      date = date.getTime();
+      /* 지정일 - 시작점 + 주차보정 = 현재까지의 시간 */
+      /* 음수가 나올 수 없다. */
+      var days = date - start + (splitDate[0] - 2017) * day;
+      /* 양수가 나오면 주(7) 단위로 나누기 */
+      var week = Math.ceil(days / (day * 7)) + 1;
+      /* 주차 조합 */
+      var setTime = splitDate[0] + "-" + week;
+
+      return setTime;
+    },
+
+    /* 날짜 예외확인 */
+    checkDate: function checkDate(value) {
+      /* 정상 값인지 비교 */
+      if (this.fDate != null && this.sDate != null && value != 'save') {
+
+        var sDate = new Date(this.fDate);
+        sDate = sDate.getTime();
+        var eDate = new Date(this.sDate);
+        eDate = eDate.getTime();
+
+        if (sDate > eDate) {
+          if (value == "start") {
+            /* 경고 -> 값 초기화 */
+            alert('시작일이 종료일보다 늦을 수 없습니다.');
+            console.log('시작일이 종료일보다 늦을 수 없습니다.');
+            this.fDate = null;
+          } else if (value == "end") {
+            /* 경고 -> 값 초기화 */
+            alert('종료일이 시작일보다 빠를 수 없습니다.');
+            console.log('종료일이 시작일보다 빠를 수 없습니다.');
+            this.sDate = null;
+          }
+          this.dateCheck = false;
+        } else {
+          /* 값이 정상일 경우 */
+          switch (this.setPeriod_type) {
+            case 'daily':
+              /* 사용보류 */
+              break;
+            case 'weekly':
+              this.startDate = this.createWeekTime(this.fDate);
+              this.endDate = this.createWeekTime(this.sDate);
+              break;
+            case 'monthly':
+              this.startDate = this.fDate;
+              this.endDate = this.sDate;
+              break;
+          }
+          this.dateCheck = true;
+        }
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.getStudentInfo('total');
+  },
+
+  watch: {
+    fDate: function fDate() {
+      this.checkDate('start');
+    },
+    sDate: function sDate() {
+      this.checkDate('end');
+    }
   }
 });
 
 /***/ }),
-/* 317 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -77893,6 +80440,183 @@ var render = function() {
     { staticClass: "StudentAnalyticPrediction" },
     [
       _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { width: "750px" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", { staticClass: "grey lighten-4 py-4 title" }, [
+                _vm._v("\n       분석 기간 설정\n      ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-container",
+                { staticClass: "pa-4", attrs: { "grid-list-sm": "" } },
+                [
+                  _c(
+                    "v-toolbar",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.selectPeriod("recently")
+                            }
+                          }
+                        },
+                        [_vm._v("최근")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.selectPeriod("weekly")
+                            }
+                          }
+                        },
+                        [_vm._v("주간")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "info" },
+                          on: {
+                            click: function($event) {
+                              _vm.selectPeriod("monthly")
+                            }
+                          }
+                        },
+                        [_vm._v("월간")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c(
+                    "v-layout",
+                    { attrs: { row: "", wrap: "" } },
+                    [
+                      _c(
+                        "v-flex",
+                        { attrs: { xs10: "" } },
+                        [
+                          _vm.setPeriod_type == "monthly"
+                            ? _c("v-date-picker", {
+                                attrs: { type: "month", min: "2018-01" },
+                                model: {
+                                  value: _vm.fDate,
+                                  callback: function($$v) {
+                                    _vm.fDate = $$v
+                                  },
+                                  expression: "fDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "monthly"
+                            ? _c("v-date-picker", {
+                                attrs: { type: "month", min: "2018-01" },
+                                model: {
+                                  value: _vm.sDate,
+                                  callback: function($$v) {
+                                    _vm.sDate = $$v
+                                  },
+                                  expression: "sDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "weekly"
+                            ? _c("v-date-picker", {
+                                attrs: { min: "2018-01" },
+                                model: {
+                                  value: _vm.fDate,
+                                  callback: function($$v) {
+                                    _vm.fDate = $$v
+                                  },
+                                  expression: "fDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "weekly"
+                            ? _c("v-date-picker", {
+                                attrs: { min: "2018-01" },
+                                model: {
+                                  value: _vm.sDate,
+                                  callback: function($$v) {
+                                    _vm.sDate = $$v
+                                  },
+                                  expression: "sDate"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.setPeriod_type == "recently"
+                            ? _c("div", [
+                                _c("h2", [
+                                  _vm._v(
+                                    "최근(10주)은 기간을 지정할 수 없습니다."
+                                  )
+                                ])
+                              ])
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "primary" },
+                      on: {
+                        click: function($event) {
+                          _vm.selectPeriod("save"), (_vm.dialog = false)
+                        }
+                      }
+                    },
+                    [_vm._v("확인")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-flex",
@@ -77915,9 +80639,49 @@ var render = function() {
                         { staticClass: "studentListCard" },
                         [
                           _c("v-card-text", [
-                            _c("h2", { staticClass: "studentListTitle" }, [
-                              _vm._v("학생목록")
-                            ])
+                            _c(
+                              "h2",
+                              { staticClass: "studentListTitle" },
+                              [
+                                _vm._v("학생목록\n                "),
+                                !_vm.dateCheck
+                                  ? _c(
+                                      "v-btn",
+                                      {
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            _vm.dialog = !_vm.dialog
+                                          }
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(this.periodSelected))]
+                                    )
+                                  : _c(
+                                      "v-btn",
+                                      {
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            _vm.dialog = !_vm.dialog
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(this.periodSelected) +
+                                            "\n                  ( " +
+                                            _vm._s(this.startDate) +
+                                            " ~ " +
+                                            _vm._s(this.endDate) +
+                                            ")\n                "
+                                        )
+                                      ]
+                                    )
+                              ],
+                              1
+                            )
                           ]),
                           _vm._v(" "),
                           _c(
@@ -77967,429 +80731,85 @@ var render = function() {
                             "v-list",
                             { attrs: { "three-line": "" } },
                             [
-                              _vm._l(_vm.items, function(item, index) {
-                                return [
-                                  item.header
-                                    ? _c("v-subheader", { key: item.header }, [
-                                        _vm._v(_vm._s(item.header))
-                                      ])
-                                    : item.divider
-                                      ? _c("v-divider", {
-                                          key: index,
-                                          attrs: { inset: item.inset }
-                                        })
-                                      : _c(
-                                          "v-list-tile",
-                                          {
-                                            key: item.name,
-                                            attrs: { avatar: "" },
-                                            on: { click: function($event) {} }
-                                          },
-                                          [
-                                            _c("v-list-tile-avatar", [
-                                              _c("img", {
-                                                attrs: { src: item.avatar }
+                              _c("v-subheader", [
+                                _vm._v(" 임시 텍스트 (타이틀 영역) ")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "studentInfoDiv" },
+                                [
+                                  _vm._l(_vm.studnetInfo, function(datas) {
+                                    return [
+                                      _c("v-divider", {
+                                        attrs: { inset: true }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-list-tile",
+                                        {
+                                          attrs: { avatar: "" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectStudent(datas.id)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("v-list-tile-avatar", [
+                                            _c("img", {
+                                              attrs: { src: datas.photo_url }
+                                            })
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-list-tile-content",
+                                            [
+                                              _c("v-list-tile-title", [
+                                                _vm._v(
+                                                  " " +
+                                                    _vm._s(datas.id) +
+                                                    " " +
+                                                    _vm._s(datas.name)
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("v-icon", {
+                                                attrs: {
+                                                  small: "",
+                                                  color: "red"
+                                                },
+                                                domProps: {
+                                                  innerHTML: _vm._s(
+                                                    datas.attention_level
+                                                  )
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              _c("v-btn", {
+                                                attrs: {
+                                                  small: "",
+                                                  depressed: "",
+                                                  round: "",
+                                                  color: "light-green lighten-1"
+                                                },
+                                                domProps: {
+                                                  innerHTML: _vm._s(
+                                                    datas.attention_reason
+                                                  )
+                                                }
                                               })
-                                            ]),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-list-tile-content",
-                                              [
-                                                _c("v-list-tile-title", {
-                                                  domProps: {
-                                                    innerHTML: _vm._s(item.name)
-                                                  }
-                                                }),
-                                                _vm._v(" "),
-                                                _c("v-icon", {
-                                                  attrs: {
-                                                    small: "",
-                                                    color: "red"
-                                                  },
-                                                  domProps: {
-                                                    innerHTML: _vm._s(
-                                                      item.interest
-                                                    )
-                                                  }
-                                                }),
-                                                _vm._v(" "),
-                                                _c("v-btn", {
-                                                  attrs: {
-                                                    small: "",
-                                                    depressed: "",
-                                                    round: "",
-                                                    color:
-                                                      "light-green lighten-1"
-                                                  },
-                                                  domProps: {
-                                                    innerHTML: _vm._s(
-                                                      item.attention
-                                                    )
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        )
-                                ]
-                              })
-                            ],
-                            2
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-flex",
-        { attrs: { xs12: "" } },
-        [
-          _c(
-            "v-container",
-            { attrs: { "grid-list-xl": "" } },
-            [
-              _c(
-                "v-layout",
-                { attrs: { row: "", wrap: "", "align-center": "" } },
-                [
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", md4: "" } },
-                    [
-                      _c("v-card", [
-                        _vm._v(
-                          "\n\n            그래프가 들어올 영역\n            1. 출석정보\n             1-1. 기간단위 : 일 , 범위 : 주\n             1-2. 지각 조퇴 결석\n             1-3. 지각 결석\n             1-4. 지각 결석 + 조퇴\n            2. 학업정보\n             2-1. 일본어, 전공\n             2-2. 각 강의\n             2-3. 과제, 쪽지, 기말, 중간\n\n          "
-                        )
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-btn",
-        {
-          attrs: {
-            fab: "",
-            bottom: "",
-            right: "",
-            color: "primary",
-            dark: "",
-            fixed: ""
-          },
-          on: {
-            click: function($event) {
-              $event.stopPropagation()
-              _vm.dialog = !_vm.dialog
-            }
-          }
-        },
-        [_c("v-icon", [_vm._v("settings")])],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-dialog",
-        {
-          attrs: { width: "500px" },
-          model: {
-            value: _vm.dialog,
-            callback: function($$v) {
-              _vm.dialog = $$v
-            },
-            expression: "dialog"
-          }
-        },
-        [
-          _c(
-            "v-card",
-            [
-              _c("v-card-title", { staticClass: "grey lighten-4 py-4 title" }, [
-                _vm._v("\n        분석 조건 설정\n      ")
-              ]),
-              _vm._v(" "),
-              _c(
-                "v-container",
-                { staticClass: "pa-4", attrs: { "grid-list-sm": "" } },
-                [
-                  _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
-                    [
-                      _c(
-                        "v-flex",
-                        { attrs: { xs2: "" } },
-                        [
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                small: "",
-                                depressed: "",
-                                fab: "",
-                                dark: "",
-                                color: "green"
-                              }
-                            },
-                            [_c("v-icon", [_vm._v("check")])],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-flex", { attrs: { xs10: "" } }, [
-                        _c("h2", { staticClass: "attendanceSettingTitle" }, [
-                          _vm._v("출석")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm4: "", md4: "" } },
-                        [
-                          _c("v-checkbox", {
-                            attrs: {
-                              label: "전체",
-                              value: "allCheck",
-                              color: "primary",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.attendanceSelected,
-                              callback: function($$v) {
-                                _vm.attendanceSelected = $$v
-                              },
-                              expression: "attendanceSelected"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-checkbox", {
-                            attrs: {
-                              label: "지각",
-                              value: "checkLate",
-                              color: "primary",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.attendanceSelected,
-                              callback: function($$v) {
-                                _vm.attendanceSelected = $$v
-                              },
-                              expression: "attendanceSelected"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm4: "", md4: "" } },
-                        [
-                          _c("v-checkbox", {
-                            attrs: {
-                              label: "조퇴",
-                              value: "checkEarlyLeave",
-                              color: "primary",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.attendanceSelected,
-                              callback: function($$v) {
-                                _vm.attendanceSelected = $$v
-                              },
-                              expression: "attendanceSelected"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-checkbox", {
-                            attrs: {
-                              label: "결석",
-                              value: "checkAbsence",
-                              color: "primary",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.attendanceSelected,
-                              callback: function($$v) {
-                                _vm.attendanceSelected = $$v
-                              },
-                              expression: "attendanceSelected"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c(
-                "v-container",
-                { staticClass: "pa-4", attrs: { "grid-list-sm": "" } },
-                [
-                  _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
-                    [
-                      _c(
-                        "v-flex",
-                        { attrs: { xs2: "" } },
-                        [
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                small: "",
-                                depressed: "",
-                                fab: "",
-                                dark: "",
-                                color: "green"
-                              }
-                            },
-                            [_c("v-icon", [_vm._v("school")])],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-flex", { attrs: { xs10: "" } }, [
-                        _c("h2", { staticClass: "attendanceSettingTitle" }, [
-                          _vm._v("학업")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm6: "", md6: "" } },
-                        [
-                          _c("v-checkbox", {
-                            attrs: {
-                              label: "전체",
-                              color: "primary",
-                              value: "allCheck",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.studySelected,
-                              callback: function($$v) {
-                                _vm.studySelected = $$v
-                              },
-                              expression: "studySelected"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-checkbox", {
-                            attrs: {
-                              label: "일본어",
-                              color: "primary",
-                              value: "checkJapanese",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.studySelected,
-                              callback: function($$v) {
-                                _vm.studySelected = $$v
-                              },
-                              expression: "studySelected"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-checkbox", {
-                            attrs: {
-                              label: "전공",
-                              color: "primary",
-                              value: "checkAllMajor",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.studySelected,
-                              callback: function($$v) {
-                                _vm.studySelected = $$v
-                              },
-                              expression: "studySelected"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            [
-                              _c("v-checkbox", {
-                                attrs: {
-                                  label: "객체지향언어",
-                                  color: "primary",
-                                  value: "chekJava",
-                                  "hide-details": ""
-                                },
-                                model: {
-                                  value: _vm.studySelected,
-                                  callback: function($$v) {
-                                    _vm.studySelected = $$v
-                                  },
-                                  expression: "studySelected"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("v-checkbox", {
-                                attrs: {
-                                  label: "데이터베이스",
-                                  color: "primary",
-                                  value: "checkDB",
-                                  "hide-details": ""
-                                },
-                                model: {
-                                  value: _vm.studySelected,
-                                  callback: function($$v) {
-                                    _vm.studySelected = $$v
-                                  },
-                                  expression: "studySelected"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("v-checkbox", {
-                                attrs: {
-                                  label: "네트워크개론",
-                                  color: "primary",
-                                  value: "checkNetwork",
-                                  "hide-details": ""
-                                },
-                                model: {
-                                  value: _vm.studySelected,
-                                  callback: function($$v) {
-                                    _vm.studySelected = $$v
-                                  },
-                                  expression: "studySelected"
-                                }
-                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ]
+                                  })
+                                ],
+                                2
+                              )
                             ],
                             1
                           )
@@ -78398,40 +80818,426 @@ var render = function() {
                       )
                     ],
                     1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: { flat: "", color: "primary" },
-                      on: {
-                        click: function($event) {
-                          _vm.dialog = false
-                        }
-                      }
-                    },
-                    [_vm._v("Cancel")]
                   ),
                   _vm._v(" "),
                   _c(
-                    "v-btn",
-                    {
-                      attrs: { flat: "" },
-                      on: {
-                        click: function($event) {
-                          _vm.dialog = false
-                        }
-                      }
-                    },
-                    [_vm._v("Save")]
+                    "v-card",
+                    { staticClass: "chartCard" },
+                    [
+                      _c(
+                        "v-container",
+                        { attrs: { "grid-list-xl": "" } },
+                        [
+                          _c(
+                            "v-layout",
+                            {
+                              attrs: { row: "", wrap: "", "align-center": "" }
+                            },
+                            [
+                              _c(
+                                "v-card",
+                                [
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "sign_in",
+                                                "sign"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("등교")]
+                                      )
+                                    : _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info", disabled: "" }
+                                        },
+                                        [_vm._v("등교")]
+                                      ),
+                                  _vm._v(" "),
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "sign_out",
+                                                "sign"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("하교")]
+                                      )
+                                    : _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info", disabled: "" }
+                                        },
+                                        [_vm._v("하교")]
+                                      ),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _c("h2", [_vm._v("등교, 하교 시간")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("attendance-time-lineChart", {
+                                    attrs: {
+                                      data: _vm.timeLineData,
+                                      labels: _vm.timeLineLabelData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card",
+                                [
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "lateness",
+                                                "attendance"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("지각")]
+                                      )
+                                    : _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info", disabled: "" }
+                                        },
+                                        [_vm._v("지각")]
+                                      ),
+                                  _vm._v(" "),
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "absence",
+                                                "attendance"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("결석")]
+                                      )
+                                    : _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info", disabled: "" }
+                                        },
+                                        [_vm._v("결석")]
+                                      ),
+                                  _vm._v(" "),
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "early_leave",
+                                                "attendance"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("조퇴")]
+                                      )
+                                    : _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info", disabled: "" }
+                                        },
+                                        [_vm._v("조퇴")]
+                                      ),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _c("h2", [_vm._v("출결 횟수 변화")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("attendance-count-lineChart", {
+                                    attrs: {
+                                      data: _vm.countLineData,
+                                      labels: _vm.countLineLabelData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card",
+                                [
+                                  _c("div", [
+                                    _c("h2", [_vm._v("출결별 횟수")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("attendance-count-pieChart", {
+                                    attrs: {
+                                      data: _vm.countPieData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card",
+                                [
+                                  _c("div", [
+                                    _c("h2", [_vm._v("전공&일본어 수준")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("study-japenese-Major-lineChart", {
+                                    attrs: {
+                                      datasets: _vm.jmLineDataSets,
+                                      labels: _vm.jmLineLabelData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-toolbar",
+                                _vm._l(_vm.subjectList, function(sub) {
+                                  return _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          key: sub.key,
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                sub.id,
+                                                "code"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                      " +
+                                              _vm._s(sub.name) +
+                                              "\n                      "
+                                          )
+                                        ]
+                                      )
+                                    : _c("v-btn", { attrs: { disabled: "" } }, [
+                                        _vm._v(" 수강 중인 강의가 없습니다. ")
+                                      ])
+                                })
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card",
+                                [
+                                  _c("div", [_c("h2")]),
+                                  _vm._v(" "),
+                                  _c("study-lecture-score-lineChart", {
+                                    attrs: {
+                                      datasets: _vm.lectureScoreDataSets,
+                                      labels: _vm.lectureScoreLabelData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card",
+                                [
+                                  _c("div", [_c("h2")]),
+                                  _vm._v(" "),
+                                  _c("study-lecture-ranking-lineChart", {
+                                    attrs: {
+                                      data: _vm.lectureRankingData,
+                                      labels: _vm.lectureRankingLabelData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-toolbar",
+                                [
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "_quiz",
+                                                "detailCode"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("쪽지")]
+                                      )
+                                    : _c("v-btn", { attrs: { disabled: "" } }, [
+                                        _vm._v("쪽지")
+                                      ]),
+                                  _vm._v(" "),
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "_homework",
+                                                "detailCode"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("과제")]
+                                      )
+                                    : _c("v-btn", { attrs: { disabled: "" } }, [
+                                        _vm._v("과제")
+                                      ]),
+                                  _vm._v(" "),
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "_midterm",
+                                                "detailCode"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("중간")]
+                                      )
+                                    : _c("v-btn", { attrs: { disabled: "" } }, [
+                                        _vm._v("중간")
+                                      ]),
+                                  _vm._v(" "),
+                                  _vm.btnLock
+                                    ? _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { color: "info" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.selectMinorType(
+                                                "_final",
+                                                "detailCode"
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("기말")]
+                                      )
+                                    : _c("v-btn", { attrs: { disabled: "" } }, [
+                                        _vm._v("기말")
+                                      ])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card",
+                                [
+                                  _c("div", [_c("h2")]),
+                                  _vm._v(" "),
+                                  _c("study-subject-score-lineChart", {
+                                    attrs: {
+                                      datasets: _vm.subjectScoreDataSets,
+                                      labels: _vm.subjectScoreLabelData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card",
+                                [
+                                  _c("div", [_c("h2")]),
+                                  _vm._v(" "),
+                                  _c("study-subject-ranking-lineChart", {
+                                    attrs: {
+                                      data: _vm.subjectRankingData,
+                                      labels: _vm.subjectRankingLabelData,
+                                      options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                      }
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
                   )
                 ],
                 1
@@ -78466,19 +81272,19 @@ if (false) {
 }
 
 /***/ }),
-/* 318 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(319)
+  __webpack_require__(322)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(321)
+var __vue_script__ = __webpack_require__(324)
 /* template */
-var __vue_template__ = __webpack_require__(322)
+var __vue_template__ = __webpack_require__(325)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -78517,13 +81323,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 319 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(320);
+var content = __webpack_require__(323);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -78543,7 +81349,7 @@ if(false) {
 }
 
 /***/ }),
-/* 320 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -78557,7 +81363,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 321 */
+/* 324 */
 /***/ (function(module, exports) {
 
 //
@@ -78982,7 +81788,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 //
 
 /***/ }),
-/* 322 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -79792,19 +82598,19 @@ if (false) {
 }
 
 /***/ }),
-/* 323 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(324)
+  __webpack_require__(327)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(326)
+var __vue_script__ = __webpack_require__(329)
 /* template */
-var __vue_template__ = __webpack_require__(327)
+var __vue_template__ = __webpack_require__(330)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -79843,13 +82649,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 324 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(325);
+var content = __webpack_require__(328);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -79869,7 +82675,7 @@ if(false) {
 }
 
 /***/ }),
-/* 325 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -79883,7 +82689,7 @@ exports.push([module.i, "\n.line {\r\n  border-bottom: 1px solid rgb(218, 218, 2
 
 
 /***/ }),
-/* 326 */
+/* 329 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -80055,7 +82861,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 327 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -80256,19 +83062,19 @@ if (false) {
 }
 
 /***/ }),
-/* 328 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(329)
+  __webpack_require__(332)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(331)
+var __vue_script__ = __webpack_require__(334)
 /* template */
-var __vue_template__ = __webpack_require__(332)
+var __vue_template__ = __webpack_require__(335)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -80307,13 +83113,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 329 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(330);
+var content = __webpack_require__(333);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -80333,7 +83139,7 @@ if(false) {
 }
 
 /***/ }),
-/* 330 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -80341,17 +83147,45 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.cardInsideTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n", ""]);
+exports.push([module.i, "\n.cardInsideTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.fontSetting {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\n#fontSetting td {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 331 */
+/* 334 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(9);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -80506,10 +83340,113 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
+
+
+/* 등교 하교 시간 비교 그래프  */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-pie-chart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Pie,
+  props: ['data', 'options'],
+  mounted: function mounted() {
+    this.renderPieChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    attendanceData: function attendanceData() {
+      return this.data;
+    }
+  },
+  methods: {
+    renderPieChart: function renderPieChart() {
+      this.renderChart({
+        /* 기간 내의 날짜 */
+        labels: ['출석', '지각', '결석', '조퇴'],
+        datasets: [{
+          backgroundColor: ['#0033CC', '#FFFF00', '#FF0000', '#FF9900'],
+          pointBackgroundColor: 'white',
+          pointBorderColor: '#249EBF',
+          data: this.attendanceData
+        }],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+  },
+  watch: {
+    attendanceData: function attendanceData() {
+      this.$data._chart.destroy();
+      this.renderPieChart();
+    }
+  }
+});
+
+/* 등교 하교 시간 비교 그래프  */
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-chart', {
+  extends: __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__["a" /* default */].Line,
+  props: ['datasets', 'labels', 'options'],
+  mounted: function mounted() {
+    this.renderLineChart();
+  },
+
+  /* 선언된 chart 의 data 속성에 값을 반환한다. */
+  computed: {
+    attendanceLabelData: function attendanceLabelData() {
+      return this.labels;
+    },
+    attendanceDatasets: function attendanceDatasets() {
+      return this.datasets;
+    }
+  },
+  methods: {
+    renderLineChart: function renderLineChart() {
+      this.renderChart({
+        /* 기간 내의 날짜 */
+        labels: this.attendanceLabelData,
+        datasets: this.attendanceDatasets
+      },
+      /* 옵션이 들어갈 영역 */
+      {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 2400
+            }
+          }]
+        }
+      });
+    }
+  },
+  watch: {
+    attendanceLabelData: function attendanceLabelData() {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    }
+  }
+});
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      /* 그래프 데이터 변수 */
+      attendanceData: [],
+      /* */
+      attendanceLabelData: [],
+      attendanceDatasets: [{
+        label: '등교&지각',
+        borderColor: '#330066',
+        fill: false,
+        data: []
+      }, {
+        label: '하교&조퇴',
+        borderColor: '#f53e3e',
+        fill: false,
+        data: []
+      }],
       /*--- 출결 상세정보 테이블 --*/
       attendanceStats: [{
         name: '출석',
@@ -80618,11 +83555,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
       }).then(function (response) {
         var getDatas = response.data.message;
+        /* 그래프에 들어갈 정보 저장*/
+        _this2.attendanceData.push(getDatas.total_sign_in);
+        _this2.attendanceData.push(getDatas.total_lateness);
+        _this2.attendanceData.push(getDatas.total_absence);
+        _this2.attendanceData.push(getDatas.total_early_leave);
         /* 정보를 저장 */
         /* 출석 */
         _this2.attendanceStats[0].count = getDatas.total_sign_in;
         _this2.attendanceStats[0].continuityNum = getDatas.today_sign_in;
         _this2.attendanceStats[0].recentlyDate = getDatas.today_sign_out;
+
         /* 지각 */
         _this2.attendanceStats[1].count = getDatas.total_lateness;
         _this2.attendanceStats[1].continuityNum = getDatas.continuative_lateness;
@@ -80661,6 +83604,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           std_id: this.$router.history.current.query.getInfoIdType
         }
       }).then(function (response) {
+        _this3.createAttendanceDoubleLineValue(response.data.message);
+
         var datas = [];
         for (var start = 0; start < response.data.message.length; start++) {
           /* 날짜 등록 */
@@ -80705,6 +83650,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (error) {
         console.log("listError : " + error);
       });
+    },
+
+    /* 출결 그래프 값 생성 */
+    createAttendanceDoubleLineValue: function createAttendanceDoubleLineValue(value) {
+      var max = 10;
+      var datas = [];
+      var labelData = [];
+      for (var start = 0; start < value.length, start < max; start++) {
+        /* 날짜 등록 */
+        labelData.push(value[start].reg_date);
+
+        /* 결석은 패스 */
+        if (value[start].lateness_flag != 'good') {
+          /* 지각 */
+          this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
+        } else {
+          /* 등교 */
+          this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
+        }
+        /* 하교타입 확인 : 결석일 경우 미확인 */
+        if (value[start].absence_flag == 'good') {
+          switch (value[start].early_leave_flag) {
+            case 'good':
+              /* 하교 */
+              this.attendanceDatasets[1].data.push(this.cutTime(value[start].sign_out_time, 'out'));
+              break;
+            case 'unreason':
+              /* 조퇴 */
+              this.attendanceDatasets[1].data.push(this.cutTime(value[start].sign_out_time, 'out'));
+              break;
+          }
+        }
+      }
+      /* 값 반대로 뒤집기 */
+      var end = labelData.length;
+      var labels = [];
+      var inData = [];
+      var outData = [];
+      for (var _start = 0; _start < end; _start++) {
+        labels.push(labelData.pop());
+        inData.push(this.attendanceDatasets[0].data.pop());
+        outData.push(this.attendanceDatasets[1].data.pop());
+      }
+      this.attendanceDatasets[0].data = inData;
+      this.attendanceDatasets[1].data = outData;
+      /* x축 값 변경 = 그래프 다시 그리기 */
+      this.attendanceLabelData = labels;
+    },
+    cutTime: function cutTime(value, setting) {
+      /* 출석 시작 기준 값 */
+      var checkInStart = '0830';
+      /* 값 변경 시작 */
+      var data = value.split(' ');
+      var timeData = data[1].split(':');
+      var time = timeData[0] + timeData[1];
+      /* 24시 이후 새벽에 하교하였을 경우 24시로 고정한다.*/
+      if (time < checkInStart && setting == 'out') {
+        time = '2400';
+      }
+      return time;
     }
   },
   mounted: function mounted() {
@@ -80723,7 +83728,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 332 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -80732,7 +83737,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "tutorStudentAttendance" },
+    { staticClass: "tutorStudentAttendance fontSetting" },
     [
       _c(
         "v-flex",
@@ -80757,11 +83762,58 @@ var render = function() {
                           attrs: { color: "white" }
                         },
                         [
-                          _c("v-card-text", [
-                            _c("h2", { staticClass: "cardInsideTitle" }, [
-                              _vm._v("출결 그래프")
-                            ])
-                          ])
+                          _c(
+                            "v-card-text",
+                            [
+                              _c("h2", { staticClass: "cardInsideTitle" }, [
+                                _vm._v("출결 그래프")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "v-container",
+                                [
+                                  _c(
+                                    "v-layout",
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs6: "" } },
+                                        [
+                                          _c("attendance-pie-chart", {
+                                            attrs: {
+                                              data: _vm.attendanceData,
+                                              width: 2,
+                                              height: 1
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs6: "" } },
+                                        [
+                                          _c("checkInOut-doubleLine-chart", {
+                                            attrs: {
+                                              datasets: _vm.attendanceDatasets,
+                                              labels: _vm.attendanceLabelData,
+                                              width: 2,
+                                              height: 1
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
@@ -80849,6 +83901,10 @@ var render = function() {
                                                     [
                                                       _c(
                                                         "v-list-tile-content",
+                                                        {
+                                                          staticClass:
+                                                            "fontSetting"
+                                                        },
                                                         [
                                                           _vm._v(
                                                             _vm._s(
@@ -80863,7 +83919,7 @@ var render = function() {
                                                         "v-list-tile-content",
                                                         {
                                                           staticClass:
-                                                            "align-end"
+                                                            "align-end fontSetting"
                                                         },
                                                         [
                                                           _vm._v(
@@ -80882,6 +83938,10 @@ var render = function() {
                                                     [
                                                       _c(
                                                         "v-list-tile-content",
+                                                        {
+                                                          staticClass:
+                                                            "fontSetting"
+                                                        },
                                                         [
                                                           _vm._v(
                                                             _vm._s(
@@ -80896,7 +83956,7 @@ var render = function() {
                                                         "v-list-tile-content",
                                                         {
                                                           staticClass:
-                                                            "align-end"
+                                                            "align-end fontSetting"
                                                         },
                                                         [
                                                           _vm._v(
@@ -80916,6 +83976,10 @@ var render = function() {
                                                     [
                                                       _c(
                                                         "v-list-tile-content",
+                                                        {
+                                                          staticClass:
+                                                            "fontSetting"
+                                                        },
                                                         [
                                                           _vm._v(
                                                             _vm._s(
@@ -80930,7 +83994,7 @@ var render = function() {
                                                         "v-list-tile-content",
                                                         {
                                                           staticClass:
-                                                            "align-end"
+                                                            "align-end fontSetting"
                                                         },
                                                         [
                                                           _vm._v(
@@ -81001,7 +84065,8 @@ var render = function() {
                             attrs: {
                               headers: _vm.attendanceHeaders,
                               items: _vm.attendanceDatas,
-                              pagination: _vm.attendancePagination
+                              pagination: _vm.attendancePagination,
+                              id: "fontSetting"
                             },
                             on: {
                               "update:pagination": function($event) {
@@ -81139,7 +84204,8 @@ var render = function() {
                             attrs: {
                               headers: _vm.headers,
                               items: _vm.attendanceAnalysis,
-                              "hide-actions": ""
+                              "hide-actions": "",
+                              id: "fontSetting"
                             },
                             scopedSlots: _vm._u([
                               {
@@ -81184,7 +84250,8 @@ var render = function() {
                             attrs: {
                               headers: _vm.headers2,
                               items: _vm.attendanceAnalysisMonth,
-                              "hide-actions": ""
+                              "hide-actions": "",
+                              id: "fontSetting"
                             },
                             scopedSlots: _vm._u([
                               {
@@ -81249,19 +84316,19 @@ if (false) {
 }
 
 /***/ }),
-/* 333 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(334)
+  __webpack_require__(337)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(336)
+var __vue_script__ = __webpack_require__(339)
 /* template */
-var __vue_template__ = __webpack_require__(337)
+var __vue_template__ = __webpack_require__(340)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -81300,13 +84367,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 334 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(335);
+var content = __webpack_require__(338);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -81326,7 +84393,7 @@ if(false) {
 }
 
 /***/ }),
-/* 335 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -81334,17 +84401,27 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.fontSetting {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\n#fontSetting td {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\r\n\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 336 */
+/* 339 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -81593,7 +84670,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 337 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -81602,7 +84679,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "tutorStudentGrade" },
+    { staticClass: "tutorStudentGrade fontSetting" },
     [
       _c(
         "v-flex",
@@ -81628,7 +84705,7 @@ var render = function() {
                         },
                         [
                           _c("v-card-text", [
-                            _c("h2", { staticClass: "cardInsideTitle" }, [
+                            _c("h1", { staticClass: "cardInsideTitle" }, [
                               _vm._v("성적조회 (간략히 보기)")
                             ])
                           ]),
@@ -81710,7 +84787,7 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("v-card-text", [
-                            _c("h3", { staticClass: "cardInsideTitle" }, [
+                            _c("h2", { staticClass: "cardInsideTitle" }, [
                               _vm._v(_vm._s(_vm.subjectStstsName))
                             ])
                           ]),
@@ -81737,7 +84814,7 @@ var render = function() {
                                             "v-card",
                                             [
                                               _c("v-card-title", [
-                                                _c("h4", [
+                                                _c("h3", [
                                                   _vm._v(
                                                     _vm._s(props.item.type)
                                                   )
@@ -81755,6 +84832,10 @@ var render = function() {
                                                     [
                                                       _c(
                                                         "v-list-tile-content",
+                                                        {
+                                                          staticClass:
+                                                            "fontSetting"
+                                                        },
                                                         [_vm._v("횟수")]
                                                       ),
                                                       _vm._v(" "),
@@ -81762,7 +84843,7 @@ var render = function() {
                                                         "v-list-tile-content",
                                                         {
                                                           staticClass:
-                                                            "align-end"
+                                                            "align-end fontSetting"
                                                         },
                                                         [
                                                           _vm._v(
@@ -81781,18 +84862,18 @@ var render = function() {
                                                     [
                                                       _c(
                                                         "v-list-tile-content",
-                                                        [
-                                                          _vm._v(
-                                                            "취득 가능 점수"
-                                                          )
-                                                        ]
+                                                        {
+                                                          staticClass:
+                                                            "fontSetting"
+                                                        },
+                                                        [_vm._v("총 점수")]
                                                       ),
                                                       _vm._v(" "),
                                                       _c(
                                                         "v-list-tile-content",
                                                         {
                                                           staticClass:
-                                                            "align-end"
+                                                            "align-end fontSetting"
                                                         },
                                                         [
                                                           _vm._v(
@@ -81812,6 +84893,10 @@ var render = function() {
                                                     [
                                                       _c(
                                                         "v-list-tile-content",
+                                                        {
+                                                          staticClass:
+                                                            "fontSetting"
+                                                        },
                                                         [_vm._v("취득 점수")]
                                                       ),
                                                       _vm._v(" "),
@@ -81819,7 +84904,7 @@ var render = function() {
                                                         "v-list-tile-content",
                                                         {
                                                           staticClass:
-                                                            "align-end"
+                                                            "align-end fontSetting"
                                                         },
                                                         [
                                                           _vm._v(
@@ -81839,6 +84924,10 @@ var render = function() {
                                                     [
                                                       _c(
                                                         "v-list-tile-content",
+                                                        {
+                                                          staticClass:
+                                                            "fontSetting"
+                                                        },
                                                         [_vm._v("평균")]
                                                       ),
                                                       _vm._v(" "),
@@ -81846,7 +84935,7 @@ var render = function() {
                                                         "v-list-tile-content",
                                                         {
                                                           staticClass:
-                                                            "align-end"
+                                                            "align-end fontSetting"
                                                         },
                                                         [
                                                           _vm._v(
@@ -81915,7 +85004,7 @@ var render = function() {
                         },
                         [
                           _c("v-card-text", [
-                            _c("h2", { staticClass: "cardInsideTitle" }, [
+                            _c("h1", { staticClass: "cardInsideTitle" }, [
                               _vm._v("성적조회 (상세보기)")
                             ])
                           ]),
@@ -81997,7 +85086,7 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("v-card-text", [
-                            _c("h3", { staticClass: "cardInsideTitle" }, [
+                            _c("h2", { staticClass: "cardInsideTitle" }, [
                               _vm._v(_vm._s(_vm.subjectScoreName))
                             ])
                           ]),
@@ -82007,7 +85096,8 @@ var render = function() {
                               headers: _vm.headers,
                               items: _vm.subjectScore,
                               search: _vm.search,
-                              page: ""
+                              page: "",
+                              id: "fontSetting"
                             },
                             scopedSlots: _vm._u([
                               {
@@ -82066,19 +85156,19 @@ if (false) {
 }
 
 /***/ }),
-/* 338 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(339)
+  __webpack_require__(342)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(341)
+var __vue_script__ = __webpack_require__(344)
 /* template */
-var __vue_template__ = __webpack_require__(342)
+var __vue_template__ = __webpack_require__(345)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -82117,13 +85207,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 339 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(340);
+var content = __webpack_require__(343);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -82143,7 +85233,7 @@ if(false) {
 }
 
 /***/ }),
-/* 340 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -82151,17 +85241,21 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.professor {\n}\n.professorPic {\r\n  margin: 0 0 10px 7px;\n}\r\n/*-- 코멘트용 말풍선 --*/\n.box3 {\r\n  width: 300px;\r\n  bottom: 80px;\r\n  left: 110px;\r\n  border-radius: 15px;\r\n  background: #00bfb6;\r\n  color: #fff;\r\n  padding: 20px;\r\n  text-align: center;\r\n  font-weight: 900;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  position: relative;\n}\r\n/*-- 왼쪽 말풍선 --*/\n.sb13:before {\r\n  content: \"\";\r\n  width: 0px;\r\n  height: 0px;\r\n  position: absolute;\r\n  border-left: 15px solid #00bfb6;\r\n  border-right: 15px solid transparent;\r\n  border-top: 15px solid #00bfb6;\r\n  border-bottom: 15px solid transparent;\r\n  right: -16px;\r\n  top: 0px;\n}\r\n/*-- 오른쪽 말풍선 --*/\n.sb14:before {\r\n  content: \"\";\r\n  width: 0px;\r\n  height: 0px;\r\n  position: absolute;\r\n  border-left: 15px solid transparent;\r\n  border-right: 15px solid #00bfb6;\r\n  border-top: 15px solid #00bfb6;\r\n  border-bottom: 15px solid transparent;\r\n  left: -16px;\r\n  top: 0px;\n}\n.editDelete {\r\n  position: relative;\r\n  bottom: 80px;\r\n  left: 300px;\n}\r\n\n", ""]);
+exports.push([module.i, "\n.professor {\n}\n.professorPic {\r\n  margin: 0 0 10px 7px;\n}\n.fontSetting {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\r\n/*-- 코멘트용 말풍선 --*/\n.box3 {\r\n  width: 300px;\r\n  bottom: 80px;\r\n  left: 110px;\r\n  border-radius: 15px;\r\n  background: #00bfb6;\r\n  color: #fff;\r\n  padding: 20px;\r\n  text-align: center;\r\n  font-weight: 900;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  position: relative;\n}\r\n/*-- 왼쪽 말풍선 --*/\n.sb13:before {\r\n  content: \"\";\r\n  width: 0px;\r\n  height: 0px;\r\n  position: absolute;\r\n  border-left: 15px solid #00bfb6;\r\n  border-right: 15px solid transparent;\r\n  border-top: 15px solid #00bfb6;\r\n  border-bottom: 15px solid transparent;\r\n  right: -16px;\r\n  top: 0px;\n}\r\n/*-- 오른쪽 말풍선 --*/\n.sb14:before {\r\n  content: \"\";\r\n  width: 0px;\r\n  height: 0px;\r\n  position: absolute;\r\n  border-left: 15px solid transparent;\r\n  border-right: 15px solid #00bfb6;\r\n  border-top: 15px solid #00bfb6;\r\n  border-bottom: 15px solid transparent;\r\n  left: -16px;\r\n  top: 0px;\n}\n.editDelete {\r\n  position: relative;\r\n  bottom: 80px;\r\n  left: 300px;\n}\r\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 341 */
+/* 344 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -82464,7 +85558,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 342 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -82759,7 +85853,7 @@ if (false) {
 }
 
 /***/ }),
-/* 343 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var normalizeComponent = __webpack_require__(3)
@@ -82789,7 +85883,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 344 */
+/* 347 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

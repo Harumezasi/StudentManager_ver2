@@ -38,6 +38,7 @@
                                   ></v-text-field>
                                 </v-card-title>
                                 <v-data-table
+                                 id="fontSetting"
                                  :headers="headers"
                                  :items="student_lists"
                                  :search="search"
@@ -46,7 +47,6 @@
                                <template slot="items" slot-scope="props">
                                  <td class="text-xs-center">{{ props.item.id }}</td>
                                  <td class="text-xs-center">{{ props.item.name }}</td>
-                                 <td class="text-xs-center">{{ props.item.average_achievement}}</td>
                                  <td class="text-xs-center">{{ props.item.minimum_achievement}}</td>
                                  <td class="text-xs-center">
                                      <v-btn color="light-green" slot="activator" normal :onclick="props.item.infoLink">
@@ -72,6 +72,15 @@
 </template>
 
 <style>
+#fontSetting td {
+  font-size: 30px;
+  font-style: 'Gothic A1';
+}
+
+.fontSetting {
+  font-size: 30px;
+  font-style: 'Gothic A1';
+}
 .panel-header {
   height: 200px;
   padding-top: 80px;
@@ -135,22 +144,21 @@ export default {
        ],
        headers: [
          {
+          class : 'display-1',
           text: '학번',
+          sortable: true,
           value: 'studentNum',
           align: 'center'
          },
          {
+           class : 'display-1',
            text: '이름',
            sortable: true,
            value: 'name',
            align: 'center'
          },
-         { text: '학업성취도',
-          value: 'gradePersent',
-          sortable: true,
-          align: 'center'
-        },
         {
+          class : 'display-1',
           text: '',
           value: 'detailInfo',
           align: 'center'
