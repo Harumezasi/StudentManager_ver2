@@ -139,7 +139,7 @@ class Professor extends Model
             $joinList = $subject->students()->where('students.id', $stdId);
 
             if($joinList->exists()) {
-                return $joinList->fitst();
+                return $joinList->first();
             }
         }
 
