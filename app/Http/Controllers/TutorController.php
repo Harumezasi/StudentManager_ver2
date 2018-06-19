@@ -2102,11 +2102,11 @@ class TutorController extends Controller
         if(Schedule::insert($setData)) {
             // 일정 등록 성공 => 성공 메시지 반환
             return response()->json(new ResponseObject(
-                true, __('response_message.insert_success', ['element' => __('ada.schedule_class')])
+                true, __('response.insert_success', ['element' => __('ada.schedule_class')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, __('response_message.insert_failed', ['element' => __('ada.schedule_class')])
+                false, __('response.insert_failed', ['element' => __('ada.schedule_class')])
             ), 200);
         }
     }
@@ -2195,12 +2195,12 @@ class TutorController extends Controller
         if($schedule->update($setData)) {
             // 갱신 성공
             return response()->json(new ResponseObject(
-                true, __('response_message.update_success', ['element' => __('ada.schedule_class')])
+                true, __('response.update_success', ['element' => __('ada.schedule_class')])
             ), 200);
         } else {
             // 갱신 실패
             return response()->json(new ResponseObject(
-                false, __('response_message.update_failed', ['element' => __('ada.schedule_class')])
+                false, __('response.update_failed', ['element' => __('ada.schedule_class')])
             ), 200);
         }
     }
@@ -2226,12 +2226,12 @@ class TutorController extends Controller
         if($schedule->delete()) {
             // 갱신 성공
             return response()->json(new ResponseObject(
-                true, __('response_message.delete_success', ['element' => __('ada.schedule_class')])
+                true, __('response.delete_success', ['element' => __('ada.schedule_class')])
             ), 200);
         } else {
             // 갱신 실패
             return response()->json(new ResponseObject(
-                false, __('response_message.delete_failed', ['element' => __('ada.schedule_class')])
+                false, __('response.delete_failed', ['element' => __('ada.schedule_class')])
             ), 200);
         }
     }

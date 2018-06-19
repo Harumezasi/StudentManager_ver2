@@ -54,6 +54,11 @@ class Schedule extends Model
         return $query->where([['start_date', '<=', $date], ['end_date', '>=', $date]]);
     }
 
+    // 휴일 여부를 지정
+    public function scopeIsHoliday($query, $type) {
+        return $query->where('holiday_flag', $type);
+    }
+
 
     // 04. 클래스 메서드 정의
     // 지정된 기간 이내의 일정 데이터를 조회

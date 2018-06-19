@@ -108,37 +108,36 @@ class StudyClass extends Model
         return $this->save();
     }
 
-    // 해당 일자의 휴일/평일 여부를 조회
-    public function isHolidayAtThisDay($date) {
+    // 지도반의 오늘 일정을 조회
+    public function selectTodaySchedule($date) {
         if(($query = $this->schedules()->date($date))->exists()) {
             // 1순위 : 지도반 일정
-            $result = $query->first();
-            if($result->holiday_flag) {
-                return $result->name;
-            } else {
-                return false;
-            }
+            return $query->first();
 
         } else if (($query = Schedule::date($date)->common())->exists()) {
             // 2순위 : 계열 일정
-            $result = $query->first();
-            if($result->holiday_flag) {
-                return $result->name;
-            } else {
-                return false;
-            }
+            return $query->first();
 
-        } else if(($query = Schedule::date($date)->holiday())->exists()) {
+        } else if (($query = Schedule::date($date)->holiday())->exists()) {
             // 3순위 : 국가 공휴일
-            $result = $query->first();
+            return $query->first();
+        }
+
+        return false;
+    }
+
+    // 해당 일자의 휴일/평일 여부를 조회
+    public function isHolidayAtThisDay($date) {
+        if(($result = $this->selectTodaySchedule($date)) != false) {
+            // 해당 일자에 지도반의 일정이 있을 경우
             if($result->holiday_flag) {
-                return $result->name;
+                return $result;
             } else {
                 return false;
             }
 
         } else {
-            // 4순위 : 해당 일자에 일정이 존재하지 않는 경우 => 평일 & 주말 여부로 결정
+            // 해당 일자에 일정이 존재하지 않는 경우 => 평일 & 주말 여부로 결정
             if(Carbon::parse($date)->isWeekend()) {
                 return __('ada.weekend');
             } else {
@@ -157,7 +156,11 @@ class StudyClass extends Model
         for($dateCount = $startDate->copy(); $dateCount->lte($endDate); $dateCount->addDay()) {
             $temp = $dateCount->format('Y-m-d');
             if(($date = $this->isHolidayAtThisDay($temp)) != false) {
-                $result[$temp] = $date;
+                if($date instanceof Schedule) {
+                    $result[$temp] = $date->name;
+                } else {
+                    $result[$temp] = $date;
+                }
             }
         }
 

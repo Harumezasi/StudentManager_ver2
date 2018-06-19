@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Professor;
 use Dotenv\Exception\ValidationException;
+use PharIo\Manifest\RequiresElementTest;
 use Validator;
 use Illuminate\Http\Request;
 use App\Student;
@@ -306,15 +307,15 @@ class StudentController extends Controller
             Student::findOrFail($request->post('student_number_id')) :
             Student::findOrFail(session()->get('user')->id);
         $studyClass     = $student->studyClass;
+
         $detail         = $request->exists('detail') ? $request->post('detail') : "";
         $signInLimit    = Carbon::createFromTimeString($studyClass->sign_in_time);
-        $signInStart    = $signInLimit->copy()->subMinutes(30);
         $signInTime     = now();
-        $today          = now()->lt($signInStart) ? today()->subDay() : today();
+        $today          = today()->format('Y-m-d');
 
         // 03. 심층 유효성 검사
         // 오늘자 출석기록 조회
-        $adaRecordOfToday = $student->attendances()->whereDate('reg_date', $today->format('Y-m-d'));
+        $adaRecordOfToday = $student->attendances()->whereDate('reg_date', $today);
         if($adaRecordOfToday->exists()) {
             // 오늘의 출석기록이 있으면 => 출석 인증 중단
             return response()->json(new ResponseObject(
@@ -324,14 +325,28 @@ class StudentController extends Controller
 
         // 04. 출석
         $latenessFlag   = 'good';
-        if(!is_null($signInLimit)) {
-            $latenessFlag = $signInTime->gt($inLimit = Carbon::create(
-                today()->year, today()->month, today()->day, $signInLimit[0], $signInLimit[1], $signInLimit[2]))
-                ? 'unreason' : 'good';
+        if($studyClass->isHolidayAtThisDay($today) == false) {
+            // 휴일이 아닌 경우
 
-            if($latenessFlag != 'good') {
-                $latenessTime = $signInTime->diffInSeconds($inLimit);
+            if(($result = $studyClass->selectTodaySchedule($today)) != false) {
+                // 오늘자의 특별한 일정이 존재하는 경우 => 해당 일정의 등교 시간대로 실행
+
+                if(!is_null($result->sign_in_time)) {
+                    // 등교시간이 지정된 경우 => 등교 제한시간을 변경
+                    $signInLimit = Carbon::createFromTimeString($result->sign_in_time);
+                }
+
             }
+            // 일정이 존재하지 않는경우 => 기본 등교 시간대로 진행
+            $latenessFlag = $signInTime->gt($signInLimit) ? 'unreason' : $latenessFlag;
+        }
+        $signInStart    = $signInLimit->copy()->subMinutes(30);
+
+        // 자정 12시부터 지도교수 지정 출석시간의 30분 전까지는 출석 금지 시간
+        if($signInTime->lt($signInStart)) {
+            return response()->json(new ResponseObject(
+                false, "자정부터 출석시간 30분 이전까지는 등교할 수 없습니다."
+            ), 200);
         }
 
         // 메시지 객체 추가
@@ -366,7 +381,7 @@ class StudentController extends Controller
                     'name'  => $student->user->name,
                     'photo' => $student->user->selectUserInfo()->photo_url,
                     'time'  => $signInTime->format("Y-m-d H:i:s"),
-                    'type'  => $latenessFlag == 'good' ? '정상' : '지각',
+                    'type'  => $latenessFlag == 'good' ? __('ada.good') : __('ada.lateness'),
                 ]
             ), 200);
         } else {
@@ -392,80 +407,83 @@ class StudentController extends Controller
         $student        = $request->exists('student_number_id') ?
             Student::findOrFail($request->post('student_number_id')) :
             Student::findOrFail(session()->get('user')->id);
+        $studyClass     = $student->studyClass;
         $detail         = $request->exists('detail') ? $request->post('detail') : "";
         $signOutTime    = now();
 
         // 03. 심층 유효성 검사
-        $today = (now()->gte(Carbon::createFromTime(8, 30, 0))) ? now() : now()->subDay();
-        $adaRecordOfRecent = $student->attendances()->orderDesc()->limit(1)->get()->all();
+        $adaRecord = $student->attendances()->orderDesc();
 
-        if(sizeof($adaRecordOfRecent) <= 0) {
+        $adaRecordOfRecent = null;
+        if($adaRecord->exists()) {
+            // 등교 이력이 존재하면 => 가장 최근의 등교 이력을 조회
+            $adaRecordOfRecent = $adaRecord->first();
+
+            if(!is_null($adaRecordOfRecent->sign_out_time)) {
+                // 최근 데이터에 하교 데이터가 기록되었다면 => 하교 인증 실패
+                return response()->json(new ResponseObject(
+                    false, __('response.sign_out_error_no_sign_in', ['sign_out_time' => $adaRecordOfRecent->sign_out_time])
+                ), 200);
+            }
+
+        } else {
             // 등교 이력이 없다면 => 하교 인증 실패
             return response()->json(new ResponseObject(
-                false, "등교 내역이 없습니다."
+                false, __('response.sign_out_error_no_data')
             ), 200);
-
-        } else if(!is_null($adaRecordOfRecent[0]->sign_out_time)) {
-            // 최근 데이터에 하교 데이터가 기록되었다면 => 하교 인증 실패
-
-            if($adaRecordOfRecent[0]->reg_date == $today->format('Y-m-d')) {
-                // 오늘 일자인 경우 => 이미 하교
-                return response()->json(new ResponseObject(
-                    false, "오늘은 이미 하교하셨습니다."
-                ), 200);
-
-            } else {
-                // 오늘이 아니라면 => 최근 등교 내역이 없는 것
-                return response()->json(new ResponseObject(
-                    false, "최근 등교 내역이 없습니다."
-                ), 200);
-            }
         }
+
 
         // 04. 하교
-        $attendance = $adaRecordOfRecent[0];
 
         // 조퇴 판단용 데이터 : 등교 일자, 하교 제한시각 획득
-        $signInDate     = explode('-', $attendance->reg_date);
-        $signOutLimit   = Carbon::createFromDate($signInDate[0], $signInDate[1], $signInDate[2])->isWeekday() ?
-            explode(':', $student->studyClass->sign_out_time) : null;
+        $signInDate     = Carbon::parse($adaRecordOfRecent->reg_date);
+        $signOutLimit   = $signInDate->copy()->setTimeFromTimeString($studyClass->sign_out_time);
 
         $earlyLeaveFlag = 'good';
-        if(!is_null($signOutLimit)) {
-            $earlyLeaveFlag = $signOutTime->lt($outLimit = Carbon::create($signInDate[0], $signInDate[1], $signInDate[2],
-                $signOutLimit[0], $signOutLimit[1], $signOutLimit[2])) ? 'unreason' : 'good';
-            if($earlyLeaveFlag != 'good') {
-                $earlyLeaveTime = $signOutTime->diffInSeconds($outLimit);
+        if($studyClass->isHolidayAtThisDay($signInDate->format('Y-m-d')) == false) {
+            // 휴일이 아닌 경우
+
+            if(($result = $studyClass->selectTodaySchedule($signInDate->format('Y-m-d'))) != false) {
+                // 등교일자에 특별한 일정이 존재하는 경우 => 해당 일정의 하교 시간대로 실행
+
+                if(!is_null($result->sign_out_time)) {
+                    // 하교시간이 지정된 경우 => 하교 제한시간을 변경
+                    $signOutLimit = $signOutLimit->setTimeFromTimeString($result->sign_out_time);
+                }
+
             }
+            // 일정이 존재하지 않는경우 => 기본 하교 시간대로 진행
+            $earlyLeaveFlag = $signOutTime->lt($signOutLimit) ? 'unreason' : $earlyLeaveFlag;
         }
 
-        $attendance->sign_out_time      = $signOutTime->format('Y-m-d H:i:s');
-        $attendance->early_leave_flag   = $earlyLeaveFlag;
+        $adaRecordOfRecent->sign_out_time      = $signOutTime->format('Y-m-d H:i:s');
+        $adaRecordOfRecent->early_leave_flag   = $earlyLeaveFlag;
 
         // 상세 사항을 json 객체로 입력
-        $detailObject                   = json_decode($attendance->detail);
+        $detailObject                   = json_decode($adaRecordOfRecent->detail);
         $detailObject->sign_out_message = $detail;
         if(isset($earlyLeaveTime)) {
             $detailObject->early_leave_time = $earlyLeaveTime;
             unset($earlyLeaveTime);
         }
 
-        $attendance->detail             = json_encode($detailObject);
+        $adaRecordOfRecent->detail             = json_encode($detailObject);
 
         // 05. 결과 반환
-        if($attendance->save()) {
+        if($adaRecordOfRecent->save()) {
             return response()->json(new ResponseObject(
                 true, [
                     'id'    => $student->id,
                     'name'  => $student->user->name,
                     'photo' => $student->user->selectUserInfo()->photo_url,
                     'time'  => $signOutTime->format("Y-m-d H:i:s"),
-                    'type'  => $earlyLeaveFlag == 'good' ? '정상' : '조퇴',
+                    'type'  => $earlyLeaveFlag == 'good' ? __('ada.good') : __('ada.early_leave'),
                 ]
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "하교 인증에 실패하였습니다."
+                false, __('response.sign_out_error_etc')
             ), 200);
         }
     }
