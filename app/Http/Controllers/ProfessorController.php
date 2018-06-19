@@ -134,7 +134,7 @@ class ProfessorController extends Controller
     public function getTimetable(Request $request) {
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
-            'term'          => ['required', 'regex:/(19|20)\d{2}-((1st|2nd)_term|(summer|winter)_vacation)/']
+            'term'          => ['regex:/(19|20)\d{2}-((1st|2nd)_term|(summer|winter)_vacation)/']
         ]);
 
         if($validator->fails()) {
@@ -143,13 +143,22 @@ class ProfessorController extends Controller
 
         // 02. 데이터 획득
         $professor  = Professor::findOrFail(session()->get('user')->id);
-        $timetables = Timetable::whereIn('subject_id', $professor->subjects()->term($request->get("term"))->pluck('id')->all())
+        $term       = $this->getTermValue($request->get('term'));
+        $timetables = Timetable::whereIn('subject_id', $professor->subjects()->term($term['this'])->pluck('id')->all())
                 ->join('subjects', 'subjects.id', 'timetables.subject_id')->orderBy('day_of_week')->orderBy('period')
                 ->select('day_of_week', 'period', 'name', 'classroom')
                 ->get()->all();
+        $data = [
+            'timetable'     => $timetables,
+            'pagination'    => [
+                'prev'  => $term['prev'],
+                'this'  => $term['this_format'],
+                'next'  => $term['next']
+            ]
+        ];
 
         return response()->json(new ResponseObject(
-            true, $timetables
+            true, $data
         ), 200);
     }
 

@@ -75,6 +75,7 @@ class AddHolidayYearly extends Command
                             'name' => $item->dateName,
                             'type' => Schedule::TYPE['holidays'],
                             'holiday_flag' => TRUE,
+                            'include_flag' => TRUE,
                             'contents' => ''
                         ];
 

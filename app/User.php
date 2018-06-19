@@ -72,9 +72,11 @@ class User extends Model
                 $getList = ['users.id', 'users.name', 'phone', 'email', 'type', 'study_classes.name as study_class', 'photo'];
 
                 // 지도 교수가 해당 학생의 정보를 조회할 경우 => 관심 레벨 & 관심 사유 추가조회
-                if($this->student->studyClass->tutor == session()->get("user")->id) {
-                    $getList[] = 'attention_level';
-                    $getList[] = 'attention_reason';
+                if(session()->has('user')) {
+                    if ($this->student->studyClass->tutor == session()->get("user")->id) {
+                        $getList[] = 'attention_level';
+                        $getList[] = 'attention_reason';
+                    }
                 }
 
                 // 학생 회원의 상세정보 조회

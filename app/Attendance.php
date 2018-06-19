@@ -104,11 +104,12 @@ class Attendance extends Model
 
     /**
      *  함수명:                         scopeLateness
-     *  함수 설명:                      무단 지각 데이터만을 조회
+     *  함수 설명:                      지각 데이터만을 조회
      *  만든날:                         2018년 4월 28일
      *
      *  매개변수 목록
-     *  @param $query:                  질의
+     * @param $query :                  질의
+     * @return
      */
     public function scopeLateness($query) {
         return $query->where('lateness_flag', '!=', 'good');
@@ -116,11 +117,12 @@ class Attendance extends Model
 
     /**
      *  함수명:                         scopeEarlyLeave
-     *  함수 설명:                      무단 조퇴 데이터만을 조회
+     *  함수 설명:                      조퇴 데이터만을 조회
      *  만든날:                         2018년 4월 28일
      *
      *  매개변수 목록
-     *  @param $query:                  질의
+     * @param $query :                  질의
+     * @return
      */
     public function scopeEarlyLeave($query) {
         return $query->where('early_leave_flag', '!=', 'good');
@@ -128,16 +130,26 @@ class Attendance extends Model
 
     /**
      *  함수명:                         scopeAbsence
-     *  함수 설명:                      무단 결석 데이터만을 조회
+     *  함수 설명:                      결석 데이터만을 조회
      *  만든날:                         2018년 4월 28일
      *
      *  매개변수 목록
-     *  @param $query:                  질의
+     * @param $query :                  질의
+     * @return mixed
      */
     public function scopeAbsence($query) {
         return $query->where('absence_flag', '!=', 'good');
     }
 
+    /**
+     *  함수명:                         scopeSignInGood
+     *  함수 설명:                      정상출석 데이터만을 조회
+     *  만든날:                         2018년 6월 8일
+     *
+     *  매개변수 목록
+     * @param $query :                  질의
+     * @return mixed
+     */
     public function scopeSignInGood($query) {
         return $query->where([['lateness_flag', 'good'], ['absence_flag', 'good']]);
     }

@@ -95,10 +95,24 @@ class AdminController extends Controller
             'end_date'          => 'required|date|after_or_equal:start_date',
             'name'              => 'required|string|min:2',
             'holiday_flag'      => 'required|boolean',
-            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
-            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
+            'include_flag'      => 'required_if:holiday_flag,0,false|boolean',
+            'in_default_flag'   => 'required_if:holiday_flag,0,false|boolean',
+            'out_default_flag'  => 'required_if:holiday_flag,0,false|boolean',
+//            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
+//            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
             'contents'          => 'string'
         ]);
+
+        // 휴일 플래그가 false 이고 등교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 등교시간을 지정
+        $validator->sometimes('sign_in_time', 'required_if:in_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
+
+        // 휴일 플래그가 false 이고 하교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 하교 시간을 지정
+        $validator->sometimes('sign_out_time', 'required_if:out_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
+
 
         if($validator->fails()) {
             throw new NotValidatedException($validator->errors());
@@ -109,9 +123,25 @@ class AdminController extends Controller
         $endDate        = Carbon::parse($request->post('end_date'));
         $name           = $request->post('name');
         $holidayFlag    = $request->post('holiday_flag');
-        $signInTime     = $request->has('sign_in_time') ? Carbon::parse($request->post('sign_in_time')) : NULL;
-        $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
+        $includeFlag    = true;
+        $signInTime     = null;
+        $signOutTime    = null;
         $contents       = $request->has('contents') ? $request->post('contents') : '';
+
+        // 시간 데이터 획득
+        if(!$holidayFlag) {
+            // 등교 시각
+            if(!$request->post('in_default_flag')) {
+                $signInTime = Carbon::parse($request->post("sign_in_time"));
+            }
+
+            // 하교 시각
+            if(!$request->post('out_default_flag')) {
+                $signOutTime = Carbon::parse($request->post('sign_out_time'));
+            }
+
+            $includeFlag = $request->post('include_flag');
+        }
 
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 삽입 거부
         if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
@@ -126,6 +156,7 @@ class AdminController extends Controller
             'type'              => Schedule::TYPE['common'],
             'class_id'          => NULL,
             'holiday_flag'      => $holidayFlag,
+            'include_flag'      => $includeFlag,
             'sign_in_time'      => is_null($signInTime) ? $signInTime : $signInTime->format('H:i:s'),
             'sign_out_time'     => is_null($signOutTime) ? $signOutTime : $signOutTime->format('H:i:s'),
             'contents'          => $contents
@@ -152,10 +183,23 @@ class AdminController extends Controller
             'end_date'          => 'required|date|after_or_equal:start_date',
             'name'              => 'required|string|min:2',
             'holiday_flag'      => 'required|boolean',
-            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
-            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
+            'include_flag'      => 'required_if:holiday_flag,0,false|boolean',
+            'in_default_flag'   => 'required_if:holiday_flag,0,false|boolean',
+            'out_default_flag'   => 'required_if:holiday_flag,0,false|boolean',
+//            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
+//            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
             'contents'          => 'string'
         ]);
+
+        // 휴일 플래그가 false 이고 등교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 등교시간을 지정
+        $validator->sometimes('sign_in_time', 'required_if:in_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
+
+        // 휴일 플래그가 false 이고 하교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 하교 시간을 지정
+        $validator->sometimes('sign_out_time', 'required_if:out_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
 
         if($validator->fails()) {
             throw new NotValidatedException($validator->errors());
@@ -172,13 +216,30 @@ class AdminController extends Controller
         $endDate        = Carbon::parse($request->post('end_date'));
         $name           = $request->post('name');
         $holidayFlag    = $request->post('holiday_flag');
-        $signInTime     = $request->has('sign_in_time') ? Carbon::parse($request->post('sign_in_time')) : NULL;
-        $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
+        $includeFlag    = true;
+        $signInTime     = null;
+        $signOutTime    = null;
         $contents       = $request->has('contents') ? $request->post('contents') : '';
 
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 수정 거부
-        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
+        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->
+            common()->where('id', '!=', $schedule->id)->exists()) {
             throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+        }
+
+        // 시간 데이터 획득
+        if(!$holidayFlag) {
+            // 등교 시각
+            if(!$request->post('in_default_flag')) {
+                $signInTime = Carbon::parse($request->post("sign_in_time"));
+            }
+
+            // 하교 시각
+            if(!$request->post('out_default_flag')) {
+                $signOutTime = Carbon::parse($request->post('sign_out_time'));
+            }
+
+            $includeFlag = $request->post('include_flag');
         }
 
 
@@ -187,9 +248,8 @@ class AdminController extends Controller
             'start_date'        => $startDate->format('Y-m-d'),
             'end_date'          => $endDate->format('Y-m-d'),
             'name'              => $name,
-            'type'              => Schedule::TYPE['common'],
-            'class_id'          => NULL,
             'holiday_flag'      => $holidayFlag,
+            'include_flag'      => $includeFlag,
             'sign_in_time'      => is_null($signInTime) ? $signInTime : $signInTime->format('H:i:s'),
             'sign_out_time'     => is_null($signOutTime) ? $signOutTime : $signOutTime->format('H:i:s'),
             'contents'          => $contents

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
+use App\Term;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -160,33 +161,17 @@ class Controller extends BaseController
         $nextTerm   = null;
 
         // 현재 학기 설정
-        switch(today()->month) {
-            // 겨울방학
-            case 1:
-            case 2:
-                $nowTerm = 'winter_vacation';
-                break;
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                $nowTerm = '1st_term';
-                break;
-            case 7:
-            case 8:
-                $nowTerm = 'summer_vacation';
-                break;
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-                $nowTerm = '2nd_term';
-                break;
-        }
+        $nowTerm    = Term::thisTerm();
+        $termOrder  = [
+            '1st_term'          => 1,
+            'summer_vacation'   => 2,
+            '2nd_term'          => 3,
+            'winter_vacation'   => 4
+        ];
 
         if(is_null($argThisTerm)) {
-            $year = today()->year;
-            $term = $nowTerm;
+            $year = $nowTerm->year;
+            $term = $nowTerm->term;
 
         } else if(preg_match("/(19|20)\d{2}-((1st|2nd)_term|(summer|winter)_vacation)/", $argThisTerm)) {
             $data = explode('-', $argThisTerm);
@@ -218,7 +203,7 @@ class Controller extends BaseController
         }
 
         // 조회 연도와 학기가 현재 연도 학기보다 크다면 => 다음학기 생성하지 않음
-        if(!($year >= today()->year && $term >= $nowTerm)) {
+        if(!($year >= today()->year && $termOrder[$term] >= $termOrder[$nowTerm->term])) {
             switch($term) {
                 case '1st_term':
                     $nextTerm = "{$year}-summer_vacation";

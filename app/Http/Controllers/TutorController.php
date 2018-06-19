@@ -1628,7 +1628,7 @@ class TutorController extends Controller
         $professor  = Professor::findOrFail(session()->get('user')->id);
         $term       = $this->getTermValue($request->get('term'));
         $subjects   = $professor->studyClass->subjects()->term($term['this'])
-                        ->orderBy('name');
+            ->orderBy('name');
 
         // 03. 반환 데이터
         $data = [
@@ -1646,6 +1646,22 @@ class TutorController extends Controller
     }
 
     // 학생별 상세 관리
+
+    // 해당 학생의 관심도 설정
+    public function setAttentionLevel(Request $request) {
+        // 01. 요청 메시지 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'attention_level',
+            'attention_reason'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+    }
+
     // 해당 학생의 출결 통계 목록 획득
     public function getDetailsOfAttendanceStats(Request $request) {
         // 01. 요청 메시지 유효성 검증
@@ -1986,8 +2002,8 @@ class TutorController extends Controller
     public function selectSchedule(Request $request) {
         // 01. 요청 유효성 검사
         $validator = Validator::make($request->all(), [
-           'start_date'     => 'required|date',
-           'end_date'       => 'required|date|after_or_equal:start_date'
+            'start_date'     => 'required|date',
+            'end_date'       => 'required|date|after_or_equal:start_date'
         ]);
 
         if($validator->fails()) {
@@ -1999,8 +2015,8 @@ class TutorController extends Controller
         $startDate  = Carbon::parse($request->get('start_date'));
         $endDate    = Carbon::parse($request->get('end_date'));
         $schedule   = Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))
-                        ->whereNull('class_id')->orWhere('class_id', $professor->studyClass->id)
-                        ->orderBy('start_date')->get()->all();
+            ->whereNull('class_id')->orWhere('class_id', $professor->studyClass->id)
+            ->orderBy('start_date')->get()->all();
 
         return response()->json(new ResponseObject(
             true, $schedule
@@ -2015,10 +2031,24 @@ class TutorController extends Controller
             'end_date'          => 'required|date|after_or_equal:start_date',
             'name'              => 'required|string|min:2',
             'holiday_flag'      => 'required|boolean',
-            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
-            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
+            'include_flag'      => 'required_if:holiday_flag,0,false|boolean',
+            'in_default_flag'   => 'required_if:holiday_flag,0,false|boolean',
+            'out_default_flag'  => 'required_if:holiday_flag,0,false|boolean',
+//            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
+//            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
             'contents'          => 'string'
         ]);
+
+        // 휴일 플래그가 false 이고 등교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 등교시간을 지정
+        $validator->sometimes('sign_in_time', 'required_if:in_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
+
+        // 휴일 플래그가 false 이고 하교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 하교 시간을 지정
+        $validator->sometimes('sign_out_time', 'required_if:out_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
+
 
         if($validator->fails()) {
             throw new NotValidatedException($validator->errors());
@@ -2030,9 +2060,25 @@ class TutorController extends Controller
         $endDate        = Carbon::parse($request->post('end_date'));
         $name           = $request->post('name');
         $holidayFlag    = $request->post('holiday_flag');
-        $signInTime     = $request->has('sign_in_time') ? Carbon::parse($request->post('sign_in_time')) : NULL;
-        $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
+        $includeFlag    = true;
+        $signInTime     = null;
+        $signOutTime    = null;
         $contents       = $request->has('contents') ? $request->post('contents') : '';
+
+        // 시간 데이터 획득
+        if(!$holidayFlag) {
+            // 등교 시각
+            if(!$request->post('in_default_flag')) {
+                $signInTime = Carbon::parse($request->post("sign_in_time"));
+            }
+
+            // 하교 시각
+            if(!$request->post('out_default_flag')) {
+                $signOutTime = Carbon::parse($request->post('sign_out_time'));
+            }
+
+            $includeFlag = $request->post('include_flag');
+        }
 
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 삽입 거부
         if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
@@ -2044,9 +2090,10 @@ class TutorController extends Controller
             'start_date'        => $startDate->format('Y-m-d'),
             'end_date'          => $endDate->format('Y-m-d'),
             'name'              => $name,
-            'type'              => Schedule::TYPE['common'],
+            'type'              => Schedule::TYPE['class'],
             'class_id'          => $studyClass->id,
             'holiday_flag'      => $holidayFlag,
+            'include_flag'      => $includeFlag,
             'sign_in_time'      => is_null($signInTime) ? $signInTime : $signInTime->format('H:i:s'),
             'sign_out_time'     => is_null($signOutTime) ? $signOutTime : $signOutTime->format('H:i:s'),
             'contents'          => $contents
@@ -2066,27 +2113,39 @@ class TutorController extends Controller
 
     // 일정 갱신
     public function updateSchedule(Request $request) {
-// 01. 요청 유효성 검증
+        // 01. 요청 유효성 검증
         $validator = Validator::make($request->all(), [
             'id'                => 'required|exists:schedules,id',
             'start_date'        => 'required|date',
             'end_date'          => 'required|date|after_or_equal:start_date',
             'name'              => 'required|string|min:2',
             'holiday_flag'      => 'required|boolean',
-            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
-            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
+            'include_flag'      => 'required_if:holiday_flag,0,false|boolean',
+            'in_default_flag'   => 'required_if:holiday_flag,0,false|boolean',
+            'out_default_flag'   => 'required_if:holiday_flag,0,false|boolean',
+//            'sign_in_time'      => "required_if:holiday_flag,0,false|date_format:H:i:s",
+//            'sign_out_time'     => "required_if:holiday_flag,0,false|date_format:H:i:s|after_or_equal:sign_in_time",
             'contents'          => 'string'
         ]);
+
+        // 휴일 플래그가 false 이고 등교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 등교시간을 지정
+        $validator->sometimes('sign_in_time', 'required_if:in_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
+
+        // 휴일 플래그가 false 이고 하교시각 기본값 플래그가 false 일 때 -> 관리자가 직접 하교 시간을 지정
+        $validator->sometimes('sign_out_time', 'required_if:out_default_flag,0,false|date_format:H:i:s', function($input) {
+            return !$input->holiday_flag;
+        });
 
         if($validator->fails()) {
             throw new NotValidatedException($validator->errors());
         }
 
         // 02. 데이터 획득
-        $studyClass     = Professor::findOrFail(session()->get('user')->id)->studyClass;
         $schedule       = Schedule::findOrFail($request->post('id'));
-        if(!$schedule->typeCheck($studyClass->id)) {
-            // 일정 유형이 공통이 아닌 경우 => 데이터에 대한 접근 거부
+        if(!$schedule->classCheck(Professor::findOrFail(session()->get('user')->id)->studyClass->id)) {
+            // 일정 유형이 내 지도반 코드가 아닌 경우 => 데이터에 대한 접근 거부
             throw new NotValidatedException('해당 데이터에 접근할 권한이 없습니다.');
         }
 
@@ -2094,13 +2153,30 @@ class TutorController extends Controller
         $endDate        = Carbon::parse($request->post('end_date'));
         $name           = $request->post('name');
         $holidayFlag    = $request->post('holiday_flag');
-        $signInTime     = $request->has('sign_in_time') ? Carbon::parse($request->post('sign_in_time')) : NULL;
-        $signOutTime    = $request->has('sign_out_time') ? Carbon::parse($request->post('sign_out_time')) : NULL;
+        $includeFlag    = true;
+        $signInTime     = null;
+        $signOutTime    = null;
         $contents       = $request->has('contents') ? $request->post('contents') : '';
 
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 수정 거부
-        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
+        if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->
+        common()->where('id', '!=', $schedule->id)->exists()) {
             throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+        }
+
+        // 시간 데이터 획득
+        if(!$holidayFlag) {
+            // 등교 시각
+            if(!$request->post('in_default_flag')) {
+                $signInTime = Carbon::parse($request->post("sign_in_time"));
+            }
+
+            // 하교 시각
+            if(!$request->post('out_default_flag')) {
+                $signOutTime = Carbon::parse($request->post('sign_out_time'));
+            }
+
+            $includeFlag = $request->post('include_flag');
         }
 
 
@@ -2109,9 +2185,8 @@ class TutorController extends Controller
             'start_date'        => $startDate->format('Y-m-d'),
             'end_date'          => $endDate->format('Y-m-d'),
             'name'              => $name,
-            'type'              => Schedule::TYPE['common'],
-            'class_id'          => $studyClass->id,
             'holiday_flag'      => $holidayFlag,
+            'include_flag'      => $includeFlag,
             'sign_in_time'      => is_null($signInTime) ? $signInTime : $signInTime->format('H:i:s'),
             'sign_out_time'     => is_null($signOutTime) ? $signOutTime : $signOutTime->format('H:i:s'),
             'contents'          => $contents
@@ -2120,18 +2195,44 @@ class TutorController extends Controller
         if($schedule->update($setData)) {
             // 갱신 성공
             return response()->json(new ResponseObject(
-                true, __('response_message.update_success', ['element' => __('ada.schedule_common')])
+                true, __('response_message.update_success', ['element' => __('ada.schedule_class')])
             ), 200);
         } else {
             // 갱신 실패
             return response()->json(new ResponseObject(
-                false, __('response_message.update_failed', ['element' => __('ada.schedule_common')])
+                false, __('response_message.update_failed', ['element' => __('ada.schedule_class')])
             ), 200);
         }
     }
 
     // 일정 삭제
     public function deleteSchedule(Request $request) {
+    // 01. 요청 유효성 검증
+        $validator = Validator::make($request->all(), [
+            'id'        => 'required|exists:schedules,id'
+        ]);
 
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 데이터 획득
+        $schedule = Schedule::findOrFail($request->post('id'));
+        if(!$schedule->classCheck(Professor::findOrFail(session()->get("user")->id)->studyClass->id)) {
+            throw new NotValidatedException('해당 데이터에 대한 접근권한이 없습니다.');
+        }
+
+        // 03. 일정 삭제
+        if($schedule->delete()) {
+            // 갱신 성공
+            return response()->json(new ResponseObject(
+                true, __('response_message.delete_success', ['element' => __('ada.schedule_class')])
+            ), 200);
+        } else {
+            // 갱신 실패
+            return response()->json(new ResponseObject(
+                false, __('response_message.delete_failed', ['element' => __('ada.schedule_class')])
+            ), 200);
+        }
     }
 }

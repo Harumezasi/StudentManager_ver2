@@ -301,17 +301,21 @@ class StudentController extends Controller
         }
 
         // 02. 데이터 획득
+        // 학생 학번을 전송받았을 경우 => 해당 학번으로 출석, 학번이 없으면 => 현재 로그인한 사용자로 출석
         $student        = $request->exists('student_number_id') ?
             Student::findOrFail($request->post('student_number_id')) :
             Student::findOrFail(session()->get('user')->id);
+        $studyClass     = $student->studyClass;
         $detail         = $request->exists('detail') ? $request->post('detail') : "";
-        $signInTime     = Carbon::create();
+        $signInLimit    = Carbon::createFromTimeString($studyClass->sign_in_time);
+        $signInStart    = $signInLimit->copy()->subMinutes(30);
+        $signInTime     = now();
+        $today          = now()->lt($signInStart) ? today()->subDay() : today();
 
         // 03. 심층 유효성 검사
         // 오늘자 출석기록 조회
-        $adaRecordOfToday = $student->attendances()->start($signInTime->format('Y-m-d'))
-                                ->end($signInTime->format('Y-m-d'))->get()->all();
-        if(sizeof($adaRecordOfToday) > 0) {
+        $adaRecordOfToday = $student->attendances()->whereDate('reg_date', $today->format('Y-m-d'));
+        if($adaRecordOfToday->exists()) {
             // 오늘의 출석기록이 있으면 => 출석 인증 중단
             return response()->json(new ResponseObject(
                 false, "오늘은 이미 출석하셨습니다."
@@ -319,7 +323,6 @@ class StudentController extends Controller
         }
 
         // 04. 출석
-        $signInLimit    = today()->isWeekday() ? explode(':', $student->studyClass->sign_in_time) : null;
         $latenessFlag   = 'good';
         if(!is_null($signInLimit)) {
             $latenessFlag = $signInTime->gt($inLimit = Carbon::create(

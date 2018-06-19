@@ -73,4 +73,13 @@ class Schedule extends Model
             return false;
         }
     }
+
+    // 해당 일정의 관리 지도반을 확인
+    public function classCheck($classId) {
+        if($this->class_id == $classId) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
