@@ -3,15 +3,9 @@
 
 
     <!-- Header -->
-    <div class="panel-header">
-      <div class="header text-center">
-        <v-layout class = "imgTitle" column align-center justify-center>
-          <h1 class="category1">Student Analytic Prediction</h1>
-          <p class="category">Setting Up Classification</p>
-        </v-layout>
-      </div>
-    </div>
-
+    <v-parallax src="/images/analyticPredition.jpg" height="300">
+      <h1 class="categoryAnalyticSetting">Student Analysis Settings</h1>
+    </v-parallax>
 
     <!-- 학생 분류 기준 설정 타이틀 카드 ( 출석과 학업 ) -->
     <v-flex xs12>
@@ -20,11 +14,7 @@
 
           <!-- 출석 타이틀 카드 -->
           <v-flex xs12 md5>
-            <v-card
-            class = "attendanceSettingTitleBox"
-            color = "amber accent-4"
-            style = "box-shadow:  0 4px 12px 0 rgba(255, 180, 13, 0.36)"
-            >
+            <v-card class = "attendanceSettingTitleBox">
               <v-card-text style="padding-bottom: 5px;">
                 <h2 style="color: white">출석</h2>
                 <p>지각, 조퇴, 결석 학생</p>
@@ -34,11 +24,7 @@
 
           <!-- 학업 타이틀 카드 -->
           <v-flex xs12 md5>
-            <v-card
-            class = "gradeSettingTitleBox"
-            color = "cyan accent-4"
-            style = "box-shadow:  0 4px 12px 0 rgba(102, 244, 239, 0.36)"
-            >
+            <v-card class = "gradeSettingTitleBox">
               <v-card-text style="padding-bottom: 5px;">
                 <h2 style="color: white">학업</h2>
                 <p>중간, 기말, 과제, 쪽지시험 등</p>
@@ -73,7 +59,11 @@
                        style="margin-top: 40px"
                        label="일"
                        hint="* 시스템이 학생의 최근 출석 현황을 분석하기 위한 기간 입니다."
+                       type="number"
+                       min=0
+                       max=365
                        persistent-hint
+                       v-model="settingData['ada_search_period']"
                      ></v-text-field>
                     </v-flex>
                   </v-layout>
@@ -95,6 +85,8 @@
                       <v-text-field
                        style="margin-left: 20px"
                        label="회"
+                       type="number"
+                       v-model="settingData['lateness_count']"
                      ></v-text-field>
                      <h2 class = "frequency_2">이상 일 때</h2>
                     </v-flex>
@@ -111,6 +103,8 @@
                       <v-text-field
                        style="margin-left: 20px"
                        label="회"
+                       type="number"
+                       v-model="settingData['early_leave_count']"
                      ></v-text-field>
                      <h2 class = "frequency_2">이상 일 때</h2>
                     </v-flex>
@@ -127,11 +121,19 @@
                       <v-text-field
                        style="margin-left: 20px"
                        label="회"
+                       type="number"
+                       v-model="settingData['absence_count']"
                      ></v-text-field>
                      <h2 class = "frequency_2">이상 일 때</h2>
                     </v-flex>
                   </v-layout>
                 </v-container>
+                <!-- 취소 / 저장 버튼 -->
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="warning" @click="setResetDatas()">되돌리기</v-btn>
+                  <v-btn color="primary" @click="checkSettingDatas()">저장</v-btn>
+                </v-card-actions>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -154,8 +156,10 @@
                       <v-text-field
                        style="margin-top: 40px"
                        label="회"
+                       type="number"
                        hint="시스템이 학생의 평소 학업 성취 현황을 판단하기 위해 분석하는 기간 입니다."
                        persistent-hint
+                       v-model="settingData['study_usual']"
                      ></v-text-field>
                     </v-flex>
 
@@ -167,8 +171,10 @@
                       <v-text-field
                        style="margin-top: 40px"
                        label="회"
+                       type="number"
                        hint="시스템이 학생의 최근 학업 성취 상태를 판단하기 위해 분석하는 기간 입니다."
                        persistent-hint
+                       v-model="settingData['study_recent']"
                      ></v-text-field>
                     </v-flex>
                   </v-layout>
@@ -198,6 +204,10 @@
                       <v-flex xs12 md4>
                         <v-text-field
                           label="%"
+                          type="number"
+                          min=0
+                          max=100
+                          v-model="settingData['low_reflection']"
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md2>
@@ -211,6 +221,8 @@
                       <v-flex xs12 md3>
                         <v-text-field
                           label="점"
+                          type="number"
+                          v-model="settingData['low_score']"
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md4>
@@ -244,6 +256,10 @@
                       <v-flex xs12 md4>
                         <v-text-field
                           label="%"
+                          type="number"
+                          min=0
+                          max=100
+                          v-model="settingData['recent_reflection']"
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md2>
@@ -257,6 +273,8 @@
                       <v-flex xs12 md4>
                         <v-text-field
                           label="점"
+                          type="number"
+                          v-model="settingData['recent_score']"
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md2>
@@ -275,44 +293,99 @@
   </div>
 </template>
 
+<script>
+
+export default {
+  data(){
+    return {
+      settingData : []
+    }
+  },
+  methods : {
+    /* 리셋 */
+    setResetDatas(){
+      /* 다시 불러온다 */
+      this.getSettingDatas()
+    },
+    /* 설정 값 가져오기 */
+    getSettingDatas(){
+      axios.get('/tutor/analyse/select_criteria')
+      .then((response)=>{
+        this.settingData = response.data.message;
+      })
+      .catch((error)=>{
+        console.log("getSetting Err :" + error);
+      })
+    },
+    /* 값의 유효성 확인 */
+    checkSettingDatas(){
+      let checked = true;
+
+      /* 기간 <= 365 */
+      if(this.settingData['ada_search_period'] > 365 && this.settingData['ada_search_period'] < 1){
+        alert('기간 : 기간은 [1]일~[365]일 내로 설정하셔야합니다.');
+        checked = false;
+      }
+      /* 학업 - 평균 >= 최근 */
+      else if(this.settingData['study_usual'] < this.settingData['study_recent']){
+        alert('학업 : [최근 기간]이 [평소 기간]보다 클 수 없습니다.');
+        checked = false;
+      }else if(this.settingData['study_usual'] < 1 ){
+        alert('학업 : [평소 기간]의 횟수는 최소 [1]회 이상이여야 합니다.');
+        checked = false;
+      }else if(this.settingData['study_recent'] < 1){
+        alert('학업 : [최근 기간]의 횟수는 최소 [1]회 이상이여야 합니다.');
+        checked = false;
+      }
+      /* 석차백분율 <= 100% */
+      else if(this.settingData['low_reflection'] > 100){
+        alert('하위권 : 석차백분율이 [100%]를 초과할 수 없습니다.');
+        checked = false;
+      }
+      else if(this.settingData['recent_reflection'] > 100){
+        alert('최근 : 석차백분율이 [100%]를 초과할 수 없습니다.');
+        checked = false;
+      }
+
+      /* 최종확인 */
+      if(checked){
+        this.setSaveDatas();
+      }
+    },
+    /* 변경한 설정 값 저장 */
+    setSaveDatas(){
+      axios.post('/tutor/analyse/update_criteria', this.settingData)
+      .then((response) => {
+        alert(response.data.message)
+      })
+      .catch((error) => {
+        console.log("setSave Err :" + error);
+      })
+    }
+  },
+  mounted(){
+    this.getSettingDatas();
+  }
+}
+
+</script>
+
 <style>
 
 /*-- 헤더 영역 --*/
-.category1 {
+.categoryAnalyticSetting {
     color: #FFFFFF;
-    font-size: 30px;
+    font-size: 40px;
     font-family: "Montserrat";
     font-weight: Bold;
-}
-.category {
-    max-width: 600px;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0 auto;
-    font-size: 17px;
-    font-family: "Montserrat"
-}
-.panel-header {
-  height: 230px;
-  padding-top: 70px;
-  padding-bottom: 45px;
-  background: #141E30;
-  /* fallback for old browsers */
-  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
-  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
-  position: relative;
-  overflow: hidden;
-}
-.panel-header-sm {
-  height: 135px;
-}
-.panel-header-lg {
-  height: 380px;
+    position: relative;
+    left: 90px;
 }
 
 /*-- 출석 분류 기준 설정 카드 --*/
 .attendanceSettingCard {
   position: relative;
-  bottom: 355px;
+  bottom: 380px;
   border-radius: 0.2975rem;
   margin: 20px 0 0 0;
   box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);
@@ -322,7 +395,10 @@
   position: relative;
   z-index: 2;
   left: 43px;
-  bottom: 70px;
+  bottom: 130px;
+  box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);
+  background: linear-gradient(-30deg, rgb(70, 90, 145), rgb(154, 173, 249));
+
 }
 .periodBox {
   border-bottom: 1px solid;
@@ -353,11 +429,12 @@
 
 /*-- 학업 분류 기준 설정 카드 --*/
 .gradeSettingCard {
+  position: relative;
+  bottom: 225px;
   border-radius: 0.2975rem;
   box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);
   position: relative;
   z-index: 1;
-  bottom: 175px;
 
 }
 .gradeSettingTitleBox {
@@ -365,7 +442,9 @@
   position: relative;
   z-index: 2;
   left: 143px;
-  bottom: 70px;
+  bottom: 130px;
+  box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);
+  background: linear-gradient(-60deg, rgb(70, 90, 145), rgb(154, 173, 249));
 }
 .standardBox {
   border-bottom: 1px solid;
@@ -417,7 +496,3 @@
 
 
 </style>
-
-<script>
-
-</script>

@@ -80,7 +80,7 @@ class TutorController extends Controller
 
 
         // 02. 데이터 획득
-        $professor          = Professor::find(session()->get('user')->id);
+        $professor          = Professor::findOrFail(session()->get('user')->id);
         $myStudents         = $professor->students()
             ->join('users', 'users.id', 'students.id')
             ->get(['students.id', 'users.name'])->all();
@@ -111,19 +111,19 @@ class TutorController extends Controller
         foreach($myStudents as $student) {
             // 학생별 정보 획득
             $stdInfo = $student->user->selectUserInfo();
-            $student->photo_url = $stdInfo->photo_url;
+            $url = $stdInfo->photo_url;
+            $student->photo_url = $url;
 
             // 출석 데이터 획득
             $attendance = $student->attendances()->whereDate('reg_date', $searchTime->format('Y-m-d'));
 
-
-
             // ###### 조회된 출석 기록이 없다면 => 아직 학교에 안왔으므로 결석 ######
             if(!$attendance->exists()) {
-                $attendanceRecords['absence'][] = $student;
-                continue;
+//                $attendanceRecords['absence'][] = $student;
+                $attendance = null;
+            } else {
+                $attendance = $attendance->first();
             }
-            $attendance = $attendance->first();
 
             // 출결관리가 필요한 학생 필터링
             foreach($needCareAlerts as $alert) {
@@ -133,7 +133,7 @@ class TutorController extends Controller
                     case 'continuative_lateness':
                         if($attendanceStat['continuative_lateness'] >= $alert->count) {
                             $student->reason = "연속 지각 {$alert->count}회";
-                            $student->sign_in_time = $attendance->sign_in_time;
+                            $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
                         }
@@ -141,7 +141,7 @@ class TutorController extends Controller
                     case 'continuative_leave':
                         if($attendanceStat['continuative_early_leave'] >= $alert->count) {
                             $student->reason = "연속 결석 {$alert->count}회";
-                            $student->sign_in_time = $attendance->sign_in_time;
+                            $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
                         }
@@ -149,7 +149,7 @@ class TutorController extends Controller
                     case 'continuative_absence':
                         if($attendanceStat['continuative_early_leave'] >= $alert->count) {
                             $student->reason = "연속 조퇴 {$alert->count}회";
-                            $student->sign_in_time = $attendance->sign_in_time;
+                            $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
                         }
@@ -157,7 +157,7 @@ class TutorController extends Controller
                     case 'total_lateness':
                         if($attendanceStat['total_lateness'] >= $alert->count) {
                             $student->reason = "누적 지각 {$alert->count}회";
-                            $student->sign_in_time = $attendance->sign_in_time;
+                            $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
                         }
@@ -165,7 +165,7 @@ class TutorController extends Controller
                     case 'total_early_leave':
                         if($attendanceStat['total_early_leave'] >= $alert->count) {
                             $student->reason = "누적 조퇴 {$alert->count}회";
-                            $student->sign_in_time = $attendance->sign_in_time;
+                            $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
                         }
@@ -173,7 +173,7 @@ class TutorController extends Controller
                     case 'total_absence':
                         if($attendanceStat['total_absence'] >= $alert->count) {
                             $student->reason = "누적 결석 {$alert->count}회";
-                            $student->sign_in_time = $attendance->sign_in_time;
+                            $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
                         }
@@ -182,7 +182,7 @@ class TutorController extends Controller
             }
 
             // 결석, 지각, 등교, 하교 필터링
-            if($attendance->absence_flag != 'good') {
+            if(is_null($attendance)) {
                 $attendanceRecords['absence'][] = $student;
             } else if($attendance->lateness_flag != 'good') {
                 // 지각 => 등교 시각 첨부

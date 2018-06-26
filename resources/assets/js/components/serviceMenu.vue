@@ -3,11 +3,11 @@
 
   <!-- class를 동적으로 설정할 수 있도록 구현 -->
   <!--- :class는 vuejs 객체와 연동되어 동적으로 변경, 변경될 필요가 없는 것은 따로 선언 -->
-  <v-navigation-drawer :class="menuClassType" class="accent-4" fixed v-model="drawer" app dark width="260">
+  <v-navigation-drawer :class="menuClassType" fixed v-model="drawer" app dark width="280">
     <v-list dense>
       <!-- LOGO IMAGE -->
       <v-list-tile-content>
-         <router-link :to="link"><img class="logo-box" src="/images/grit.png" /></router-link>
+         <router-link :to="link"><img class="logo-box" src="/images/logo.png" /></router-link>
       </v-list-tile-content>
 
       <!-- 현재 접속 된 유저 정보 -->
@@ -55,6 +55,7 @@
           <v-list-group
             :prepend-icon="MenuData.action"
             v-model="MenuData.active"
+            style="margin: 15px 0 15px 0;"
           >
             <!-- 리스트 타이틀 -->
             <v-list-tile slot="activator">
@@ -130,9 +131,9 @@
 
 /*-- 로고 이미지 --*/
 .logo-box {
-  width: 148px;
+  width: 130px;
   height: auto;
-  margin: 30px 0 20px 50px;
+  margin: 35px 0 40px 65px;
 }
 /*-- 메뉴 - 유저 박스 --*/
 .userBox {
@@ -145,12 +146,12 @@
 }
 /*-- userInfo, Logout 버튼 --*/
 .userButton {
-  margin: 0 0 0 82px;
+  margin: 0 0 0 92px;
 }
 
 /*-- 메뉴 부분 ( 출결관리, 학생 관리 등 )--*/
 .menuBox {
-  margin: 10px 0 0 0;
+  margin: 30px 0 0 0;
 }
 </style>
 
@@ -166,9 +167,9 @@ export default {
     /* 메뉴 색상 조정 */
     menuClassType : null ,
     menuClassTypeList : [{
-      student : 'stdList',
-      professor : 'profList',
-      tutor : 'indigo'
+      student : 'light-green',
+      professor : 'deep-purple accent-3',
+      tutor : 'blue-grey lighten-1'
     }],
 
     /* 출력될 메뉴 내용 조정 */
@@ -225,21 +226,24 @@ export default {
             path: '/tutor/studentManagement'
           },
           {
-            action: 'settings',
+            action: 'bar_chart',
             title: '학생 분석 예측',
             active: false,
             listSet : true,
             subMenu: [
               {
-                title: '지도반 분석',
-                path: '/tutor/classAnalyticPrediction'
-              },
-              {
-                title: '학생 분석',
+                action: 'person',
+                title: '개인별 분석 예측',
                 path: '/tutor/studentAnalyticPrediction'
               },
               {
-                title: '기준설정',
+                action: 'group',
+                title: '지도반 분석 예측',
+                path: '/tutor/classAnalyticPrediction'
+              },
+              {
+                action: 'settings',
+                title: '설정',
                 path: '/tutor/studentAnalyticPredictionSetting'
               }
             ]
@@ -256,6 +260,7 @@ export default {
         .then((response) => {
           /* 유저 정보를 저장 (이름, 이미지) */
           this.userInfoData = response.data.message;
+
           /* 학생, 교수 판단*/
           switch (response.data.message.type) {
             case 'student' :
@@ -270,7 +275,6 @@ export default {
             case 'professor' :
               /* 교수권한을 확인 후, 해당 함수에서 메뉴타입을 설정한다. 함수는 바로 아래에 존재 */
               this.checkTutor();
-              this.getSubjectList();
               /* 메인 로고 링크 설정 */
               this.link = "/professor/main";
               break;
@@ -280,8 +284,8 @@ export default {
           console.log('getInfo Error : ' + error);
         })
       },
-      /* 교수 권한 확인 */
       checkTutor(){
+        console.log(this.$router);
         axios.post('/professor/is_tutor')
         .then((response) => {
           /* 지도교수 권한이 있는지에 대한 boolean값이 반환된다. */
@@ -311,9 +315,7 @@ export default {
           console.log("tutorCheck Error : " + error);
         })
       },
-      /* 과목리스트를 얻어온다. */
       getSubjectList(){
-        /* 교수인지 확인 필수 */
         axios.get('/professor/subject/list')
         .then((response) => {
           let subjects = response.data.message.subjects;
@@ -331,6 +333,7 @@ export default {
   },
   created(){
     this.getUserInfo();
+    this.getSubjectList();
   }
 }
 </script>

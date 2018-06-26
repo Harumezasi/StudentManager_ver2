@@ -63,7 +63,7 @@
                             <!-- 한 달 동안 출,지,결,조 를 몇번 했나에 대한 그래프 -->
                             <v-flex xs12 md9>
                                 <!-- 막대 그래프 -->
-                                <bar-chart :data="dataChart" :opitons="{ responsive: true, maintainAspectRatio: false }"></bar-chart>
+                                <student-Attendance-bar-chart :data="dataChart"></student-Attendance-bar-chart>
 
                             </v-flex>
                         </v-layout>
@@ -105,12 +105,11 @@
 
     import Vue from 'vue'
     import VueChartJs from 'vue-chartjs'
-    import {Bar} from 'vue-chartjs'
 
-    /*-- bar --*/
-    Vue.component('bar-chart', {
+    /*-- HorizontalBar --*/
+    Vue.component('student-Attendance-bar-chart', {
         extends : VueChartJs.HorizontalBar,
-        props: ['data', 'options'],
+        props: ['data'],
         mounted(){
           this.renderBarChart();
         },
@@ -126,8 +125,6 @@
               labels:['출석', '지각', '결석', '조퇴'],
               datasets:[{
                   backgroundColor: ['#009a92', '#f6c202', '#f53e3e', '#787878'],
-                  pointBackgroundColor: 'white',
-                  pointBorderColor: '#249EBF',
                   data: this.dataChart
                 }],
               options:{
@@ -185,7 +182,7 @@
                 date : null, // 쿼리를 실행할 때, 클릭 이벤트에 맞춰서 값을 넣어준다.
                 nextDate : null,
                 prevDate : null,
-                dataChart: [1,2,3,15]
+                dataChart: []
             }
         },
         mounted() {
@@ -219,6 +216,7 @@
                   }
                 })
                 .then((response) => {
+                  console.log(response.data);
                     if(response.data.status === true) {
                         // 서버와의 통신에 정상적으로 성공했을 경우
                         // 출결 데이터 저장

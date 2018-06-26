@@ -9,16 +9,17 @@
           <v-flex xs1>
             <v-card-text>
               <v-avatar size = "120px">
-                <img :src="userInfoData[0].photo" />
+                <img :src="userInfoData[0].photo_url" />
               </v-avatar>
             </v-card-text>
           </v-flex>
           <!-- 학생 정보 -->
           <v-flex xs5>
             <v-card-text class = "studentName text-xs-left">
-              <div class="className"><span> {{ userInfoData[0].num }} </span> {{ userInfoData[0].name }} </div>
+              <div class="className"><span> {{ userInfoData[0].id }} </span> {{ userInfoData[0].name }} </div>
               <div class="studentEmail"> {{ userInfoData[0].email }} </div>
-              <div class="studentPhone"> {{ userInfoData[0].phone }} </div>
+              <!-- <div class="studentPhone"> {{ userInfoData[0].phone }} </div> -->
+              <div class="studentPhone"> {{ userInfoData[0].study_class }} </div>
             </v-card-text>
           </v-flex>
           <!-- INFO1 END -->
@@ -107,19 +108,24 @@ export default {
     }],
     /* 학생 정보 */
     userInfoData : [{
-      photo : '',
-      num : '1400000',
+      photo_url : '/images/default.jpg',
+      study_class : 'not Data',
+      id : '1234567',
       name : '홍길동',
       email : 'group8@grid.system',
-      phone : '010-7137-1601'
+      phone : '010-XXXX-XXXX'
     }]
   }),
   methods : {
       /* 학생 정보를 가지고 온다. ~ 상단에 사진, 학번, 이름, 이메일, 연락처 표시~*/
       getUserInfo() {
-        axios.get('/info')
+        axios.get('/professor/detail/info', {
+          params : {
+            std_id : this.$router.history.current.query.getInfoIdType
+          }
+        })
         .then((response) => {
-
+          this.userInfoData[0] = response.data.message;
         })
         .catch((error) => {
           console.log('getInfo Error : ' + error);
@@ -162,6 +168,7 @@ export default {
 
   },
   created(){
+    this.getUserInfo();
     this.checkTutor();
   }
 }

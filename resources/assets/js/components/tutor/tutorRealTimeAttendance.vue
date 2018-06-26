@@ -2,290 +2,309 @@
   <div class = "realTimeAttendanceCheck">
 
     <!-- Header -->
-    <div class="panel-header">
-      <div class="header text-center">
-        <v-layout class = "imgTitle" column align-center justify-center>
-          <h1 class="category1">Attendance Management</h1>
-          <p class="category">Attendance Check</p>
-        </v-layout>
-      </div>
-    </div>
+    <v-parallax class = "mainImage" src="/images/studentManagement.png" height="300">
+      <h1 class="categoryAttendance">Student Attendance</h1>
+    </v-parallax>
 
-    <!-- 실시간 등/하교, 지각, 결석, 관심학생 수-->
-    <v-container grid-list-xl>
-      <v-flex xs12>
-        <v-card class="attendanceNumBox elevation-2" color = "white">
-        <v-container grid-list-xl>
-          <v-layout row wrap align-center>
-
-            <!-- 정상 등/하교 학생 수 -->
-            <v-flex xs3 text-xs-center>
-              <div class="leftLine">
-                <v-icon color="green" x-large style="margin: 5px 0 10px 0;">check</v-icon>
-                <h2>
-                  {{ attendanceCount }} / {{ returnHomeCount }}
-                </h2>
-                <h3>정상 등/하교</h3>
-              </div>
-            </v-flex>
-
-            <!-- 지각 학생 수 -->
-            <v-flex xs3 text-xs-center>
-              <div class="leftLine">
-                <v-icon color="yellow darken-3" x-large style="margin: 5px 0 10px 0;">directions_run</v-icon>
-                <h2>
-                  {{ lateCount }}
-                </h2>
-                <h3>지각</h3>
-              </div>
-            </v-flex>
-
-            <!-- 결석 학생 수 -->
-            <v-flex xs3 text-xs-center>
-              <div class="leftLine">
-                <v-icon color="red" x-large style="margin: 5px 0 10px 0;">clear</v-icon>
-                <h2>
-                  {{ absenceCount }}
-                </h2>
-                <h3>결석</h3>
-              </div>
-            </v-flex>
-
-            <!-- 관심학생 수 -->
-            <v-flex xs3 text-xs-center>
-              <div>
-                <v-icon color="pink lighten-3" x-large style="margin: 5px 0 10px 0;">favorite_border</v-icon>
-                <h2>
-                  {{ loveStudentCount }}
-                </h2>
-                <h3>관심학생</h3>
-              </div>
-            </v-flex>
-
-          </v-layout>
-        </v-container>
-        </v-card>
-      </v-flex>
-    </v-container>
-
-    <!-- 출결 현황 보기 영역 -->
+    <!-- 출결 현황 ( 결석, 지각, 등/하교, 관심학생 ) -->
     <v-flex xs12>
-      <v-container class="firstLineCards" grid-list-xl>
+      <v-container grid-list-xl>
         <v-layout row wrap align-center>
-          <!-- 지각 -->
-          <v-flex xs12 md4>
-            <v-card class="elevation-4 transparent">
-              <v-card-text>
-                <h1 class = "attendanceTitle">지각</h1>
-              </v-card-text>
-              <v-card-text class="studentInfoScreen attendanceInfoArea">
-                <v-chip color = "amber" v-for="late in lateData" :key="late.name" class="studentInfoArea">
-                    <v-card-title>
-                      <div>
-                        <span class="fontSetting">{{ late.name }}</span><br>
-                        <span>{{ late.sign_in_time }}</span>
-                      </div>
-                    </v-card-title>
-                  </v-chip>
-              </v-card-text>
-            </v-card>
-          </v-flex>
 
           <!-- 결석 -->
           <v-flex xs12 md4>
-            <v-card class="elevation-4 transparent">
+            <v-card class="firstLineCards white">
               <v-card-text>
-                <h1 class = "attendanceTitle">결석</h1>
+                <v-flex xs12 class = "cardsTitleUnderLine">
+                    <v-layout row wrap align-center>
+                      <v-flex xs12 md2>
+                        <v-icon color = "blue lighten-3" large>highlight_off</v-icon>
+                      </v-flex>
+                      <v-flex xs12 md6>
+                        <h1 class = "cardsTitle">결석 학생</h1>
+                      </v-flex>
+                      <!-- 학생 수 -->
+                      <v-flex xs12 md4>
+                        <h1 class = "currentStudentNum">{{ absenceCount }}/48</h1>
+                      </v-flex>
+                    </v-layout>
+                </v-flex>
               </v-card-text>
-              <v-card-text class="studentInfoScreen attendanceInfoArea">
-                <v-chip color = "red" v-for="absence in absenceData" :key="absence.name" class="studentInfoArea">
-                    <v-card-title>
-                      <div>
-                        <span class="fontSetting">{{ absence.id }}</span>
-                        <span>{{ absence.name }}</span>
-                      </div>
-                    </v-card-title>
-                  </v-chip>
+              <!-- 결석 학생 목록 -->
+              <v-card-text class="absenceAndLateInfoArea">
+                <v-list three-line>
+                 <template v-for="absence in absenceData">
+                   <v-divider></v-divider>
+                   <v-list-tile :key="absence.name" avatar @click="">
+                     <!-- 결석 학생 사진 -->
+                     <v-list-tile-avatar size = "40" style="position: relative; top: 8  px;">
+                       <img :src="absence.photo_url">
+                     </v-list-tile-avatar>
+                     <v-list-tile-content>
+                       <!-- 결석 학생의 이름과 학번 -->
+                       <v-list-tile-title v-html="absence.id"></v-list-tile-title>
+                       <v-list-tile-title v-html="absence.name"></v-list-tile-title>
+                     </v-list-tile-content>
+                   </v-list-tile>
+                 </template>
+               </v-list>
               </v-card-text>
             </v-card>
           </v-flex>
 
-          <!-- 관심학생 -->
+          <!-- 지각 -->
           <v-flex xs12 md4>
-            <v-card class="elevation-4 transparent">
+            <v-card class="firstLineCards white">
               <v-card-text>
-                <h1 class = "attendanceTitle">관심학생</h1>
+                <v-flex xs12 class = "cardsTitleUnderLine">
+                    <v-layout row wrap align-center>
+                      <v-flex xs12 md2>
+                        <v-icon color = "blue lighten-3" large>directions_run</v-icon>
+                      </v-flex>
+                      <v-flex xs12 md6>
+                        <h1 class = "cardsTitle">지각 학생</h1>
+                      </v-flex>
+                      <v-flex xs12 md4>
+                        <h1 class = "currentStudentNum">{{ lateCount }}/48</h1>
+                      </v-flex>
+                    </v-layout>
+                </v-flex>
               </v-card-text>
-              <v-card-text class="studentInfoScreen attendanceInfoArea">
-                <v-chip color = "pink lighten-3" v-for="loveStudent in loveStudentData" :key="loveStudent.name" class="studentInfoArea">
-                    <v-card-title>
-                      <div>
-                        <span class="fontSetting">{{ loveStudent.name }}</span><br>
-                        <span>{{ loveStudent.come }}</span>
-                      </div>
-                    </v-card-title>
-                  </v-chip>
+              <!-- 지각 학생 목록 -->
+              <v-card-text class="absenceAndLateInfoArea">
+                <v-list three-line>
+                  <div class="studentListArea">
+                   <template v-for="late in lateData">
+                    <v-divider></v-divider>
+                     <v-list-tile :key="late.name" avatar @click="">
+                       <!-- 지각 학생 사진 -->
+                       <v-list-tile-avatar size = "40" style="position: relative; top: 8  px;">
+                         <img :src="late.photo_url">
+                       </v-list-tile-avatar>
+                       <v-list-tile-content>
+                         <!-- 지각 학생의 이름과 학번 -->
+                         <v-list-tile-title v-html="late.id"></v-list-tile-title>
+                         <v-list-tile-title v-html="late.name"></v-list-tile-title>
+                       </v-list-tile-content>
+                       <v-list-tile-content>
+                         <!-- 지각 시간-->
+                         <v-list-tile-title v-html="late.sign_in_time"></v-list-tile-title>
+                       </v-list-tile-content>
+                     </v-list-tile>
+                   </template>
+                 </div>
+               </v-list>
               </v-card-text>
             </v-card>
           </v-flex>
+
+          <!-- 등/하교 & 관심학생 영역 -->
+          <v-flex xs12 md4>
+            <v-container fluid grid-list-md>
+              <v-layout row wrap>
+
+                  <!-- 등/하교 -->
+                  <v-flex d-flex>
+                    <v-layout row wrap>
+                        <v-card class="attendanceCardBox white">
+                          <v-card-text>
+                            <v-flex xs12 class = "cardsTitleUnderLine">
+                                <v-layout row wrap align-center>
+                                  <v-flex xs12 md2>
+                                    <v-icon color = "blue lighten-3" large>alarm</v-icon>
+                                  </v-flex>
+                                  <v-flex xs12 md6>
+                                    <h1 class = "cardsTitle">등/하교 학생</h1>
+                                  </v-flex>
+                                  <v-flex xs12 md4>
+                                    <h1 class = "currentStudentNum">{{ signData.length }}/48</h1>
+                                  </v-flex>
+                                </v-layout>
+                            </v-flex>
+                          </v-card-text>
+                          <!-- 등/하교 학생 목록 -->
+                          <v-card-text class="attendanceInfoArea">
+                            <v-list three-line>
+                             <template v-for="datas in signData">
+                                 <v-divider></v-divider>
+                               <v-list-tile :key="datas.name" avatar @click="">
+                                 <!-- 등/하교 학생 사진 -->
+                                 <v-list-tile-avatar size = "40" style="position: relative; top: 8px;">
+                                   <img :src="datas.photo_url">
+                                 </v-list-tile-avatar>
+                                 <v-list-tile-content>
+                                   <!-- 등/하교 학생의 이름과 학번 -->
+                                   <v-list-tile-title v-html="datas.id"></v-list-tile-title>
+                                   <v-list-tile-title v-html="datas.name"></v-list-tile-title>
+                                 </v-list-tile-content>
+                                 <!-- 등교 완료시, 초록색 / 하교 완료시, 주황색 / 둘 다 X일 때, 회색-->
+                                 <v-list-tile-action>
+                                   <v-flex xs12>
+                                       <v-layout row wrap align-center>
+                                         <v-flex xs12 md6>
+                                           <v-chip :color="datas.sign_in ? 'light-green' : 'grey lighten-1'">등교완료</v-chip>
+                                         </v-flex>
+                                         <v-flex xs12 md6>
+                                           <v-chip :color="datas.sign_out ? 'amber' : 'grey lighten-1'">하교완료</v-chip>
+                                         </v-flex>
+                                       </v-layout>
+                                    </v-flex>
+                                 </v-list-tile-action>
+                               </v-list-tile>
+                             </template>
+                           </v-list>
+                          </v-card-text>
+                        </v-card>
+                    </v-layout>
+                  </v-flex>
+
+                  <!-- 관심 학생 -->
+                  <v-flex d-flex>
+                    <v-layout row wrap style="width:250px; height:235px">
+                        <v-card class = "interestStudentBox">
+                          <v-card-text style="">
+                            <v-flex xs12 class = "cardsTitleUnderLine">
+                                <v-layout row wrap align-center>
+                                  <v-flex xs12 md2>
+                                    <v-icon color = "red darken-3" large>favorite</v-icon>
+                                  </v-flex>
+                                  <v-flex xs12 md6>
+                                    <h1 class = "cardsTitle">관심학생</h1>
+                                  </v-flex>
+                                  <v-flex xs12 md4>
+                                    <h1 class = "currentStudentNum">{{ loveStudentCount }} 명</h1>
+                                  </v-flex>
+                                </v-layout>
+                            </v-flex>
+                          </v-card-text>
+                          <v-card-text class="interestInfoArea">
+                            <v-flex xs12>
+                              <v-layout row wrap align-center>
+                                <div v-for="loveStudent in loveStudentData">
+                                  <v-flex xs12 md4>
+                                    <v-tooltip top>
+                                        <v-btn slot="activator" icon :onclick="loveStudent.infoLink">
+                                          <v-avatar style="box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);" size = "70"><img :src = "loveStudent.photo_url" /></v-avatar>
+                                        </v-btn>
+                                      <span><h3>이름 : {{ loveStudent.name }}<br>학번 : {{ loveStudent.id }}<br>사유 : {{ loveStudent.reason }} </h3></span>
+                                    </v-tooltip>
+                                  </v-flex>
+                                </div>
+                              </v-layout>
+                            </v-flex>
+                          </v-card-text>
+                        </v-card>
+                    </v-layout>
+                  </v-flex>
+
+            </v-layout>
+          </v-container>
+          </v-flex>
+
         </v-layout>
       </v-container>
     </v-flex>
 
-    <v-flex xs12>
-      <v-container class = "secondLineCards" grid-list-xl>
-        <v-layout row wrap align-center>
 
-          <!-- 등교 -->
-          <v-flex xs12 md6>
-            <v-card class="elevation-4 transparent">
-              <v-card-text>
-                <h1 class = "attendanceTitle">등교</h1>
-              </v-card-text>
-              <v-card-text class="studentInfoScreen attendanceInfoArea">
-                <v-chip color = "green" v-for="attendance in attendanceData" :key="attendance.name" class="studentInfoArea">
-                    <v-card-title>
-                      <div>
-                        <span class="fontSetting">{{ attendance.name }}</span><br>
-                        <span>{{ attendance.sign_in_time }}</span>
-                      </div>
-                    </v-card-title>
-                  </v-chip>
-              </v-card-text>
-            </v-card>
-          </v-flex>
 
-          <!-- 하교 -->
-          <v-flex xs12 md6>
-            <v-card class="elevation-4 transparent">
-              <v-card-text>
-                <h1 class = "attendanceTitle">하교</h1>
-              </v-card-text>
-              <v-card-text class="studentInfoScreen attendanceInfoArea">
-                <v-chip color = "green" v-for="returnHome in returnHomeData" :key="returnHome.name" class="studentInfoArea">
-                    <v-card-title>
-                      <div>
-                        <span class="fontSetting">{{ returnHome.name }}</span><br>
-                        <span>{{ returnHome.sign_out_time }}</span>
-                      </div>
-                    </v-card-title>
-                  </v-chip>
-              </v-card-text>
-            </v-card>
-          </v-flex>
 
-        </v-layout>
-      </v-container>
-    </v-flex>
+
   </div>
 </template>
 
 <style>
-.fontSetting {
+
+.studentListArea {
+  overflow-y: scroll;
+  height: 500px;
+}
+
+.categoryAttendance {
+  color: #FFFFFF;
   font-size: 30px;
-  font-style: 'Gothic A1';
-}
-.leftLine {
-  border-right: 1px solid;
-  border-color: #d2d2d2;
-
-}
-
-.category1 {
-    color: #FFFFFF;
-    font-size: 30px;
-    font-family: "Montserrat";
-    font-weight: Bold;
-}
-.category {
-    max-width: 600px;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0 auto;
-    font-size: 17px;
-    font-family: "Montserrat"
-}
-.panel-header {
-  height: 200px;
-  padding-top: 70px;
-  padding-bottom: 45px;
-  background: #141E30;
-  /* fallback for old browsers */
-  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
-  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
   position: relative;
-  overflow: hidden;
-}
-
-.panel-header-sm {
-  height: 135px;
-}
-
-.panel-header-lg {
-  height: 380px;
-}
-
-.cardLineOne {
-  height: 90px;
-  width: 0px;
-  margin-left: 0;
-
-}
-.attendanceNumBox {
-  border-radius: 0.2975rem;
-  position: relative;
-  z-index: 1;
-  bottom: 50px;
-}
-
-h2 {
   font-family: "Montserrat";
-  font-weight: "Extra-Bold";
-}
-h3 {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
-  color: rgb(136, 136, 136);
-  margin-bottom: 5px;
-}
-
-.firstLineCards {
-  border-radius: 0.2975rem;
+  font-weight: Bold;
   position: relative;
-  z-index: 2;
-  bottom: 70px;
-}
-.secondLineCards {
-  border-radius: 0.2975rem;
-  position: relative;
-  z-index: 3;
+  left: 39px;
   bottom: 80px;
 }
-.attendanceTitle {
+
+/* 공통 css */
+.cardsTitle {
   font-family: "Nanum Gothic Coding";
   font-weight: lighter;
+  font-size: 25px;
+}
+.currentStudentNum {
+  font-family: "Montserrat";
+  font-weight: lighter;
+  font-size: 31px;
+  position: relative;
+  right: 15px;
+  bottom:-3px;
+}
+.cardsTitleUnderLine {
   border-bottom: 1px solid;
-  padding-bottom: 6px;
   border-color: rgba(187, 187, 187, 0.73);
 }
-/**/
-.attendanceInfoArea {
-  min-height: 500px;
-  max-height: 500px;
+
+/* 결석 & 지각 */
+.firstLineCards {
+  border-radius: 0.6975rem;
+  position: relative;
+  z-index: 2;
+  bottom: 240px;
+  min-height: 680px;
+  box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
+}
+
+/* 결석 */
+.absenceInfoArea {
+  min-height: 550px;
+  max-height: 550px;
   overflow-y: scroll;
+  position: relative;
+  bottom: 18px;
 }
 
-.studentInfoArea {
-  width : 200px;
-  height : 100px;
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  overflow: hidden;
+/* 등/하교 */
+.attendanceCardBox {
+  border-radius: 0.6975rem;
+  position: relative;
+  z-index: 2;
+  bottom: 247px;
+  min-height: 350px;
+  box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
 }
-.studentInfoScreen {
-  text-align:center;
+.attendanceInfoArea {
+  width: 400px;
+  height: 330px;
+  overflow-y: scroll;
+  position: relative;
+  bottom: 18px;
 }
 
+
+/* 관심 학생 */
+.interestStudentBox {
+  border-radius: 0.6975rem;
+  position: relative;
+  z-index: 2;
+  bottom: 232px;
+  min-height: 200px;
+  width: 400px;
+  box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
+  background: linear-gradient(-90deg, rgb(127, 120, 190), rgb(154, 173, 249));
+}
+.interestInfoArea {
+  min-height: 160px;
+  max-height: 160px;
+  min-width: 374px;
+  overflow-y: scroll;
+  position: relative;
+  bottom: 18px;
+}
 
 </style>
 
@@ -296,6 +315,7 @@ export default {
       /*-- 지각 --*/
       lateData : [],
       lateCount : 0,
+      lateStudentNum: 50,
       /*-- 결석 --*/
       absenceData : [],
       absenceCount : 0,
@@ -308,16 +328,31 @@ export default {
       /*-- 하교 --*/
       returnHomeData : [],
       returnHomeCount : 0,
+      /* 등/하교 */
+      signData : []
     }
   },
+
   mounted() {
       this.getData();
       setInterval(this.getData, 2500);
   },
   methods: {
+    sortFun(){
+      function sortData(a, b){
+        if(a.sign_in_time > b.sign_in_time){
+          return -1;
+        }
+        if(a.sign_in_time < b.sign_in_time){
+          return 1;
+        }
+      }
+      return this.lateData.sort(sortData);
+    },
     getData() {
       axios.get('/tutor/attendance/today')
       .then((response) => {
+        console.log(response.data);
         // 지각자
         this.lateData = response.data.message.lateness;
         if(this.lateData == null){
@@ -325,6 +360,7 @@ export default {
         } else {
           this.lateCount        = this.lateData.length;
         }
+        this.sortFun();
 
         // 결석자
         this.absenceData        = response.data.message.absence;
@@ -340,8 +376,35 @@ export default {
           this.loveStudentCount = 0;
         } else {
           this.loveStudentCount = this.loveStudentData.length;
+          /* 관심학생 정보 바로가기 링크 생성 */
+          for(let data in this.loveStudentData){
+            this.$set(this.loveStudentData[data] , 'infoLink', "window.open('/studentManagement/main?getInfoIdType=" + this.loveStudentData[data].id + "', 'newwindow', 'width=1000,height=700'); return false;");
+          }
         }
 
+        // 1. sign 변수 생성
+        // 2. 등/하교 합치기
+        let sign = [];
+        // 등교 정보 등록
+        sign.push(response.data.message.sign_in)
+        // 하교 정보 등록
+        for(let start in response.data.message.sign_out){
+          sign[0].push(response.data.message.sign_out[start])
+        }
+        // 등, 하교 boolean 값 생성
+        for(let start in sign[0]){
+          if(sign[0][start].sign_in_time != null)
+            this.$set(sign[0][start], 'sign_in', true)
+          else
+            this.$set(sign[0][start], 'sign_in', false)
+
+          if(sign[0][start].sign_out_time != null)
+            this.$set(sign[0][start], 'sign_out', true)
+          else
+            this.$set(sign[0][start], 'sign_out', false)
+        }
+        this.signData = sign[0];
+        // 기존 사용 삭제 보류
         // 등교
         this.attendanceData     = response.data.message.sign_in;
         if(this.attendaceData == null){

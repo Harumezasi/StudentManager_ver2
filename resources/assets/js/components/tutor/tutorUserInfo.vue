@@ -35,7 +35,7 @@
 
               <!-- 프로필 사진 업데이트 버튼 -->
               <v-card-text class = "uploadBtn text-xs-center">
-                <input type="file" value="프로필 사진 변경" id="file" ref='photo' v-on:change="handleFileUpload()">
+                <input type="file" v-on:change="handleFileUpload">
               </v-card-text>
              </v-flex>
            </div>
@@ -183,36 +183,35 @@ export default {
        })
      },
      setUserInfo(){
-       /* 이미지 파일의 유무를 판단. */
-       if(this.photoData != null){
-         console.log('접근1');
-         let photo = new FormData();
-         console.log(this.photoData);
-         photo.append('photo', this.photoData);
-         console.log(photo);
-       } else {
-         console.log('접근2');
-         let photo = null;
-       }
-       axios.post('/professor/info/update',{
+
+       let params = [{
          'password'       : this.userPassword,
          'password_check' : this.userPasswordCheck,
          'phone'          : this.userInfoDatas.phone,
          'email'          : this.userInfoDatas.email,
-         'office'         : this.userInfoDatas.office,
-         'photo'          : this.photoData
-       },
-       {
-           headers: {
-               'Content-Type': 'multipart/json'
-           }
-       })
+         'office'         : this.userInfoDatas.office
+       }]
+
+       /* 이미지 파일의 유무를 판단. */
+       if(this.photoData != null){
+         let test = this.photoData.split('data:')
+         console.log(test[1]);
+         this.$set(params[0], 'photo', this.photoData)
+         console.log(params);
+         console.log(this.photoData);
+       }
+       axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+
+       axios.post('/professor/info/update', params[0])
        .then((response) => {
          /* 통신 테스트 */
-         console.log("update success" + response.data);
+         console.log("update success");
+         alert(response.data.message)
          /* 통신 완료 후, 입력한 비밀번호 초기화 */
          this.userPassword      = null;
          this.userPasswordCheck = null;
+         /* 이미지 초기화 */
+         this.photoData = null;
          /* 업데이트 후, 변경된 데이터를 보여주기 위해서 데이터를 다시 받아온다. */
          this.getUserInfo();
        })
@@ -220,10 +219,21 @@ export default {
          console.log('setUserInfo Error : ' + error);
        })
      },
-     handleFileUpload(){
-       /* 업로드 할 이미지 파일 변경*/
-      this.photoData = this.$refs.photo.files[0];
-     }
+     handleFileUpload(e){
+       var files = e.target.files || e.dataTransfer.files;
+        if (!files.length)
+        return;
+        this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.photoData = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
    },
    created(){
      this.getUserInfo();

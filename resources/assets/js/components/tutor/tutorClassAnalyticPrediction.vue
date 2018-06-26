@@ -1,26 +1,19 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="panel-header">
-      <div class="header text-center">
-        <v-layout column align-center justify-center>
-            <h1 style="color:white"> 지도반 분석 </h1>
-        </v-layout>
-      </div>
-    </div>
+    <v-parallax class = "mainImage" src="/images/analyticPredition.jpg" height="300">
+    </v-parallax>
     <!-- 기간 설정 영역 -->
         <v-dialog v-model="dialog" width="750px">
           <v-card>
-            <v-card-title class="grey lighten-4 py-4 title">
+            <v-card-title class="grey lighten-4 py-4 title" style="font-family:Nanum Gothic Coding;">
              분석 기간 설정
             </v-card-title>
             <!-- 분석 조건 설정 : 출석 -->
             <v-container grid-list-sm class="pa-4">
-              <v-toolbar>
-                <v-btn color="info" v-on:click="selectPeriod('recently')">최근</v-btn>
-                <v-btn color="info" v-on:click="selectPeriod('weekly')">주간</v-btn>
-                <v-btn color="info" v-on:click="selectPeriod('monthly')">월간</v-btn>
-              </v-toolbar>
+              <v-btn color="info" depressed round v-on:click="selectPeriod('recently')">최근</v-btn>
+              <v-btn color="info" depressed round v-on:click="selectPeriod('weekly')">주간</v-btn>
+              <v-btn color="info" depressed round v-on:click="selectPeriod('monthly')">월간</v-btn>
               <br>
               <v-layout row wrap>
                <v-flex xs10>
@@ -64,89 +57,151 @@
        </v-dialog>
     <!-- 메인 -->
     <v-flex xs12>
-        <v-container grid-list-xl>
-            <v-layout row wrap align-center>
-              <v-toolbar>
-                <!-- 분류 표시 : 타이틀 -->
-                <h1 style="margin-left:30px"> 지도반 : 출결 정보 분석 </h1>
+    <v-container grid-list-xl>
+      <v-layout row wrap align-center>
+        <!-- 출결 관련 차트 영역 -->
+        <v-flex xs12 md6>
+          <v-card class = "classAttendanceCartBox">
+            <v-card-text>
+              <h2 class = "chartTitle">출결 정보 분석
                 <v-btn v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
                   <v-btn v-else @click.stop="dialog = !dialog">
                     {{ this.periodSelected }}
                     ( {{ this.startDate }} ~ {{ this.endDate }})
                   </v-btn>
-              </v-toolbar>
-              <v-toolbar>
-                <v-btn color="primary" v-on:click="adaChartController('lateness')">지각</v-btn>
-                <v-btn color="primary" v-on:click="adaChartController('absence')">결석</v-btn>
-                <v-btn color="primary" v-on:click="adaChartController('early_leave')">조퇴</v-btn>
-              </v-toolbar>
-              <!-- 출결 비율 그래프 -->
-              <v-card>
-                <div><h2>출결 횟수 비율 ( {{ this.attendanceChartStat }} )</h2></div>
-                <pie-chart :width="500" :data="attendanceData" :backgroundColor="attendanceColor" :labels="attendanceLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></pie-chart>
-              </v-card>
-              <!-- 출결 인원 비교 그래프 -->
-              <v-card>
-                <div><h2>평균 출결 인원 ( {{ this.attendanceChartStat }} )</h2></div>
-                <line-chart-lateness :width="500" :data="attendanceLineData" :borderColor="attendanceLineColor" :labels="attendanceLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-lateness>
-              </v-card>
-              <!-- 휴일 등교 인원 그래프 -->
-              <v-card>
-                <div><h2>휴일 등교 인원</h2></div>
-                <line-chart-holiday :width="500" :data="holidayData" :labels="holidayLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-holiday>
-              </v-card>
-            </v-layout>
-        </v-container>
-    </v-flex>
+              </h2>
+            </v-card-text>
+            <v-flex xs12>
+              <v-container grid-list-xl>
+                <v-layout row wrap align-center>
+                    <v-flex xs4>
+                      <v-select
+                        :items="attendance"
+                        v-model="attSelect"
+                        :label="attendance[0].text"
+                        single-line
+                      ></v-select>
+                    </v-flex>
+                    <v-flex xs8 v-if="attSelect.selected != 3">
+                      <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('lateness')">지각</v-btn>
+                      <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('absence')">결석</v-btn>
+                      <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('early_leave')">조퇴</v-btn>
+                    </v-flex>
+                </v-layout>
+                <v-layout row wrap align-center>
+                    <div v-if="attSelect.selected != 3"><h2> {{ this.attSelect.text }} ( {{ this.attendanceChartStat }} )</h2></div>
+                </v-layout row wrap align-center>
+                <v-layout row wrap align-center>
+                    <pie-chart v-if="attSelect.selected == 1" :width="500" :data="attendanceData" :backgroundColor="attendanceColor" :labels="attendanceLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></pie-chart>
+                    <line-chart-lateness v-if="attSelect.selected == 2" :width="500" :data="attendanceLineData" :borderColor="attendanceLineColor" :labels="attendanceLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-lateness>
+                    <line-chart-holiday v-if="attSelect.selected == 3" :width="500" :data="holidayData" :labels="holidayLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-holiday>
+                </v-layout>
+              </v-container>
+            </v-flex>
+          </v-card>
+        </v-flex>
 
-    <v-flex xs12>
-        <v-container grid-list-xl>
-            <v-layout row wrap align-center>
+        <!-- 학업 관련 차트 영역 -->
+        <v-flex xs12 md6>
+          <v-card class = "classGradeCartBox">
+            <v-card-text>
+              <h2 class = "chartTitle">학업 정보 분석
+                <v-btn v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
+                  <v-btn v-else @click.stop="dialog = !dialog">
+                    {{ this.periodSelected }}
+                    ( {{ this.startDate }} ~ {{ this.endDate }})
+                  </v-btn>
+              </h2>
+            </v-card-text>
+            <v-flex xs12>
+              <v-container grid-list-xl>
+                <v-layout row wrap align-center>
+                    <v-flex xs5>
+                      <v-select
+                        :items="subjectList"
+                        v-model="subjectSelect"
+                        :label="subjectSelect.text"
+                        single-line
+                      ></v-select>
+                    </v-flex>
+                    <v-flex xs5>
+                        <v-select
+                          :items="subjectsList"
+                          v-model="subjectsSelect"
+                          :label="subjectsSelect.text"
+                          single-line
+                        ></v-select>
+                    </v-flex>
+                </v-layout>
 
-              <v-toolbar>
-              <!-- 분류 표시 : 타이틀 -->
-              <h1 style="margin-left:30px"> 지도반 : 학업 정보 분석 </h1>
-              </v-toolbar>
+                  <v-layout row wrap align-center>
+                    <v-card>
+                      <div><h2>취득점수 분포 범위 ( {{ this.studyChartStat }} )</h2></div>
+                      <bar-plot-chart :datasets="plotDataSets" :labels="plotLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-plot-chart>
+                    </v-card>
+                    <v-card>
+                      <div><h2>취득점수 분포도 ( {{ this.studysChartStat }} )</h2></div>
+                      <bar-chart :data="gradeData" :labels="gradeLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-chart>
+                    </v-card>
+                  </v-layout>
 
-              <v-toolbar>
-                <v-btn
-                  v-for = "sub in subjectList"
-                  :key="sub.key"
-                  color = "info"
-                  v-on:click="studyChartController(sub.id, sub.name, 'subject')"
-                >
-                {{ sub.name }}
-                </v-btn>
-              </v-toolbar>
+              </v-container>
+            </v-flex>
+          </v-card>
+        </v-flex>
 
-              <!-- 강의별 점수 그래프 상자수염그림 : box plot -->
-              <v-card>
-                <div><h2>취득점수 분포 범위 ( {{ this.studyChartStat }} )</h2></div>
-                <bar-plot-chart :width="2000" :datasets="plotDataSets" :labels="plotLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-plot-chart>
-              </v-card>
-
-              <v-toolbar>
-                <v-btn
-                  v-for = "sub in subjectsList"
-                  :key="sub.key"
-                  color = "info"
-                  v-on:click="studyChartController(sub.id, sub.name, 'subjects')"
-                >
-                {{ sub.name }}
-                </v-btn>
-              </v-toolbar>
-              <!-- 강의별 취득점수 분포도 그래프 -->
-              <v-card>
-                <div><h2>취득점수 분포도 ( {{ this.studysChartStat }} )</h2></div>
-                <bar-chart :width="2000" :data="gradeData" :labels="gradeLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-chart>
-              </v-card>
-
-            </v-layout>
-        </v-container>
-    </v-flex>
+      </v-layout>
+    </v-container>
+  </v-flex>
 
   </div>
 </template>
+
+<style>
+/*-- 헤더 영역 --*/
+.panel-header {
+  height: 100px;
+  padding-top: 70px;
+  padding-bottom: 45px;
+  background: #141E30;
+  /* fallback for old browsers */
+  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
+  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
+  position: relative;
+  overflow: hidden;
+}
+.panel-header-sm {
+  height: 135px;
+}
+.panel-header-lg {
+  height: 380px;
+}
+
+.classAttendanceCartBox {
+  position: relative;
+  bottom: 57px;
+  right: 20px;
+  border-radius: 0.2975rem;
+  box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);
+  min-height: 700px;
+  width: 580px;
+}
+.chartTitle {
+  font-family: "Nanum Gothic Coding";
+  font-weight: lighter;
+  font-size: 30px;
+}
+.classGradeCartBox {
+  position: relative;
+  bottom: 57px;
+  right: 200px;
+  border-radius: 0.2975rem;
+  box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);
+  min-height: 700px;
+  width: 900px;
+}
+
+</style>
 <script>
 
 import Vue from 'vue'
@@ -350,6 +405,9 @@ Vue.component('bar-plot-chart', {
                stacked: true
              }]
            },
+        legend: {
+            display: false
+        },
         responsive: true,
         maintainAspectRatio: false
       }
@@ -429,6 +487,15 @@ Vue.component('bar-chart', {
 export default {
     data () {
         return {
+          /* 출석 차트 종류 */
+          attSelect : { text: '출결 횟수 비율', selected:'1' },
+          subjectSelect : { text: '조회 중 입니다.'},
+          subjectsSelect : { text: '조회 중 입니다.'},
+          attendance: [
+            { text : '출결 횟수 비율', selected:'1' },
+            { text : '평균 출결 인원', selected:'2' },
+            { text : '휴일 등교 인원', selected:'3' },
+          ],
           /* 기간 설정 */
           dialog : false,
           periodSelected : '최근',
@@ -484,7 +551,6 @@ export default {
             this.selectAtt = 'absence';
             break;
         }
-
         this.getAttendancePieData();
         this.getAttendanceLineData();
         this.getHolidayLineData();
@@ -561,10 +627,14 @@ export default {
           for(let start = 0; start < response.data.message.subjects.length; start++){
             this.subjectList.push(response.data.message.subjects[start]);
           }
+          /* select 리스트 용 text 추가 */
+          for(let subData in this.subjectList){
+            this.$set(this.subjectList[subData], 'text', this.subjectList[subData].name);
+          }
           /* 과목 코드 기본 값 설정 */
           this.subjectCode = this.subjectList[0].id;
           this.studyChartStat = this.subjectList[0].name;
-          this.getStudyScore();
+          this.subjectSelect = this.subjectList[0];
         }).catch((error) => {
           console.log('getSub Err :' + error);
         })
@@ -591,17 +661,21 @@ export default {
           let labels = Object.keys(response.data.message.value);
 
           this.attendanceLabelData = [];
-          for(let start = 1; start <= labels.length; start++){
-            this.attendanceLabelData.push(response.data.message.value[start].name);
+
+          for(let datas in response.data.message.value){
+            this.attendanceLabelData.push(response.data.message.value[datas].name);
           }
+
           /* color 생성 */
           this.attendanceColor = this.createdColor(labels.length);
           /* 그래프의 값 생성 */
           /* 라벨의 갯수 만큼 하나하나 확인하여 값을 추가 (해당 인원수) */
           let tempValue = [];
-          for(let start = 1; start <= labels.length; start++){
-            tempValue.push(response.data.message.value[start].count);
+
+          for(let datas in response.data.message.value){
+            tempValue.push(response.data.message.value[datas].count);
           }
+
           this.attendanceData = tempValue;
         }).catch((error)=>{
           console.log("getAttPieErr :" + error);
@@ -704,7 +778,6 @@ export default {
         axios.get('/tutor/analyse/result', {
           params : paramData[0]
         }).then((response)=>{
-          console.log(response.data.message);
           /* 기본 데이터 생성 */
           let data = [];
           let label = [];
@@ -745,12 +818,8 @@ export default {
                data[5]['data'][start] + data[6]['data'][start] + data[7]['data'][start] + data[8]['data'][start] + data[9]['data'][start])
             );
           }
-
           this.plotDataSets = data;
           this.plotLabelData = label;
-
-          console.log(this.plotDataSets);
-          console.log(this.plotLabelData);
 
           /* 종목별 메뉴 데이터 추출 */
           this.subjectsList = [];
@@ -761,10 +830,14 @@ export default {
                       '(' + response.data.message.value[start]['detail'].type + ')'
             })
           }
+          /* select 리스트 용 text 추가 */
+          for(let subs in this.subjectsList){
+            this.$set(this.subjectsList[subs], 'text', this.subjectsList[subs].name);
+          }
           /* 기본값 설정 */
           this.subjectsCode = this.subjectsList[0].id;
           this.studysChartStat = this.subjectsList[0].name;
-          this.getStudeySubScore();
+          this.subjectsSelect = this.subjectsList[0];
         }).catch((error)=>{
           console.log('box Error :' + error);
         })
@@ -784,7 +857,8 @@ export default {
           this.$set(paramData[0], 'start_date', this.startDate);
           this.$set(paramData[0], 'end_date', this.endDate);
         }
-
+        /* 예외처리 - 성적코드 확인 */
+        if(this.subjectsCode != null)
         axios.get('/tutor/analyse/result', {
           params : paramData[0]
         }).then((response)=>{
@@ -932,28 +1006,14 @@ export default {
       },
       sDate : function(){
         this.checkDate('end')
+      },
+      subjectSelect : function (){
+        this.studyChartController(this.subjectSelect.id, this.subjectSelect.name, 'subject');
+      },
+      subjectsSelect : function (){
+        this.studyChartController(this.subjectsSelect.id, this.subjectsSelect.name, 'subjects')
       }
     }
 }
 
 </script>
-<style>
-/*-- 헤더 영역 --*/
-.panel-header {
-  height: 100px;
-  padding-top: 70px;
-  padding-bottom: 45px;
-  background: #141E30;
-  /* fallback for old browsers */
-  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
-  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
-  position: relative;
-  overflow: hidden;
-}
-.panel-header-sm {
-  height: 135px;
-}
-.panel-header-lg {
-  height: 380px;
-}
-</style>

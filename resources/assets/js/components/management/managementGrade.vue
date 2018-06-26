@@ -9,7 +9,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h1 class = "cardInsideTitle">성적조회 (간략히 보기)</h1>
+                <h2 class = "cardInsideTitle">성적조회 (간략히 보기)</h2>
               </v-card-text>
 
               <v-card-text>
@@ -86,7 +86,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h1 class = "cardInsideTitle">성적조회 (상세보기)</h1>
+                <h2 class = "cardInsideTitle">성적조회 (상세보기)</h2>
               </v-card-text>
               <v-card-text>
                 <v-container grid-list-xl>
@@ -143,12 +143,14 @@
 
 <style>
 .fontSetting {
-  font-size: 25px;
+  font-size: 18px;
+  font-weight: lighter;
   font-style: 'Gothic A1';
 }
 
 #fontSetting td {
-  font-size: 25px;
+  font-size: 18px;
+  font-weight: lighter;
   font-style: 'Gothic A1';
 }
 

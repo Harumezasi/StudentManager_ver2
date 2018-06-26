@@ -214,7 +214,8 @@ export default {
              this.commentData = [{
                'name' : '안녕하세요!',
                'content' : '등록된 코멘트가 없습니다. 학생에 대해 알려주세요!',
-               'isOwner' : false
+               'isOwner' : false,
+               'photo_url' : '/images/default.png'
              }]
            }else{
              /* 코멘트 데이터를 저장 */

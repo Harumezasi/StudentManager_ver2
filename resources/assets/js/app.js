@@ -45,7 +45,6 @@ import professorStudentManagement     from './components/professor/professorStud
 import professorGradeList             from './components/professor/professorGradeList.vue'
 
 /* 지도교수 */
-import tutorMainBody                         from './components/tutor/tutorMainBody.vue'
 import tutorRealTimeAttendance               from './components/tutor/tutorRealTimeAttendance.vue'
 import tutorStudentManagement                from './components/tutor/tutorStudentManagement.vue'
 import tutorAlertStudentSetting              from './components/tutor/tutorAlertStudentSetting.vue'

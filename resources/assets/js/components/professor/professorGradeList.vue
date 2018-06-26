@@ -12,7 +12,7 @@
         :key="menuData.key"
         :name="menuData.name"
         :to="subject_id_url"
-        v-on:click.native="getGradeData(menuData.id)"
+        v-on:click.native="getGradeData(menuData.id), selectedGradeData = menuData.execute_date, drawer = false"
         >
 
           <v-list-tile-action>
@@ -38,13 +38,17 @@
   <v-content style="padding-top: 0px;">
     <v-card class="gradeTable">
       <v-card-title>
+        <h2>{{ selectedGradeData }}</h2>
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+          <v-progress-linear :indeterminate="loadingValue"></v-progress-linear>
       </v-card-title>
       <v-data-table
       :headers="headers"
       :items="gradeDatas"
-      :search="search">
+      :pagination.sync="pagination"
+      :search="search"
+      >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.std_id }}</td>
           <td>{{ props.item.name }}</td>
@@ -93,6 +97,10 @@ export default {
     /*-- Left Menu --*/
     drawer: null,
     search: '',
+    /* 페이지 */
+    pagination: {
+      rowsPerPage: 10
+    },
     /* 성적정보 */
     headers: [{
         text: '학번',
@@ -118,9 +126,13 @@ export default {
     gradeDatas: [],
     menuDatas : [],
     subject_id_url : null,
-    perfect_score : null
+    perfect_score : null,
+
+    selectedGradeData : '조회된 성적 데이터가 없습니다.',
+    loadingValue : false,
   }),
   methods: {
+    /* 성적 메뉴 데이터 */
     getGradeList() {
       axios.get('/professor/subject/score/list', {
         params: {
@@ -146,11 +158,22 @@ export default {
               break;
           }
         }
+
+        /* 데이터가 있는지 확인 */
+        if(this.menuDatas[0].id != null){
+          /* 최근 성적 기본 값으로 불러오기 */
+          this.getGradeData(this.menuDatas[0].id);
+          this.selectedGradeData = this.menuDatas[0].execute_date;
+        }
       }).catch((error) => {
         console.log('getGradeList Error!!! : ' + error);
       })
     },
+    /* 성적 데이터 */
     getGradeData(num) {
+      /* 로딩바 활성화 */
+      this.loadingValue = true;
+      /* 통신 시작 */
       axios.get('/professor/subject/score/gained_scores', {
         params: {
           score_type : num
@@ -167,11 +190,13 @@ export default {
           /* 값 업데이트를 위한 위치 값 추가*/
           this.$set(this.gradeDatas[start], 'position', start);
         }
-        console.log(this.gradeDatas);
+        /* 로딩바 비 활성화 */
+        this.loadingValue = false;
       }).catch((error) => {
         console.log('getGradeList Error!!! : ' + error);
       })
     },
+    /* 성적 수정 (개인) */
     updateGradeData(num){
       axios.post('/professor/subject/score/update',{
         score : this.gradeDatas[num].score,

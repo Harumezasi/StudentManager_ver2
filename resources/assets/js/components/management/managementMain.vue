@@ -165,12 +165,14 @@
 }
 
 .fontSetting {
-  font-size: 30px;
+  font-size: 18px;
+  font-weight: lighter;
   font-style: 'Gothic A1';
 }
 
 #fontSetting td {
-  font-size: 30px;
+  font-size: 14px;
+  font-weight: lighter;
   font-style: 'Gothic A1';
 }
 </style>
@@ -200,7 +202,7 @@ Vue.component('attendance-pie-chart', {
         /* 기간 내의 날짜 */
         labels: ['출석','지각','결석','조퇴'],
         datasets: [{
-            backgroundColor: ['#0033CC', '#FFFF00', '#FF0000', '#FF9900'],
+            backgroundColor: ['#10a236', '#f9cd41', '#fe7272', '#5c7add'],
             pointBackgroundColor: 'white',
             pointBorderColor: '#249EBF',
             data: this.attendanceData
@@ -277,13 +279,13 @@ export default {
      attendanceLabelData : [],
      attendanceDatasets : [{
        label: '등교&지각',
-       borderColor: '#330066',
+       borderColor: '#18a62a',
        fill: false,
        data: []
      },
      {
        label: '하교&조퇴',
-       borderColor: '#f53e3e',
+       borderColor: '#f48080',
        fill: false,
        data: []
      }],
@@ -556,6 +558,9 @@ export default {
       this.attendanceLabelData = labels;
     },
     cutTime(value, setting){
+      if(value == null)
+       return null
+
       /* 출석 시작 기준 값 */
       let checkInStart = '0830';
       /* 값 변경 시작 */
