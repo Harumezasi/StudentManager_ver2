@@ -6,7 +6,7 @@
  * Time: 오후 7:49
  */
 ?>
-<!doctype html>
+        <!doctype html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
@@ -15,151 +15,102 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script language="JavaScript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <style type="text/css">
-        .main {
-            border:         1px solid black;
-            width:          100%;
-            height:         100%;
-            display:        table;
-        }
-
-        .list {
-            display:        table-cell;
-            border:         1px solid black;
-            width:          200px;
-        }
-
-        .student_list {
-            float:          left;
-        }
-
-        .option_list {
-            float:          right;
-        }
-    </style>
 </head>
 <body>
-    <div class="main">
-        <!-- 좌측 DIV -> 학생 목록 -->
-        <div class="list student_list">
-            <div>학생 목록</div>
-            <!-- 학생 목록 출력 버튼 -->
-            <div>
-                <input type="radio" name="std_type" value="total" id="radio_stdType_total">
-                <label for="radio_stdType_total">전체</label>
-                <input type="radio" name="std_type" value="filter" id="radio_stdType_filter" checked>
-                <label for="radio_stdType_filter">문제</label>
-                <input type="radio" name="std_type" value="attention" id="radio_stdType_attention">
-                <label for="radio_stdType_attention">사랑</label>
-            </div>
-            <!-- 학생 정렬 기준 -->
-            <div>
-                <div>정렬 기준</div>
-                <div>
-                    <input type="radio" name="std_order" value="id" id="radio_stdOrder_id" checked>
-                    <label for="radio_stdOrder_id">학번</label>
-                    <input type="radio" name="std_order" value="name" id="radio_stdOrder_name">
-                    <label for="radio_stdOrder_name">이름</label>
-                </div>
-            </div>
-
-            <!-- 학생 목록 -->
-            <div id="std_list">
-
-            </div>
-        </div>
-
-        <!-- 중앙 DIV -> 분석 화면 -->
-        <div>
-
-        </div>
-
-        <!-- 우측 DIV -> 분석 조건 목록 -->
-        <div class="list option_list">
-            <div>
-                분석 조건
-            </div>
-
-            <!-- 출석 -->
-            <div>
-                <div>
-                    > 출석
-                </div>
-                <div id="option_ada_list">
-
-                </div>
-            </div>
-
-            <!-- 학업 -->
-            <div>
-                <div>
-                    > 학업
-                </div>
-                <div id="option_study_list">
-
-                </div>
-            </div>
-        </div>
+<form action="{{ route('professor.info.update') }}" method="post" enctype="multipart/form-data">
+    <div>
+        <img src="" id="img_photo"><br>
+        <label for="image_photo">사진 등록</label>
+        <input type="file" name="photo" id="image_photo" accept="image/*">
     </div>
+    {{--<div>--}}
+        {{--<label for="select_type">유형</label>--}}
+        {{--<select name="type" id="select_type">--}}
+            {{--<option value="student" selected>학생</option>--}}
+            {{--<option value="professor">교수</option>--}}
+        {{--</select>--}}
+    {{--</div>--}}
+    {{--<div>--}}
+        {{--<label for="text_id">아이디</label>--}}
+        {{--<input type="text" name="id" id="text_id">--}}
+        {{--<input type="hidden" name="id_check" id="hidden_id_check" value="0">--}}
+        {{--<input type="button" value="확인" id="button_check_id">--}}
+    {{--</div>--}}
+    <div>
+        <label for="password">패스워드</label>
+        <input type="password" name="password" id="password">
+    </div>
+    <div>
+        <label for="password_check">패스워드 확인</label>
+        <input type="password" name="password_check" id="password_check">
+    </div>
+    <div>
+        <label for="email">이메일</label>
+        <input type="email" name="email" id="email">
+    </div>
+    <div>
+        <label for="phone">전화번호</label>
+        <input type="text" name="phone" id="text_phone">
+    </div>
+    {{--<div>--}}
+        {{--<label for="text_name">이름</label>--}}
+        {{--<input type="text" name="name" id="text_name" readonly>--}}
+    {{--</div>--}}
+    <div>
+        <label for="text_office">연구실</label>
+        <input type="text" name="office" id="text_office">
+    </div>
+    <input type="submit" value="수정">
+</form>
+{{--<script language="JavaScript">--}}
 
-    <!-- script -->
-    <script language="JavaScript">
-        $(document).ready(function() {
-            // 01. 클래스 정의
-            // 01-01. 학생 객체 정의
-            /**
-             * @param       stdId:          학번
-             * @param       name:           이름
-             * @param       photoUrl:       사진 URL
-             * @param       atLevel:        관심도
-             * @param       atReason:       관심 사유
-             * @constructor
-             */
-            $.Student = function(stdId, name, photoUrl, atLevel, atReason) {
-                this.stdId      = stdId;
-                this.name       = name;
-                this.photoUrl   = photoUrl;
-                this.atLevel    = atLevel;
-                this.atReason   = atReason;
-            };
+    {{--$(document).ready(function() {--}}
+        {{--// 01. 타입에 따른 체크 버튼의 역할 변경--}}
+        {{--$('#select_type').change(function(e) {--}}
+            {{--let hiddenIdCheck = $('#hidden_id_check');--}}
+            {{--let inputOffice = $('#text_office');--}}
+            {{--let inputName   = $('#text_name');--}}
 
-            // 학생 객체 프로토타입 정의
-            $.Student.prototype = {
-                /**
-                 *  함수명:        printElement
-                 *  설명:          학생 목록에 학생 객체를 출력
-                 */
-                printElement: function() {
-                    // 01. 엘리멘트 호출
-                    let stdListDiv  = $('#std_list');
-                    let selfDiv     = $("<div>");
+            {{--switch($(this).val()) {--}}
+                {{--case 'student':--}}
+                    {{--hiddenIdCheck.val(0);--}}
+                    {{--inputOffice.attr('disabled', true);--}}
+                    {{--inputName.attr('readonly', true);--}}
+                    {{--break;--}}
+                {{--case 'professor':--}}
+                    {{--hiddenIdCheck.val(0);--}}
+                    {{--inputOffice.attr('disabled', false);--}}
+                    {{--inputName.attr('readonly', false);--}}
+                    {{--break;--}}
+            {{--}--}}
+        {{--});--}}
 
+        {{--// 02. 아이디중복여부 확인 이벤트--}}
+        {{--$('#button_check_id').click(function() {--}}
+            {{--if($('#text_id').val().length <= 0) {--}}
+                {{--return;--}}
+            {{--}--}}
 
-                    // 02. 엘리멘트 내부속성 정의
-
-                },
-
-                selectEvent: function() {
-
-                }
-            };
-
-            // 01-02. 옵션 객체 정의
-            $.Option = function() {
-
-            };
-
-            $.Option.prototype = {
-
-            };
-
-            // 02. 학생 목록 호출 함수 정의
-
-
-            // 03. 학업 분석조건 호출 함수 정의
-
-            // 04. 그래프 종류 정의
-        });
-    </script>
+            {{--$.ajax({--}}
+                {{--url:"{{ route('home.join.check') }}",--}}
+                {{--data: {--}}
+                    {{--type: $('#select_type').val(),--}}
+                    {{--id: $('#text_id').val()--}}
+                {{--}--}}
+            {{--})--}}
+                {{--.done(function(response) {--}}
+                    {{--if(response.status === true) {--}}
+                        {{--$('#hidden_id_check').val(1);--}}
+                        {{--$('#text_name').val(response.message);--}}
+                    {{--} else {--}}
+                        {{--alert(response.message);--}}
+                    {{--}--}}
+                {{--})--}}
+                {{--.fail(function(error) {--}}
+                    {{--console.log(error)--}}
+                {{--})--}}
+        {{--});--}}
+    {{--});--}}
+{{--</script>--}}
 </body>
 </html>

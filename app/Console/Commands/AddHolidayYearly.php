@@ -8,6 +8,12 @@ use App\Schedule;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
 
+/**
+ *  클래스명:               AddHolidayYearly
+ *  설명:                   매년 연휴를 조회하여 데이터베이스에 추가하는 기능을 정의한 클래스
+ *  만든이:                 3-WDJ 春目指し 1401213 이승민
+ *  만든날:                 2018년 6월 09일
+ */
 class AddHolidayYearly extends Command
 {
     /**

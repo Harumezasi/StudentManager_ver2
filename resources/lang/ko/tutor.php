@@ -14,6 +14,10 @@ return [
     'low_level'             => '하위권',
     'recent_trouble'        => '최근 문제',
 
+    // 관심학생 관련
+    'attention_level'       => '관심도',
+    'attention_reason'      => '관심사유',
+
     // 출석
     'lateness_count'        => '지각 :count 회',
     'early_leave_count'     => '조퇴 :count 회',

@@ -68,8 +68,18 @@ class TutorController extends Controller
 
     // 출결 관리
     // 오늘의 출결 기록 조회
-    public function getAttendanceRecordsOfToday() {
-        // 01. 데이터 획득
+    public function getAttendanceRecordsOfToday(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'date'  => 'date_format:Y-m-d'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+
+        // 02. 데이터 획득
         $professor          = Professor::find(session()->get('user')->id);
         $myStudents         = $professor->students()
             ->join('users', 'users.id', 'students.id')
@@ -84,23 +94,36 @@ class TutorController extends Controller
         ];
 
         // 02. 학생별 현재 출결기록 획득
-        // 조회일자 지정 (새벽 6시 이전이면 이전날 출석기록 조회)
-        $searchTime = Carbon::create();
-        if($searchTime->hour < 6) {
-            $searchTime->subDay();
+        // 조회일자 획득
+        $searchTime = null;
+        if($request->has('date')) {
+            // 조회일자 데이터를 수신했다면 해당 일자를 조회
+            $searchTime = Carbon::parse($request->get('date'));
+        } else {
+            // 조회일자 지정 (등교 시작시간보다 이른 시간대면 전날 출석기록을 조회)
+            $searchTime = now();
+            $limitTime  = now()->setTimeFromTimeString($professor->studyClass->sign_in_time)->subMinutes(30);
+            if ($searchTime->lt($limitTime)) {
+                $searchTime->subDay();
+            }
         }
+
         foreach($myStudents as $student) {
+            // 학생별 정보 획득
+            $stdInfo = $student->user->selectUserInfo();
+            $student->photo_url = $stdInfo->photo_url;
+
             // 출석 데이터 획득
-            $attendance = $student->attendances()
-                ->start($searchTime->format('Y-m-d'))->end($searchTime->format('Y-m-d'))
-                ->get()->all();
+            $attendance = $student->attendances()->whereDate('reg_date', $searchTime->format('Y-m-d'));
+
+
 
             // ###### 조회된 출석 기록이 없다면 => 아직 학교에 안왔으므로 결석 ######
-            if(sizeof($attendance) <= 0) {
+            if(!$attendance->exists()) {
                 $attendanceRecords['absence'][] = $student;
                 continue;
             }
-            $attendance = $attendance[0];
+            $attendance = $attendance->first();
 
             // 출결관리가 필요한 학생 필터링
             foreach($needCareAlerts as $alert) {
@@ -177,14 +200,23 @@ class TutorController extends Controller
             }
         }
 
+        // 페이지네이션 값 설정
+        $dateInfo = $this->getDailyValue($searchTime->format('Y-m-d'));
+        $pagination = [
+            'prev'  => $dateInfo['prev']->format('Y-m-d'),
+            'this'  => $dateInfo['this_format'],
+            'next'  => is_null($dateInfo['next']) ? null : $dateInfo['next']->format('Y-m-d')
+        ];
+
 
         // 데이터 추출 결과값을 반환
         $data = [
-            'sign_in'   => $attendanceRecords['sign_in'],
-            'lateness'  => $attendanceRecords['lateness'],
-            'absence'   => $attendanceRecords['absence'],
-            'sign_out'  => $attendanceRecords['sign_out'],
-            'need_care' => $attendanceRecords['need_care'],
+            'sign_in'       => $attendanceRecords['sign_in'],
+            'lateness'      => $attendanceRecords['lateness'],
+            'absence'       => $attendanceRecords['absence'],
+            'sign_out'      => $attendanceRecords['sign_out'],
+            'need_care'     => $attendanceRecords['need_care'],
+            'pagination'    => $pagination,
         ];
 
         return response()->json(new ResponseObject(
@@ -1651,8 +1683,9 @@ class TutorController extends Controller
     public function setAttentionLevel(Request $request) {
         // 01. 요청 메시지 유효성 검증
         $validator = Validator::make($request->all(), [
-            'attention_level',
-            'attention_reason'
+            'std_id'                => 'required|exists:students,id',
+            'attention_level'       => 'required|numeric|min:0|max:3',
+//            'attention_reason'
         ]);
 
         if($validator->fails()) {
@@ -1660,6 +1693,21 @@ class TutorController extends Controller
         }
 
         // 02. 데이터 획득
+        $professor  = Professor::findOrFail(session()->get("user")->id);
+        $student    = $professor->isMyStudent($request->post('std_id'));
+
+        $query = ['attention_level' => $request->post('attention_level')];
+
+        // 03. 갱신
+        if($student->update($query)) {
+            return response()->json(new ResponseObject(
+                true, __('response.update_success', ['element' => __('tutor.attention_level')])
+            ), 200);
+        } else {
+            return response()->json(new ResponseObject(
+                false, __('response.update_failed', ['element' => __('tutor.attention_level')])
+            ), 200);
+        }
     }
 
     // 해당 학생의 출결 통계 목록 획득

@@ -30,11 +30,11 @@ Route::name('test.')->group(function() {
 
     Route::match(['GET', 'POST'], '/test', [
         'as'    => 'index',
-        /*'uses'  => function (){
+        'uses'  => function (){
             return view('test');
-        }*/
+        }
 
-        'uses'  => 'HomeController@test'
+//        'uses'  => 'HomeController@test'
     ]);
 });
 
@@ -655,6 +655,12 @@ Route::group([
             Route::get('/subject_scores', [
                 'as'    => 'subject_scores',
                 'uses'  => 'TutorController@getDetailsOfScoreList'
+            ]);
+
+            // 학생 관심도 수정
+            Route::post('/attention_level/update', [
+                'as'    => 'attention_update',
+                'uses'  => 'TutorController@setAttentionLevel'
             ]);
         });
     });

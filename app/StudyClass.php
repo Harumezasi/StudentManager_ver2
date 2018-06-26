@@ -108,7 +108,7 @@ class StudyClass extends Model
         return $this->save();
     }
 
-    // 지도반의 오늘 일정을 조회
+    // 지도반의 당일 일정을 조회
     public function selectTodaySchedule($date) {
         if(($query = $this->schedules()->date($date))->exists()) {
             // 1순위 : 지도반 일정

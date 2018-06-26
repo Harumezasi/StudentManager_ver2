@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         //
         //'\App\Console\Commands\CronJobExam',
         '\App\Console\Commands\AddHolidayYearly',
+        '\App\Console\Commands\CheckAbsence',
     ];
 
     /**
@@ -35,6 +36,7 @@ class Kernel extends ConsoleKernel
 
         // 01. 매년 국가공휴일을 등록하는 스케쥴 설정
         $schedule->command('holiday:add')->yearly();
+        $schedule->command('attendance:check_absence')->daily();
     }
 
     /**

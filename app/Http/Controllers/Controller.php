@@ -18,6 +18,41 @@ class Controller extends BaseController
     const ADA_TYPE      = ['lateness', 'early_leave', 'absence'];
 
     // 01. 공통 메서드 선언
+    public function getDailyValue($argDate = null) {
+        // 01. 변수 선언
+        $pervDay = null;
+        $thisDay = null;
+        $nextDay = null;
+
+        if(is_null($argDate)) {
+            // 매개인자가 없는 경우
+            $thisDay = today();
+
+        } else if(preg_match("/((19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/", $argDate)) {
+            // 매개인자가 있는 경우 => 지정 형식이 맞는지 검사
+            $thisDay = Carbon::parse($argDate);
+
+        } else {
+            // 형식을 지키지 않은 경우 => 예외처리
+
+        }
+
+        // 전날
+        $prevDay = $thisDay->copy()->subday();
+
+        // 다음날 => 다음날이 현재보다 과거 시점일 때만 할당
+        if($thisDay->copy()->addDay()->lt(today())) {
+            $nextDay = $thisDay->copy()->addDay();
+        }
+
+        return [
+          'prev'            => $prevDay,
+          'this'            => $thisDay,
+          'this_format'     => __('interface.Y-m-d', ['year' => $thisDay->year, 'month' => $thisDay->month, 'day' => $thisDay->day]),
+          'next'            => $nextDay
+        ];
+    }
+
     /**
      * 함수명:                         getWeeklyValue
      * 함수 설명:                      지난 주, 이번 주, 다음 주 값을 반환

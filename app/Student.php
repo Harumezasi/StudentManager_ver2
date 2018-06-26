@@ -103,6 +103,13 @@ class Student extends Model
 
 
     // 03. 스코프 정의
+    public function scopeStop($query, $flag) {
+        return $query->where('stop_flag', $flag);
+    }
+
+    public function scopeAttention($query) {
+        return $query->where('attention_level', '>', 0);
+    }
 
     // 04. 클래스 메서드 정의
 
