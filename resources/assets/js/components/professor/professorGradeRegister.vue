@@ -56,7 +56,7 @@
 
                         <!-- 실시일자 선택 -->
                         <v-chip color="secondary" text-color="white">실시 일자</v-chip>
-                        <input type="date" name="execute_date" required="">
+                        <input type="date" v-model="date" name="execute_date" required="">
 
                         <!-- 성적 유형 -->
                         <v-chip color="secondary" text-color="white">분류</v-chip>
@@ -80,14 +80,14 @@
                           <option value="csv">csv</option>
                         </select>
                         <!-- SUBMIT 실행 버튼 영역 -->
-                        <v-btn color="indigo" type='submit'>양식 다운로드</v-btn>
+                        <v-btn color="indigo" >양식 다운로드</v-btn>
                         <!-- END -->
                       </v-form>
                       <!-- form End-->
                     </v-flex>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" flat @click.native="dialog1 = false">Close</v-btn>
+                      <v-btn color="blue darken-1" flat type='submit'  @click.native="dialog1 = false">Close</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -240,6 +240,9 @@
     export default {
         data(){
             return {
+                date : null,
+
+
                 file: null,
                 dialog1: false,
                 dialog2: false,

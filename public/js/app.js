@@ -71672,6 +71672,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            date: null,
+
             file: null,
             dialog1: false,
             dialog2: false,
@@ -71922,10 +71924,27 @@ var render = function() {
                                             ),
                                             _vm._v(" "),
                                             _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.date,
+                                                  expression: "date"
+                                                }
+                                              ],
                                               attrs: {
                                                 type: "date",
                                                 name: "execute_date",
                                                 required: ""
+                                              },
+                                              domProps: { value: _vm.date },
+                                              on: {
+                                                input: function($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.date = $event.target.value
+                                                }
                                               }
                                             }),
                                             _vm._v(" "),
@@ -72067,12 +72086,7 @@ var render = function() {
                                             _vm._v(" "),
                                             _c(
                                               "v-btn",
-                                              {
-                                                attrs: {
-                                                  color: "indigo",
-                                                  type: "submit"
-                                                }
-                                              },
+                                              { attrs: { color: "indigo" } },
                                               [_vm._v("양식 다운로드")]
                                             )
                                           ],
@@ -72092,7 +72106,8 @@ var render = function() {
                                           {
                                             attrs: {
                                               color: "blue darken-1",
-                                              flat: ""
+                                              flat: "",
+                                              type: "submit"
                                             },
                                             nativeOn: {
                                               click: function($event) {
@@ -72778,10 +72793,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
   data: function data() {
     return {
+      /* 다운로드 */
+      filename: null,
+      date: null,
+      subType: null,
+      perfectScore: null,
+      content: null,
+      fileType: null,
       /* 업로드 */
       file: null,
       dialog1: false,
@@ -72789,13 +72815,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       dialog3: false,
       reData: true,
       e2: null,
-      e3: null,
-      date: null,
       menu: false,
       /* 학생정보 */
       search: '',
       pagination: {},
-      types: [{ text: '중간' }, { text: '기말' }, { text: '과제' }, { text: '쪽지' }],
+      types: [{ text: '중간', select: 'midterm' }, { text: '기말', select: 'final' }, { text: '과제', select: 'homework' }, { text: '쪽지', select: 'quiz' }],
       fileTypes: [{ text: 'xlsx' }, { text: 'xls' }, { text: 'csv' }],
       headers: [{
         class: 'display-1',
@@ -72828,8 +72852,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
-    getSubjectData: function getSubjectData() {
+    getDownloadFile: function getDownloadFile() {
       var _this = this;
+
+      axios.post('/professor/subject/score/excel/download', {
+        subject_id: this.$router.history.current.query.subjectName,
+        file_name: this.filename,
+        execute_date: this.date,
+        score_type: this.subType.select,
+        perfect_score: this.perfectScore,
+        content: this.content,
+        file_type: this.fileType
+      }, { responseType: 'arraybuffer' }).then(function (response) {
+        var result = document.createElement('a');
+        var blob = new Blob([response.data], { type: response.headers['content-type'] });
+
+        var fileName = _this.filename + "." + _this.fileType;
+
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_self';
+        link.download = fileName;
+        link.click();
+
+        _this.dialog1 = false;
+      }).catch(function (error) {
+        console.log("download Err :" + error);
+      });
+    },
+    getSubjectData: function getSubjectData() {
+      var _this2 = this;
 
       axios.get('/professor/subject/join_list', {
         params: {
@@ -72837,19 +72889,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (response) {
         /* 같은 페이지의 parameter 가 바뀔 경우 다시 값을 가져와야하기 때문에 저장한다.*/
-        _this.paramsData = _this.$router.history.current.query.subjectName;
+        _this2.paramsData = _this2.$router.history.current.query.subjectName;
         /* 학생 정보를 저장 */
-        _this.student_lists = response.data.message;
+        _this2.student_lists = response.data.message;
         /* 학생정보페이지 작업 / url 생성 및 연결 */
-        for (var start = 0; start < _this.student_lists.length; start++) {
-          _this.$set(_this.student_lists[start], 'infoLink', "window.open('/studentManagement/main?getInfoIdType=" + _this.student_lists[start].id + "', 'newwindow', 'width=1000,height=700'); return true;");
+        for (var start = 0; start < _this2.student_lists.length; start++) {
+          _this2.$set(_this2.student_lists[start], 'infoLink', "window.open('/studentManagement/main?getInfoIdType=" + _this2.student_lists[start].id + "', 'newwindow', 'width=1000,height=700'); return true;");
         }
       }).catch(function (error) {
         console.log("getSubject Error!! : " + error);
       });
     },
     submitFile: function submitFile() {
-      var _this2 = this;
+      var _this3 = this;
 
       var formData = new FormData();
       formData.append('upload_file', this.file);
@@ -72859,18 +72911,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (response) {
         if (response.data.status === true) {
-          _this2.reData = true;
-          _this2.openWindow();
+          _this3.reData = true;
+          _this3.openWindow();
           console.log(response.data);
         } else {
-          _this2.reData = false;
-          _this2.openWindow();
+          _this3.reData = false;
+          _this3.openWindow();
           console.log(response.data);
         }
       }).catch(function (error) {
         console.log('FAILURE!!' + error);
-        _this2.reData = false;
-        _this2.openWindow();
+        _this3.reData = false;
+        _this3.openWindow();
         console.log(error.data);
       });
     },
@@ -73091,6 +73143,17 @@ var render = function() {
                                                                           "file_name",
                                                                         label:
                                                                           "파일 이름"
+                                                                      },
+                                                                      model: {
+                                                                        value:
+                                                                          _vm.filename,
+                                                                        callback: function(
+                                                                          $$v
+                                                                        ) {
+                                                                          _vm.filename = $$v
+                                                                        },
+                                                                        expression:
+                                                                          "filename"
                                                                       }
                                                                     }
                                                                   )
@@ -73280,19 +73343,18 @@ var render = function() {
                                                                 attrs: {
                                                                   items:
                                                                     _vm.types,
-                                                                  label: "분류",
-                                                                  "item-value":
-                                                                    "text"
+                                                                  label: "분류"
                                                                 },
                                                                 model: {
-                                                                  value: _vm.e2,
+                                                                  value:
+                                                                    _vm.subType,
                                                                   callback: function(
                                                                     $$v
                                                                   ) {
-                                                                    _vm.e2 = $$v
+                                                                    _vm.subType = $$v
                                                                   },
                                                                   expression:
-                                                                    "e2"
+                                                                    "subType"
                                                                 }
                                                               })
                                                             ],
@@ -73317,6 +73379,17 @@ var render = function() {
                                                                       "perfect_score",
                                                                     label:
                                                                       "만점"
+                                                                  },
+                                                                  model: {
+                                                                    value:
+                                                                      _vm.perfectScore,
+                                                                    callback: function(
+                                                                      $$v
+                                                                    ) {
+                                                                      _vm.perfectScore = $$v
+                                                                    },
+                                                                    expression:
+                                                                      "perfectScore"
                                                                   }
                                                                 }
                                                               )
@@ -73342,6 +73415,17 @@ var render = function() {
                                                                       "content",
                                                                     label:
                                                                       "성적 내용"
+                                                                  },
+                                                                  model: {
+                                                                    value:
+                                                                      _vm.content,
+                                                                    callback: function(
+                                                                      $$v
+                                                                    ) {
+                                                                      _vm.content = $$v
+                                                                    },
+                                                                    expression:
+                                                                      "content"
                                                                   }
                                                                 }
                                                               )
@@ -73363,19 +73447,21 @@ var render = function() {
                                                                 attrs: {
                                                                   items:
                                                                     _vm.fileTypes,
-                                                                  label: "분류",
+                                                                  label:
+                                                                    "확장자",
                                                                   "item-value":
                                                                     "text"
                                                                 },
                                                                 model: {
-                                                                  value: _vm.e3,
+                                                                  value:
+                                                                    _vm.fileType,
                                                                   callback: function(
                                                                     $$v
                                                                   ) {
-                                                                    _vm.e3 = $$v
+                                                                    _vm.fileType = $$v
                                                                   },
                                                                   expression:
-                                                                    "e3"
+                                                                    "fileType"
                                                                 }
                                                               })
                                                             ],
@@ -73419,11 +73505,11 @@ var render = function() {
                                                             click: function(
                                                               $event
                                                             ) {
-                                                              _vm.dialog1 = false
+                                                              _vm.getDownloadFile()
                                                             }
                                                           }
                                                         },
-                                                        [_vm._v("Save")]
+                                                        [_vm._v("download")]
                                                       )
                                                     ],
                                                     1

@@ -40,9 +40,11 @@
                                     id="fileName"
                                     name="file_name"
                                     label="파일 이름"
+                                    v-model="filename"
                                   ></v-text-field>
                                </v-layout>
                              </v-flex>
+                             <!-- 달력 -->
                              <v-flex xs12>
                                <v-menu
                                 ref="menu"
@@ -70,13 +72,13 @@
                              </v-date-picker>
                             </v-menu>
                              </v-flex>
+                             <!-- 종목 -->
                              <v-flex xs12>
                                <v-select
                                  :items="types"
-                                 v-model="e2"
+                                 v-model="subType"
                                  label="분류"
                                  class="input-group--focused"
-                                 item-value="text"
                                ></v-select>
                              </v-flex>
                              <v-flex xs12>
@@ -84,6 +86,7 @@
                                  id="perfectScore"
                                  name="perfect_score"
                                  label="만점"
+                                 v-model="perfectScore"
                                ></v-text-field>
                              </v-flex>
                              <v-flex xs12>
@@ -91,13 +94,14 @@
                                  id="content"
                                  name="content"
                                  label="성적 내용"
+                                 v-model="content"
                                ></v-text-field>
                              </v-flex>
                              <v-flex xs12>
                                <v-select
                                  :items="fileTypes"
-                                 v-model="e3"
-                                 label="분류"
+                                 v-model="fileType"
+                                 label="확장자"
                                  class="input-group--focused"
                                  item-value="text"
                                ></v-select>
@@ -107,7 +111,7 @@
                          <v-card-actions>
                            <v-spacer></v-spacer>
                            <v-btn flat color="primary" @click="dialog1 = false">Cancel</v-btn>
-                           <v-btn flat @click="dialog1 = false">Save</v-btn>
+                           <v-btn flat @click="getDownloadFile()">download</v-btn>
                          </v-card-actions>
                        </v-card>
                      </v-dialog>
@@ -261,24 +265,29 @@
 export default {
   data() {
     return {
+      /* 다운로드 */
+      filename : null,
+      date: null,
+      subType : null,
+      perfectScore : null,
+      content : null,
+      fileType: null,
       /* 업로드 */
       file: null,
       dialog1: false,
       dialog2: false,
       dialog3: false,
       reData: true,
-       e2: null,
-       e3: null,
-       date: null,
+      e2: null,
       menu: false,
       /* 학생정보 */
       search: '',
       pagination: {},
       types: [
-        {text:'중간'},
-        {text:'기말'},
-        {text:'과제'},
-        {text:'쪽지'}
+        {text:'중간', select : 'midterm' },
+        {text:'기말', select : 'final' },
+        {text:'과제', select : 'homework' },
+        {text:'쪽지', select : 'quiz' }
       ],
       fileTypes: [
         {text:'xlsx'},
@@ -318,6 +327,32 @@ export default {
     }
   },
   methods: {
+    getDownloadFile(){
+      axios.post('/professor/subject/score/excel/download', {
+        subject_id : this.$router.history.current.query.subjectName,
+        file_name : this.filename,
+        execute_date : this.date,
+        score_type : this.subType.select,
+        perfect_score : this.perfectScore,
+        content : this.content,
+        file_type : this.fileType
+      },{responseType: 'arraybuffer'}).then((response)=> {
+        let result = document.createElement('a');
+        let blob = new Blob([response.data], {type: response.headers['content-type']})
+
+        let fileName = this.filename + "." + this.fileType;
+
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_self';
+        link.download = fileName;
+        link.click();
+
+        this.dialog1 = false;
+      }).catch((error)=>{
+        console.log("download Err :"+error);
+      })
+    },
     getSubjectData() {
       axios.get('/professor/subject/join_list', {
           params: {
