@@ -7,7 +7,7 @@
       <v-container grid-list-xl>
         <v-layout row wrap align-center>
           <v-flex xs1>
-            <v-card-text>
+            <v-card-text v-if="updateCheck">
               <v-avatar size = "120px">
                 <img :src="userInfoData[0].photo_url" />
               </v-avatar>
@@ -15,7 +15,7 @@
           </v-flex>
           <!-- 학생 정보 -->
           <v-flex xs5>
-            <v-card-text class = "studentName text-xs-left">
+            <v-card-text class = "studentName text-xs-left" v-if="updateCheck">
               <div class="className"><span> {{ userInfoData[0].id }} </span> {{ userInfoData[0].name }} </div>
               <div class="studentEmail"> {{ userInfoData[0].email }} </div>
               <!-- <div class="studentPhone"> {{ userInfoData[0].phone }} </div> -->
@@ -98,6 +98,7 @@
 <script>
 export default {
   data: () => ({
+
     /* 지됴교수인지 교과목교수인지 체크 prof, tutor */
     profType : null,
     /* 메뉴 링크 (학번을 get 타입으로 지정해놓는다.) */
@@ -114,7 +115,8 @@ export default {
       name : '홍길동',
       email : 'group8@grid.system',
       phone : '010-XXXX-XXXX'
-    }]
+    }],
+    updateCheck : false
   }),
   methods : {
       /* 학생 정보를 가지고 온다. ~ 상단에 사진, 학번, 이름, 이메일, 연락처 표시~*/
@@ -126,6 +128,7 @@ export default {
         })
         .then((response) => {
           this.userInfoData[0] = response.data.message;
+          this.updateCheck = true
         })
         .catch((error) => {
           console.log('getInfo Error : ' + error);

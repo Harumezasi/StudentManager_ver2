@@ -85952,7 +85952,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     }
   },
-  created: function created() {
+  mounted: function mounted() {
     this.getUserInfo();
     this.checkTutor();
   }
@@ -86000,20 +86000,13 @@ var render = function() {
                               _c(
                                 "v-card-text",
                                 [
-                                  _c(
-                                    "v-avatar",
-                                    {
-                                      staticClass: "elevation-5",
-                                      attrs: { size: "120px" }
-                                    },
-                                    [
-                                      _c("img", {
-                                        attrs: {
-                                          src: _vm.userInfoData[0].photo_url
-                                        }
-                                      })
-                                    ]
-                                  )
+                                  _c("v-avatar", { attrs: { size: "120px" } }, [
+                                    _c("img", {
+                                      attrs: {
+                                        src: _vm.userInfoData[0].photo_url
+                                      }
+                                    })
+                                  ])
                                 ],
                                 1
                               )
@@ -86715,6 +86708,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
           std_id: this.$router.history.current.query.getInfoIdType
         }
       }).then(function (response) {
+        console.log(response.data.message);
         _this3.createAttendanceDoubleLineValue(response.data.message);
 
         var datas = [];
@@ -86773,15 +86767,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
         labelData.push(value[start].reg_date);
 
         /* 결석은 패스 */
-        if (value[start].lateness_flag != 'good') {
+        if (value[start].lateness_flag != "good") {
           /* 지각 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
-        } else {
+        } else if (value[start].absence_flag == "good") {
           /* 등교 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
         }
+
         /* 하교타입 확인 : 결석일 경우 미확인 */
-        if (value[start].absence_flag == 'good') {
+        if (value[start].absence_flag == "good") {
           switch (value[start].early_leave_flag) {
             case 'good':
               /* 하교 */
@@ -86810,7 +86805,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
       this.attendanceLabelData = labels;
     },
     cutTime: function cutTime(value, setting) {
-      if (value == null) return null;
 
       /* 출석 시작 기준 값 */
       var checkInStart = '0830';
@@ -86989,7 +86983,7 @@ var render = function() {
                                     fn: function(props) {
                                       return _c(
                                         "v-flex",
-                                        {},
+                                        { attrs: { xs6: "", md6: "" } },
                                         [
                                           _c(
                                             "v-card",
