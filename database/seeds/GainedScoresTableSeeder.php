@@ -32,7 +32,7 @@ class GainedScoresTableSeeder extends Seeder
             // 취득성적 데이터 생성
             foreach($students as $student) {
                 $getScore = rand(($score->perfect_score / 8) * 7, $score->perfect_score);
-                if(in_array($student->id, [1301235, 1401134, 1401145])) {
+                if(in_array($student->id, [1301235, 1401145])) {
                     $getScore = rand(($score->perfect_score / 3), ($score->perfect_score / 8) * 7);
                 } else if(in_array($student->id, [1401185, 1401213, 1601155, 1601230])) {
                     if(Carbon::parse($score->execute_date)->gt(today()->subWeeks(6))) {
