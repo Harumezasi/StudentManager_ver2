@@ -8,7 +8,7 @@
         <v-layout row wrap align-center>
           <v-flex xs1>
             <v-card-text>
-              <v-avatar class = "elevation-5" size = "120px">
+              <v-avatar size = "120px">
                 <img :src="userInfoData[0].photo_url" />
               </v-avatar>
             </v-card-text>
@@ -167,7 +167,7 @@ export default {
       }
 
   },
-  created(){
+  mounted(){
     this.getUserInfo();
     this.checkTutor();
   }
