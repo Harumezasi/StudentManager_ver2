@@ -414,7 +414,7 @@ class TutorController extends Controller
         $data['recent_reflection'] /= 100;
 
         if($studyClass->updateCriteria($data->getArrayCopy())) {
-            return response()->json(new Responseobject(
+            return response()->json(new ResponseObject(
                 true, "갱신 성공하였습니다."
             ), 200);
         } else {
