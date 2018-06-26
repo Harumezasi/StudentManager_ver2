@@ -50,25 +50,33 @@ class AttendancesTableSeeder extends Seeder
                     }
                 }
 
-                // 1% 확률로 결석
-                if(rand(0, 99) == 0) {
-                    Attendance::insert([
-                        'std_id'            => $student->id,
-                        'reg_date'          => $regDate->format('Y-m-d'),
-                        'sign_in_time'      => null,
-                        'sign_out_time'     => null,
-                        'lateness_flag'     => 'good',
-                        'early_leave_flag'  => 'good',
-                        'absence_flag'      => 'unreason',
-                        'detail'            => json_encode(new class(){
-                            public $absence_message;
-                            public function __construct($detail = 'absence_message') {
-                                $this->absence_message = $detail;
-                            }
-                        })
-                    ]);
+//                // 1% 확률로 결석
+//                if(rand(0, 99) == 0) {
+//                    Attendance::insert([
+//                        'std_id'            => $student->id,
+//                        'reg_date'          => $regDate->format('Y-m-d'),
+//                        'sign_in_time'      => null,
+//                        'sign_out_time'     => null,
+//                        'lateness_flag'     => 'good',
+//                        'early_leave_flag'  => 'good',
+//                        'absence_flag'      => 'unreason',
+//                        'detail'            => json_encode(new class(){
+//                            public $absence_message;
+//                            public function __construct($detail = 'absence_message') {
+//                                $this->absence_message = $detail;
+//                            }
+//                        })
+//                    ]);
+//
+//                    continue;
+//                }
 
-                    continue;
+                // 등/하교 제한시간 추가
+                $signInEnd = 8;
+                $signOutStart = 21;
+                if(in_array($student->id, [1301235, 1401134, 1401145, 1401185, 1401213, 1601155, 1601230])) {
+                    $signInEnd = 9;
+                    $signOutStart = 20;
                 }
 
                 // 등/하교 시간 획득
@@ -85,8 +93,8 @@ class AttendancesTableSeeder extends Seeder
                 }
 
                 // 지각 / 조퇴 플래그 획득
-                $signInTime = Carbon::create($regDate->year, $regDate->month, $regDate->day, rand(6, 9), rand(0, 60), rand(0, 60));
-                $signOutTime = Carbon::create($regDate->year, $regDate->month, $regDate->day, rand(20, 23), rand(0, 60), rand(0, 60));
+                $signInTime = Carbon::create($regDate->year, $regDate->month, $regDate->day, rand(6, $signInEnd), rand(0, 60), rand(0, 60));
+                $signOutTime = Carbon::create($regDate->year, $regDate->month, $regDate->day, rand($signOutStart, 23), rand(0, 60), rand(0, 60));
                 $latenessFlag = 'good';
                 $earlyLeaveFlag = 'good';
                 if(!is_null($signInLimit)) {
@@ -118,7 +126,7 @@ class AttendancesTableSeeder extends Seeder
                     unset($latenessTime);
                 }
 
-                // 결석 => 몇 초 만큼 조퇴했는지 추가
+                // 조퇴 => 몇 초 만큼 조퇴했는지 추가
                 if(isset($earlyLeaveTime)) {
                     $detailObj->early_leave_time      = $earlyLeaveTime;
                     unset($earlyLeaveTime);
