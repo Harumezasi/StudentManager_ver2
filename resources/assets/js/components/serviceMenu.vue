@@ -15,7 +15,7 @@
         <!-- 유저 이미지 -->
         <v-list-tile avatar>
           <v-list-tile-avatar class = "userBox" size="70px">
-            <img :src="userInfoData.photo" style="border:2px solid white;" />
+            <img :src="userInfoData.photo" style="border:3px solid white;" />
           </v-list-tile-avatar>
         </v-list-tile>
         <!-- 유저 이름 -->
@@ -169,7 +169,7 @@ export default {
     menuClassTypeList : [{
       student : 'light-green',
       professor : 'deep-purple accent-3',
-      tutor : 'blue-grey lighten-1'
+      tutor : 'light-blue darken-4 elevation-10'
     }],
 
     /* 출력될 메뉴 내용 조정 */

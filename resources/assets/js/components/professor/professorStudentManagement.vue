@@ -15,10 +15,164 @@
 
         <!-- 학생 정보 및 목록 -->
         <v-flex xs12 md12>
-          <v-card class = "studentListBox" height="580">
+          <v-card class = "studentListBox" height="680">
             <v-card-title>
-              <v-spacer></v-spacer>
+              <v-flex xs12>
+                <v-layout row wrap align-center>
+                  <v-flex xs12 md2>
+                    <v-dialog v-model="dialog1" persistent max-width="600px">
+                      <v-btn depressed round color="green" class="white--text" slot="activator" normal style="position:relative;right:15px;">
+                        성적 양식 다운로드
+                        <v-icon right dark>cloud_download</v-icon>
+                      </v-btn>
+                      <!-- 모달창 메인 -->
+                       <v-card>
+                         <v-card-title
+                           class="grey lighten-4 py-4 title"
+                         >
+                           성적 양식 다운로드
+                         </v-card-title>
+                         <v-container grid-list-sm class="pa-4">
+                           <v-layout row wrap>
+                             <v-flex xs12 align-center justify-space-between>
+                               <v-layout align-center>
+                                 <v-text-field
+                                    id="fileName"
+                                    name="file_name"
+                                    label="파일 이름"
+                                  ></v-text-field>
+                               </v-layout>
+                             </v-flex>
+                             <v-flex xs12>
+                               <v-menu
+                                ref="menu"
+                                :close-on-content-click="false"
+                                v-model="menu"
+                                :nudge-right="40"
+                                :return-value.sync="date"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                min-width="290px"
+                              >
+                              <v-text-field
+                                slot="activator"
+                                v-model="date"
+                                label="Picker in menu"
+                                prepend-icon="event"
+                                readonly
+                              ></v-text-field>
+                              <v-date-picker v-model="date" no-title scrollable>
+                               <v-spacer></v-spacer>
+                               <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                               <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                             </v-date-picker>
+                            </v-menu>
+                             </v-flex>
+                             <v-flex xs12>
+                               <v-select
+                                 :items="types"
+                                 v-model="e2"
+                                 label="분류"
+                                 class="input-group--focused"
+                                 item-value="text"
+                               ></v-select>
+                             </v-flex>
+                             <v-flex xs12>
+                               <v-text-field
+                                 id="perfectScore"
+                                 name="perfect_score"
+                                 label="만점"
+                               ></v-text-field>
+                             </v-flex>
+                             <v-flex xs12>
+                               <v-text-field
+                                 id="content"
+                                 name="content"
+                                 label="성적 내용"
+                               ></v-text-field>
+                             </v-flex>
+                             <v-flex xs12>
+                               <v-select
+                                 :items="fileTypes"
+                                 v-model="e3"
+                                 label="분류"
+                                 class="input-group--focused"
+                                 item-value="text"
+                               ></v-select>
+                             </v-flex>
+                           </v-layout>
+                         </v-container>
+                         <v-card-actions>
+                           <v-spacer></v-spacer>
+                           <v-btn flat color="primary" @click="dialog1 = false">Cancel</v-btn>
+                           <v-btn flat @click="dialog1 = false">Save</v-btn>
+                         </v-card-actions>
+                       </v-card>
+                     </v-dialog>
+                    </v-dialog>
+                  </v-flex>
+
+                  <v-flex xs12 md2>
+                    <v-dialog v-model="dialog2" persistent max-width="600px">
+                      <v-btn depressed round color="green" class="white--text" slot="activator" normal>
+                        성적 파일 업로드
+                        <v-icon right dark>cloud_upload</v-icon>
+                      </v-btn>
+                      <!-- 모달창 메인 -->
+                      <v-card style="padding: 20px 20px 20px 20px;">
+                        <v-card-title>
+                          <span class="headline">엑셀로 성적 파일 업로드</span>
+                        </v-card-title>
+                        <div>
+                          <!-- form 양식 -->
+                          <!-- 파일 등록 -->
+                          <input type="file" id="file" ref='upload_file' required="" accept=".xlsx, .xls, .csv" v-on:change="handleFileUpload()" class="upload_input">
+                          <v-btn color = "blue accent-2" v-on:click="submitFile()" class="upload_button">성적 업로드</v-btn>
+                        </div>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="blue darken-1" flat @click="dialog2=false">Close</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                    <!-- 완료 메시지 모달창 -->
+                    <v-dialog v-model="dialog3" persistent max-width="600px">
+                      <!-- 모달창 메인 -->
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline">알림</span>
+                        </v-card-title>
+                        <v-flex d-flex xs12 sm6 md4>
+                          <!-- form 양식 -->
+                          <div v-if="reData">
+                            성적 업로드에 성공하였습니다.
+                          </div>
+                          <div v-else>
+                            성적 업로드에 실패하였습니다.
+                          </div>
+                          <!-- form End-->
+                        </v-flex>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="blue darken-1" flat @click="dialog3=false, dialog2=false">Close</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-flex>
+
+                  <v-flex xs12 md2>
+                    <v-btn depressed round color="green" class="white--text" :onclick="checkGradePageUrl" style="position:relative;right:-1px;">
+                      등록된 성적 확인
+                      <v-icon right dark>check</v-icon>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+
               <v-text-field append-icon="search" label="Search" single-line hide-details v-model="search"></v-text-field>
+
             </v-card-title>
             <v-data-table
               :headers="headers"
@@ -49,195 +203,6 @@
       </v-layout>
     </v-container>
   </v-flex>
-
-  <div class="contents">
-    <v-layout column class="my-5" align-center>
-      <v-flex xs12 sm4 class="my-3">
-        <div class="text-xs-center">
-          <h2 class="headline"> 성적 등록 및 확인 </h2>
-        </div>
-      </v-flex>
-
-      <v-container grid-list-xl>
-        <v-layout row wrap align-center>
-          <v-flex xs12 md7>
-            <v-card class="elevation-0 transparent">
-              <!-- 엑셀 파일 -->
-              <v-card-text class="text-xs-center">
-                <img src="../images/excel.png" style="width:70px; height:auto;" />
-              </v-card-text>
-              <!-- 엑셀 파일 설명 -->
-              <v-card-title primary-title class="layout justify-center">
-                <div class="headline text-xs-center">엑셀 양식 다운로드 후, 파일 업로드</div>
-              </v-card-title>
-              <!-- 다운로드 버튼 -->
-              <v-dialog v-model="dialog1" persistent max-width="600px">
-                <v-btn color="green darken-4" class="white--text" style="height: 100px;" slot="activator" normal>
-                  엑셀 양식 다운로드
-                  <v-icon right dark>cloud_download</v-icon>
-                </v-btn>
-                <!-- 모달창 메인 -->
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">엑셀 양식 다운로드</span>
-                  </v-card-title>
-                  <v-flex d-flex xs12 sm6 md4>
-                    <!-- form 양식 -->
-                    <v-form action='/professor/subject/score/excel/download' method='post'>
-                      <input type="hidden" :value="paramsData" name="subject_id">
-                      <table>
-                        <tr>
-                          <td>
-                            <!-- 파일 이름 입력 -->
-                            <v-chip style="width:80px" color="secondary" text-color="white">파일 이름</v-chip>
-                          </td>
-                          <td>
-                            <v-text-field style="float:left" type="text" name="file_name" maxlength="30" required=""></v-text-field>
-                          </td>
-                        </tr>
-                        <tr>
-                          <!-- 실시일자 선택 -->
-                          <td>
-                            <v-chip color="secondary" text-color="white">실시 일자</v-chip>
-                          </td>
-                          <td>
-                            <input type="date" name="execute_date" required="">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <!-- 성적 유형 -->
-                            <v-chip style="width:80px" color="secondary" text-color="white"> 분 류 </v-chip>
-                          </td>
-                          <td>
-                            <select name="score_type" id="score_type">
-                                  <option value="midterm">중간</option>
-                                  <option value="final">기말</option>
-                                  <option value="homework" selected="">과제</option>
-                                  <option value="quiz">쪽지</option>
-                                </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <!-- 만점 설정 -->
-                            <v-chip style="width:80px" color="secondary" text-color="white"> 만 점 </v-chip>
-                          </td>
-                          <td>
-                            <v-text-field type="number" name="perfect_score" min="1" max="999" maxlength="3" required=""></v-text-field>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <!-- 성적 상세 내용 -->
-                            <v-chip style="width:80px" color="secondary" text-color="white">성적 내용</v-chip>
-                          </td>
-                          <td>
-                            <v-text-field type="text" name="content" minlength="2" maxlength="30" required=""></v-text-field>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <!-- 출력 파일 유형 -->
-                            <v-chip style="width:80px" color="secondary" text-color="white"> 확 장 자 </v-chip>
-                          </td>
-                          <td>
-                            <select name="file_type" id="file_type">
-                                  <option value="xlsx">xlsx</option>
-                                  <option value="xls">xls</option>
-                                  <option value="csv">csv</option>
-                                </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <!-- SUBMIT 실행 버튼 영역 -->
-                            <v-btn color="blue" type='submit'>양식 다운로드</v-btn>
-                          </td>
-                        </tr>
-                      </table>
-                      <!-- END -->
-                    </v-form>
-                    <!-- form End-->
-                  </v-flex>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="dialog1 = false">Close</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <!-- 업로드 버튼 -->
-              <v-dialog v-model="dialog2" persistent max-width="600px">
-                <v-btn color="green darken-4" class="white--text" style="height: 100px;" slot="activator" normal>
-                  엑셀 파일 업로드
-                  <v-icon right dark>cloud_upload</v-icon>
-                </v-btn>
-                <!-- 모달창 메인 -->
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">엑셀로 성적 업로드</span>
-                  </v-card-title>
-                  <div>
-                    <!-- form 양식 -->
-                    <!-- 파일 등록 -->
-                    <v-chip color="secondary" text-color="white">파일등록</v-chip>
-                    <input type="file" id="file" ref='upload_file' required="" accept=".xlsx, .xls, .csv" v-on:change="handleFileUpload()" class="upload_input">
-                    <button v-on:click="submitFile()" class="upload_button">성적 업로드</button>
-                  </div>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="dialog2=false">Close</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <!-- 버튼 영역 끝 -->
-            </v-card>
-          </v-flex>
-          <!-- 완료 메시지 모달창 -->
-          <v-dialog v-model="dialog3" persistent max-width="600px">
-            <!-- 모달창 메인 -->
-            <v-card>
-              <v-card-title>
-                <span class="headline">알림</span>
-              </v-card-title>
-              <v-flex d-flex xs12 sm6 md4>
-                <!-- form 양식 -->
-                <div v-if="reData">
-                  성적 업로드에 성공하였습니다.
-                </div>
-                <div v-else>
-                  성적 업로드에 실패하였습니다.
-                </div>
-                <!-- form End-->
-              </v-flex>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click="dialog3=false, dialog2=false">Close</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <!-- 등록된 성적 확인 -->
-          <v-flex xs12 md3>
-            <v-card class="elevation-0 transparent">
-              <v-card-text class="text-xs-center">
-                <img src="../images/registration.png" style="width:70px; height:auto;" />
-              </v-card-text>
-              <v-card-title primary-title class="layout justify-center">
-                <div class="headline text-xs-center">업로드 성적 확인</div>
-              </v-card-title>
-              <v-btn outline large color="primary" class="white--text" style="height: 100px;" :onclick="checkGradePageUrl">
-                등록된 성적 확인
-                <v-icon right dark>check</v-icon>
-              </v-btn>
-            </v-card>
-          </v-flex>
-
-        </v-layout>
-      </v-container>
-      </v-flex>
-    </v-layout>
-    </v-container>
-  </div>
 </div>
 </template>
 
@@ -261,19 +226,13 @@
 
 
 /* 성적 업로드 부분 css */
-
 .upload_input {
   border: 1px solid black;
   width: 300px;
 }
 
 .upload_button {
-  border: 1px solid black;
-  width: 100px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: gray;
-  font-weight: bold;
+  font-family: "Gothic A1";
   font-size: 15px;
 }
 
@@ -308,9 +267,24 @@ export default {
       dialog2: false,
       dialog3: false,
       reData: true,
+       e2: null,
+       e3: null,
+       date: null,
+      menu: false,
       /* 학생정보 */
       search: '',
       pagination: {},
+      types: [
+        {text:'중간'},
+        {text:'기말'},
+        {text:'과제'},
+        {text:'쪽지'}
+      ],
+      fileTypes: [
+        {text:'xlsx'},
+        {text:'xls'},
+        {text:'csv'},
+      ],
       headers: [{
           class: 'display-1',
           text: '학번',

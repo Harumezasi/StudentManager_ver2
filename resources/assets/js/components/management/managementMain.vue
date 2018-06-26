@@ -45,7 +45,7 @@
                   row
                   wrap
                 >
-                  <v-flex slot="item" slot-scope="props" xs6 md6>
+                  <v-flex slot="item" slot-scope="props">
                     <v-card class = "elevation-0">
                       <v-card-title><h4>{{ props.item.name }}</h4></v-card-title>
                       <v-divider></v-divider>
@@ -463,7 +463,6 @@ export default {
           std_id : this.$router.history.current.query.getInfoIdType
         }
       }).then((response) => {
-        console.log(response.data.message);
         this.createAttendanceDoubleLineValue(response.data.message);
 
         let datas = [];
@@ -522,16 +521,15 @@ export default {
         labelData.push(value[start].reg_date);
 
         /* 결석은 패스 */
-        if(value[start].lateness_flag != "good"){
+        if(value[start].lateness_flag != 'good'){
           /* 지각 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
-        }else if(value[start].absence_flag == "good"){
+        }else {
           /* 등교 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
         }
-
         /* 하교타입 확인 : 결석일 경우 미확인 */
-        if(value[start].absence_flag == "good"){
+        if(value[start].absence_flag == 'good'){
           switch (value[start].early_leave_flag) {
             case 'good':
               /* 하교 */
@@ -560,6 +558,8 @@ export default {
       this.attendanceLabelData = labels;
     },
     cutTime(value, setting){
+      if(value == null)
+       return null
 
       /* 출석 시작 기준 값 */
       let checkInStart = '0830';

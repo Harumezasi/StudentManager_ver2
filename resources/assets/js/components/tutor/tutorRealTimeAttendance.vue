@@ -72,7 +72,6 @@
               <!-- 지각 학생 목록 -->
               <v-card-text class="absenceAndLateInfoArea">
                 <v-list three-line>
-                  <div class="studentListArea">
                    <template v-for="late in lateData">
                      <v-list-tile :key="late.name" avatar @click="">
                        <!-- 지각 학생 사진 -->
@@ -90,7 +89,6 @@
                        </v-list-tile-content>
                      </v-list-tile>
                    </template>
-                 </div>
                </v-list>
               </v-card-text>
             </v-card>
@@ -223,7 +221,7 @@
   font-family: "Montserrat";
   font-weight: Bold;
   position: relative;
-  left: 39px;
+  left: 48px;
   bottom: 80px;
 }
 
@@ -257,7 +255,7 @@
 }
 
 /* 결석 */
-.absenceInfoArea {
+.absenceAndLateInfoArea {
   min-height: 550px;
   max-height: 550px;
   overflow-y: scroll;
@@ -295,8 +293,8 @@
   background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));
 }
 .interestInfoArea {
-  min-height: 160px;
-  max-height: 160px;
+  min-height: 130px;
+  max-height: 130px;
   min-width: 374px;
   overflow-y: scroll;
   position: relative;

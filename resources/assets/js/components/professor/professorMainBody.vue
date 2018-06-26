@@ -23,13 +23,13 @@
                   <v-layout row wrap align-center>
 
                     <v-flex xs12 md2>
-                      <v-icon class = "iconStyle" color = "light-blue darken-2" x-large>alarm</v-icon>
+                      <v-icon class = "iconStyle" color = "blue accent-2" x-large>alarm</v-icon>
                     </v-flex>
                     <v-flex xs12 md8>
                       <h1 class = "firstCard">금일 지각 학생</h1>
                     </v-flex>
                     <v-flex xs12 md2>
-                      <h2 style="font-family:Montserrat; position: relative; right: 20px;color:rgb(88, 86, 205)">{{ latenessStudentCount }}/48 </h2>
+                      <h2 style="font-family:Montserrat; position: relative; right: 20px;color:rgb(104, 142, 240)">{{ latenessStudentCount }}/48 </h2>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -50,10 +50,6 @@
                         <v-list-tile-title v-html="datas.name"></v-list-tile-title>
                         <v-list-tile-sub-title v-html="datas.id"></v-list-tile-sub-title>
                       </v-list-tile-content>
-                      <v-list-tile-content>
-                        <!-- 지각 시간 -->
-                        <v-list-tile-sub-title v-html="datas.sign_in_time"></v-list-tile-sub-title>
-                      </v-list-tile-content>
                     </v-list-tile>
                   </template>
                 </div>
@@ -67,13 +63,13 @@
                 <v-container grid-list-xl>
                   <v-layout row wrap align-center>
                     <v-flex xs12 md2>
-                      <v-icon class = "iconStyle" color = "light-blue darken-2" x-large>highlight_off</v-icon>
+                      <v-icon class = "iconStyle" color = "blue accent-2" x-large>highlight_off</v-icon>
                     </v-flex>
                     <v-flex xs12 md8>
                       <h1 class = "firstCard">금일 결석 학생</h1>
                     </v-flex>
                     <v-flex xs12 md2>
-                      <h2 style="font-family:Montserrat;position: relative; right: 20px;color:rgb(88, 86, 205)">{{ absenceStudentCount }}/48 </h2>
+                      <h2 style="font-family:Montserrat;position: relative; right: 20px; color:rgb(104, 142, 240)">{{ absenceStudentCount }}/48 </h2>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -109,7 +105,7 @@
                   <v-layout row wrap align-center>
 
                     <v-flex xs12 md3>
-                      <v-icon color = "light-blue darken-2" x-large>notifications_none</v-icon>
+                      <v-icon color = "blue accent-2" x-large>notifications_none</v-icon>
                     </v-flex>
                     <v-flex xs12 md9>
                       <h1 class = "firstCard">최근 알림</h1>

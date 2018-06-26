@@ -3,6 +3,7 @@
 
     <!-- Header -->
     <v-parallax src="/images/analyticPredition.jpg" height="300">
+      <h1 class="categoryStudentAnalytic">Student Analytic Predition</h1>
     </v-parallax>
 
     <!-- 기간 설정 영역 -->
@@ -58,23 +59,31 @@
      </v-card>
    </v-dialog>
 
-
     <!-- 학생 목록 영역-->
     <div class="studentPageTopDiv">
     <v-flex xs12>
       <v-container grid-list-xl>
         <v-layout row wrap align-center>
-          <v-flex xs4 md4>
-            <div class="studentSelectedDiv">
-            <v-card>
+          <v-flex xs12 md4>
+            <div class = "studentListCard">
+            <v-card class = "studentListCard">
               <v-card-text>
-                <h2>학생목록
-                  <v-btn v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
-                  <v-btn v-else @click.stop="dialog = !dialog">
-                    {{ this.periodSelected }}
-                    ( {{ this.startDate }} ~ {{ this.endDate }})
-                  </v-btn>
-                </h2>
+                <v-flex xs12>
+                    <v-layout row wrap align-center>
+                      <v-flex xs12 md2>
+                        <v-icon color = "light-blue darken-2" large>format_list_bulleted</v-icon>
+                      </v-flex>
+                      <v-flex xs12 md10>
+                        <h2 class = "studentListTitle">학생목록
+                          <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
+                          <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
+                            {{ this.periodSelected }}
+                            ( {{ this.startDate }} ~ {{ this.endDate }})
+                          </v-btn>
+                        </h2>
+                      </v-flex>
+                    </v-layout>
+                </v-flex>
               </v-card-text>
               <!-- 학생 분류 버튼 -->
               <v-card-text class = "buttonBox">
@@ -87,10 +96,8 @@
                 <v-subheader><h2> {{ studentSelected }} </h2></v-subheader>
                 <v-progress-linear :indeterminate="progressStudent" height="3" ></v-progress-linear>
                   <div class="studentInfoDiv">
-                    <template v-for="datas in studnetInfo">
+                    <template v-for="datas in studentInfo">
                        <!-- 전체, 주목, 사랑 버튼 중 한가지 선택 시, 선택한 버튼 텍스트 띄우는 영역 -->
-                       <!-- 구분선 -->
-                       <v-divider :inset="true" ></v-divider>
                          <!-- 학생 사진, 이름과 학번, 사랑도, 주목된 이유 의 정보가 뜨게 함 -->
                          <v-list-tile avatar @click="selectStudent(datas)">
                            <!-- 학생 사진 -->
@@ -100,17 +107,30 @@
                            <!-- 학생 정보 -->
                            <v-list-tile-content>
                              <!-- 학생의 이름과 학번 -->
-                             <v-list-tile-title> {{ datas.id }} {{ datas.name }}</v-list-tile-title>
-                             <!-- 사랑 -->
-                             <div>
+                             <v-list-tile-title> {{ datas.id }} {{ datas.name }}
                                <v-icon v-if="datas.attention_level > 0" small color = "red">favorite</v-icon>
                                <v-icon v-if="datas.attention_level > 1" small color = "red">favorite</v-icon>
                                <v-icon v-if="datas.attention_level > 2" small color = "red">favorite</v-icon>
-                             </div>
+                             </v-list-tile-title>
                              <!-- 주목된 이유 -->
-                             <v-btn small depressed v-if="datas.attention_reason !='' " v-html="datas.attention_reason" round color="light-green lighten-1" ></v-btn>
+                             <div>
+                               <v-tooltip top v-if="datas.recent_trouble_Check">
+                                 <v-btn slot="activator" small dark depressed  round color="light-green lighten-1" >최근 성적 하락</v-btn>
+                                 <span><div v-for="data in datas.trouble.recent_trouble"><h3>{{ data }}</h3></div></span>
+                               </v-tooltip>
+                               <v-tooltip top v-if="datas.ada_Check">
+                                 <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >출석율 저조</v-btn>
+                                 <span><div v-for="data in datas.trouble.ada"><h3>{{ data }}</h3></div></span>
+                               </v-tooltip>
+                               <v-tooltip top v-if="datas.low_level_Check">
+                                 <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >성적하위권</v-btn>
+                                 <span><div v-for="data in datas.trouble.low_level"><h3>{{ data }}</h3></div></span>
+                               </v-tooltip>
+                             </div>
                            </v-list-tile-content>
                          </v-list-tile>
+                         <!-- 구분선 -->
+                         <v-divider :inset="true" ></v-divider>
                        </template>
                      </div>
                    </v-list>
@@ -119,13 +139,23 @@
                </v-flex>
 
                <!-- 출결 관려 차트 영역 -->
-               <v-flex xs8 md8>
-                 <div class="studentChartDiv">
-                 <v-card>
+               <v-flex xs12 md8>
+                 <div class = "studentChartDiv">
+                 <v-card class = "chartCard">
                     <v-card-text>
-                      <h2 class="chartTitle">학생 분석 예측</h2>
+                      <v-flex xs12>
+                        <v-layout row wrap align-center>
+                          <v-flex xs12 md1>
+                            <v-icon  color = "light-blue darken-2" large>show_chart</v-icon>
+                          </v-flex>
+                          <v-flex xs12 md10>
+                            <h2 class="chartTitle">학생 분석 예측</h2>
+                          </v-flex>
+                        </v-layout>
+                      </v-flex>
                     </v-card-text>
-                    <div>
+
+                    <div class = "studentInfoBox">
                       <v-flex xs12>
                         <v-container grid-list-xl>
                           <v-layout row wrap align-center v-if="btnLock">
@@ -142,15 +172,29 @@
                                 <v-card-text class = "studentInfo">
                                   <div class="textBox"><span>{{ selectStudentData.id }}</span>{{ selectStudentData.name }}</div>
                                   <!-- 사랑 -->
+                                  <div>
                                   <v-icon v-if="selectStudentData.attention_level > 0" color="red" @click="setAttentionLevel(selectStudentData, 1, 'red')">favorite</v-icon>
                                   <v-icon v-if="selectStudentData.attention_level > 1" color="red" @click="setAttentionLevel(selectStudentData, 2, 'red')">favorite</v-icon>
                                   <v-icon v-if="selectStudentData.attention_level > 2" color="red">favorite</v-icon>
                                   <v-icon v-if="selectStudentData.attention_level <= 2" color="gray" @click="setAttentionLevel(selectStudentData, 1, 'gray')">favorite</v-icon>
                                   <v-icon v-if="selectStudentData.attention_level <= 1" color="gray" @click="setAttentionLevel(selectStudentData, 2, 'gray')">favorite</v-icon>
                                   <v-icon v-if="selectStudentData.attention_level <= 0" color="gray" @click="setAttentionLevel(selectStudentData, 3, 'gray')">favorite</v-icon>
-
+                                </div>
+                                <div>
                                   <!-- 주목된 이유 -->
-                                  <v-btn small depressed round color="light-green lighten-1" v-if="selectStudentData.attention_reason != ''" v-html="datas.attention_reason"></v-btn>
+                                  <v-tooltip top v-if="selectStudentData.recent_trouble_Check">
+                                    <v-btn slot="activator" small dark depressed  round color="light-green lighten-1" >최근 성적 하락</v-btn>
+                                    <span><div v-for="data in selectStudentData.trouble.recent_trouble"><h3>{{ data }}</h3></div></span>
+                                  </v-tooltip>
+                                  <v-tooltip top v-if="selectStudentData.ada_Check">
+                                    <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >출석율 저조</v-btn>
+                                    <span><div v-for="data in selectStudentData.trouble.ada"><h3>{{ data }}</h3></div></span>
+                                  </v-tooltip>
+                                  <v-tooltip top v-if="selectStudentData.low_level_Check">
+                                    <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >성적하위권</v-btn>
+                                    <span><div v-for="data in selectStudentData.trouble.low_level"><h3>{{ data }}</h3></div></span>
+                                  </v-tooltip>
+                                </div>
                                 </v-card-text>
                               </v-flex>
                           </v-layout>
@@ -176,7 +220,7 @@
                     </div>
 
                     <!-- 학업 관련 차트 영역-->
-                    <div>
+                    <div class = "attendanceChartTypeSelect">
                       <v-flex xs12>
                         <v-container grid-list-xl>
                           <v-layout row wrap align-center>
@@ -205,34 +249,32 @@
                                 <v-btn depressed small round color="blue accent-3" v-else disabled>조퇴</v-btn>
                               </v-flex>
                           </v-layout>
-                          <v-layout row wrap align-center>
-
+                          <v-flex xs12>
                             <!-- 등교 하교 시간 변화량 그래프 -->
                             <div v-if="attendanceSelected.select == 1">
-                              <div><h2>등하교 시간 변화량 ( {{ setSign }} ) </h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">등하교 시간 변화량 ( {{ setSign }} ) </h2></div>
                               <attendance-time-lineChart :width="1000" :data="timeLineData" :labels="timeLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></attendance-time-lineChart>
                             </div>
                             <!-- 지각 조퇴 결석 ~ 횟수 변화량 그래프 (3 중 1 선택) -->
                             <div v-else-if="attendanceSelected.select == 2">
-                              <div><h2>출결 횟수 변화 ( {{ setAtt }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">출결 횟수 변화 ( {{ setAtt }} )</h2></div>
                               <attendance-count-lineChart :width="1000" :data="countLineData" :labels="countLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></attendance-count-lineChart>
                             </div>
                             <!-- 출결 비율 그래프-->
                             <div v-else-if="attendanceSelected.select == 3">
                               <attendance-count-pieChart :width="1000" :data="countPieData" :options="{ responsive: true, maintainAspectRatio: false }"></attendance-count-pieChart>
                             </div>
-
-                          </v-layout>
+                          </v-flex>
                         </v-container>
                       </v-flex>
                     </div>
 
-                    <div>
+                    <div class = "attendanceChartTypeSelect">
                       <v-flex xs12>
                         <v-container grid-list-xl>
                           <v-layout row wrap align-center>
                               <!-- 강의 선택 -->
-                              <v-flex xs4>
+                              <v-flex xs6>
                                 <v-select
                                   :items="subjectList"
                                   v-model="subjectSelect"
@@ -241,7 +283,7 @@
                                 ></v-select>
                               </v-flex>
                               <!-- 그래프 선택 -->
-                              <v-flex xs4>
+                              <v-flex xs6>
                                 <v-select
                                   :items="grade"
                                   v-model="greadeSelected"
@@ -265,27 +307,27 @@
                           <v-layout row wrap align-center>
                             <v-flex xs12 md6>
                             <div v-if="greadeSelected.select == 1">
-                              <div><h2>강의 취득 점수 ( {{ setLec }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">강의 취득 점수 ( {{ setLec }} )</h2></div>
                               <!-- 강의 취득점수 비교 그래프 (강의 중 1택) -->
                               <study-lecture-score-lineChart :datasets="lectureScoreDataSets" :labels="lectureScoreLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-lecture-score-lineChart>
                             </div>
                             <div v-if="greadeSelected.select == 2">
-                              <div><h2>강의 석차백분율 ( {{ setLec }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">강의 석차백분율 ( {{ setLec }} )</h2></div>
                               <study-lecture-ranking-lineChart :data="lectureRankingData" :labels="lectureRankingLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-lecture-ranking-lineChart>
                             </div>
                             <div v-if="greadeSelected.select == 3">
                               <!-- 강의의 항목(중간 기말 쪽지 과제) 별 취득점수 비교 그래프 (4중 1택) -->
-                              <div><h2>종목별 취득 점수 ( {{ setSub }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">종목별 취득 점수 ( {{ setSub }} )</h2></div>
                               <study-subject-score-lineChart :datasets="subjectScoreDataSets" :labels="subjectScoreLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-subject-score-lineChart>
                             </div>
                             <div v-if="greadeSelected.select == 4">
-                              <div><h2>종목별 석차백분율 ( {{ setSub }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">종목별 석차백분율 ( {{ setSub }} )</h2></div>
                               <study-subject-ranking-lineChart :data="subjectRankingData" :labels="subjectRankingLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-subject-ranking-lineChart>
                             </div>
                             </v-flex>
                             <!-- 전공 & 일본어 수준 비교 그래프 -->
                             <v-flex xs12 md6>
-                              <div><h2>전공&일본어 수준</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">전공&일본어 수준</h2></div>
                               <study-japenese-Major-lineChart :datasets="jmLineDataSets" :labels="jmLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-japenese-Major-lineChart>
                             </v-flex>
                           </v-layout>
@@ -294,24 +336,25 @@
                       </v-flex>
                     </div>
                  </v-card>
-               </div>
+                </div>
                </v-flex>
-          </v-layout>
-        </v-container>
-      </v-flex>
-    </div>
+        </v-layout>
+      </v-container>
+    </v-flex>
+  </div>
   </div>
 </template>
 
 <style>
+
 .studentPageTopDiv {
   position : relative;
-  bottom : 120px;
+  bottom : 200px;
 }
 
 .studentChartDiv {
   margin: 25px;
-  height: 1500px;
+  height: 1380px;
 }
 
 .studentSelectedDiv {
@@ -320,31 +363,23 @@
 }
 
 
+
 /*-- 헤더 영역 --*/
-.panel-header {
-  height: 100px;
-  padding-top: 70px;
-  padding-bottom: 45px;
-  background: #141E30;
-  /* fallback for old browsers */
-  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
-  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
+.categoryStudentAnalytic {
+  color: #FFFFFF;
+  font-size: 30px;
   position: relative;
-  overflow: hidden;
-}
-.panel-header-sm {
-  height: 135px;
-}
-.panel-header-lg {
-  height: 380px;
+  font-family: "Montserrat";
+  font-weight: Bold;
+  position: relative;
+  left: 40px;
+  bottom: 20px;
 }
 
 /*--- 학생 분류 카드 ---*/
 .studentListCard {
-  position: relative;
-  bottom: 57px;
-  border-radius: 0.2975rem;
-  box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);
+  border-radius: 0.7975rem;
+  box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
   width : 400px;
 }
 
@@ -363,11 +398,10 @@
 /*-- 차트 --*/
 .chartCard {
   position: relative;
-  bottom: 57px;
-  right : 70px;
-  border-radius: 0.2975rem;
-  box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);
-  min-height: 1000px;
+  left: 10px;
+  width: 720px;
+  border-radius: 0.7975rem;
+  box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
 }
 .chartTitle {
   font-family: "Nanum Gothic Coding";
@@ -391,8 +425,8 @@
   .textBox span {
     font-size: 25px;
     font-family: "Montserrat";
-    font-weight: lighter;
-    color: rgb(82, 82, 82);
+    font-weight: bold;
+    color: rgb(125, 125, 125);
     margin: 0 10px 0 0px;
   }
 .attendanceChartTypeSelect {
@@ -412,7 +446,7 @@
 /* */
 .studentInfoDiv {
   overflow-y : scroll;
-  height : 1290px;
+  height : 1100px;
 }
 </style>
 <script>
@@ -441,14 +475,14 @@ Vue.component('attendance-time-lineChart', {
         labels: this.timeLineLabelData,
         datasets:[{
             label : '시간(00:00)',
-            borderColor: '#249EBF',
+            borderColor: '#4451fb',
             fill : false,
             data: this.timeLineData
           }],
         options:{
           responsive: true,
           maintainAspectRatio: false,
-          height: 100
+          height: 100,
         }
       },
       {
@@ -496,7 +530,7 @@ Vue.component('attendance-count-lineChart', {
         labels: this.countLineLabelData,
         datasets:[{
             label : '횟수',
-            borderColor: '#33ff66',
+            borderColor: '#4657fa',
             fill : false,
             data: this.countLineData
           }],
@@ -547,7 +581,7 @@ Vue.component('attendance-count-pieChart', {
       this.renderChart({
         labels : ['출석','지각','결석','조퇴'],
         datasets:[{
-            backgroundColor: ['#33ff66','#ffff00','#ff3333','#808080'],
+            backgroundColor: ['#4657fa','#9f98ed','#ff3333','#808080'],
             fill : false,
             data: this.countPieData
           }],
@@ -866,7 +900,7 @@ export default {
         /* 로딩바 , progress */
         progressStudent : false,
         /* 학생 목록 */
-        studnetInfo: [],
+        studentInfo: [],
         studentsType : 'total',
         studentSelected : '전체',
 
@@ -947,7 +981,6 @@ export default {
   methods : {
     /* 학생 선택 */
     selectStudent(value){
-      console.log(value);
         /* 우측 버튼 잠금 해제 */
         this.btnLock = true;
         /* 학생 정보 저장 */
@@ -1056,7 +1089,7 @@ export default {
     },
     /* 학생 목록 */
     getStudentInfo(typeSelect){
-      this.studnetInfo = [];
+      this.studentInfo = [];
       this.studentsType = typeSelect;
       this.progressStudent = true;
       axios.get('/tutor/analyse/student_list', {
@@ -1065,16 +1098,49 @@ export default {
           order : 'id'
         }
       }).then((response) => {
-        console.log(response.data.message);
-        this.studnetInfo = response.data.message;
-        for(let data in this.studnetInfo){
-          if(this.studnetInfo[data].attention_reason == null){
-            this.studnetInfo[data].attention_reason = '';
+        this.studentInfo = response.data.message;
+        for(let data in this.studentInfo){
+          if(this.studentInfo[data].attention_reason == null){
+            this.studentInfo[data].attention_reason = '';
           }
-          this.$set(this.studnetInfo[data], 'number', data)
+          this.$set(this.studentInfo[data], 'number', data)
         }
         this.progressStudent = false;
-        this.selectStudent(this.studnetInfo[0])
+
+        this.selectStudent(this.studentInfo[0]);
+        console.log(this.studentInfo);
+        console.log(Object.keys(this.studentInfo[0].trouble).length);
+
+        /* 트러블 기본 정보 추가 */
+        for(let troubleSetting in this.studentInfo){
+          this.$set(this.studentInfo[troubleSetting], 'recent_trouble_Check', false);
+          this.$set(this.studentInfo[troubleSetting], 'ada_Check', false);
+          this.$set(this.studentInfo[troubleSetting], 'low_level_Check', false);
+        }
+
+        /* 트러블 정보 추가 */
+        for(let trouble in this.studentInfo){
+          /* 트러블 정보가 존재하는지 확인 */
+          if(Object.keys(this.studentInfo[trouble].trouble).length > 0){
+            /* 트러블 라벨 추출 */
+            let data = Object.keys(this.studentInfo[trouble].trouble);
+            /* 라벨을 확인하여 값 변경 */
+            for(let num in data){
+              switch (data[num]) {
+                case 'recent_trouble':
+                  this.studentInfo[trouble]['recent_trouble_Check'] = true;
+                  break;
+                case 'ada':
+                  this.studentInfo[trouble]['ada_Check'] = true;
+                  break;
+                case 'low_level':
+                  this.studentInfo[trouble]['low_level_Check'] = true;
+                  break;
+              }
+            }
+          }
+        }
+
       }).catch((error) => {
         console.log("getStuInfo Err : " + error);
         alert('불러오기에 실패했습니다.')
@@ -1533,7 +1599,7 @@ export default {
         attention_level : setCount
       }).then((response) => {
         /* 하트 수정 */
-        this.studnetInfo[value.number].attention_level = setCount;
+        this.studentInfo[value.number].attention_level = setCount;
       }).catch((error) => {
         console.log("setAttention Err : "+ error);
       })

@@ -57,7 +57,9 @@
             </v-card-actions>
          </v-card>
        </v-dialog>
+
     <!-- 메인 -->
+    <div class="classPageTopDiv">
     <v-flex xs12>
     <v-container grid-list-xl>
       <v-layout row wrap align-center>
@@ -111,19 +113,20 @@
                       </v-flex>
                     </v-flex>
                 </v-layout>
+                <div class="classChartDiv">
                 <v-flex xs12>
                   <v-container>
                     <v-layout row wrap align-center>
                       <v-flex xs12 md12>
                           <div v-if="attSelect.selected != 3"><h2 style="font-family: Gothic A1;font-weight: lighter;"> {{ this.attSelect.text }} ( {{ this.attendanceChartStat }} )</h2></div>
                           <pie-chart v-if="attSelect.selected == 1" :width="500" :data="attendanceData" :backgroundColor="attendanceColor" :labels="attendanceLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></pie-chart>
-                          <line-chart-lateness v-if="attSelect.selected == 2" :width="500" :data="attendanceLineData" :borderColor="attendanceLineColor" :labels="attendanceLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-lateness>
-                          <line-chart-holiday v-if="attSelect.selected == 3" :width="500" :data="holidayData" :labels="holidayLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-holiday>
+                          <line-chart-lateness v-if="attSelect.selected == 2" :width="310" :data="attendanceLineData" :borderColor="attendanceLineColor" :labels="attendanceLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-lateness>
+                          <line-chart-holiday v-if="attSelect.selected == 3" :width="300" :data="holidayData" :labels="holidayLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-holiday>
                       </v-flex>
                     </v-layout>
                   </v-container>
                 </v-flex>
-
+              </div>
               </v-container>
             </v-flex>
           </v-card>
@@ -192,11 +195,23 @@
       </v-layout>
     </v-container>
   </v-flex>
+</div>
 
   </div>
 </template>
 
 <style>
+
+.classPageTopDiv {
+  position : relative;
+  bottom : 200px;
+}
+
+.classChartDiv {
+  margin: 25px;
+  height: 440px;
+}
+
 /*-- 헤더 영역 --*/
 .categoryClassAnalytic {
   color: #FFFFFF;
@@ -209,14 +224,10 @@
   bottom: 60px;
 }
 
-
 .classAttendanceCartBox {
-  position: relative;
-  bottom: 212px;
-  right: 20px;
+  right: 10px;
   border-radius: 0.7975rem;
   box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);
-  min-height: 700px;
   width: 470px;
 }
 .chartTitle {
@@ -225,13 +236,11 @@
   font-size: 30px;
 }
 .classGradeCartBox {
-  position: relative;
-  bottom: 210px;
-  right: 117px;
+  height: 500px;
+  right: 107px;
   border-radius: 0.7975rem;
   box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);
-  min-height: 640px;
-  width: 700px;
+  width: 660px;
 }
 
 </style>

@@ -2,7 +2,7 @@
 <div>
   <!-- 상단 이미지 -->
   <v-parallax src="/images/tutorManagement.jpg" height="300">
-    <h1 class="category1">Student Management</h1>
+    <h1 class="categoryManage">Student Management</h1>
   </v-parallax>
 
   <!-- 내용들어갈 영역 -->
@@ -47,7 +47,7 @@
 </template>
 
 <style>
-.category1 {
+.categoryManage {
   color: #FFFFFF;
   font-size: 50px;
   position: relative;
