@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 153);
+/******/ 	return __webpack_require__(__webpack_require__.s = 151);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1902,7 +1902,7 @@
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(183)("./" + name);
+                __webpack_require__(181)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -4574,7 +4574,7 @@
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(182)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(180)(module)))
 
 /***/ }),
 /* 1 */
@@ -4584,9 +4584,9 @@
 
 
 module.exports = __webpack_require__(13);
-module.exports.easing = __webpack_require__(187);
-module.exports.canvas = __webpack_require__(188);
-module.exports.options = __webpack_require__(189);
+module.exports.easing = __webpack_require__(185);
+module.exports.canvas = __webpack_require__(186);
+module.exports.options = __webpack_require__(187);
 
 
 /***/ }),
@@ -4819,7 +4819,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(236)
+var listToStyles = __webpack_require__(234)
 
 /*
 type StyleObject = {
@@ -5035,7 +5035,7 @@ function applyToTag (styleElement, obj) {
 
 
 var bind = __webpack_require__(18);
-var isBuffer = __webpack_require__(164);
+var isBuffer = __webpack_require__(162);
 
 /*global toString:true*/
 
@@ -5467,10 +5467,10 @@ module.exports = Element;
 
 
 module.exports = {};
-module.exports.Arc = __webpack_require__(195);
-module.exports.Line = __webpack_require__(196);
-module.exports.Point = __webpack_require__(197);
-module.exports.Rectangle = __webpack_require__(198);
+module.exports.Arc = __webpack_require__(193);
+module.exports.Line = __webpack_require__(194);
+module.exports.Point = __webpack_require__(195);
+module.exports.Rectangle = __webpack_require__(196);
 
 
 /***/ }),
@@ -16437,7 +16437,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(155).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(153).setImmediate))
 
 /***/ }),
 /* 10 */
@@ -16948,8 +16948,8 @@ module.exports = {
 
 "use strict";
 /* unused harmony export VueCharts */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__ = __webpack_require__(253);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseCharts__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseCharts__ = __webpack_require__(252);
 /* unused harmony reexport Bar */
 /* unused harmony reexport HorizontalBar */
 /* unused harmony reexport Doughnut */
@@ -17360,7 +17360,7 @@ module.exports = g;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(6);
-var normalizeHeaderName = __webpack_require__(166);
+var normalizeHeaderName = __webpack_require__(164);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -17650,7 +17650,7 @@ process.umask = function() { return 0; };
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(163);
+module.exports = __webpack_require__(161);
 
 /***/ }),
 /* 18 */
@@ -17678,12 +17678,12 @@ module.exports = function bind(fn, thisArg) {
 
 
 var utils = __webpack_require__(6);
-var settle = __webpack_require__(167);
-var buildURL = __webpack_require__(169);
-var parseHeaders = __webpack_require__(170);
-var isURLSameOrigin = __webpack_require__(171);
+var settle = __webpack_require__(165);
+var buildURL = __webpack_require__(167);
+var parseHeaders = __webpack_require__(168);
+var isURLSameOrigin = __webpack_require__(169);
 var createError = __webpack_require__(20);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(172);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(170);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -17780,7 +17780,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(173);
+      var cookies = __webpack_require__(171);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -17864,7 +17864,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(168);
+var enhanceError = __webpack_require__(166);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -29772,12 +29772,12 @@ module.exports = Cancel;
 /**
  * @namespace Chart
  */
-var Chart = __webpack_require__(186)();
+var Chart = __webpack_require__(184)();
 
 Chart.helpers = __webpack_require__(1);
 
 // @todo dispatch these helpers into appropriated helpers/helpers.* file and write unit tests!
-__webpack_require__(190)(Chart);
+__webpack_require__(188)(Chart);
 
 Chart.defaults = __webpack_require__(2);
 Chart.Element = __webpack_require__(7);
@@ -29788,40 +29788,40 @@ Chart.platform = __webpack_require__(149);
 Chart.plugins = __webpack_require__(150);
 Chart.Ticks = __webpack_require__(11);
 
+__webpack_require__(199)(Chart);
+__webpack_require__(200)(Chart);
 __webpack_require__(201)(Chart);
 __webpack_require__(202)(Chart);
 __webpack_require__(203)(Chart);
 __webpack_require__(204)(Chart);
+
 __webpack_require__(205)(Chart);
 __webpack_require__(206)(Chart);
-
 __webpack_require__(207)(Chart);
 __webpack_require__(208)(Chart);
 __webpack_require__(209)(Chart);
 __webpack_require__(210)(Chart);
-__webpack_require__(211)(Chart);
-__webpack_require__(212)(Chart);
 
 // Controllers must be loaded after elements
 // See Chart.core.datasetController.dataElementType
+__webpack_require__(211)(Chart);
+__webpack_require__(212)(Chart);
 __webpack_require__(213)(Chart);
 __webpack_require__(214)(Chart);
 __webpack_require__(215)(Chart);
 __webpack_require__(216)(Chart);
 __webpack_require__(217)(Chart);
+
 __webpack_require__(218)(Chart);
 __webpack_require__(219)(Chart);
-
 __webpack_require__(220)(Chart);
 __webpack_require__(221)(Chart);
 __webpack_require__(222)(Chart);
 __webpack_require__(223)(Chart);
 __webpack_require__(224)(Chart);
-__webpack_require__(225)(Chart);
-__webpack_require__(226)(Chart);
 
 // Loading built-it plugins
-var plugins = __webpack_require__(227);
+var plugins = __webpack_require__(225);
 for (var k in plugins) {
 	if (plugins.hasOwnProperty(k)) {
 		Chart.plugins.register(plugins[k]);
@@ -29898,8 +29898,8 @@ Chart.layoutService = Chart.layouts;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var convert = __webpack_require__(191);
-var string = __webpack_require__(193);
+var convert = __webpack_require__(189);
+var string = __webpack_require__(191);
 
 var Color = function (obj) {
 	if (obj instanceof Color) {
@@ -30729,8 +30729,8 @@ module.exports = {
 
 
 var helpers = __webpack_require__(1);
-var basic = __webpack_require__(199);
-var dom = __webpack_require__(200);
+var basic = __webpack_require__(197);
+var dom = __webpack_require__(198);
 
 // @TODO Make possible to select another platform at build time.
 var implementation = dom._enabled ? dom : basic;
@@ -31193,64 +31193,52 @@ module.exports = {
 
 /***/ }),
 /* 151 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/excel.png?8eabac72086832d37b56f33dc113243b";
-
-/***/ }),
-/* 152 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/registration.png?259ed0c770439a8f46dba6896ce5d500";
-
-/***/ }),
-/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(154);
+__webpack_require__(152);
 module.exports = __webpack_require__(342);
 
 
 /***/ }),
-/* 154 */
+/* 152 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuetify__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuetify__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuetify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuetify_dist_vuetify_min_css__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuetify_dist_vuetify_min_css__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuetify_dist_vuetify_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_axios__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_router__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_axios__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_js_modal__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_js_modal__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_js_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue_js_modal__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_chart_js__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_chart_js__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vue_chart_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__App_vue__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__App_vue__ = __webpack_require__(229);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Login_vue__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Login_vue__ = __webpack_require__(231);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_Login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue__ = __webpack_require__(237);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_student_studentMainBody_vue__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_student_studentMainBody_vue__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_student_studentMainBody_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_student_studentMainBody_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue__ = __webpack_require__(247);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue__ = __webpack_require__(254);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue__ = __webpack_require__(261);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue__ = __webpack_require__(259);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue__ = __webpack_require__(264);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_professor_professorGradeRegister_vue__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_professor_professorGradeRegister_vue__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_professor_professorGradeRegister_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_professor_professorGradeRegister_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue__ = __webpack_require__(276);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue__);
@@ -31485,7 +31473,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_3_vue_router__["a" /* default */]({ m
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.util.extend({ router: router }, __WEBPACK_IMPORTED_MODULE_9__App_vue___default.a)).$mount('#main_div');
 
 /***/ }),
-/* 155 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -31541,7 +31529,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(156);
+__webpack_require__(154);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -31555,7 +31543,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 156 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -31748,7 +31736,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(16)))
 
 /***/ }),
-/* 157 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -49424,13 +49412,13 @@ function install(Vue) {
 //# sourceMappingURL=vuetify.js.map
 
 /***/ }),
-/* 158 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(159);
+var content = __webpack_require__(157);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49438,7 +49426,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(160)(content, options);
+var update = __webpack_require__(158)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -49455,7 +49443,7 @@ if(false) {
 }
 
 /***/ }),
-/* 159 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -49469,7 +49457,7 @@ exports.push([module.i, "/*!\n* Vuetify v1.0.19\n* Forged by John Leider\n* Rele
 
 
 /***/ }),
-/* 160 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -49515,7 +49503,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(161);
+var	fixUrls = __webpack_require__(159);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -49828,7 +49816,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 161 */
+/* 159 */
 /***/ (function(module, exports) {
 
 
@@ -49923,7 +49911,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 162 */
+/* 160 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52553,7 +52541,7 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 163 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52561,7 +52549,7 @@ if (inBrowser && window.Vue) {
 
 var utils = __webpack_require__(6);
 var bind = __webpack_require__(18);
-var Axios = __webpack_require__(165);
+var Axios = __webpack_require__(163);
 var defaults = __webpack_require__(15);
 
 /**
@@ -52596,14 +52584,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(22);
-axios.CancelToken = __webpack_require__(179);
+axios.CancelToken = __webpack_require__(177);
 axios.isCancel = __webpack_require__(21);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(180);
+axios.spread = __webpack_require__(178);
 
 module.exports = axios;
 
@@ -52612,7 +52600,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 164 */
+/* 162 */
 /***/ (function(module, exports) {
 
 /*!
@@ -52639,7 +52627,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 165 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52647,8 +52635,8 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(15);
 var utils = __webpack_require__(6);
-var InterceptorManager = __webpack_require__(174);
-var dispatchRequest = __webpack_require__(175);
+var InterceptorManager = __webpack_require__(172);
+var dispatchRequest = __webpack_require__(173);
 
 /**
  * Create a new instance of Axios
@@ -52725,7 +52713,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 166 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52744,7 +52732,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 167 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52777,7 +52765,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 168 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52805,7 +52793,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 169 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52878,7 +52866,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 170 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52938,7 +52926,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 171 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53013,7 +53001,7 @@ module.exports = (
 
 
 /***/ }),
-/* 172 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53056,7 +53044,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 173 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53116,7 +53104,7 @@ module.exports = (
 
 
 /***/ }),
-/* 174 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53175,18 +53163,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 175 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(6);
-var transformData = __webpack_require__(176);
+var transformData = __webpack_require__(174);
 var isCancel = __webpack_require__(21);
 var defaults = __webpack_require__(15);
-var isAbsoluteURL = __webpack_require__(177);
-var combineURLs = __webpack_require__(178);
+var isAbsoluteURL = __webpack_require__(175);
+var combineURLs = __webpack_require__(176);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -53268,7 +53256,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 176 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53295,7 +53283,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 177 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53316,7 +53304,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 178 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53337,7 +53325,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 179 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53401,7 +53389,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 180 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53435,7 +53423,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 181 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53443,7 +53431,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof="fun
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):window.Vue&&window.axios&&Vue.use(o,window.axios)}();
 
 /***/ }),
-/* 182 */
+/* 180 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -53471,7 +53459,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 183 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -53736,10 +53724,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 183;
+webpackContext.id = 181;
 
 /***/ }),
-/* 184 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(root, factory) {
@@ -54715,13 +54703,13 @@ webpackContext.id = 183;
 });
 
 /***/ }),
-/* 185 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(t,e){ true?module.exports=e(__webpack_require__(146)):"function"==typeof define&&define.amd?define("VueChart",["chart.js"],e):"object"==typeof exports?exports.VueChart=e(require("chart.js")):t.VueChart=e(t.Chart)}(this,function(t){return function(t){function e(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return t[n].call(o.exports,o,o.exports,e),o.l=!0,o.exports}var r={};return e.m=t,e.c=r,e.d=function(t,r,n){e.o(t,r)||Object.defineProperty(t,r,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var r=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(r,"a",r),r},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=0)}([function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(1),o=function(t){return t&&t.__esModule?t:{default:t}}(n),a={install:function(t){t.component(o.default.name,o.default)}};o.default.install=a.install,e.default=o.default},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(3),o=r.n(n),a=r(5),u=r(2),i=u(o.a,a.a,null,null,null);e.default=i.exports},function(t,e){t.exports=function(t,e,r,n,o){var a,u=t=t||{},i=typeof t.default;"object"!==i&&"function"!==i||(a=t,u=t.default);var s="function"==typeof u?u.options:u;e&&(s.render=e.render,s.staticRenderFns=e.staticRenderFns),n&&(s._scopeId=n);var c;if(o?(c=function(t){t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,t||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),r&&r.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(o)},s._ssrRegister=c):r&&(c=r),c){var f=s.functional,d=f?s.render:s.beforeCreate;f?s.render=function(t,e){return c.call(e),d(t,e)}:s.beforeCreate=d?[].concat(d,c):[c]}return{esModule:a,exports:u,options:s}}},function(t,e,r){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=r(4),o=function(t){return t&&t.__esModule?t:{default:t}}(n);e.default={name:"vue-chart",props:{type:{required:!0,type:String},data:{required:!0,type:[Object,Array]},options:Object,width:Number,height:Number},data:function(){return{chart:""}},watch:{"data.labels":function(){this.chart.update()},"data.datasets":function(){this.chart.update()}},methods:{createChart:function(){this.chart=new o.default(this.$refs.chart,{type:this.type,data:this.data,options:this.options})}},mounted:function(){this.createChart()},beforeDestroy:function(){this.chart.destroy()}}},function(e,r){e.exports=t},function(t,e,r){"use strict";var n=function(){var t=this,e=t.$createElement;return(t._self._c||e)("canvas",{ref:"chart",attrs:{width:t.width,height:t.height}})},o=[],a={render:n,staticRenderFns:o};e.a=a}])});
 
 /***/ }),
-/* 186 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54777,7 +54765,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 187 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55034,7 +55022,7 @@ helpers.easingEffects = effects;
 
 
 /***/ }),
-/* 188 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55255,7 +55243,7 @@ helpers.drawRoundedRectangle = function(ctx) {
 
 
 /***/ }),
-/* 189 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55358,7 +55346,7 @@ module.exports = {
 
 
 /***/ }),
-/* 190 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55976,10 +55964,10 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 191 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(192);
+var conversions = __webpack_require__(190);
 
 var convert = function() {
    return new Converter();
@@ -56073,7 +56061,7 @@ Converter.prototype.getValues = function(space) {
 module.exports = convert;
 
 /***/ }),
-/* 192 */
+/* 190 */
 /***/ (function(module, exports) {
 
 /* MIT license */
@@ -56777,11 +56765,11 @@ for (var key in cssKeywords) {
 
 
 /***/ }),
-/* 193 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var colorNames = __webpack_require__(194);
+var colorNames = __webpack_require__(192);
 
 module.exports = {
    getRgba: getRgba,
@@ -57004,7 +56992,7 @@ for (var name in colorNames) {
 
 
 /***/ }),
-/* 194 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57163,7 +57151,7 @@ module.exports = {
 
 
 /***/ }),
-/* 195 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57277,7 +57265,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 196 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57375,7 +57363,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 197 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57488,7 +57476,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 198 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57712,7 +57700,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 199 */
+/* 197 */
 /***/ (function(module, exports) {
 
 /**
@@ -57733,7 +57721,7 @@ module.exports = {
 
 
 /***/ }),
-/* 200 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58197,7 +58185,7 @@ helpers.removeEvent = removeEventListener;
 
 
 /***/ }),
-/* 201 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58376,7 +58364,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 202 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59330,7 +59318,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 203 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59667,7 +59655,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 204 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59720,7 +59708,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 205 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60663,7 +60651,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 206 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61618,7 +61606,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 207 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61811,7 +61799,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 208 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61951,7 +61939,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 209 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62149,7 +62137,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 210 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62503,7 +62491,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 211 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63039,7 +63027,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 212 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63829,7 +63817,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 213 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64340,7 +64328,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 214 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64527,7 +64515,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 215 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64833,7 +64821,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 216 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65173,7 +65161,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 217 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65402,7 +65390,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 218 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65577,7 +65565,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 219 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65626,7 +65614,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 220 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65644,7 +65632,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 221 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65661,7 +65649,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 222 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65679,7 +65667,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 223 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65697,7 +65685,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 224 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65715,7 +65703,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 225 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65733,7 +65721,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 226 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65748,20 +65736,20 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 227 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 module.exports = {};
-module.exports.filler = __webpack_require__(228);
-module.exports.legend = __webpack_require__(229);
-module.exports.title = __webpack_require__(230);
+module.exports.filler = __webpack_require__(226);
+module.exports.legend = __webpack_require__(227);
+module.exports.title = __webpack_require__(228);
 
 
 /***/ }),
-/* 228 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66086,7 +66074,7 @@ module.exports = {
 
 
 /***/ }),
-/* 229 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66669,7 +66657,7 @@ module.exports = {
 
 
 /***/ }),
-/* 230 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66928,7 +66916,7 @@ module.exports = {
 
 
 /***/ }),
-/* 231 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -66936,7 +66924,7 @@ var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(232)
+var __vue_template__ = __webpack_require__(230)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -66975,7 +66963,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 232 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -66995,19 +66983,19 @@ if (false) {
 }
 
 /***/ }),
-/* 233 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(234)
+  __webpack_require__(232)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(237)
+var __vue_script__ = __webpack_require__(235)
 /* template */
-var __vue_template__ = __webpack_require__(238)
+var __vue_template__ = __webpack_require__(236)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67046,13 +67034,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 234 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(235);
+var content = __webpack_require__(233);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -67072,7 +67060,7 @@ if(false) {
 }
 
 /***/ }),
-/* 235 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -67086,7 +67074,7 @@ exports.push([module.i, "\n.bgiFade-leave-active, .bgiFade-enter-active{\n  -web
 
 
 /***/ }),
-/* 236 */
+/* 234 */
 /***/ (function(module, exports) {
 
 /**
@@ -67119,7 +67107,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 237 */
+/* 235 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67279,7 +67267,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 238 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67620,19 +67608,19 @@ if (false) {
 }
 
 /***/ }),
-/* 239 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(240)
+  __webpack_require__(238)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(242)
+var __vue_script__ = __webpack_require__(240)
 /* template */
-var __vue_template__ = __webpack_require__(243)
+var __vue_template__ = __webpack_require__(241)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67671,13 +67659,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 240 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(241);
+var content = __webpack_require__(239);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -67697,7 +67685,7 @@ if(false) {
 }
 
 /***/ }),
-/* 241 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -67711,7 +67699,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 242 */
+/* 240 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67888,7 +67876,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       menuClassTypeList: [{
         student: 'light-green',
         professor: 'deep-purple accent-3',
-        tutor: 'blue-grey lighten-1'
+        tutor: 'light-blue darken-4 elevation-10'
       }],
 
       /* 출력될 메뉴 내용 조정 */
@@ -68046,7 +68034,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 243 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68100,7 +68088,7 @@ var render = function() {
                         { staticClass: "userBox", attrs: { size: "70px" } },
                         [
                           _c("img", {
-                            staticStyle: { border: "2px solid white" },
+                            staticStyle: { border: "3px solid white" },
                             attrs: { src: _vm.userInfoData.photo }
                           })
                         ]
@@ -68376,19 +68364,19 @@ if (false) {
 }
 
 /***/ }),
-/* 244 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(245)
+  __webpack_require__(243)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(247)
+var __vue_script__ = __webpack_require__(245)
 /* template */
-var __vue_template__ = __webpack_require__(248)
+var __vue_template__ = __webpack_require__(246)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68427,13 +68415,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 245 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(246);
+var content = __webpack_require__(244);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -68453,7 +68441,7 @@ if(false) {
 }
 
 /***/ }),
-/* 246 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -68467,7 +68455,7 @@ exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80p
 
 
 /***/ }),
-/* 247 */
+/* 245 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68541,7 +68529,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 248 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68609,19 +68597,19 @@ if (false) {
 }
 
 /***/ }),
-/* 249 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(250)
+  __webpack_require__(248)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(252)
+var __vue_script__ = __webpack_require__(250)
 /* template */
-var __vue_template__ = __webpack_require__(255)
+var __vue_template__ = __webpack_require__(253)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68660,13 +68648,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 250 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(251);
+var content = __webpack_require__(249);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -68686,7 +68674,7 @@ if(false) {
 }
 
 /***/ }),
-/* 251 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -68700,7 +68688,7 @@ exports.push([module.i, "\n.panel-header {\n    height: 200px;\n    padding-top:
 
 
 /***/ }),
-/* 252 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68948,7 +68936,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-Attendance-bar-ch
 });
 
 /***/ }),
-/* 253 */
+/* 251 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -69036,7 +69024,7 @@ var reactiveProp = {
 });
 
 /***/ }),
-/* 254 */
+/* 252 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -69143,7 +69131,7 @@ var Scatter = generateChart('scatter-chart', 'scatter');
 });
 
 /***/ }),
-/* 255 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -69474,19 +69462,19 @@ if (false) {
 }
 
 /***/ }),
-/* 256 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(257)
+  __webpack_require__(255)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(259)
+var __vue_script__ = __webpack_require__(257)
 /* template */
-var __vue_template__ = __webpack_require__(260)
+var __vue_template__ = __webpack_require__(258)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -69525,13 +69513,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 257 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(258);
+var content = __webpack_require__(256);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -69551,7 +69539,7 @@ if(false) {
 }
 
 /***/ }),
-/* 258 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -69565,7 +69553,7 @@ exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80p
 
 
 /***/ }),
-/* 259 */
+/* 257 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -69774,7 +69762,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 260 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -69966,19 +69954,19 @@ if (false) {
 }
 
 /***/ }),
-/* 261 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(262)
+  __webpack_require__(260)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(264)
+var __vue_script__ = __webpack_require__(262)
 /* template */
-var __vue_template__ = __webpack_require__(265)
+var __vue_template__ = __webpack_require__(263)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70017,13 +70005,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 262 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(263);
+var content = __webpack_require__(261);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -70043,7 +70031,7 @@ if(false) {
 }
 
 /***/ }),
-/* 263 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -70057,7 +70045,7 @@ exports.push([module.i, "\n.profileTitleBox {\r\n  border-radius: 0.2975rem;\r\n
 
 
 /***/ }),
-/* 264 */
+/* 262 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70241,7 +70229,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 265 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70544,19 +70532,19 @@ if (false) {
 }
 
 /***/ }),
-/* 266 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(267)
+  __webpack_require__(265)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(269)
+var __vue_script__ = __webpack_require__(267)
 /* template */
-var __vue_template__ = __webpack_require__(270)
+var __vue_template__ = __webpack_require__(268)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70595,13 +70583,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 267 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(268);
+var content = __webpack_require__(266);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -70621,7 +70609,7 @@ if(false) {
 }
 
 /***/ }),
-/* 268 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -70635,15 +70623,11 @@ exports.push([module.i, "\n.studentLists {\r\n  overflow-y: scroll;\r\n  max-hei
 
 
 /***/ }),
-/* 269 */
+/* 267 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
 //
 //
 //
@@ -70832,7 +70816,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 270 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70912,8 +70896,7 @@ var render = function() {
                                                 {
                                                   staticClass: "iconStyle",
                                                   attrs: {
-                                                    color:
-                                                      "light-blue darken-2",
+                                                    color: "blue accent-2",
                                                     "x-large": ""
                                                   }
                                                 },
@@ -70946,7 +70929,7 @@ var render = function() {
                                                     "font-family": "Montserrat",
                                                     position: "relative",
                                                     right: "20px",
-                                                    color: "rgb(88, 86, 205)"
+                                                    color: "rgb(104, 142, 240)"
                                                   }
                                                 },
                                                 [
@@ -71016,20 +70999,6 @@ var render = function() {
                                                 })
                                               ],
                                               1
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-list-tile-content",
-                                              [
-                                                _c("v-list-tile-sub-title", {
-                                                  domProps: {
-                                                    innerHTML: _vm._s(
-                                                      datas.sign_in_time
-                                                    )
-                                                  }
-                                                })
-                                              ],
-                                              1
                                             )
                                           ],
                                           1
@@ -71082,8 +71051,7 @@ var render = function() {
                                                 {
                                                   staticClass: "iconStyle",
                                                   attrs: {
-                                                    color:
-                                                      "light-blue darken-2",
+                                                    color: "blue accent-2",
                                                     "x-large": ""
                                                   }
                                                 },
@@ -71116,7 +71084,7 @@ var render = function() {
                                                     "font-family": "Montserrat",
                                                     position: "relative",
                                                     right: "20px",
-                                                    color: "rgb(88, 86, 205)"
+                                                    color: "rgb(104, 142, 240)"
                                                   }
                                                 },
                                                 [
@@ -71235,8 +71203,7 @@ var render = function() {
                                                 "v-icon",
                                                 {
                                                   attrs: {
-                                                    color:
-                                                      "light-blue darken-2",
+                                                    color: "blue accent-2",
                                                     "x-large": ""
                                                   }
                                                 },
@@ -71367,19 +71334,19 @@ if (false) {
 }
 
 /***/ }),
-/* 271 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(272)
+  __webpack_require__(270)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(274)
+var __vue_script__ = __webpack_require__(272)
 /* template */
-var __vue_template__ = __webpack_require__(275)
+var __vue_template__ = __webpack_require__(273)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -71418,13 +71385,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 272 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(273);
+var content = __webpack_require__(271);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -71444,7 +71411,7 @@ if(false) {
 }
 
 /***/ }),
-/* 273 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -71458,7 +71425,7 @@ exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80p
 
 
 /***/ }),
-/* 274 */
+/* 272 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71750,7 +71717,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 275 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71827,7 +71794,7 @@ var render = function() {
                                     width: "70px",
                                     height: "auto"
                                   },
-                                  attrs: { src: __webpack_require__(151) }
+                                  attrs: { src: __webpack_require__(274) }
                                 })
                               ]
                             ),
@@ -72367,7 +72334,7 @@ var render = function() {
                                     height: "auto"
                                   },
                                   attrs: {
-                                    src: __webpack_require__(152)
+                                    src: __webpack_require__(275)
                                   }
                                 })
                               ]
@@ -72440,6 +72407,18 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-4abe4acf", module.exports)
   }
 }
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/excel.png?8eabac72086832d37b56f33dc113243b";
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/registration.png?259ed0c770439a8f46dba6896ce5d500";
 
 /***/ }),
 /* 276 */
@@ -72527,7 +72506,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.category1 {\r\n  color: #FFFFFF;\r\n  font-size: 50px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 39px;\n}\n.studentListBox {\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\r\n  border-radius: 0.4075rem;\r\n  position: relative;\r\n  bottom: 148px;\n}\r\n\r\n\r\n/* 성적 업로드 부분 css */\n.upload_input {\r\n  border: 1px solid black;\r\n  width: 300px;\n}\n.upload_button {\r\n  border: 1px solid black;\r\n  width: 100px;\r\n  height: 50px;\r\n  border-radius: 10px;\r\n  background-color: gray;\r\n  font-weight: bold;\r\n  font-size: 15px;\n}\n.contents {\r\n  text-align: center;\n}\n.attendanceCheckTitleEng {\r\n  color: white;\r\n  font-family: inherit;\n}\n.attendanceCheckTitleJap {\r\n  color: rgb(0, 0, 0);\r\n  font-size: 20px;\r\n  font-family: MS Gothic;\n}\n.custom-loader {\r\n  -webkit-animation: loader 1s infinite;\r\n          animation: loader 1s infinite;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\n}\r\n", ""]);
+exports.push([module.i, "\n.category1 {\r\n  color: #FFFFFF;\r\n  font-size: 50px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 39px;\n}\n.studentListBox {\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\r\n  border-radius: 0.4075rem;\r\n  position: relative;\r\n  bottom: 148px;\n}\r\n\r\n\r\n/* 성적 업로드 부분 css */\n.upload_input {\r\n  border: 1px solid black;\r\n  width: 300px;\n}\n.upload_button {\r\n  font-family: \"Gothic A1\";\r\n  font-size: 15px;\n}\n.contents {\r\n  text-align: center;\n}\n.attendanceCheckTitleEng {\r\n  color: white;\r\n  font-family: inherit;\n}\n.attendanceCheckTitleJap {\r\n  color: rgb(0, 0, 0);\r\n  font-size: 20px;\r\n  font-family: MS Gothic;\n}\n.custom-loader {\r\n  -webkit-animation: loader 1s infinite;\r\n          animation: loader 1s infinite;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\n}\r\n", ""]);
 
 // exports
 
@@ -72799,47 +72778,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
   data: function data() {
@@ -72850,9 +72788,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       dialog2: false,
       dialog3: false,
       reData: true,
+      e2: null,
+      e3: null,
+      date: null,
+      menu: false,
       /* 학생정보 */
       search: '',
       pagination: {},
+      types: [{ text: '중간' }, { text: '기말' }, { text: '과제' }, { text: '쪽지' }],
+      fileTypes: [{ text: 'xlsx' }, { text: 'xls' }, { text: 'csv' }],
       headers: [{
         class: 'display-1',
         text: '학번',
@@ -73007,13 +72951,779 @@ var render = function() {
                         "v-card",
                         {
                           staticClass: "studentListBox",
-                          attrs: { height: "580" }
+                          attrs: { height: "680" }
                         },
                         [
                           _c(
                             "v-card-title",
                             [
-                              _c("v-spacer"),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c(
+                                    "v-layout",
+                                    {
+                                      attrs: {
+                                        row: "",
+                                        wrap: "",
+                                        "align-center": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", md2: "" } },
+                                        [
+                                          _c(
+                                            "v-dialog",
+                                            {
+                                              attrs: {
+                                                persistent: "",
+                                                "max-width": "600px"
+                                              },
+                                              model: {
+                                                value: _vm.dialog1,
+                                                callback: function($$v) {
+                                                  _vm.dialog1 = $$v
+                                                },
+                                                expression: "dialog1"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  staticClass: "white--text",
+                                                  staticStyle: {
+                                                    position: "relative",
+                                                    right: "15px"
+                                                  },
+                                                  attrs: {
+                                                    slot: "activator",
+                                                    depressed: "",
+                                                    round: "",
+                                                    color: "green",
+                                                    normal: ""
+                                                  },
+                                                  slot: "activator"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\r\n                        성적 양식 다운로드\r\n                        "
+                                                  ),
+                                                  _c(
+                                                    "v-icon",
+                                                    {
+                                                      attrs: {
+                                                        right: "",
+                                                        dark: ""
+                                                      }
+                                                    },
+                                                    [_vm._v("cloud_download")]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-card",
+                                                [
+                                                  _c(
+                                                    "v-card-title",
+                                                    {
+                                                      staticClass:
+                                                        "grey lighten-4 py-4 title"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\r\n                           성적 양식 다운로드\r\n                         "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-container",
+                                                    {
+                                                      staticClass: "pa-4",
+                                                      attrs: {
+                                                        "grid-list-sm": ""
+                                                      }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: "",
+                                                                "align-center":
+                                                                  "",
+                                                                "justify-space-between":
+                                                                  ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-layout",
+                                                                {
+                                                                  attrs: {
+                                                                    "align-center":
+                                                                      ""
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "v-text-field",
+                                                                    {
+                                                                      attrs: {
+                                                                        id:
+                                                                          "fileName",
+                                                                        name:
+                                                                          "file_name",
+                                                                        label:
+                                                                          "파일 이름"
+                                                                      }
+                                                                    }
+                                                                  )
+                                                                ],
+                                                                1
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-menu",
+                                                                {
+                                                                  ref: "menu",
+                                                                  attrs: {
+                                                                    "close-on-content-click": false,
+                                                                    "nudge-right": 40,
+                                                                    "return-value":
+                                                                      _vm.date,
+                                                                    lazy: "",
+                                                                    transition:
+                                                                      "scale-transition",
+                                                                    "offset-y":
+                                                                      "",
+                                                                    "full-width":
+                                                                      "",
+                                                                    "min-width":
+                                                                      "290px"
+                                                                  },
+                                                                  on: {
+                                                                    "update:returnValue": function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.date = $event
+                                                                    }
+                                                                  },
+                                                                  model: {
+                                                                    value:
+                                                                      _vm.menu,
+                                                                    callback: function(
+                                                                      $$v
+                                                                    ) {
+                                                                      _vm.menu = $$v
+                                                                    },
+                                                                    expression:
+                                                                      "menu"
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "v-text-field",
+                                                                    {
+                                                                      attrs: {
+                                                                        slot:
+                                                                          "activator",
+                                                                        label:
+                                                                          "Picker in menu",
+                                                                        "prepend-icon":
+                                                                          "event",
+                                                                        readonly:
+                                                                          ""
+                                                                      },
+                                                                      slot:
+                                                                        "activator",
+                                                                      model: {
+                                                                        value:
+                                                                          _vm.date,
+                                                                        callback: function(
+                                                                          $$v
+                                                                        ) {
+                                                                          _vm.date = $$v
+                                                                        },
+                                                                        expression:
+                                                                          "date"
+                                                                      }
+                                                                    }
+                                                                  ),
+                                                                  _vm._v(" "),
+                                                                  _c(
+                                                                    "v-date-picker",
+                                                                    {
+                                                                      attrs: {
+                                                                        "no-title":
+                                                                          "",
+                                                                        scrollable:
+                                                                          ""
+                                                                      },
+                                                                      model: {
+                                                                        value:
+                                                                          _vm.date,
+                                                                        callback: function(
+                                                                          $$v
+                                                                        ) {
+                                                                          _vm.date = $$v
+                                                                        },
+                                                                        expression:
+                                                                          "date"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _c(
+                                                                        "v-spacer"
+                                                                      ),
+                                                                      _vm._v(
+                                                                        " "
+                                                                      ),
+                                                                      _c(
+                                                                        "v-btn",
+                                                                        {
+                                                                          attrs: {
+                                                                            flat:
+                                                                              "",
+                                                                            color:
+                                                                              "primary"
+                                                                          },
+                                                                          on: {
+                                                                            click: function(
+                                                                              $event
+                                                                            ) {
+                                                                              _vm.menu = false
+                                                                            }
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "Cancel"
+                                                                          )
+                                                                        ]
+                                                                      ),
+                                                                      _vm._v(
+                                                                        " "
+                                                                      ),
+                                                                      _c(
+                                                                        "v-btn",
+                                                                        {
+                                                                          attrs: {
+                                                                            flat:
+                                                                              "",
+                                                                            color:
+                                                                              "primary"
+                                                                          },
+                                                                          on: {
+                                                                            click: function(
+                                                                              $event
+                                                                            ) {
+                                                                              _vm.$refs.menu.save(
+                                                                                _vm.date
+                                                                              )
+                                                                            }
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "OK"
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    ],
+                                                                    1
+                                                                  )
+                                                                ],
+                                                                1
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c("v-select", {
+                                                                staticClass:
+                                                                  "input-group--focused",
+                                                                attrs: {
+                                                                  items:
+                                                                    _vm.types,
+                                                                  label: "분류",
+                                                                  "item-value":
+                                                                    "text"
+                                                                },
+                                                                model: {
+                                                                  value: _vm.e2,
+                                                                  callback: function(
+                                                                    $$v
+                                                                  ) {
+                                                                    _vm.e2 = $$v
+                                                                  },
+                                                                  expression:
+                                                                    "e2"
+                                                                }
+                                                              })
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-text-field",
+                                                                {
+                                                                  attrs: {
+                                                                    id:
+                                                                      "perfectScore",
+                                                                    name:
+                                                                      "perfect_score",
+                                                                    label:
+                                                                      "만점"
+                                                                  }
+                                                                }
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-text-field",
+                                                                {
+                                                                  attrs: {
+                                                                    id:
+                                                                      "content",
+                                                                    name:
+                                                                      "content",
+                                                                    label:
+                                                                      "성적 내용"
+                                                                  }
+                                                                }
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c("v-select", {
+                                                                staticClass:
+                                                                  "input-group--focused",
+                                                                attrs: {
+                                                                  items:
+                                                                    _vm.fileTypes,
+                                                                  label: "분류",
+                                                                  "item-value":
+                                                                    "text"
+                                                                },
+                                                                model: {
+                                                                  value: _vm.e3,
+                                                                  callback: function(
+                                                                    $$v
+                                                                  ) {
+                                                                    _vm.e3 = $$v
+                                                                  },
+                                                                  expression:
+                                                                    "e3"
+                                                                }
+                                                              })
+                                                            ],
+                                                            1
+                                                          )
+                                                        ],
+                                                        1
+                                                      )
+                                                    ],
+                                                    1
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-card-actions",
+                                                    [
+                                                      _c("v-spacer"),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: {
+                                                            flat: "",
+                                                            color: "primary"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              _vm.dialog1 = false
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v("Cancel")]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: { flat: "" },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              _vm.dialog1 = false
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v("Save")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", md2: "" } },
+                                        [
+                                          _c(
+                                            "v-dialog",
+                                            {
+                                              attrs: {
+                                                persistent: "",
+                                                "max-width": "600px"
+                                              },
+                                              model: {
+                                                value: _vm.dialog2,
+                                                callback: function($$v) {
+                                                  _vm.dialog2 = $$v
+                                                },
+                                                expression: "dialog2"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  staticClass: "white--text",
+                                                  attrs: {
+                                                    slot: "activator",
+                                                    depressed: "",
+                                                    round: "",
+                                                    color: "green",
+                                                    normal: ""
+                                                  },
+                                                  slot: "activator"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\r\n                        성적 파일 업로드\r\n                        "
+                                                  ),
+                                                  _c(
+                                                    "v-icon",
+                                                    {
+                                                      attrs: {
+                                                        right: "",
+                                                        dark: ""
+                                                      }
+                                                    },
+                                                    [_vm._v("cloud_upload")]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-card",
+                                                {
+                                                  staticStyle: {
+                                                    padding:
+                                                      "20px 20px 20px 20px"
+                                                  }
+                                                },
+                                                [
+                                                  _c("v-card-title", [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticClass: "headline"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "엑셀로 성적 파일 업로드"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    [
+                                                      _c("input", {
+                                                        ref: "upload_file",
+                                                        staticClass:
+                                                          "upload_input",
+                                                        attrs: {
+                                                          type: "file",
+                                                          id: "file",
+                                                          required: "",
+                                                          accept:
+                                                            ".xlsx, .xls, .csv"
+                                                        },
+                                                        on: {
+                                                          change: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.handleFileUpload()
+                                                          }
+                                                        }
+                                                      }),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-btn",
+                                                        {
+                                                          staticClass:
+                                                            "upload_button",
+                                                          attrs: {
+                                                            color:
+                                                              "blue accent-2"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              _vm.submitFile()
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v("성적 업로드")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-card-actions",
+                                                    [
+                                                      _c("v-spacer"),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: {
+                                                            color:
+                                                              "blue darken-1",
+                                                            flat: ""
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              _vm.dialog2 = false
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v("Close")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-dialog",
+                                            {
+                                              attrs: {
+                                                persistent: "",
+                                                "max-width": "600px"
+                                              },
+                                              model: {
+                                                value: _vm.dialog3,
+                                                callback: function($$v) {
+                                                  _vm.dialog3 = $$v
+                                                },
+                                                expression: "dialog3"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-card",
+                                                [
+                                                  _c("v-card-title", [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticClass: "headline"
+                                                      },
+                                                      [_vm._v("알림")]
+                                                    )
+                                                  ]),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-flex",
+                                                    {
+                                                      attrs: {
+                                                        "d-flex": "",
+                                                        xs12: "",
+                                                        sm6: "",
+                                                        md4: ""
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm.reData
+                                                        ? _c("div", [
+                                                            _vm._v(
+                                                              "\r\n                            성적 업로드에 성공하였습니다.\r\n                          "
+                                                            )
+                                                          ])
+                                                        : _c("div", [
+                                                            _vm._v(
+                                                              "\r\n                            성적 업로드에 실패하였습니다.\r\n                          "
+                                                            )
+                                                          ])
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-card-actions",
+                                                    [
+                                                      _c("v-spacer"),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: {
+                                                            color:
+                                                              "blue darken-1",
+                                                            flat: ""
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              ;(_vm.dialog3 = false),
+                                                                (_vm.dialog2 = false)
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v("Close")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", md2: "" } },
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              staticClass: "white--text",
+                                              staticStyle: {
+                                                position: "relative",
+                                                right: "-1px"
+                                              },
+                                              attrs: {
+                                                depressed: "",
+                                                round: "",
+                                                color: "green",
+                                                onclick: _vm.checkGradePageUrl
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\r\n                      등록된 성적 확인\r\n                      "
+                                              ),
+                                              _c(
+                                                "v-icon",
+                                                {
+                                                  attrs: { right: "", dark: "" }
+                                                },
+                                                [_vm._v("check")]
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
                               _c("v-text-field", {
                                 attrs: {
@@ -73150,808 +73860,6 @@ var render = function() {
                                   '" found no results.\r\n            '
                               )
                             ]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "contents" },
-        [
-          _c(
-            "v-layout",
-            { staticClass: "my-5", attrs: { column: "", "align-center": "" } },
-            [
-              _c(
-                "v-flex",
-                { staticClass: "my-3", attrs: { xs12: "", sm4: "" } },
-                [
-                  _c("div", { staticClass: "text-xs-center" }, [
-                    _c("h2", { staticClass: "headline" }, [
-                      _vm._v(" 성적 등록 및 확인 ")
-                    ])
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-container",
-                { attrs: { "grid-list-xl": "" } },
-                [
-                  _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "", "align-center": "" } },
-                    [
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", md7: "" } },
-                        [
-                          _c(
-                            "v-card",
-                            { staticClass: "elevation-0 transparent" },
-                            [
-                              _c(
-                                "v-card-text",
-                                { staticClass: "text-xs-center" },
-                                [
-                                  _c("img", {
-                                    staticStyle: {
-                                      width: "70px",
-                                      height: "auto"
-                                    },
-                                    attrs: {
-                                      src: __webpack_require__(151)
-                                    }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-title",
-                                {
-                                  staticClass: "layout justify-center",
-                                  attrs: { "primary-title": "" }
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    { staticClass: "headline text-xs-center" },
-                                    [
-                                      _vm._v(
-                                        "엑셀 양식 다운로드 후, 파일 업로드"
-                                      )
-                                    ]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-dialog",
-                                {
-                                  attrs: {
-                                    persistent: "",
-                                    "max-width": "600px"
-                                  },
-                                  model: {
-                                    value: _vm.dialog1,
-                                    callback: function($$v) {
-                                      _vm.dialog1 = $$v
-                                    },
-                                    expression: "dialog1"
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      staticClass: "white--text",
-                                      staticStyle: { height: "100px" },
-                                      attrs: {
-                                        slot: "activator",
-                                        color: "green darken-4",
-                                        normal: ""
-                                      },
-                                      slot: "activator"
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\r\n                  엑셀 양식 다운로드\r\n                  "
-                                      ),
-                                      _c(
-                                        "v-icon",
-                                        { attrs: { right: "", dark: "" } },
-                                        [_vm._v("cloud_download")]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-card",
-                                    [
-                                      _c("v-card-title", [
-                                        _c(
-                                          "span",
-                                          { staticClass: "headline" },
-                                          [_vm._v("엑셀 양식 다운로드")]
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-flex",
-                                        {
-                                          attrs: {
-                                            "d-flex": "",
-                                            xs12: "",
-                                            sm6: "",
-                                            md4: ""
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "v-form",
-                                            {
-                                              attrs: {
-                                                action:
-                                                  "/professor/subject/score/excel/download",
-                                                method: "post"
-                                              }
-                                            },
-                                            [
-                                              _c("input", {
-                                                attrs: {
-                                                  type: "hidden",
-                                                  name: "subject_id"
-                                                },
-                                                domProps: {
-                                                  value: _vm.paramsData
-                                                }
-                                              }),
-                                              _vm._v(" "),
-                                              _c("table", [
-                                                _c("tr", [
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c(
-                                                        "v-chip",
-                                                        {
-                                                          staticStyle: {
-                                                            width: "80px"
-                                                          },
-                                                          attrs: {
-                                                            color: "secondary",
-                                                            "text-color":
-                                                              "white"
-                                                          }
-                                                        },
-                                                        [_vm._v("파일 이름")]
-                                                      )
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c("v-text-field", {
-                                                        staticStyle: {
-                                                          float: "left"
-                                                        },
-                                                        attrs: {
-                                                          type: "text",
-                                                          name: "file_name",
-                                                          maxlength: "30",
-                                                          required: ""
-                                                        }
-                                                      })
-                                                    ],
-                                                    1
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c(
-                                                        "v-chip",
-                                                        {
-                                                          attrs: {
-                                                            color: "secondary",
-                                                            "text-color":
-                                                              "white"
-                                                          }
-                                                        },
-                                                        [_vm._v("실시 일자")]
-                                                      )
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      attrs: {
-                                                        type: "date",
-                                                        name: "execute_date",
-                                                        required: ""
-                                                      }
-                                                    })
-                                                  ])
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c(
-                                                        "v-chip",
-                                                        {
-                                                          staticStyle: {
-                                                            width: "80px"
-                                                          },
-                                                          attrs: {
-                                                            color: "secondary",
-                                                            "text-color":
-                                                              "white"
-                                                          }
-                                                        },
-                                                        [_vm._v(" 분 류 ")]
-                                                      )
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c(
-                                                      "select",
-                                                      {
-                                                        attrs: {
-                                                          name: "score_type",
-                                                          id: "score_type"
-                                                        }
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "option",
-                                                          {
-                                                            attrs: {
-                                                              value: "midterm"
-                                                            }
-                                                          },
-                                                          [_vm._v("중간")]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "option",
-                                                          {
-                                                            attrs: {
-                                                              value: "final"
-                                                            }
-                                                          },
-                                                          [_vm._v("기말")]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "option",
-                                                          {
-                                                            attrs: {
-                                                              value: "homework",
-                                                              selected: ""
-                                                            }
-                                                          },
-                                                          [_vm._v("과제")]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "option",
-                                                          {
-                                                            attrs: {
-                                                              value: "quiz"
-                                                            }
-                                                          },
-                                                          [_vm._v("쪽지")]
-                                                        )
-                                                      ]
-                                                    )
-                                                  ])
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c(
-                                                        "v-chip",
-                                                        {
-                                                          staticStyle: {
-                                                            width: "80px"
-                                                          },
-                                                          attrs: {
-                                                            color: "secondary",
-                                                            "text-color":
-                                                              "white"
-                                                          }
-                                                        },
-                                                        [_vm._v(" 만 점 ")]
-                                                      )
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          type: "number",
-                                                          name: "perfect_score",
-                                                          min: "1",
-                                                          max: "999",
-                                                          maxlength: "3",
-                                                          required: ""
-                                                        }
-                                                      })
-                                                    ],
-                                                    1
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c(
-                                                        "v-chip",
-                                                        {
-                                                          staticStyle: {
-                                                            width: "80px"
-                                                          },
-                                                          attrs: {
-                                                            color: "secondary",
-                                                            "text-color":
-                                                              "white"
-                                                          }
-                                                        },
-                                                        [_vm._v("성적 내용")]
-                                                      )
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          type: "text",
-                                                          name: "content",
-                                                          minlength: "2",
-                                                          maxlength: "30",
-                                                          required: ""
-                                                        }
-                                                      })
-                                                    ],
-                                                    1
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c(
-                                                    "td",
-                                                    [
-                                                      _c(
-                                                        "v-chip",
-                                                        {
-                                                          staticStyle: {
-                                                            width: "80px"
-                                                          },
-                                                          attrs: {
-                                                            color: "secondary",
-                                                            "text-color":
-                                                              "white"
-                                                          }
-                                                        },
-                                                        [_vm._v(" 확 장 자 ")]
-                                                      )
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c(
-                                                      "select",
-                                                      {
-                                                        attrs: {
-                                                          name: "file_type",
-                                                          id: "file_type"
-                                                        }
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "option",
-                                                          {
-                                                            attrs: {
-                                                              value: "xlsx"
-                                                            }
-                                                          },
-                                                          [_vm._v("xlsx")]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "option",
-                                                          {
-                                                            attrs: {
-                                                              value: "xls"
-                                                            }
-                                                          },
-                                                          [_vm._v("xls")]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "option",
-                                                          {
-                                                            attrs: {
-                                                              value: "csv"
-                                                            }
-                                                          },
-                                                          [_vm._v("csv")]
-                                                        )
-                                                      ]
-                                                    )
-                                                  ])
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c(
-                                                    "td",
-                                                    { attrs: { colspan: "2" } },
-                                                    [
-                                                      _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            color: "blue",
-                                                            type: "submit"
-                                                          }
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            "양식 다운로드"
-                                                          )
-                                                        ]
-                                                      )
-                                                    ],
-                                                    1
-                                                  )
-                                                ])
-                                              ])
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-card-actions",
-                                        [
-                                          _c("v-spacer"),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                color: "blue darken-1",
-                                                flat: ""
-                                              },
-                                              nativeOn: {
-                                                click: function($event) {
-                                                  _vm.dialog1 = false
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Close")]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-dialog",
-                                {
-                                  attrs: {
-                                    persistent: "",
-                                    "max-width": "600px"
-                                  },
-                                  model: {
-                                    value: _vm.dialog2,
-                                    callback: function($$v) {
-                                      _vm.dialog2 = $$v
-                                    },
-                                    expression: "dialog2"
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      staticClass: "white--text",
-                                      staticStyle: { height: "100px" },
-                                      attrs: {
-                                        slot: "activator",
-                                        color: "green darken-4",
-                                        normal: ""
-                                      },
-                                      slot: "activator"
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\r\n                  엑셀 파일 업로드\r\n                  "
-                                      ),
-                                      _c(
-                                        "v-icon",
-                                        { attrs: { right: "", dark: "" } },
-                                        [_vm._v("cloud_upload")]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-card",
-                                    [
-                                      _c("v-card-title", [
-                                        _c(
-                                          "span",
-                                          { staticClass: "headline" },
-                                          [_vm._v("엑셀로 성적 업로드")]
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        [
-                                          _c(
-                                            "v-chip",
-                                            {
-                                              attrs: {
-                                                color: "secondary",
-                                                "text-color": "white"
-                                              }
-                                            },
-                                            [_vm._v("파일등록")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            ref: "upload_file",
-                                            staticClass: "upload_input",
-                                            attrs: {
-                                              type: "file",
-                                              id: "file",
-                                              required: "",
-                                              accept: ".xlsx, .xls, .csv"
-                                            },
-                                            on: {
-                                              change: function($event) {
-                                                _vm.handleFileUpload()
-                                              }
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass: "upload_button",
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.submitFile()
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("성적 업로드")]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-card-actions",
-                                        [
-                                          _c("v-spacer"),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                color: "blue darken-1",
-                                                flat: ""
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.dialog2 = false
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Close")]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-dialog",
-                        {
-                          attrs: { persistent: "", "max-width": "600px" },
-                          model: {
-                            value: _vm.dialog3,
-                            callback: function($$v) {
-                              _vm.dialog3 = $$v
-                            },
-                            expression: "dialog3"
-                          }
-                        },
-                        [
-                          _c(
-                            "v-card",
-                            [
-                              _c("v-card-title", [
-                                _c("span", { staticClass: "headline" }, [
-                                  _vm._v("알림")
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "v-flex",
-                                {
-                                  attrs: {
-                                    "d-flex": "",
-                                    xs12: "",
-                                    sm6: "",
-                                    md4: ""
-                                  }
-                                },
-                                [
-                                  _vm.reData
-                                    ? _c("div", [
-                                        _vm._v(
-                                          "\r\n                  성적 업로드에 성공하였습니다.\r\n                "
-                                        )
-                                      ])
-                                    : _c("div", [
-                                        _vm._v(
-                                          "\r\n                  성적 업로드에 실패하였습니다.\r\n                "
-                                        )
-                                      ])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        flat: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          ;(_vm.dialog3 = false),
-                                            (_vm.dialog2 = false)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Close")]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", md3: "" } },
-                        [
-                          _c(
-                            "v-card",
-                            { staticClass: "elevation-0 transparent" },
-                            [
-                              _c(
-                                "v-card-text",
-                                { staticClass: "text-xs-center" },
-                                [
-                                  _c("img", {
-                                    staticStyle: {
-                                      width: "70px",
-                                      height: "auto"
-                                    },
-                                    attrs: {
-                                      src: __webpack_require__(152)
-                                    }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-title",
-                                {
-                                  staticClass: "layout justify-center",
-                                  attrs: { "primary-title": "" }
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    { staticClass: "headline text-xs-center" },
-                                    [_vm._v("업로드 성적 확인")]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  staticClass: "white--text",
-                                  staticStyle: { height: "100px" },
-                                  attrs: {
-                                    outline: "",
-                                    large: "",
-                                    color: "primary",
-                                    onclick: _vm.checkGradePageUrl
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\r\n                등록된 성적 확인\r\n                "
-                                  ),
-                                  _c(
-                                    "v-icon",
-                                    { attrs: { right: "", dark: "" } },
-                                    [_vm._v("check")]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
                           )
                         ],
                         1
@@ -74643,7 +74551,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.studentListArea {\r\n  overflow-y: scroll;\r\n  height: 500px;\n}\n.categoryAttendance {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 39px;\r\n  bottom: 80px;\n}\r\n\r\n/* 공통 css */\n.cardsTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 25px;\n}\n.currentStudentNum {\r\n  font-family: \"Montserrat\";\r\n  font-weight: lighter;\r\n  font-size: 31px;\r\n  position: relative;\r\n  right: 15px;\r\n  bottom:-3px;\n}\n.cardsTitleUnderLine {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n\r\n/* 결석 & 지각 */\n.firstLineCards {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 240px;\r\n  min-height: 680px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\r\n\r\n/* 결석 */\n.absenceInfoArea {\r\n  min-height: 550px;\r\n  max-height: 550px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n/* 등/하교 */\n.attendanceCardBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 247px;\r\n  min-height: 350px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\n.attendanceInfoArea {\r\n  width: 400px;\r\n  height: 330px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n\r\n/* 관심 학생 */\n.interestStudentBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 232px;\r\n  min-height: 200px;\r\n  width: 400px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(165, 180, 210)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));\n}\n.interestInfoArea {\r\n  min-height: 160px;\r\n  max-height: 160px;\r\n  min-width: 374px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n/* 스크롤 */\r\n/* width */\n::-webkit-scrollbar {\r\n    width: 9px;\n}\r\n\r\n/* Track */\n::-webkit-scrollbar-track {\r\n    background-color: rgb(208, 208, 208);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle */\n::-webkit-scrollbar-thumb {\r\n    background: rgb(185, 199, 250);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\r\n    background: #5491f7;\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n.studentListArea {\r\n  overflow-y: scroll;\r\n  height: 500px;\n}\n.categoryAttendance {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 48px;\r\n  bottom: 80px;\n}\r\n\r\n/* 공통 css */\n.cardsTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 25px;\n}\n.currentStudentNum {\r\n  font-family: \"Montserrat\";\r\n  font-weight: lighter;\r\n  font-size: 31px;\r\n  position: relative;\r\n  right: 15px;\r\n  bottom:-3px;\n}\n.cardsTitleUnderLine {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n\r\n/* 결석 & 지각 */\n.firstLineCards {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 240px;\r\n  min-height: 680px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\r\n\r\n/* 결석 */\n.absenceAndLateInfoArea {\r\n  min-height: 550px;\r\n  max-height: 550px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n/* 등/하교 */\n.attendanceCardBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 247px;\r\n  min-height: 350px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\n.attendanceInfoArea {\r\n  width: 400px;\r\n  height: 330px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n\r\n/* 관심 학생 */\n.interestStudentBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 232px;\r\n  min-height: 200px;\r\n  width: 400px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(165, 180, 210)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));\n}\n.interestInfoArea {\r\n  min-height: 130px;\r\n  max-height: 130px;\r\n  min-width: 374px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n/* 스크롤 */\r\n/* width */\n::-webkit-scrollbar {\r\n    width: 9px;\n}\r\n\r\n/* Track */\n::-webkit-scrollbar-track {\r\n    background-color: rgb(208, 208, 208);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle */\n::-webkit-scrollbar-thumb {\r\n    background: rgb(185, 199, 250);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\r\n    background: #5491f7;\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -74654,8 +74562,6 @@ exports.push([module.i, "\n.studentListArea {\r\n  overflow-y: scroll;\r\n  heig
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
 //
 //
 //
@@ -75382,77 +75288,75 @@ var render = function() {
                             "v-card-text",
                             { staticClass: "absenceAndLateInfoArea" },
                             [
-                              _c("v-list", { attrs: { "three-line": "" } }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "studentListArea" },
-                                  [
-                                    _vm._l(_vm.lateData, function(late) {
-                                      return [
-                                        _c(
-                                          "v-list-tile",
-                                          {
-                                            key: late.name,
-                                            attrs: { avatar: "" },
-                                            on: { click: function($event) {} }
-                                          },
-                                          [
-                                            _c(
-                                              "v-list-tile-avatar",
-                                              {
-                                                staticStyle: {
-                                                  position: "relative",
-                                                  top: "8  px"
-                                                },
-                                                attrs: { size: "40" }
+                              _c(
+                                "v-list",
+                                { attrs: { "three-line": "" } },
+                                [
+                                  _vm._l(_vm.lateData, function(late) {
+                                    return [
+                                      _c(
+                                        "v-list-tile",
+                                        {
+                                          key: late.name,
+                                          attrs: { avatar: "" },
+                                          on: { click: function($event) {} }
+                                        },
+                                        [
+                                          _c(
+                                            "v-list-tile-avatar",
+                                            {
+                                              staticStyle: {
+                                                position: "relative",
+                                                top: "8  px"
                                               },
-                                              [
-                                                _c("img", {
-                                                  attrs: { src: late.photo_url }
-                                                })
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-list-tile-content",
-                                              [
-                                                _c("v-list-tile-title", {
-                                                  domProps: {
-                                                    innerHTML: _vm._s(late.id)
-                                                  }
-                                                }),
-                                                _vm._v(" "),
-                                                _c("v-list-tile-title", {
-                                                  domProps: {
-                                                    innerHTML: _vm._s(late.name)
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-list-tile-content",
-                                              [
-                                                _c("v-list-tile-title", {
-                                                  domProps: {
-                                                    innerHTML: _vm._s(
-                                                      late.sign_in_time
-                                                    )
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ]
-                                    })
-                                  ],
-                                  2
-                                )
-                              ])
+                                              attrs: { size: "40" }
+                                            },
+                                            [
+                                              _c("img", {
+                                                attrs: { src: late.photo_url }
+                                              })
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-list-tile-content",
+                                            [
+                                              _c("v-list-tile-title", {
+                                                domProps: {
+                                                  innerHTML: _vm._s(late.id)
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              _c("v-list-tile-title", {
+                                                domProps: {
+                                                  innerHTML: _vm._s(late.name)
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-list-tile-content",
+                                            [
+                                              _c("v-list-tile-title", {
+                                                domProps: {
+                                                  innerHTML: _vm._s(
+                                                    late.sign_in_time
+                                                  )
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ]
+                                  })
+                                ],
+                                2
+                              )
                             ],
                             1
                           )
@@ -76163,7 +76067,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.category1 {\n  color: #FFFFFF;\n  font-size: 50px;\n  position: relative;\n  font-family: \"Montserrat\";\n  font-weight: Bold;\n  position: relative;\n  left: 39px;\n}\n.studentListBox {\n  -webkit-box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\n          box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\n  border-radius: 0.4075rem;\n  position: relative;\n  bottom: 150px;\n}\n\n", ""]);
+exports.push([module.i, "\n.categoryManage {\n  color: #FFFFFF;\n  font-size: 50px;\n  position: relative;\n  font-family: \"Montserrat\";\n  font-weight: Bold;\n  position: relative;\n  left: 39px;\n}\n.studentListBox {\n  -webkit-box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\n          box-shadow:  0 4px 12px 0 rgba(163, 163, 163, 0.36);\n  border-radius: 0.4075rem;\n  position: relative;\n  bottom: 150px;\n}\n\n", ""]);
 
 // exports
 
@@ -76324,7 +76228,11 @@ var render = function() {
       _c(
         "v-parallax",
         { attrs: { src: "/images/tutorManagement.jpg", height: "300" } },
-        [_c("h1", { staticClass: "category1" }, [_vm._v("Student Management")])]
+        [
+          _c("h1", { staticClass: "categoryManage" }, [
+            _vm._v("Student Management")
+          ])
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -77968,7 +77876,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.categoryClassAnalytic {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 38px;\r\n  bottom: 60px;\n}\n.classAttendanceCartBox {\r\n  position: relative;\r\n  bottom: 212px;\r\n  right: 20px;\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 700px;\r\n  width: 470px;\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.classGradeCartBox {\r\n  position: relative;\r\n  bottom: 210px;\r\n  right: 117px;\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 640px;\r\n  width: 700px;\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n.classPageTopDiv {\r\n  position : relative;\r\n  bottom : 200px;\n}\n.classChartDiv {\r\n  margin: 25px;\r\n  height: 440px;\n}\r\n\r\n/*-- 헤더 영역 --*/\n.categoryClassAnalytic {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 38px;\r\n  bottom: 60px;\n}\n.classAttendanceCartBox {\r\n  right: 10px;\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n  width: 470px;\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.classGradeCartBox {\r\n  height: 500px;\r\n  right: 107px;\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n  width: 660px;\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -77982,6 +77890,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -79074,7 +78991,7 @@ var render = function() {
                   staticClass: "grey lighten-4 py-4 title",
                   staticStyle: { "font-family": "Nanum Gothic Coding" }
                 },
-                [_vm._v("\n           분석 기간 설정\n          ")]
+                [_vm._v("\n             분석 기간 설정\n            ")]
               ),
               _vm._v(" "),
               _c(
@@ -79229,318 +79146,351 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "v-flex",
-        { attrs: { xs12: "" } },
+        "div",
+        { staticClass: "classPageTopDiv" },
         [
           _c(
-            "v-container",
-            { attrs: { "grid-list-xl": "" } },
+            "v-flex",
+            { attrs: { xs12: "" } },
             [
               _c(
-                "v-layout",
-                { attrs: { row: "", wrap: "", "align-center": "" } },
+                "v-container",
+                { attrs: { "grid-list-xl": "" } },
                 [
                   _c(
-                    "v-flex",
-                    { attrs: { xs12: "", md6: "" } },
+                    "v-layout",
+                    { attrs: { row: "", wrap: "", "align-center": "" } },
                     [
                       _c(
-                        "v-card",
-                        { staticClass: "classAttendanceCartBox" },
+                        "v-flex",
+                        { attrs: { xs12: "", md6: "" } },
                         [
                           _c(
-                            "v-card-text",
+                            "v-card",
+                            { staticClass: "classAttendanceCartBox" },
                             [
                               _c(
-                                "v-flex",
-                                { attrs: { xs12: "" } },
+                                "v-card-text",
                                 [
                                   _c(
-                                    "v-layout",
-                                    {
-                                      attrs: {
-                                        row: "",
-                                        wrap: "",
-                                        "align-center": ""
-                                      }
-                                    },
+                                    "v-flex",
+                                    { attrs: { xs12: "" } },
                                     [
                                       _c(
-                                        "v-flex",
-                                        { attrs: { xs12: "", md1: "" } },
+                                        "v-layout",
+                                        {
+                                          attrs: {
+                                            row: "",
+                                            wrap: "",
+                                            "align-center": ""
+                                          }
+                                        },
                                         [
                                           _c(
-                                            "v-icon",
-                                            {
-                                              attrs: {
-                                                color: "light-blue darken-2",
-                                                large: ""
-                                              }
-                                            },
-                                            [_vm._v("pie_chart")]
+                                            "v-flex",
+                                            { attrs: { xs12: "", md1: "" } },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                {
+                                                  attrs: {
+                                                    color:
+                                                      "light-blue darken-2",
+                                                    large: ""
+                                                  }
+                                                },
+                                                [_vm._v("pie_chart")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs12: "", md11: "" } },
+                                            [
+                                              _c(
+                                                "h2",
+                                                { staticClass: "chartTitle" },
+                                                [
+                                                  _vm._v(
+                                                    "출결 정보 분석\n                      "
+                                                  ),
+                                                  !_vm.dateCheck
+                                                    ? _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: {
+                                                            round: "",
+                                                            color:
+                                                              "indigo accent-1"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              $event.stopPropagation()
+                                                              _vm.dialog = !_vm.dialog
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              this
+                                                                .periodSelected
+                                                            )
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _c(
+                                                        "v-btn",
+                                                        {
+                                                          staticClass:
+                                                            "elevation-0",
+                                                          attrs: {
+                                                            color: "transparent"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              $event.stopPropagation()
+                                                              _vm.dialog = !_vm.dialog
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                          " +
+                                                              _vm._s(
+                                                                this
+                                                                  .periodSelected
+                                                              ) +
+                                                              "\n                          ( " +
+                                                              _vm._s(
+                                                                this.startDate
+                                                              ) +
+                                                              " ~ " +
+                                                              _vm._s(
+                                                                this.endDate
+                                                              ) +
+                                                              ")\n                      "
+                                                          )
+                                                        ]
+                                                      )
+                                                ],
+                                                1
+                                              )
+                                            ]
                                           )
                                         ],
                                         1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-flex",
-                                        { attrs: { xs12: "", md11: "" } },
-                                        [
-                                          _c(
-                                            "h2",
-                                            { staticClass: "chartTitle" },
-                                            [
-                                              _vm._v(
-                                                "출결 정보 분석\n                    "
-                                              ),
-                                              !_vm.dateCheck
-                                                ? _c(
-                                                    "v-btn",
-                                                    {
-                                                      attrs: {
-                                                        round: "",
-                                                        color: "indigo accent-1"
-                                                      },
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          $event.stopPropagation()
-                                                          _vm.dialog = !_vm.dialog
-                                                        }
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          this.periodSelected
-                                                        )
-                                                      )
-                                                    ]
-                                                  )
-                                                : _c(
-                                                    "v-btn",
-                                                    {
-                                                      staticClass:
-                                                        "elevation-0",
-                                                      attrs: {
-                                                        color: "transparent"
-                                                      },
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          $event.stopPropagation()
-                                                          _vm.dialog = !_vm.dialog
-                                                        }
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                        " +
-                                                          _vm._s(
-                                                            this.periodSelected
-                                                          ) +
-                                                          "\n                        ( " +
-                                                          _vm._s(
-                                                            this.startDate
-                                                          ) +
-                                                          " ~ " +
-                                                          _vm._s(this.endDate) +
-                                                          ")\n                    "
-                                                      )
-                                                    ]
-                                                  )
-                                            ],
-                                            1
-                                          )
-                                        ]
                                       )
                                     ],
                                     1
                                   )
                                 ],
                                 1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs12: "" } },
-                            [
+                              ),
+                              _vm._v(" "),
                               _c(
-                                "v-container",
-                                { attrs: { "grid-list-xl": "" } },
+                                "v-flex",
+                                { attrs: { xs12: "" } },
                                 [
                                   _c(
-                                    "v-layout",
-                                    {
-                                      attrs: {
-                                        row: "",
-                                        wrap: "",
-                                        "align-center": ""
-                                      }
-                                    },
+                                    "v-container",
+                                    { attrs: { "grid-list-xl": "" } },
                                     [
                                       _c(
-                                        "v-flex",
-                                        { attrs: { xs5: "" } },
+                                        "v-layout",
+                                        {
+                                          attrs: {
+                                            row: "",
+                                            wrap: "",
+                                            "align-center": ""
+                                          }
+                                        },
                                         [
-                                          _c("v-select", {
-                                            attrs: {
-                                              items: _vm.attendance,
-                                              label: _vm.attendance[0].text,
-                                              "single-line": ""
-                                            },
-                                            model: {
-                                              value: _vm.attSelect,
-                                              callback: function($$v) {
-                                                _vm.attSelect = $$v
-                                              },
-                                              expression: "attSelect"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _vm.attSelect.selected != 3
-                                        ? _c(
+                                          _c(
                                             "v-flex",
-                                            { attrs: { xs7: "" } },
+                                            { attrs: { xs5: "" } },
                                             [
-                                              _c(
+                                              _c("v-select", {
+                                                attrs: {
+                                                  items: _vm.attendance,
+                                                  label: _vm.attendance[0].text,
+                                                  "single-line": ""
+                                                },
+                                                model: {
+                                                  value: _vm.attSelect,
+                                                  callback: function($$v) {
+                                                    _vm.attSelect = $$v
+                                                  },
+                                                  expression: "attSelect"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _vm.attSelect.selected != 3
+                                            ? _c(
                                                 "v-flex",
-                                                { attrs: { xs12: "" } },
+                                                { attrs: { xs7: "" } },
                                                 [
                                                   _c(
-                                                    "v-container",
-                                                    {
-                                                      staticStyle: {
-                                                        position: "relative",
-                                                        right: "30px"
-                                                      }
-                                                    },
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
                                                     [
                                                       _c(
-                                                        "v-layout",
+                                                        "v-container",
                                                         {
-                                                          attrs: {
-                                                            row: "",
-                                                            wrap: "",
-                                                            "align-center": ""
+                                                          staticStyle: {
+                                                            position:
+                                                              "relative",
+                                                            right: "30px"
                                                           }
                                                         },
                                                         [
                                                           _c(
-                                                            "v-flex",
+                                                            "v-layout",
                                                             {
                                                               attrs: {
-                                                                xs12: "",
-                                                                md4: ""
+                                                                row: "",
+                                                                wrap: "",
+                                                                "align-center":
+                                                                  ""
                                                               }
                                                             },
                                                             [
                                                               _c(
-                                                                "v-btn",
+                                                                "v-flex",
                                                                 {
                                                                   attrs: {
-                                                                    depressed:
-                                                                      "",
-                                                                    small: "",
-                                                                    round: "",
-                                                                    color:
-                                                                      "blue accent-3",
-                                                                    dark: ""
-                                                                  },
-                                                                  on: {
-                                                                    click: function(
-                                                                      $event
-                                                                    ) {
-                                                                      _vm.adaChartController(
-                                                                        "lateness"
-                                                                      )
-                                                                    }
+                                                                    xs12: "",
+                                                                    md4: ""
                                                                   }
                                                                 },
-                                                                [_vm._v("지각")]
-                                                              )
-                                                            ],
-                                                            1
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "v-flex",
-                                                            {
-                                                              attrs: {
-                                                                xs12: "",
-                                                                md4: ""
-                                                              }
-                                                            },
-                                                            [
+                                                                [
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    {
+                                                                      attrs: {
+                                                                        depressed:
+                                                                          "",
+                                                                        small:
+                                                                          "",
+                                                                        round:
+                                                                          "",
+                                                                        color:
+                                                                          "blue accent-3",
+                                                                        dark: ""
+                                                                      },
+                                                                      on: {
+                                                                        click: function(
+                                                                          $event
+                                                                        ) {
+                                                                          _vm.adaChartController(
+                                                                            "lateness"
+                                                                          )
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "지각"
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ],
+                                                                1
+                                                              ),
+                                                              _vm._v(" "),
                                                               _c(
-                                                                "v-btn",
+                                                                "v-flex",
                                                                 {
                                                                   attrs: {
-                                                                    depressed:
-                                                                      "",
-                                                                    small: "",
-                                                                    round: "",
-                                                                    color:
-                                                                      "blue accent-3",
-                                                                    dark: ""
-                                                                  },
-                                                                  on: {
-                                                                    click: function(
-                                                                      $event
-                                                                    ) {
-                                                                      _vm.adaChartController(
-                                                                        "absence"
-                                                                      )
-                                                                    }
+                                                                    xs12: "",
+                                                                    md4: ""
                                                                   }
                                                                 },
-                                                                [_vm._v("결석")]
-                                                              )
-                                                            ],
-                                                            1
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "v-flex",
-                                                            {
-                                                              attrs: {
-                                                                xs12: "",
-                                                                md4: ""
-                                                              }
-                                                            },
-                                                            [
+                                                                [
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    {
+                                                                      attrs: {
+                                                                        depressed:
+                                                                          "",
+                                                                        small:
+                                                                          "",
+                                                                        round:
+                                                                          "",
+                                                                        color:
+                                                                          "blue accent-3",
+                                                                        dark: ""
+                                                                      },
+                                                                      on: {
+                                                                        click: function(
+                                                                          $event
+                                                                        ) {
+                                                                          _vm.adaChartController(
+                                                                            "absence"
+                                                                          )
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "결석"
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ],
+                                                                1
+                                                              ),
+                                                              _vm._v(" "),
                                                               _c(
-                                                                "v-btn",
+                                                                "v-flex",
                                                                 {
                                                                   attrs: {
-                                                                    depressed:
-                                                                      "",
-                                                                    small: "",
-                                                                    round: "",
-                                                                    color:
-                                                                      "blue accent-3",
-                                                                    dark: ""
-                                                                  },
-                                                                  on: {
-                                                                    click: function(
-                                                                      $event
-                                                                    ) {
-                                                                      _vm.adaChartController(
-                                                                        "early_leave"
-                                                                      )
-                                                                    }
+                                                                    xs12: "",
+                                                                    md4: ""
                                                                   }
                                                                 },
-                                                                [_vm._v("조퇴")]
+                                                                [
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    {
+                                                                      attrs: {
+                                                                        depressed:
+                                                                          "",
+                                                                        small:
+                                                                          "",
+                                                                        round:
+                                                                          "",
+                                                                        color:
+                                                                          "blue accent-3",
+                                                                        dark: ""
+                                                                      },
+                                                                      on: {
+                                                                        click: function(
+                                                                          $event
+                                                                        ) {
+                                                                          _vm.adaChartController(
+                                                                            "early_leave"
+                                                                          )
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "조퇴"
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ],
+                                                                1
                                                               )
                                                             ],
                                                             1
@@ -79554,121 +79504,140 @@ var render = function() {
                                                 ],
                                                 1
                                               )
-                                            ],
-                                            1
-                                          )
-                                        : _vm._e()
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "" } },
-                                    [
+                                            : _vm._e()
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
                                       _c(
-                                        "v-container",
+                                        "div",
+                                        { staticClass: "classChartDiv" },
                                         [
                                           _c(
-                                            "v-layout",
-                                            {
-                                              attrs: {
-                                                row: "",
-                                                wrap: "",
-                                                "align-center": ""
-                                              }
-                                            },
+                                            "v-flex",
+                                            { attrs: { xs12: "" } },
                                             [
                                               _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: { xs12: "", md12: "" }
-                                                },
+                                                "v-container",
                                                 [
-                                                  _vm.attSelect.selected != 3
-                                                    ? _c("div", [
-                                                        _c(
-                                                          "h2",
-                                                          {
-                                                            staticStyle: {
-                                                              "font-family":
-                                                                "Gothic A1",
-                                                              "font-weight":
-                                                                "lighter"
-                                                            }
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              " " +
-                                                                _vm._s(
-                                                                  this.attSelect
-                                                                    .text
-                                                                ) +
-                                                                " ( " +
-                                                                _vm._s(
-                                                                  this
-                                                                    .attendanceChartStat
-                                                                ) +
-                                                                " )"
-                                                            )
-                                                          ]
-                                                        )
-                                                      ])
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.attSelect.selected == 1
-                                                    ? _c("pie-chart", {
-                                                        attrs: {
-                                                          width: 500,
-                                                          data:
-                                                            _vm.attendanceData,
-                                                          backgroundColor:
-                                                            _vm.attendanceColor,
-                                                          labels:
-                                                            _vm.attendanceLabelData,
-                                                          options: {
-                                                            responsive: true,
-                                                            maintainAspectRatio: false
-                                                          }
-                                                        }
-                                                      })
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.attSelect.selected == 2
-                                                    ? _c(
-                                                        "line-chart-lateness",
+                                                  _c(
+                                                    "v-layout",
+                                                    {
+                                                      attrs: {
+                                                        row: "",
+                                                        wrap: "",
+                                                        "align-center": ""
+                                                      }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "v-flex",
                                                         {
                                                           attrs: {
-                                                            width: 500,
-                                                            data:
-                                                              _vm.attendanceLineData,
-                                                            borderColor:
-                                                              _vm.attendanceLineColor,
-                                                            labels:
-                                                              _vm.attendanceLineLabelData,
-                                                            options: {
-                                                              responsive: true,
-                                                              maintainAspectRatio: false
-                                                            }
+                                                            xs12: "",
+                                                            md12: ""
                                                           }
-                                                        }
+                                                        },
+                                                        [
+                                                          _vm.attSelect
+                                                            .selected != 3
+                                                            ? _c("div", [
+                                                                _c(
+                                                                  "h2",
+                                                                  {
+                                                                    staticStyle: {
+                                                                      "font-family":
+                                                                        "Gothic A1",
+                                                                      "font-weight":
+                                                                        "lighter"
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      " " +
+                                                                        _vm._s(
+                                                                          this
+                                                                            .attSelect
+                                                                            .text
+                                                                        ) +
+                                                                        " ( " +
+                                                                        _vm._s(
+                                                                          this
+                                                                            .attendanceChartStat
+                                                                        ) +
+                                                                        " )"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              ])
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          _vm.attSelect
+                                                            .selected == 1
+                                                            ? _c("pie-chart", {
+                                                                attrs: {
+                                                                  width: 500,
+                                                                  data:
+                                                                    _vm.attendanceData,
+                                                                  backgroundColor:
+                                                                    _vm.attendanceColor,
+                                                                  labels:
+                                                                    _vm.attendanceLabelData,
+                                                                  options: {
+                                                                    responsive: true,
+                                                                    maintainAspectRatio: false
+                                                                  }
+                                                                }
+                                                              })
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          _vm.attSelect
+                                                            .selected == 2
+                                                            ? _c(
+                                                                "line-chart-lateness",
+                                                                {
+                                                                  attrs: {
+                                                                    width: 310,
+                                                                    data:
+                                                                      _vm.attendanceLineData,
+                                                                    borderColor:
+                                                                      _vm.attendanceLineColor,
+                                                                    labels:
+                                                                      _vm.attendanceLineLabelData,
+                                                                    options: {
+                                                                      responsive: true,
+                                                                      maintainAspectRatio: false
+                                                                    }
+                                                                  }
+                                                                }
+                                                              )
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          _vm.attSelect
+                                                            .selected == 3
+                                                            ? _c(
+                                                                "line-chart-holiday",
+                                                                {
+                                                                  attrs: {
+                                                                    width: 300,
+                                                                    data:
+                                                                      _vm.holidayData,
+                                                                    labels:
+                                                                      _vm.holidayLabelData,
+                                                                    options: {
+                                                                      responsive: true,
+                                                                      maintainAspectRatio: false
+                                                                    }
+                                                                  }
+                                                                }
+                                                              )
+                                                            : _vm._e()
+                                                        ],
+                                                        1
                                                       )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.attSelect.selected == 3
-                                                    ? _c("line-chart-holiday", {
-                                                        attrs: {
-                                                          width: 500,
-                                                          data: _vm.holidayData,
-                                                          labels:
-                                                            _vm.holidayLabelData,
-                                                          options: {
-                                                            responsive: true,
-                                                            maintainAspectRatio: false
-                                                          }
-                                                        }
-                                                      })
-                                                    : _vm._e()
+                                                    ],
+                                                    1
+                                                  )
                                                 ],
                                                 1
                                               )
@@ -79689,306 +79658,320 @@ var render = function() {
                           )
                         ],
                         1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", md6: "" } },
-                    [
+                      ),
+                      _vm._v(" "),
                       _c(
-                        "v-card",
-                        { staticClass: "classGradeCartBox" },
+                        "v-flex",
+                        { attrs: { xs12: "", md6: "" } },
                         [
                           _c(
-                            "v-card-text",
+                            "v-card",
+                            { staticClass: "classGradeCartBox" },
                             [
                               _c(
-                                "v-flex",
-                                { attrs: { xs12: "" } },
+                                "v-card-text",
                                 [
                                   _c(
-                                    "v-layout",
-                                    {
-                                      attrs: {
-                                        row: "",
-                                        wrap: "",
-                                        "align-center": ""
-                                      }
-                                    },
+                                    "v-flex",
+                                    { attrs: { xs12: "" } },
                                     [
                                       _c(
-                                        "v-flex",
-                                        { attrs: { xs12: "", md1: "" } },
+                                        "v-layout",
+                                        {
+                                          attrs: {
+                                            row: "",
+                                            wrap: "",
+                                            "align-center": ""
+                                          }
+                                        },
                                         [
                                           _c(
-                                            "v-icon",
-                                            {
-                                              attrs: {
-                                                color: "light-blue darken-2",
-                                                large: ""
-                                              }
-                                            },
-                                            [_vm._v("bar_chart")]
+                                            "v-flex",
+                                            { attrs: { xs12: "", md1: "" } },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                {
+                                                  attrs: {
+                                                    color:
+                                                      "light-blue darken-2",
+                                                    large: ""
+                                                  }
+                                                },
+                                                [_vm._v("bar_chart")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs12: "", md11: "" } },
+                                            [
+                                              _c(
+                                                "h2",
+                                                { staticClass: "chartTitle" },
+                                                [
+                                                  _vm._v(
+                                                    "학업 정보 분석\n                      "
+                                                  ),
+                                                  !_vm.dateCheck
+                                                    ? _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: {
+                                                            round: "",
+                                                            color:
+                                                              "indigo accent-1"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              $event.stopPropagation()
+                                                              _vm.dialog = !_vm.dialog
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              this
+                                                                .periodSelected
+                                                            )
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _c(
+                                                        "v-btn",
+                                                        {
+                                                          staticClass:
+                                                            "elevation-0",
+                                                          attrs: {
+                                                            color: "transparent"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              $event.stopPropagation()
+                                                              _vm.dialog = !_vm.dialog
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                          " +
+                                                              _vm._s(
+                                                                this
+                                                                  .periodSelected
+                                                              ) +
+                                                              "\n                          ( " +
+                                                              _vm._s(
+                                                                this.startDate
+                                                              ) +
+                                                              " ~ " +
+                                                              _vm._s(
+                                                                this.endDate
+                                                              ) +
+                                                              ")\n                        "
+                                                          )
+                                                        ]
+                                                      )
+                                                ],
+                                                1
+                                              )
+                                            ]
                                           )
                                         ],
                                         1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-flex",
-                                        { attrs: { xs12: "", md11: "" } },
-                                        [
-                                          _c(
-                                            "h2",
-                                            { staticClass: "chartTitle" },
-                                            [
-                                              _vm._v(
-                                                "학업 정보 분석\n                    "
-                                              ),
-                                              !_vm.dateCheck
-                                                ? _c(
-                                                    "v-btn",
-                                                    {
-                                                      attrs: {
-                                                        round: "",
-                                                        color: "indigo accent-1"
-                                                      },
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          $event.stopPropagation()
-                                                          _vm.dialog = !_vm.dialog
-                                                        }
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          this.periodSelected
-                                                        )
-                                                      )
-                                                    ]
-                                                  )
-                                                : _c(
-                                                    "v-btn",
-                                                    {
-                                                      staticClass:
-                                                        "elevation-0",
-                                                      attrs: {
-                                                        color: "transparent"
-                                                      },
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          $event.stopPropagation()
-                                                          _vm.dialog = !_vm.dialog
-                                                        }
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                        " +
-                                                          _vm._s(
-                                                            this.periodSelected
-                                                          ) +
-                                                          "\n                        ( " +
-                                                          _vm._s(
-                                                            this.startDate
-                                                          ) +
-                                                          " ~ " +
-                                                          _vm._s(this.endDate) +
-                                                          ")\n                      "
-                                                      )
-                                                    ]
-                                                  )
-                                            ],
-                                            1
-                                          )
-                                        ]
                                       )
                                     ],
                                     1
                                   )
                                 ],
                                 1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs12: "" } },
-                            [
+                              ),
+                              _vm._v(" "),
                               _c(
-                                "v-container",
-                                { attrs: { "grid-list-xl": "" } },
+                                "v-flex",
+                                { attrs: { xs12: "" } },
                                 [
                                   _c(
-                                    "v-layout",
-                                    {
-                                      attrs: {
-                                        row: "",
-                                        wrap: "",
-                                        "align-center": ""
-                                      }
-                                    },
+                                    "v-container",
+                                    { attrs: { "grid-list-xl": "" } },
                                     [
                                       _c(
-                                        "v-flex",
-                                        { attrs: { xs6: "" } },
+                                        "v-layout",
+                                        {
+                                          attrs: {
+                                            row: "",
+                                            wrap: "",
+                                            "align-center": ""
+                                          }
+                                        },
                                         [
-                                          _c("v-select", {
-                                            attrs: {
-                                              items: _vm.subjectList,
-                                              label: _vm.subjectSelect.text,
-                                              "single-line": ""
-                                            },
-                                            model: {
-                                              value: _vm.subjectSelect,
-                                              callback: function($$v) {
-                                                _vm.subjectSelect = $$v
-                                              },
-                                              expression: "subjectSelect"
-                                            }
-                                          })
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs6: "" } },
+                                            [
+                                              _c("v-select", {
+                                                attrs: {
+                                                  items: _vm.subjectList,
+                                                  label: _vm.subjectSelect.text,
+                                                  "single-line": ""
+                                                },
+                                                model: {
+                                                  value: _vm.subjectSelect,
+                                                  callback: function($$v) {
+                                                    _vm.subjectSelect = $$v
+                                                  },
+                                                  expression: "subjectSelect"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs6: "" } },
+                                            [
+                                              _c("v-select", {
+                                                attrs: {
+                                                  items: _vm.subjectsList,
+                                                  label:
+                                                    _vm.subjectsSelect.text,
+                                                  "single-line": ""
+                                                },
+                                                model: {
+                                                  value: _vm.subjectsSelect,
+                                                  callback: function($$v) {
+                                                    _vm.subjectsSelect = $$v
+                                                  },
+                                                  expression: "subjectsSelect"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
                                         ],
                                         1
                                       ),
                                       _vm._v(" "),
                                       _c(
                                         "v-flex",
-                                        { attrs: { xs6: "" } },
-                                        [
-                                          _c("v-select", {
-                                            attrs: {
-                                              items: _vm.subjectsList,
-                                              label: _vm.subjectsSelect.text,
-                                              "single-line": ""
-                                            },
-                                            model: {
-                                              value: _vm.subjectsSelect,
-                                              callback: function($$v) {
-                                                _vm.subjectsSelect = $$v
-                                              },
-                                              expression: "subjectsSelect"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "" } },
-                                    [
-                                      _c(
-                                        "v-container",
+                                        { attrs: { xs12: "" } },
                                         [
                                           _c(
-                                            "v-layout",
-                                            {
-                                              attrs: {
-                                                row: "",
-                                                wrap: "",
-                                                "align-center": ""
-                                              }
-                                            },
+                                            "v-container",
                                             [
                                               _c(
-                                                "v-flex",
+                                                "v-layout",
                                                 {
-                                                  attrs: { xs12: "", md6: "" }
+                                                  attrs: {
+                                                    row: "",
+                                                    wrap: "",
+                                                    "align-center": ""
+                                                  }
                                                 },
                                                 [
-                                                  _c("div", [
-                                                    _c(
-                                                      "h2",
-                                                      {
-                                                        staticStyle: {
-                                                          "font-family":
-                                                            "Gothic A1",
-                                                          "font-weight":
-                                                            "lighter"
-                                                        }
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "취득점수 분포 범위 ( " +
-                                                            _vm._s(
-                                                              this
-                                                                .studyChartStat
-                                                            ) +
-                                                            " )"
-                                                        )
-                                                      ]
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("bar-plot-chart", {
-                                                    attrs: {
-                                                      datasets:
-                                                        _vm.plotDataSets,
-                                                      labels: _vm.plotLabelData,
-                                                      options: {
-                                                        responsive: true,
-                                                        maintainAspectRatio: false
+                                                  _c(
+                                                    "v-flex",
+                                                    {
+                                                      attrs: {
+                                                        xs12: "",
+                                                        md6: ""
                                                       }
-                                                    }
-                                                  })
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: { xs12: "", md6: "" }
-                                                },
-                                                [
-                                                  _c("div", [
-                                                    _c(
-                                                      "h2",
-                                                      {
-                                                        staticStyle: {
-                                                          "font-family":
-                                                            "Gothic A1",
-                                                          "font-weight":
-                                                            "lighter"
-                                                        }
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "취득점수 분포도 ( " +
-                                                            _vm._s(
-                                                              this
-                                                                .studysChartStat
-                                                            ) +
-                                                            " )"
+                                                    },
+                                                    [
+                                                      _c("div", [
+                                                        _c(
+                                                          "h2",
+                                                          {
+                                                            staticStyle: {
+                                                              "font-family":
+                                                                "Gothic A1",
+                                                              "font-weight":
+                                                                "lighter"
+                                                            }
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "취득점수 분포 범위 ( " +
+                                                                _vm._s(
+                                                                  this
+                                                                    .studyChartStat
+                                                                ) +
+                                                                " )"
+                                                            )
+                                                          ]
                                                         )
-                                                      ]
-                                                    )
-                                                  ]),
+                                                      ]),
+                                                      _vm._v(" "),
+                                                      _c("bar-plot-chart", {
+                                                        attrs: {
+                                                          datasets:
+                                                            _vm.plotDataSets,
+                                                          labels:
+                                                            _vm.plotLabelData,
+                                                          options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false
+                                                          }
+                                                        }
+                                                      })
+                                                    ],
+                                                    1
+                                                  ),
                                                   _vm._v(" "),
-                                                  _c("bar-chart", {
-                                                    attrs: {
-                                                      data: _vm.gradeData,
-                                                      labels:
-                                                        _vm.gradeLabelData,
-                                                      options: {
-                                                        responsive: true,
-                                                        maintainAspectRatio: false
+                                                  _c(
+                                                    "v-flex",
+                                                    {
+                                                      attrs: {
+                                                        xs12: "",
+                                                        md6: ""
                                                       }
-                                                    }
-                                                  })
+                                                    },
+                                                    [
+                                                      _c("div", [
+                                                        _c(
+                                                          "h2",
+                                                          {
+                                                            staticStyle: {
+                                                              "font-family":
+                                                                "Gothic A1",
+                                                              "font-weight":
+                                                                "lighter"
+                                                            }
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "취득점수 분포도 ( " +
+                                                                _vm._s(
+                                                                  this
+                                                                    .studysChartStat
+                                                                ) +
+                                                                " )"
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]),
+                                                      _vm._v(" "),
+                                                      _c("bar-chart", {
+                                                        attrs: {
+                                                          data: _vm.gradeData,
+                                                          labels:
+                                                            _vm.gradeLabelData,
+                                                          options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false
+                                                          }
+                                                        }
+                                                      })
+                                                    ],
+                                                    1
+                                                  )
                                                 ],
                                                 1
                                               )
@@ -80122,7 +80105,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.studentPageTopDiv {\r\n  position : relative;\r\n  bottom : 120px;\n}\n.studentChartDiv {\r\n  margin: 25px;\r\n  height: 1500px;\n}\n.studentSelectedDiv {\r\n  margin: 25px;\r\n  height: 1500px;\n}\r\n\r\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  width : 400px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\n.StudentAnalyticPrediction{\r\n  width: 100%;\r\n  height: 100%;\n}\r\n/*-- 차트 --*/\n.chartCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  right : 70px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 1000px;\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.studentInfoBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.studentInfo {\r\n  position: relative;\r\n  left: 87px;\n}\n.textBox {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    font-size: 25px;\r\n    margin: 0 0 10px 0;\n}\n.textBox span {\r\n    font-size: 25px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: lighter;\r\n    color: rgb(82, 82, 82);\r\n    margin: 0 10px 0 0px;\n}\n.attendanceChartTypeSelect {\r\n  position: relative;\r\n  bottom: 100px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n/* */\n.studentInfoDiv {\r\n  overflow-y : scroll;\r\n  height : 1290px;\n}\r\n", ""]);
+exports.push([module.i, "\n.studentPageTopDiv {\r\n  position : relative;\r\n  bottom : 200px;\n}\n.studentChartDiv {\r\n  margin: 25px;\r\n  height: 1380px;\n}\n.studentSelectedDiv {\r\n  margin: 25px;\r\n  height: 1500px;\n}\r\n\r\n\r\n\r\n/*-- 헤더 영역 --*/\n.categoryStudentAnalytic {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 40px;\r\n  bottom: 20px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n  width : 400px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\n.StudentAnalyticPrediction{\r\n  width: 100%;\r\n  height: 100%;\n}\r\n/*-- 차트 --*/\n.chartCard {\r\n  position: relative;\r\n  left: 10px;\r\n  width: 720px;\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.studentInfoBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.studentInfo {\r\n  position: relative;\r\n  left: 87px;\n}\n.textBox {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    font-size: 25px;\r\n    margin: 0 0 10px 0;\n}\n.textBox span {\r\n    font-size: 25px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: bold;\r\n    color: rgb(125, 125, 125);\r\n    margin: 0 10px 0 0px;\n}\n.attendanceChartTypeSelect {\r\n  position: relative;\r\n  bottom: 100px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n/* */\n.studentInfoDiv {\r\n  overflow-y : scroll;\r\n  height : 1100px;\n}\r\n", ""]);
 
 // exports
 
@@ -80136,6 +80119,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -80580,7 +80597,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-time-lineChart
         labels: this.timeLineLabelData,
         datasets: [{
           label: '시간(00:00)',
-          borderColor: '#249EBF',
+          borderColor: '#4451fb',
           fill: false,
           data: this.timeLineData
         }],
@@ -80634,7 +80651,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-count-lineChar
         labels: this.countLineLabelData,
         datasets: [{
           label: '횟수',
-          borderColor: '#33ff66',
+          borderColor: '#4657fa',
           fill: false,
           data: this.countLineData
         }],
@@ -80684,7 +80701,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-count-pieChart
       this.renderChart({
         labels: ['출석', '지각', '결석', '조퇴'],
         datasets: [{
-          backgroundColor: ['#33ff66', '#ffff00', '#ff3333', '#808080'],
+          backgroundColor: ['#4657fa', '#9f98ed', '#ff3333', '#808080'],
           fill: false,
           data: this.countPieData
         }],
@@ -80988,7 +81005,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
       /* 로딩바 , progress */
       progressStudent: false,
       /* 학생 목록 */
-      studnetInfo: [],
+      studentInfo: [],
       studentsType: 'total',
       studentSelected: '전체',
 
@@ -81067,7 +81084,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
   methods: {
     /* 학생 선택 */
     selectStudent: function selectStudent(value) {
-      console.log(value);
       /* 우측 버튼 잠금 해제 */
       this.btnLock = true;
       /* 학생 정보 저장 */
@@ -81180,7 +81196,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
     getStudentInfo: function getStudentInfo(typeSelect) {
       var _this = this;
 
-      this.studnetInfo = [];
+      this.studentInfo = [];
       this.studentsType = typeSelect;
       this.progressStudent = true;
       axios.get('/tutor/analyse/student_list', {
@@ -81189,16 +81205,48 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
           order: 'id'
         }
       }).then(function (response) {
-        console.log(response.data.message);
-        _this.studnetInfo = response.data.message;
-        for (var data in _this.studnetInfo) {
-          if (_this.studnetInfo[data].attention_reason == null) {
-            _this.studnetInfo[data].attention_reason = '';
+        _this.studentInfo = response.data.message;
+        for (var data in _this.studentInfo) {
+          if (_this.studentInfo[data].attention_reason == null) {
+            _this.studentInfo[data].attention_reason = '';
           }
-          _this.$set(_this.studnetInfo[data], 'number', data);
+          _this.$set(_this.studentInfo[data], 'number', data);
         }
         _this.progressStudent = false;
-        _this.selectStudent(_this.studnetInfo[0]);
+
+        _this.selectStudent(_this.studentInfo[0]);
+        console.log(_this.studentInfo);
+        console.log(Object.keys(_this.studentInfo[0].trouble).length);
+
+        /* 트러블 기본 정보 추가 */
+        for (var troubleSetting in _this.studentInfo) {
+          _this.$set(_this.studentInfo[troubleSetting], 'recent_trouble_Check', false);
+          _this.$set(_this.studentInfo[troubleSetting], 'ada_Check', false);
+          _this.$set(_this.studentInfo[troubleSetting], 'low_level_Check', false);
+        }
+
+        /* 트러블 정보 추가 */
+        for (var trouble in _this.studentInfo) {
+          /* 트러블 정보가 존재하는지 확인 */
+          if (Object.keys(_this.studentInfo[trouble].trouble).length > 0) {
+            /* 트러블 라벨 추출 */
+            var _data = Object.keys(_this.studentInfo[trouble].trouble);
+            /* 라벨을 확인하여 값 변경 */
+            for (var num in _data) {
+              switch (_data[num]) {
+                case 'recent_trouble':
+                  _this.studentInfo[trouble]['recent_trouble_Check'] = true;
+                  break;
+                case 'ada':
+                  _this.studentInfo[trouble]['ada_Check'] = true;
+                  break;
+                case 'low_level':
+                  _this.studentInfo[trouble]['low_level_Check'] = true;
+                  break;
+              }
+            }
+          }
+        }
       }).catch(function (error) {
         console.log("getStuInfo Err : " + error);
         alert('불러오기에 실패했습니다.');
@@ -81668,7 +81716,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
         attention_level: setCount
       }).then(function (response) {
         /* 하트 수정 */
-        _this9.studnetInfo[value.number].attention_level = setCount;
+        _this9.studentInfo[value.number].attention_level = setCount;
       }).catch(function (error) {
         console.log("setAttention Err : " + error);
       });
@@ -81703,9 +81751,15 @@ var render = function() {
     "div",
     { staticClass: "StudentAnalyticPrediction" },
     [
-      _c("v-parallax", {
-        attrs: { src: "/images/analyticPredition.jpg", height: "300" }
-      }),
+      _c(
+        "v-parallax",
+        { attrs: { src: "/images/analyticPredition.jpg", height: "300" } },
+        [
+          _c("h1", { staticClass: "categoryStudentAnalytic" }, [
+            _vm._v("Student Analytic Predition")
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "v-dialog",
@@ -81905,62 +81959,147 @@ var render = function() {
                     "v-layout",
                     { attrs: { row: "", wrap: "", "align-center": "" } },
                     [
-                      _c("v-flex", { attrs: { xs4: "", md4: "" } }, [
+                      _c("v-flex", { attrs: { xs12: "", md4: "" } }, [
                         _c(
                           "div",
-                          { staticClass: "studentSelectedDiv" },
+                          { staticClass: "studentListCard" },
                           [
                             _c(
                               "v-card",
+                              { staticClass: "studentListCard" },
                               [
-                                _c("v-card-text", [
-                                  _c(
-                                    "h2",
-                                    [
-                                      _vm._v("학생목록\n                "),
-                                      !_vm.dateCheck
-                                        ? _c(
-                                            "v-btn",
-                                            {
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  _vm.dialog = !_vm.dialog
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                _vm._s(this.periodSelected)
-                                              )
-                                            ]
-                                          )
-                                        : _c(
-                                            "v-btn",
-                                            {
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  _vm.dialog = !_vm.dialog
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                  " +
-                                                  _vm._s(this.periodSelected) +
-                                                  "\n                  ( " +
-                                                  _vm._s(this.startDate) +
-                                                  " ~ " +
-                                                  _vm._s(this.endDate) +
-                                                  ")\n                "
-                                              )
-                                            ]
-                                          )
-                                    ],
-                                    1
-                                  )
-                                ]),
+                                _c(
+                                  "v-card-text",
+                                  [
+                                    _c(
+                                      "v-flex",
+                                      { attrs: { xs12: "" } },
+                                      [
+                                        _c(
+                                          "v-layout",
+                                          {
+                                            attrs: {
+                                              row: "",
+                                              wrap: "",
+                                              "align-center": ""
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "v-flex",
+                                              { attrs: { xs12: "", md2: "" } },
+                                              [
+                                                _c(
+                                                  "v-icon",
+                                                  {
+                                                    attrs: {
+                                                      color:
+                                                        "light-blue darken-2",
+                                                      large: ""
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "format_list_bulleted"
+                                                    )
+                                                  ]
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-flex",
+                                              { attrs: { xs12: "", md10: "" } },
+                                              [
+                                                _c(
+                                                  "h2",
+                                                  {
+                                                    staticClass:
+                                                      "studentListTitle"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "학생목록\n                        "
+                                                    ),
+                                                    !_vm.dateCheck
+                                                      ? _c(
+                                                          "v-btn",
+                                                          {
+                                                            attrs: {
+                                                              round: "",
+                                                              color:
+                                                                "indigo accent-1"
+                                                            },
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                $event.stopPropagation()
+                                                                _vm.dialog = !_vm.dialog
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              _vm._s(
+                                                                this
+                                                                  .periodSelected
+                                                              )
+                                                            )
+                                                          ]
+                                                        )
+                                                      : _c(
+                                                          "v-btn",
+                                                          {
+                                                            staticClass:
+                                                              "elevation-0",
+                                                            attrs: {
+                                                              color:
+                                                                "transparent"
+                                                            },
+                                                            on: {
+                                                              click: function(
+                                                                $event
+                                                              ) {
+                                                                $event.stopPropagation()
+                                                                _vm.dialog = !_vm.dialog
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  this
+                                                                    .periodSelected
+                                                                ) +
+                                                                "\n                          ( " +
+                                                                _vm._s(
+                                                                  this.startDate
+                                                                ) +
+                                                                " ~ " +
+                                                                _vm._s(
+                                                                  this.endDate
+                                                                ) +
+                                                                ")\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
                                 _vm._v(" "),
                                 _c(
                                   "v-card-text",
@@ -82048,14 +82187,10 @@ var render = function() {
                                       "div",
                                       { staticClass: "studentInfoDiv" },
                                       [
-                                        _vm._l(_vm.studnetInfo, function(
+                                        _vm._l(_vm.studentInfo, function(
                                           datas
                                         ) {
                                           return [
-                                            _c("v-divider", {
-                                              attrs: { inset: true }
-                                            }),
-                                            _vm._v(" "),
                                             _c(
                                               "v-list-tile",
                                               {
@@ -82078,18 +82213,16 @@ var render = function() {
                                                 _c(
                                                   "v-list-tile-content",
                                                   [
-                                                    _c("v-list-tile-title", [
-                                                      _vm._v(
-                                                        " " +
-                                                          _vm._s(datas.id) +
-                                                          " " +
-                                                          _vm._s(datas.name)
-                                                      )
-                                                    ]),
-                                                    _vm._v(" "),
                                                     _c(
-                                                      "div",
+                                                      "v-list-tile-title",
                                                       [
+                                                        _vm._v(
+                                                          " " +
+                                                            _vm._s(datas.id) +
+                                                            " " +
+                                                            _vm._s(datas.name) +
+                                                            "\n                             "
+                                                        ),
                                                         datas.attention_level >
                                                         0
                                                           ? _c(
@@ -82147,28 +82280,216 @@ var render = function() {
                                                       1
                                                     ),
                                                     _vm._v(" "),
-                                                    datas.attention_reason != ""
-                                                      ? _c("v-btn", {
-                                                          attrs: {
-                                                            small: "",
-                                                            depressed: "",
-                                                            round: "",
-                                                            color:
-                                                              "light-green lighten-1"
-                                                          },
-                                                          domProps: {
-                                                            innerHTML: _vm._s(
-                                                              datas.attention_reason
+                                                    _c(
+                                                      "div",
+                                                      [
+                                                        datas.recent_trouble_Check
+                                                          ? _c(
+                                                              "v-tooltip",
+                                                              {
+                                                                attrs: {
+                                                                  top: ""
+                                                                }
+                                                              },
+                                                              [
+                                                                _c(
+                                                                  "v-btn",
+                                                                  {
+                                                                    attrs: {
+                                                                      slot:
+                                                                        "activator",
+                                                                      small: "",
+                                                                      dark: "",
+                                                                      depressed:
+                                                                        "",
+                                                                      round: "",
+                                                                      color:
+                                                                        "light-green lighten-1"
+                                                                    },
+                                                                    slot:
+                                                                      "activator"
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "최근 성적 하락"
+                                                                    )
+                                                                  ]
+                                                                ),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "span",
+                                                                  _vm._l(
+                                                                    datas
+                                                                      .trouble
+                                                                      .recent_trouble,
+                                                                    function(
+                                                                      data
+                                                                    ) {
+                                                                      return _c(
+                                                                        "div",
+                                                                        [
+                                                                          _c(
+                                                                            "h3",
+                                                                            [
+                                                                              _vm._v(
+                                                                                _vm._s(
+                                                                                  data
+                                                                                )
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    }
+                                                                  )
+                                                                )
+                                                              ],
+                                                              1
                                                             )
-                                                          }
-                                                        })
-                                                      : _vm._e()
+                                                          : _vm._e(),
+                                                        _vm._v(" "),
+                                                        datas.ada_Check
+                                                          ? _c(
+                                                              "v-tooltip",
+                                                              {
+                                                                attrs: {
+                                                                  top: ""
+                                                                }
+                                                              },
+                                                              [
+                                                                _c(
+                                                                  "v-btn",
+                                                                  {
+                                                                    attrs: {
+                                                                      slot:
+                                                                        "activator",
+                                                                      small: "",
+                                                                      dark: "",
+                                                                      depressed:
+                                                                        "",
+                                                                      round: "",
+                                                                      color:
+                                                                        "light-green lighten-1"
+                                                                    },
+                                                                    slot:
+                                                                      "activator"
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "출석율 저조"
+                                                                    )
+                                                                  ]
+                                                                ),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "span",
+                                                                  _vm._l(
+                                                                    datas
+                                                                      .trouble
+                                                                      .ada,
+                                                                    function(
+                                                                      data
+                                                                    ) {
+                                                                      return _c(
+                                                                        "div",
+                                                                        [
+                                                                          _c(
+                                                                            "h3",
+                                                                            [
+                                                                              _vm._v(
+                                                                                _vm._s(
+                                                                                  data
+                                                                                )
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    }
+                                                                  )
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          : _vm._e(),
+                                                        _vm._v(" "),
+                                                        datas.low_level_Check
+                                                          ? _c(
+                                                              "v-tooltip",
+                                                              {
+                                                                attrs: {
+                                                                  top: ""
+                                                                }
+                                                              },
+                                                              [
+                                                                _c(
+                                                                  "v-btn",
+                                                                  {
+                                                                    attrs: {
+                                                                      slot:
+                                                                        "activator",
+                                                                      small: "",
+                                                                      dark: "",
+                                                                      depressed:
+                                                                        "",
+                                                                      round: "",
+                                                                      color:
+                                                                        "light-green lighten-1"
+                                                                    },
+                                                                    slot:
+                                                                      "activator"
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "성적하위권"
+                                                                    )
+                                                                  ]
+                                                                ),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "span",
+                                                                  _vm._l(
+                                                                    datas
+                                                                      .trouble
+                                                                      .low_level,
+                                                                    function(
+                                                                      data
+                                                                    ) {
+                                                                      return _c(
+                                                                        "div",
+                                                                        [
+                                                                          _c(
+                                                                            "h3",
+                                                                            [
+                                                                              _vm._v(
+                                                                                _vm._s(
+                                                                                  data
+                                                                                )
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    }
+                                                                  )
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          : _vm._e()
+                                                      ],
+                                                      1
+                                                    )
                                                   ],
                                                   1
                                                 )
                                               ],
                                               1
-                                            )
+                                            ),
+                                            _vm._v(" "),
+                                            _c("v-divider", {
+                                              attrs: { inset: true }
+                                            })
                                           ]
                                         })
                                       ],
@@ -82185,22 +82506,75 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _c("v-flex", { attrs: { xs8: "", md8: "" } }, [
+                      _c("v-flex", { attrs: { xs12: "", md8: "" } }, [
                         _c(
                           "div",
                           { staticClass: "studentChartDiv" },
                           [
                             _c(
                               "v-card",
+                              { staticClass: "chartCard" },
                               [
-                                _c("v-card-text", [
-                                  _c("h2", { staticClass: "chartTitle" }, [
-                                    _vm._v("학생 분석 예측")
-                                  ])
-                                ]),
+                                _c(
+                                  "v-card-text",
+                                  [
+                                    _c(
+                                      "v-flex",
+                                      { attrs: { xs12: "" } },
+                                      [
+                                        _c(
+                                          "v-layout",
+                                          {
+                                            attrs: {
+                                              row: "",
+                                              wrap: "",
+                                              "align-center": ""
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "v-flex",
+                                              { attrs: { xs12: "", md1: "" } },
+                                              [
+                                                _c(
+                                                  "v-icon",
+                                                  {
+                                                    attrs: {
+                                                      color:
+                                                        "light-blue darken-2",
+                                                      large: ""
+                                                    }
+                                                  },
+                                                  [_vm._v("show_chart")]
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-flex",
+                                              { attrs: { xs12: "", md10: "" } },
+                                              [
+                                                _c(
+                                                  "h2",
+                                                  { staticClass: "chartTitle" },
+                                                  [_vm._v("학생 분석 예측")]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
                                 _vm._v(" "),
                                 _c(
                                   "div",
+                                  { staticClass: "studentInfoBox" },
                                   [
                                     _c(
                                       "v-flex",
@@ -82292,204 +82666,415 @@ var render = function() {
                                                               ]
                                                             ),
                                                             _vm._v(" "),
-                                                            _vm
-                                                              .selectStudentData
-                                                              .attention_level >
-                                                            0
-                                                              ? _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        "red"
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        _vm.setAttentionLevel(
-                                                                          _vm.selectStudentData,
-                                                                          1,
-                                                                          "red"
+                                                            _c(
+                                                              "div",
+                                                              [
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .attention_level >
+                                                                0
+                                                                  ? _c(
+                                                                      "v-icon",
+                                                                      {
+                                                                        attrs: {
+                                                                          color:
+                                                                            "red"
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            _vm.setAttentionLevel(
+                                                                              _vm.selectStudentData,
+                                                                              1,
+                                                                              "red"
+                                                                            )
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          "favorite"
                                                                         )
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "favorite"
+                                                                      ]
                                                                     )
-                                                                  ]
-                                                                )
-                                                              : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _vm
-                                                              .selectStudentData
-                                                              .attention_level >
-                                                            1
-                                                              ? _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        "red"
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        _vm.setAttentionLevel(
-                                                                          _vm.selectStudentData,
-                                                                          2,
-                                                                          "red"
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .attention_level >
+                                                                1
+                                                                  ? _c(
+                                                                      "v-icon",
+                                                                      {
+                                                                        attrs: {
+                                                                          color:
+                                                                            "red"
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            _vm.setAttentionLevel(
+                                                                              _vm.selectStudentData,
+                                                                              2,
+                                                                              "red"
+                                                                            )
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          "favorite"
                                                                         )
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "favorite"
+                                                                      ]
                                                                     )
-                                                                  ]
-                                                                )
-                                                              : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _vm
-                                                              .selectStudentData
-                                                              .attention_level >
-                                                            2
-                                                              ? _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        "red"
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "favorite"
-                                                                    )
-                                                                  ]
-                                                                )
-                                                              : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _vm
-                                                              .selectStudentData
-                                                              .attention_level <=
-                                                            2
-                                                              ? _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        "gray"
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        _vm.setAttentionLevel(
-                                                                          _vm.selectStudentData,
-                                                                          1,
-                                                                          "gray"
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .attention_level >
+                                                                2
+                                                                  ? _c(
+                                                                      "v-icon",
+                                                                      {
+                                                                        attrs: {
+                                                                          color:
+                                                                            "red"
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          "favorite"
                                                                         )
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "favorite"
+                                                                      ]
                                                                     )
-                                                                  ]
-                                                                )
-                                                              : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _vm
-                                                              .selectStudentData
-                                                              .attention_level <=
-                                                            1
-                                                              ? _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        "gray"
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        _vm.setAttentionLevel(
-                                                                          _vm.selectStudentData,
-                                                                          2,
-                                                                          "gray"
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .attention_level <=
+                                                                2
+                                                                  ? _c(
+                                                                      "v-icon",
+                                                                      {
+                                                                        attrs: {
+                                                                          color:
+                                                                            "gray"
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            _vm.setAttentionLevel(
+                                                                              _vm.selectStudentData,
+                                                                              1,
+                                                                              "gray"
+                                                                            )
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          "favorite"
                                                                         )
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "favorite"
+                                                                      ]
                                                                     )
-                                                                  ]
-                                                                )
-                                                              : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _vm
-                                                              .selectStudentData
-                                                              .attention_level <=
-                                                            0
-                                                              ? _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        "gray"
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        _vm.setAttentionLevel(
-                                                                          _vm.selectStudentData,
-                                                                          3,
-                                                                          "gray"
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .attention_level <=
+                                                                1
+                                                                  ? _c(
+                                                                      "v-icon",
+                                                                      {
+                                                                        attrs: {
+                                                                          color:
+                                                                            "gray"
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            _vm.setAttentionLevel(
+                                                                              _vm.selectStudentData,
+                                                                              2,
+                                                                              "gray"
+                                                                            )
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          "favorite"
                                                                         )
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "favorite"
+                                                                      ]
                                                                     )
-                                                                  ]
-                                                                )
-                                                              : _vm._e(),
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .attention_level <=
+                                                                0
+                                                                  ? _c(
+                                                                      "v-icon",
+                                                                      {
+                                                                        attrs: {
+                                                                          color:
+                                                                            "gray"
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            _vm.setAttentionLevel(
+                                                                              _vm.selectStudentData,
+                                                                              3,
+                                                                              "gray"
+                                                                            )
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          "favorite"
+                                                                        )
+                                                                      ]
+                                                                    )
+                                                                  : _vm._e()
+                                                              ],
+                                                              1
+                                                            ),
                                                             _vm._v(" "),
-                                                            _vm
-                                                              .selectStudentData
-                                                              .attention_reason !=
-                                                            ""
-                                                              ? _c("v-btn", {
-                                                                  attrs: {
-                                                                    small: "",
-                                                                    depressed:
-                                                                      "",
-                                                                    round: "",
-                                                                    color:
-                                                                      "light-green lighten-1"
-                                                                  },
-                                                                  domProps: {
-                                                                    innerHTML: _vm._s(
-                                                                      _vm.datas
-                                                                        .attention_reason
+                                                            _c(
+                                                              "div",
+                                                              [
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .recent_trouble_Check
+                                                                  ? _c(
+                                                                      "v-tooltip",
+                                                                      {
+                                                                        attrs: {
+                                                                          top:
+                                                                            ""
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _c(
+                                                                          "v-btn",
+                                                                          {
+                                                                            attrs: {
+                                                                              slot:
+                                                                                "activator",
+                                                                              small:
+                                                                                "",
+                                                                              dark:
+                                                                                "",
+                                                                              depressed:
+                                                                                "",
+                                                                              round:
+                                                                                "",
+                                                                              color:
+                                                                                "light-green lighten-1"
+                                                                            },
+                                                                            slot:
+                                                                              "activator"
+                                                                          },
+                                                                          [
+                                                                            _vm._v(
+                                                                              "최근 성적 하락"
+                                                                            )
+                                                                          ]
+                                                                        ),
+                                                                        _vm._v(
+                                                                          " "
+                                                                        ),
+                                                                        _c(
+                                                                          "span",
+                                                                          _vm._l(
+                                                                            _vm
+                                                                              .selectStudentData
+                                                                              .trouble
+                                                                              .recent_trouble,
+                                                                            function(
+                                                                              data
+                                                                            ) {
+                                                                              return _c(
+                                                                                "div",
+                                                                                [
+                                                                                  _c(
+                                                                                    "h3",
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            }
+                                                                          )
+                                                                        )
+                                                                      ],
+                                                                      1
                                                                     )
-                                                                  }
-                                                                })
-                                                              : _vm._e()
-                                                          ],
-                                                          1
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .ada_Check
+                                                                  ? _c(
+                                                                      "v-tooltip",
+                                                                      {
+                                                                        attrs: {
+                                                                          top:
+                                                                            ""
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _c(
+                                                                          "v-btn",
+                                                                          {
+                                                                            attrs: {
+                                                                              slot:
+                                                                                "activator",
+                                                                              small:
+                                                                                "",
+                                                                              dark:
+                                                                                "",
+                                                                              depressed:
+                                                                                "",
+                                                                              round:
+                                                                                "",
+                                                                              color:
+                                                                                "light-green lighten-1"
+                                                                            },
+                                                                            slot:
+                                                                              "activator"
+                                                                          },
+                                                                          [
+                                                                            _vm._v(
+                                                                              "출석율 저조"
+                                                                            )
+                                                                          ]
+                                                                        ),
+                                                                        _vm._v(
+                                                                          " "
+                                                                        ),
+                                                                        _c(
+                                                                          "span",
+                                                                          _vm._l(
+                                                                            _vm
+                                                                              .selectStudentData
+                                                                              .trouble
+                                                                              .ada,
+                                                                            function(
+                                                                              data
+                                                                            ) {
+                                                                              return _c(
+                                                                                "div",
+                                                                                [
+                                                                                  _c(
+                                                                                    "h3",
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            }
+                                                                          )
+                                                                        )
+                                                                      ],
+                                                                      1
+                                                                    )
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _vm
+                                                                  .selectStudentData
+                                                                  .low_level_Check
+                                                                  ? _c(
+                                                                      "v-tooltip",
+                                                                      {
+                                                                        attrs: {
+                                                                          top:
+                                                                            ""
+                                                                        }
+                                                                      },
+                                                                      [
+                                                                        _c(
+                                                                          "v-btn",
+                                                                          {
+                                                                            attrs: {
+                                                                              slot:
+                                                                                "activator",
+                                                                              small:
+                                                                                "",
+                                                                              dark:
+                                                                                "",
+                                                                              depressed:
+                                                                                "",
+                                                                              round:
+                                                                                "",
+                                                                              color:
+                                                                                "light-green lighten-1"
+                                                                            },
+                                                                            slot:
+                                                                              "activator"
+                                                                          },
+                                                                          [
+                                                                            _vm._v(
+                                                                              "성적하위권"
+                                                                            )
+                                                                          ]
+                                                                        ),
+                                                                        _vm._v(
+                                                                          " "
+                                                                        ),
+                                                                        _c(
+                                                                          "span",
+                                                                          _vm._l(
+                                                                            _vm
+                                                                              .selectStudentData
+                                                                              .trouble
+                                                                              .low_level,
+                                                                            function(
+                                                                              data
+                                                                            ) {
+                                                                              return _c(
+                                                                                "div",
+                                                                                [
+                                                                                  _c(
+                                                                                    "h3",
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            }
+                                                                          )
+                                                                        )
+                                                                      ],
+                                                                      1
+                                                                    )
+                                                                  : _vm._e()
+                                                              ],
+                                                              1
+                                                            )
+                                                          ]
                                                         )
                                                       ],
                                                       1
@@ -82583,6 +83168,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c(
                                   "div",
+                                  { staticClass: "attendanceChartTypeSelect" },
                                   [
                                     _c(
                                       "v-flex",
@@ -82863,14 +83449,8 @@ var render = function() {
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "v-layout",
-                                              {
-                                                attrs: {
-                                                  row: "",
-                                                  wrap: "",
-                                                  "align-center": ""
-                                                }
-                                              },
+                                              "v-flex",
+                                              { attrs: { xs12: "" } },
                                               [
                                                 _vm.attendanceSelected.select ==
                                                 1
@@ -82878,15 +83458,26 @@ var render = function() {
                                                       "div",
                                                       [
                                                         _c("div", [
-                                                          _c("h2", [
-                                                            _vm._v(
-                                                              "등하교 시간 변화량 ( " +
-                                                                _vm._s(
-                                                                  _vm.setSign
-                                                                ) +
-                                                                " ) "
-                                                            )
-                                                          ])
+                                                          _c(
+                                                            "h2",
+                                                            {
+                                                              staticStyle: {
+                                                                "font-family":
+                                                                  "Gothic A1",
+                                                                "font-weight":
+                                                                  "lighter"
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "등하교 시간 변화량 ( " +
+                                                                  _vm._s(
+                                                                    _vm.setSign
+                                                                  ) +
+                                                                  " ) "
+                                                              )
+                                                            ]
+                                                          )
                                                         ]),
                                                         _vm._v(" "),
                                                         _c(
@@ -82914,15 +83505,26 @@ var render = function() {
                                                         "div",
                                                         [
                                                           _c("div", [
-                                                            _c("h2", [
-                                                              _vm._v(
-                                                                "출결 횟수 변화 ( " +
-                                                                  _vm._s(
-                                                                    _vm.setAtt
-                                                                  ) +
-                                                                  " )"
-                                                              )
-                                                            ])
+                                                            _c(
+                                                              "h2",
+                                                              {
+                                                                staticStyle: {
+                                                                  "font-family":
+                                                                    "Gothic A1",
+                                                                  "font-weight":
+                                                                    "lighter"
+                                                                }
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "출결 횟수 변화 ( " +
+                                                                    _vm._s(
+                                                                      _vm.setAtt
+                                                                    ) +
+                                                                    " )"
+                                                                )
+                                                              ]
+                                                            )
                                                           ]),
                                                           _vm._v(" "),
                                                           _c(
@@ -82981,6 +83583,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c(
                                   "div",
+                                  { staticClass: "attendanceChartTypeSelect" },
                                   [
                                     _c(
                                       "v-flex",
@@ -83002,7 +83605,7 @@ var render = function() {
                                               [
                                                 _c(
                                                   "v-flex",
-                                                  { attrs: { xs4: "" } },
+                                                  { attrs: { xs6: "" } },
                                                   [
                                                     _c("v-select", {
                                                       attrs: {
@@ -83030,7 +83633,7 @@ var render = function() {
                                                 _vm._v(" "),
                                                 _c(
                                                   "v-flex",
-                                                  { attrs: { xs4: "" } },
+                                                  { attrs: { xs6: "" } },
                                                   [
                                                     _c("v-select", {
                                                       attrs: {
@@ -83255,15 +83858,26 @@ var render = function() {
                                                               "div",
                                                               [
                                                                 _c("div", [
-                                                                  _c("h2", [
-                                                                    _vm._v(
-                                                                      "강의 취득 점수 ( " +
-                                                                        _vm._s(
-                                                                          _vm.setLec
-                                                                        ) +
-                                                                        " )"
-                                                                    )
-                                                                  ])
+                                                                  _c(
+                                                                    "h2",
+                                                                    {
+                                                                      staticStyle: {
+                                                                        "font-family":
+                                                                          "Gothic A1",
+                                                                        "font-weight":
+                                                                          "lighter"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "강의 취득 점수 ( " +
+                                                                          _vm._s(
+                                                                            _vm.setLec
+                                                                          ) +
+                                                                          " )"
+                                                                      )
+                                                                    ]
+                                                                  )
                                                                 ]),
                                                                 _vm._v(" "),
                                                                 _c(
@@ -83292,15 +83906,26 @@ var render = function() {
                                                               "div",
                                                               [
                                                                 _c("div", [
-                                                                  _c("h2", [
-                                                                    _vm._v(
-                                                                      "강의 석차백분율 ( " +
-                                                                        _vm._s(
-                                                                          _vm.setLec
-                                                                        ) +
-                                                                        " )"
-                                                                    )
-                                                                  ])
+                                                                  _c(
+                                                                    "h2",
+                                                                    {
+                                                                      staticStyle: {
+                                                                        "font-family":
+                                                                          "Gothic A1",
+                                                                        "font-weight":
+                                                                          "lighter"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "강의 석차백분율 ( " +
+                                                                          _vm._s(
+                                                                            _vm.setLec
+                                                                          ) +
+                                                                          " )"
+                                                                      )
+                                                                    ]
+                                                                  )
                                                                 ]),
                                                                 _vm._v(" "),
                                                                 _c(
@@ -83329,15 +83954,26 @@ var render = function() {
                                                               "div",
                                                               [
                                                                 _c("div", [
-                                                                  _c("h2", [
-                                                                    _vm._v(
-                                                                      "종목별 취득 점수 ( " +
-                                                                        _vm._s(
-                                                                          _vm.setSub
-                                                                        ) +
-                                                                        " )"
-                                                                    )
-                                                                  ])
+                                                                  _c(
+                                                                    "h2",
+                                                                    {
+                                                                      staticStyle: {
+                                                                        "font-family":
+                                                                          "Gothic A1",
+                                                                        "font-weight":
+                                                                          "lighter"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "종목별 취득 점수 ( " +
+                                                                          _vm._s(
+                                                                            _vm.setSub
+                                                                          ) +
+                                                                          " )"
+                                                                      )
+                                                                    ]
+                                                                  )
                                                                 ]),
                                                                 _vm._v(" "),
                                                                 _c(
@@ -83366,15 +84002,26 @@ var render = function() {
                                                               "div",
                                                               [
                                                                 _c("div", [
-                                                                  _c("h2", [
-                                                                    _vm._v(
-                                                                      "종목별 석차백분율 ( " +
-                                                                        _vm._s(
-                                                                          _vm.setSub
-                                                                        ) +
-                                                                        " )"
-                                                                    )
-                                                                  ])
+                                                                  _c(
+                                                                    "h2",
+                                                                    {
+                                                                      staticStyle: {
+                                                                        "font-family":
+                                                                          "Gothic A1",
+                                                                        "font-weight":
+                                                                          "lighter"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "종목별 석차백분율 ( " +
+                                                                          _vm._s(
+                                                                            _vm.setSub
+                                                                          ) +
+                                                                          " )"
+                                                                      )
+                                                                    ]
+                                                                  )
                                                                 ]),
                                                                 _vm._v(" "),
                                                                 _c(
@@ -83409,11 +84056,22 @@ var render = function() {
                                                       },
                                                       [
                                                         _c("div", [
-                                                          _c("h2", [
-                                                            _vm._v(
-                                                              "전공&일본어 수준"
-                                                            )
-                                                          ])
+                                                          _c(
+                                                            "h2",
+                                                            {
+                                                              staticStyle: {
+                                                                "font-family":
+                                                                  "Gothic A1",
+                                                                "font-weight":
+                                                                  "lighter"
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "전공&일본어 수준"
+                                                              )
+                                                            ]
+                                                          )
                                                         ]),
                                                         _vm._v(" "),
                                                         _c(
@@ -83568,7 +84226,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n\r\n/*-- 헤더 영역 --*/\n.categoryAnalyticSetting {\r\n    color: #FFFFFF;\r\n    font-size: 40px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\r\n    position: relative;\r\n    left: 90px;\n}\r\n\r\n/*-- 출석 분류 기준 설정 카드 --*/\n.attendanceSettingCard {\r\n  position: relative;\r\n  bottom: 380px;\r\n  border-radius: 0.2975rem;\r\n  margin: 20px 0 0 0;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\n}\n.attendanceSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 43px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(165, 180, 210)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));\n}\n.periodBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.period {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.frequency {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 85px;\r\n  bottom: 56px;\r\n  position: relative;\n}\n.frequency_2 {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 230px;\r\n  bottom: 55px;\r\n  position: relative;\n}\r\n\r\n/*-- 학업 분류 기준 설정 카드 --*/\n.gradeSettingCard {\r\n  position: relative;\r\n  bottom: 225px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n  position: relative;\r\n  z-index: 1;\n}\n.gradeSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 143px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(165, 180, 210)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));\n}\n.standardBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.standard {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.lowRankBox {\r\n  position: relative;\r\n  bottom: 20px;\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.lowRankTitle {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\r\n   position: relative;\r\n   right: 35px;\n}\n.lowRankText {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\n}\n.recentProblemsBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.recentProblemsTitle {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    position: relative;\r\n    right: 35px;\n}\n.recentProblemsText {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\n.recentProblemsText_2 {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\r\n\r\n\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n\r\n/*-- 헤더 영역 --*/\n.categoryAnalyticSetting {\r\n    color: #FFFFFF;\r\n    font-size: 40px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\r\n    position: relative;\r\n    left: 90px;\n}\r\n\r\n/*-- 출석 분류 기준 설정 카드 --*/\n.attendanceSettingCard {\r\n  position: relative;\r\n  bottom: 380px;\r\n  border-radius: 0.2975rem;\r\n  margin: 20px 0 0 0;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\n}\n.attendanceSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 43px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(132, 159, 213)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(132, 159, 213), rgb(61, 96, 241));\n}\n.periodBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.period {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.frequency {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 85px;\r\n  bottom: 56px;\r\n  position: relative;\n}\n.frequency_2 {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 230px;\r\n  bottom: 55px;\r\n  position: relative;\n}\r\n\r\n/*-- 학업 분류 기준 설정 카드 --*/\n.gradeSettingCard {\r\n  position: relative;\r\n  bottom: 225px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n  position: relative;\r\n  z-index: 1;\n}\n.gradeSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 143px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(132, 159, 213)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(132, 159, 213), rgb(61, 96, 241));\n}\n.standardBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.standard {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.lowRankBox {\r\n  position: relative;\r\n  bottom: 20px;\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.lowRankTitle {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\r\n   position: relative;\r\n   right: 35px;\n}\n.lowRankText {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\n}\n.recentProblemsBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.recentProblemsTitle {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    position: relative;\r\n    right: 35px;\n}\n.recentProblemsText {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\n.recentProblemsText_2 {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\r\n\r\n\r\n", ""]);
 
 // exports
 
@@ -85256,13 +85914,20 @@ var render = function() {
                               _c(
                                 "v-card-text",
                                 [
-                                  _c("v-avatar", { attrs: { size: "120px" } }, [
-                                    _c("img", {
-                                      attrs: {
-                                        src: _vm.userInfoData[0].photo_url
-                                      }
-                                    })
-                                  ])
+                                  _c(
+                                    "v-avatar",
+                                    {
+                                      staticClass: "elevation-5",
+                                      attrs: { size: "120px" }
+                                    },
+                                    [
+                                      _c("img", {
+                                        attrs: {
+                                          src: _vm.userInfoData[0].photo_url
+                                        }
+                                      })
+                                    ]
+                                  )
                                 ],
                                 1
                               )
@@ -85964,7 +86629,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
           std_id: this.$router.history.current.query.getInfoIdType
         }
       }).then(function (response) {
-        console.log(response.data.message);
         _this3.createAttendanceDoubleLineValue(response.data.message);
 
         var datas = [];
@@ -86023,16 +86687,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
         labelData.push(value[start].reg_date);
 
         /* 결석은 패스 */
-        if (value[start].lateness_flag != "good") {
+        if (value[start].lateness_flag != 'good') {
           /* 지각 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
-        } else if (value[start].absence_flag == "good") {
+        } else {
           /* 등교 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
         }
-
         /* 하교타입 확인 : 결석일 경우 미확인 */
-        if (value[start].absence_flag == "good") {
+        if (value[start].absence_flag == 'good') {
           switch (value[start].early_leave_flag) {
             case 'good':
               /* 하교 */
@@ -86061,6 +86724,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
       this.attendanceLabelData = labels;
     },
     cutTime: function cutTime(value, setting) {
+      if (value == null) return null;
 
       /* 출석 시작 기준 값 */
       var checkInStart = '0830';
@@ -86239,7 +86903,7 @@ var render = function() {
                                     fn: function(props) {
                                       return _c(
                                         "v-flex",
-                                        { attrs: { xs6: "", md6: "" } },
+                                        {},
                                         [
                                           _c(
                                             "v-card",

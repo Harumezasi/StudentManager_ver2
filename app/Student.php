@@ -445,7 +445,7 @@ class Student extends Model
             $totalTime += $detail->lateness_time;
         }
 
-        return number_format($totalTime / $attendances->count(), 0, '.', '');
+        return number_format($attendances()->count() > 0 ? $totalTime / $attendances->count() : 0, 0, '.', '');
     }
 
     // (지각|조퇴|결석) 주요 사유 조회
