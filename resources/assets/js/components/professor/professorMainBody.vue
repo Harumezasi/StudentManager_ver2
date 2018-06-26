@@ -3,7 +3,7 @@
 
     <div>
       <div class="header text-center">
-        <v-parallax class="mainImage" src="/images/mainImage.jpg" height="420">
+        <v-parallax  src="/images/main.png" height="480">
           <h2 class = "mainTitle">GRIT</h2>
           <h2 class = "mainSubTitle">
             <span>Student Management Service</span>
@@ -22,14 +22,14 @@
                 <v-container grid-list-xl>
                   <v-layout row wrap align-center>
 
-                    <v-flex xs12 md3>
-                      <v-icon color = "amber" x-large>alarm</v-icon>
+                    <v-flex xs12 md2>
+                      <v-icon class = "iconStyle" color = "light-blue darken-2" x-large>alarm</v-icon>
                     </v-flex>
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md8>
                       <h1 class = "firstCard">금일 지각 학생</h1>
                     </v-flex>
-                    <v-flex xs12 md3>
-                      <h2>{{ latenessStudentCount }} 명 </h2>
+                    <v-flex xs12 md2>
+                      <h2 style="font-family:Montserrat; position: relative; right: 20px;color:rgb(88, 86, 205)">{{ latenessStudentCount }}/48 </h2>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -43,12 +43,16 @@
                     <v-list-tile :key="datas.index" avatar @click="">
                       <!-- 학생 사진 -->
                       <v-list-tile-avatar>
-                        <img :src="datas.photo_url">
+                        <img :src="datas.photo_url" class = "elevation-2">
                       </v-list-tile-avatar>
                       <v-list-tile-content>
                         <!-- 학생의 이름과 학번 -->
                         <v-list-tile-title v-html="datas.name"></v-list-tile-title>
                         <v-list-tile-sub-title v-html="datas.id"></v-list-tile-sub-title>
+                      </v-list-tile-content>
+                      <v-list-tile-content>
+                        <!-- 지각 시간 -->
+                        <v-list-tile-sub-title v-html="datas.sign_in_time"></v-list-tile-sub-title>
                       </v-list-tile-content>
                     </v-list-tile>
                   </template>
@@ -62,14 +66,14 @@
               <v-flex xs12>
                 <v-container grid-list-xl>
                   <v-layout row wrap align-center>
-                    <v-flex xs12 md3>
-                      <v-icon color = "red" x-large>highlight_off</v-icon>
+                    <v-flex xs12 md2>
+                      <v-icon class = "iconStyle" color = "light-blue darken-2" x-large>highlight_off</v-icon>
                     </v-flex>
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md8>
                       <h1 class = "firstCard">금일 결석 학생</h1>
                     </v-flex>
-                    <v-flex xs12 md3>
-                      <h2>{{ absenceStudentCount }} 명 </h2>
+                    <v-flex xs12 md2>
+                      <h2 style="font-family:Montserrat;position: relative; right: 20px;color:rgb(88, 86, 205)">{{ absenceStudentCount }}/48 </h2>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -83,7 +87,7 @@
                    <v-list-tile :key="datas.index" avatar @click="">
                      <!-- 학생 사진 -->
                      <v-list-tile-avatar>
-                       <img :src="datas.photo">
+                       <img :src="datas.photo_url" class = "elevation-2">
                      </v-list-tile-avatar>
                      <v-list-tile-content>
                        <!-- 학생의 이름과 학번 -->
@@ -105,7 +109,7 @@
                   <v-layout row wrap align-center>
 
                     <v-flex xs12 md3>
-                      <v-icon color = "light-green " x-large>notifications_none</v-icon>
+                      <v-icon color = "light-blue darken-2" x-large>notifications_none</v-icon>
                     </v-flex>
                     <v-flex xs12 md9>
                       <h1 class = "firstCard">최근 알림</h1>
@@ -114,11 +118,17 @@
                 </v-container>
               </v-flex>
               <v-card-text>
-                <v-chip color="blue lighten-1" text-color="white">
+                <v-chip class = "elevation-4" color="cyan lighten-1" text-color="white">
                   '박효동' 학생이 관심학생으로 지정되었습니다.
                 </v-chip>
-                <v-chip color="yellow darken-3" text-color="white">
+                <v-chip class = "elevation-4" color="blue accent-4" text-color="white">
                    '이승민' 학생이 관심학생으로 지정되었습니다.
+                </v-chip>
+                <v-chip class = "elevation-4" color="cyan lighten-1" text-color="white">
+                  '황금비' 학생이 관심학생으로 지정되었습니다.
+                </v-chip>
+                <v-chip class = "elevation-4" color="blue accent-4" text-color="white">
+                   '이하연' 학생이 관심학생으로 지정되었습니다.
                 </v-chip>
               </v-card-text>
             </v-card>
@@ -177,22 +187,17 @@ export default {
 
 </script>
 <style>
+
 .studentLists {
   overflow-y: scroll;
   max-height: 240px;
 }
 
-
-/*-- 메인 이미지 --*/
-.mainImage {
-  max-width: 100%;
-  height: auto;
-}
 .firstLineCard {
   position: relative;
-  bottom: 45px;
+  bottom: 120px;
   border-radius: 0.6975rem;
-  box-shadow: 0 3px 10px 0 rgba(161, 161, 161, 0.36);
+  box-shadow: 0 2px 10px 3px rgba(161, 161, 161, 0.36);
   min-height: 370px;
   max-height: 370px;
 }
@@ -201,8 +206,12 @@ export default {
   font-weight: lighter;
   color: rgb(61, 61, 61);
   position: relative;
-  right: 30px;
+  right: 20px;
   bottom: 3px;
+}
+.iconStyle {
+  position: relative;
+  left: -15px;
 }
 
 .mainTitle {
@@ -214,7 +223,7 @@ export default {
   font-weight: lighter;
   position: relative;
   left: 50px;
-  bottom: 10px;
+  bottom: 25px;
   position: relative;
 }
 .mainSubTitle {
@@ -225,7 +234,7 @@ export default {
   font-weight: lighter;
   position: relative;
   left: 50px;
-  bottom: 10px;
+  bottom: 25px;
   position: relative;
 }
 
@@ -265,5 +274,27 @@ export default {
     100% {opacity:0;width:355px;}
 }
 
+/* 스크롤 */
+/* width */
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: rgb(208, 208, 208);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(185, 199, 250);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #5491f7;
+}
 
 </style>

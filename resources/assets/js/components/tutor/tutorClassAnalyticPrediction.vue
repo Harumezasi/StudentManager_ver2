@@ -2,7 +2,9 @@
   <div>
     <!-- Header -->
     <v-parallax class = "mainImage" src="/images/analyticPredition.jpg" height="300">
+      <h1 class="categoryClassAnalytic">Class Analytic Predition</h1>
     </v-parallax>
+
     <!-- 기간 설정 영역 -->
         <v-dialog v-model="dialog" width="750px">
           <v-card>
@@ -63,18 +65,27 @@
         <v-flex xs12 md6>
           <v-card class = "classAttendanceCartBox">
             <v-card-text>
-              <h2 class = "chartTitle">출결 정보 분석
-                <v-btn v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
-                  <v-btn v-else @click.stop="dialog = !dialog">
-                    {{ this.periodSelected }}
-                    ( {{ this.startDate }} ~ {{ this.endDate }})
-                  </v-btn>
-              </h2>
+              <v-flex xs12>
+                <v-layout row wrap align-center>
+                  <v-flex xs12 md1>
+                    <v-icon color = "light-blue darken-2" large>pie_chart</v-icon>
+                  </v-flex>
+                  <v-flex xs12 md11>
+                    <h2 class = "chartTitle">출결 정보 분석
+                      <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
+                        <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
+                          {{ this.periodSelected }}
+                          ( {{ this.startDate }} ~ {{ this.endDate }})
+                      </v-btn>
+                    </h2>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
             </v-card-text>
             <v-flex xs12>
               <v-container grid-list-xl>
                 <v-layout row wrap align-center>
-                    <v-flex xs4>
+                    <v-flex xs5>
                       <v-select
                         :items="attendance"
                         v-model="attSelect"
@@ -82,20 +93,37 @@
                         single-line
                       ></v-select>
                     </v-flex>
-                    <v-flex xs8 v-if="attSelect.selected != 3">
-                      <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('lateness')">지각</v-btn>
-                      <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('absence')">결석</v-btn>
-                      <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('early_leave')">조퇴</v-btn>
+                    <v-flex xs7 v-if="attSelect.selected != 3">
+                      <v-flex xs12>
+                        <v-container style="position:relative; right: 30px;">
+                          <v-layout row wrap align-center>
+                            <v-flex xs12 md4>
+                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('lateness')">지각</v-btn>
+                            </v-flex>
+                            <v-flex xs12 md4>
+                              <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('absence')">결석</v-btn>
+                            </v-flex>
+                            <v-flex xs12 md4>
+                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('early_leave')">조퇴</v-btn>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+                      </v-flex>
                     </v-flex>
                 </v-layout>
-                <v-layout row wrap align-center>
-                    <div v-if="attSelect.selected != 3"><h2> {{ this.attSelect.text }} ( {{ this.attendanceChartStat }} )</h2></div>
-                </v-layout row wrap align-center>
-                <v-layout row wrap align-center>
-                    <pie-chart v-if="attSelect.selected == 1" :width="500" :data="attendanceData" :backgroundColor="attendanceColor" :labels="attendanceLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></pie-chart>
-                    <line-chart-lateness v-if="attSelect.selected == 2" :width="500" :data="attendanceLineData" :borderColor="attendanceLineColor" :labels="attendanceLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-lateness>
-                    <line-chart-holiday v-if="attSelect.selected == 3" :width="500" :data="holidayData" :labels="holidayLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-holiday>
-                </v-layout>
+                <v-flex xs12>
+                  <v-container>
+                    <v-layout row wrap align-center>
+                      <v-flex xs12 md12>
+                          <div v-if="attSelect.selected != 3"><h2 style="font-family: Gothic A1;font-weight: lighter;"> {{ this.attSelect.text }} ( {{ this.attendanceChartStat }} )</h2></div>
+                          <pie-chart v-if="attSelect.selected == 1" :width="500" :data="attendanceData" :backgroundColor="attendanceColor" :labels="attendanceLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></pie-chart>
+                          <line-chart-lateness v-if="attSelect.selected == 2" :width="500" :data="attendanceLineData" :borderColor="attendanceLineColor" :labels="attendanceLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-lateness>
+                          <line-chart-holiday v-if="attSelect.selected == 3" :width="500" :data="holidayData" :labels="holidayLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></line-chart-holiday>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-flex>
+
               </v-container>
             </v-flex>
           </v-card>
@@ -105,18 +133,27 @@
         <v-flex xs12 md6>
           <v-card class = "classGradeCartBox">
             <v-card-text>
-              <h2 class = "chartTitle">학업 정보 분석
-                <v-btn v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
-                  <v-btn v-else @click.stop="dialog = !dialog">
-                    {{ this.periodSelected }}
-                    ( {{ this.startDate }} ~ {{ this.endDate }})
-                  </v-btn>
-              </h2>
+              <v-flex xs12>
+                <v-layout row wrap align-center>
+                  <v-flex xs12 md1>
+                    <v-icon color = "light-blue darken-2" large>bar_chart</v-icon>
+                  </v-flex>
+                  <v-flex xs12 md11>
+                    <h2 class = "chartTitle">학업 정보 분석
+                      <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
+                        <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
+                          {{ this.periodSelected }}
+                          ( {{ this.startDate }} ~ {{ this.endDate }})
+                        </v-btn>
+                    </h2>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
             </v-card-text>
             <v-flex xs12>
               <v-container grid-list-xl>
                 <v-layout row wrap align-center>
-                    <v-flex xs5>
+                    <v-flex xs6>
                       <v-select
                         :items="subjectList"
                         v-model="subjectSelect"
@@ -124,7 +161,7 @@
                         single-line
                       ></v-select>
                     </v-flex>
-                    <v-flex xs5>
+                    <v-flex xs6>
                         <v-select
                           :items="subjectsList"
                           v-model="subjectsSelect"
@@ -133,18 +170,20 @@
                         ></v-select>
                     </v-flex>
                 </v-layout>
-
-                  <v-layout row wrap align-center>
-                    <v-card>
-                      <div><h2>취득점수 분포 범위 ( {{ this.studyChartStat }} )</h2></div>
-                      <bar-plot-chart :datasets="plotDataSets" :labels="plotLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-plot-chart>
-                    </v-card>
-                    <v-card>
-                      <div><h2>취득점수 분포도 ( {{ this.studysChartStat }} )</h2></div>
-                      <bar-chart :data="gradeData" :labels="gradeLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-chart>
-                    </v-card>
-                  </v-layout>
-
+                <v-flex xs12>
+                  <v-container>
+                    <v-layout row wrap align-center>
+                      <v-flex xs12 md6>
+                        <div><h2 style="font-family: Gothic A1;font-weight: lighter;">취득점수 분포 범위 ( {{ this.studyChartStat }} )</h2></div>
+                        <bar-plot-chart :datasets="plotDataSets" :labels="plotLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-plot-chart>
+                      </v-flex>
+                      <v-flex xs12 md6>
+                        <div><h2 style="font-family: Gothic A1;font-weight: lighter;">취득점수 분포도 ( {{ this.studysChartStat }} )</h2></div>
+                        <bar-chart :data="gradeData" :labels="gradeLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-chart>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-flex>
               </v-container>
             </v-flex>
           </v-card>
@@ -159,32 +198,26 @@
 
 <style>
 /*-- 헤더 영역 --*/
-.panel-header {
-  height: 100px;
-  padding-top: 70px;
-  padding-bottom: 45px;
-  background: #141E30;
-  /* fallback for old browsers */
-  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
-  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
+.categoryClassAnalytic {
+  color: #FFFFFF;
+  font-size: 30px;
   position: relative;
-  overflow: hidden;
+  font-family: "Montserrat";
+  font-weight: Bold;
+  position: relative;
+  left: 38px;
+  bottom: 60px;
 }
-.panel-header-sm {
-  height: 135px;
-}
-.panel-header-lg {
-  height: 380px;
-}
+
 
 .classAttendanceCartBox {
   position: relative;
-  bottom: 57px;
+  bottom: 212px;
   right: 20px;
-  border-radius: 0.2975rem;
-  box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);
+  border-radius: 0.7975rem;
+  box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);
   min-height: 700px;
-  width: 580px;
+  width: 470px;
 }
 .chartTitle {
   font-family: "Nanum Gothic Coding";
@@ -193,12 +226,12 @@
 }
 .classGradeCartBox {
   position: relative;
-  bottom: 57px;
-  right: 200px;
-  border-radius: 0.2975rem;
-  box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);
-  min-height: 700px;
-  width: 900px;
+  bottom: 210px;
+  right: 117px;
+  border-radius: 0.7975rem;
+  box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);
+  min-height: 640px;
+  width: 700px;
 }
 
 </style>
@@ -291,7 +324,7 @@ Vue.component('line-chart-lateness', {
             fill: false,
             data: this.attendanceLineData
           }
-        ]
+        ],
       },
       /* 옵션이 들어갈 영역 */
       {
@@ -409,7 +442,7 @@ Vue.component('bar-plot-chart', {
             display: false
         },
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
       }
     )
   }
@@ -452,8 +485,8 @@ Vue.component('bar-chart', {
         datasets:[
           {
             label : "취득점수 분포도",
-            backgroundColor : false,
-            borderColor: '#f6c202',
+            backgroundColor : '#4867fb',
+            borderColor: '#3c0cc6',
             fill: false,
             data: this.gradeData
           },
@@ -789,9 +822,9 @@ export default {
 
           for(let start = 1; start <= 11; start++){
             if(setting[0]['red'].indexOf(start) != -1){
-              data.push({ data : [], backgroundColor : "#ff0000" });
+              data.push({ data : [], backgroundColor : "#ff2d2d" });
             }else if(setting[0]['blue'].indexOf(start) != -1){
-              data.push({ data : [], backgroundColor : "#0080ff" });
+              data.push({ data : [], backgroundColor : "#8f96ff" });
             }else if(setting[0]['none'].indexOf(start) != -1){
               data.push({ fill : false, data : []});
             }

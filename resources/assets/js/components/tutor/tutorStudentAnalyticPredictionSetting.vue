@@ -397,7 +397,7 @@ export default {
   left: 43px;
   bottom: 130px;
   box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);
-  background: linear-gradient(-30deg, rgb(70, 90, 145), rgb(154, 173, 249));
+  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));
 
 }
 .periodBox {
@@ -444,7 +444,7 @@ export default {
   left: 143px;
   bottom: 130px;
   box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);
-  background: linear-gradient(-60deg, rgb(70, 90, 145), rgb(154, 173, 249));
+  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));
 }
 .standardBox {
   border-bottom: 1px solid;

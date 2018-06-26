@@ -57,14 +57,18 @@
         </v-card-actions>
      </v-card>
    </v-dialog>
+
+
     <!-- 학생 목록 영역-->
+    <div class="studentPageTopDiv">
     <v-flex xs12>
       <v-container grid-list-xl>
         <v-layout row wrap align-center>
-          <v-flex xs12 md4>
-            <v-card class = "studentListCard">
+          <v-flex xs4 md4>
+            <div class="studentSelectedDiv">
+            <v-card>
               <v-card-text>
-                <h2 class = "studentListTitle">학생목록
+                <h2>학생목록
                   <v-btn v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
                   <v-btn v-else @click.stop="dialog = !dialog">
                     {{ this.periodSelected }}
@@ -111,15 +115,17 @@
                      </div>
                    </v-list>
                  </v-card>
+                 </div>
                </v-flex>
 
                <!-- 출결 관려 차트 영역 -->
-               <v-flex xs12 md8>
-                 <v-card class = "chartCard">
+               <v-flex xs8 md8>
+                 <div class="studentChartDiv">
+                 <v-card>
                     <v-card-text>
                       <h2 class="chartTitle">학생 분석 예측</h2>
                     </v-card-text>
-                    <div class = "studentInfoBox">
+                    <div>
                       <v-flex xs12>
                         <v-container grid-list-xl>
                           <v-layout row wrap align-center v-if="btnLock">
@@ -170,7 +176,7 @@
                     </div>
 
                     <!-- 학업 관련 차트 영역-->
-                    <div class = "attendanceChartTypeSelect">
+                    <div>
                       <v-flex xs12>
                         <v-container grid-list-xl>
                           <v-layout row wrap align-center>
@@ -221,7 +227,7 @@
                       </v-flex>
                     </div>
 
-                    <div class = "attendanceChartTypeSelect">
+                    <div>
                       <v-flex xs12>
                         <v-container grid-list-xl>
                           <v-layout row wrap align-center>
@@ -288,15 +294,32 @@
                       </v-flex>
                     </div>
                  </v-card>
+               </div>
                </v-flex>
-        </v-layout>
-      </v-container>
-    </v-flex>
-
+          </v-layout>
+        </v-container>
+      </v-flex>
+    </div>
   </div>
 </template>
 
 <style>
+.studentPageTopDiv {
+  position : relative;
+  bottom : 120px;
+}
+
+.studentChartDiv {
+  margin: 25px;
+  height: 1500px;
+}
+
+.studentSelectedDiv {
+  margin: 25px;
+  height: 1500px;
+}
+
+
 /*-- 헤더 영역 --*/
 .panel-header {
   height: 100px;
@@ -1051,6 +1074,7 @@ export default {
           this.$set(this.studnetInfo[data], 'number', data)
         }
         this.progressStudent = false;
+        this.selectStudent(this.studnetInfo[0])
       }).catch((error) => {
         console.log("getStuInfo Err : " + error);
         alert('불러오기에 실패했습니다.')

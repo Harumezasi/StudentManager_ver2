@@ -48,6 +48,7 @@
       :items="gradeDatas"
       :pagination.sync="pagination"
       :search="search"
+      id = "fontSetting"
       >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.std_id }}</td>
@@ -66,7 +67,7 @@
             {{ perfect_score }}
           </td>
           <td>
-            <v-btn @click="updateGradeData(props.item.position)">성적 수정</v-btn>
+            <v-btn color = "blue accent-2" style="color:white" @click="updateGradeData(props.item.position)">성적 수정</v-btn>
           </td>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -80,14 +81,17 @@
 </template>
 
 <style>
-/*-- 메뉴 부분 ( 출결관리, 학생 관리 등 )--*/
-
 .menuBox {
   margin: 10px 0 0 0;
 }
 
 .gradeTable {
   margin: 70px 0 0 0;
+}
+
+#fontSetting td {
+  font-size: 20px;
+  font-family: "Gothic A1";
 }
 </style>
 
@@ -105,21 +109,17 @@ export default {
     headers: [{
         text: '학번',
         value: 'std_id',
-        align: 'center'
       },
       {
         text: '이름',
         value: 'name',
-        align: 'center'
       },
       {
         text: '성적',
         value: 'score',
-        align: 'center'
       },
       {
         text: '만점',
-        align: 'center'
       },
       {}
     ],

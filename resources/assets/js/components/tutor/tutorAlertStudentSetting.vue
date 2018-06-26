@@ -1,14 +1,10 @@
 <template>
   <div class = "notificationsPage">
 
-      <div class="panel-header">
-        <div class="header text-center">
-          <v-layout class = "imgTitle" column align-center justify-center>
-            <h1 class="category1">Attendance Management</h1>
-            <p class="category">Notification Settings</p>
-          </v-layout>
-        </div>
-      </div>
+      <v-parallax src="/images/studentManagement.png" height="300">
+        <h1 class="category1">Notification Settings</h1>
+      </v-parallax>
+
 
     <!-- 알림추가 영역 -->
 
@@ -55,7 +51,7 @@
 
             <!-- 알림 추가 버튼 -->
             <v-flex xs2 text-xs-center>
-              <v-btn color="primary" v-on:click="setAlert()" class="fontSetting">추가</v-btn>
+              <v-btn color = "blue accent-2" style="color:white;" v-on:click="setAlert()" class="fontSetting">추가</v-btn>
             </v-flex>
           </v-layout>
         </v-container>
@@ -100,12 +96,14 @@ body {
 }
 
 .fontSetting {
-  font-size: 25px;
+  font-size: 18px;
+  font-weight: lighter;
   font-style: 'Gothic A1';
 }
 
 #fontSetting td {
-  font-size: 25px;
+  font-size: 18px;
+  font-weight: lighter;
   font-style: 'Gothic A1';
 }
 
@@ -115,46 +113,25 @@ body {
 
 .category1 {
     color: #FFFFFF;
-    font-size: 30px;
+    font-size: 40px;
     font-family: "Montserrat";
     font-weight: Bold;
-}
-.category {
-    max-width: 600px;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0 auto;
-    font-size: 17px;
-    font-family: "Montserrat"
-}
-.panel-header {
-  height: 200px;
-  padding-top: 70px;
-  padding-bottom: 45px;
-  background: #141E30;
-  /* fallback for old browsers */
-  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
-  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
-  position: relative;
-  overflow: hidden;
-}
-.panel-header-sm {
-  height: 135px;
+    position: relative;
+    left: 50px;
+    top: 40px;
 }
 
-.panel-header-lg {
-  height: 380px;
-}
 .notificationsAddBox {
   border-radius: 0.2975rem;
   position: relative;
   z-index: 1;
-  bottom: 50px;
+  bottom: 100px;
 }
 .notificationsConfirmBox {
   border-radius: 0.2975rem;
   position: relative;
   z-index: 2;
-  bottom: 60px;
+  bottom: 120px;
 }
 .cardInsideTitle {
   font-family: "Nanum Gothic Coding";

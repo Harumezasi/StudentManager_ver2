@@ -70629,7 +70629,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.studentLists {\r\n  overflow-y: scroll;\r\n  max-height: 240px;\n}\r\n\r\n\r\n/*-- 메인 이미지 --*/\n.mainImage {\r\n  max-width: 100%;\r\n  height: auto;\n}\n.firstLineCard {\r\n  position: relative;\r\n  bottom: 45px;\r\n  border-radius: 0.6975rem;\r\n  -webkit-box-shadow: 0 3px 10px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 3px 10px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 370px;\r\n  max-height: 370px;\n}\n.firstCard {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: rgb(61, 61, 61);\r\n  position: relative;\r\n  right: 30px;\r\n  bottom: 3px;\n}\n.mainTitle {\r\n  display:inline-block;\r\n  white-space:nowrap;\r\n  font-family: \"Montserrat\";\r\n  font-size: 70px;\r\n  font-style: italic;\r\n  font-weight: lighter;\r\n  position: relative;\r\n  left: 50px;\r\n  bottom: 10px;\r\n  position: relative;\n}\n.mainSubTitle {\r\n  display:inline-block;\r\n  white-space:nowrap;\r\n  font-family: \"Montserrat\";\r\n  font-size: 50px;\r\n  font-weight: lighter;\r\n  position: relative;\r\n  left: 50px;\r\n  bottom: 10px;\r\n  position: relative;\n}\n.mainTitle:first-of-type {\r\n  -webkit-animation: showup 10s infinite;\r\n          animation: showup 10s infinite;\n}\n.mainSubTitle:last-of-type {\r\n  width:0px;\r\n  -webkit-animation: reveal 10s infinite;\r\n          animation: reveal 10s infinite;\n}\n.mainSubTitle:last-of-type span {\r\n  margin-left:-355px;\r\n  -webkit-animation: slidein 10s infinite;\r\n          animation: slidein 10s infinite;\n}\n@-webkit-keyframes showup {\n0% {opacity:0;\n}\n20% {opacity:1;\n}\n80% {opacity:1;\n}\n100% {opacity:0;\n}\n}\n@keyframes showup {\n0% {opacity:0;\n}\n20% {opacity:1;\n}\n80% {opacity:1;\n}\n100% {opacity:0;\n}\n}\n@-webkit-keyframes slidein {\n0% { margin-left:-1000px;\n}\n20% { margin-left:-1000px;\n}\n35% { margin-left:0px;\n}\n100% { margin-left:0px;\n}\n}\n@keyframes slidein {\n0% { margin-left:-1000px;\n}\n20% { margin-left:-1000px;\n}\n35% { margin-left:0px;\n}\n100% { margin-left:0px;\n}\n}\n@-webkit-keyframes reveal {\n0% {opacity:0;width:0px;\n}\n20% {opacity:1;width:0px;\n}\n30% {width:355px;\n}\n80% {opacity:1;\n}\n100% {opacity:0;width:355px;\n}\n}\n@keyframes reveal {\n0% {opacity:0;width:0px;\n}\n20% {opacity:1;width:0px;\n}\n30% {width:355px;\n}\n80% {opacity:1;\n}\n100% {opacity:0;width:355px;\n}\n}\r\n\r\n\r\n", ""]);
+exports.push([module.i, "\n.studentLists {\r\n  overflow-y: scroll;\r\n  max-height: 240px;\n}\n.firstLineCard {\r\n  position: relative;\r\n  bottom: 120px;\r\n  border-radius: 0.6975rem;\r\n  -webkit-box-shadow: 0 2px 10px 3px rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 10px 3px rgba(161, 161, 161, 0.36);\r\n  min-height: 370px;\r\n  max-height: 370px;\n}\n.firstCard {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: rgb(61, 61, 61);\r\n  position: relative;\r\n  right: 20px;\r\n  bottom: 3px;\n}\n.iconStyle {\r\n  position: relative;\r\n  left: -15px;\n}\n.mainTitle {\r\n  display:inline-block;\r\n  white-space:nowrap;\r\n  font-family: \"Montserrat\";\r\n  font-size: 70px;\r\n  font-style: italic;\r\n  font-weight: lighter;\r\n  position: relative;\r\n  left: 50px;\r\n  bottom: 25px;\r\n  position: relative;\n}\n.mainSubTitle {\r\n  display:inline-block;\r\n  white-space:nowrap;\r\n  font-family: \"Montserrat\";\r\n  font-size: 50px;\r\n  font-weight: lighter;\r\n  position: relative;\r\n  left: 50px;\r\n  bottom: 25px;\r\n  position: relative;\n}\n.mainTitle:first-of-type {\r\n  -webkit-animation: showup 10s infinite;\r\n          animation: showup 10s infinite;\n}\n.mainSubTitle:last-of-type {\r\n  width:0px;\r\n  -webkit-animation: reveal 10s infinite;\r\n          animation: reveal 10s infinite;\n}\n.mainSubTitle:last-of-type span {\r\n  margin-left:-355px;\r\n  -webkit-animation: slidein 10s infinite;\r\n          animation: slidein 10s infinite;\n}\n@-webkit-keyframes showup {\n0% {opacity:0;\n}\n20% {opacity:1;\n}\n80% {opacity:1;\n}\n100% {opacity:0;\n}\n}\n@keyframes showup {\n0% {opacity:0;\n}\n20% {opacity:1;\n}\n80% {opacity:1;\n}\n100% {opacity:0;\n}\n}\n@-webkit-keyframes slidein {\n0% { margin-left:-1000px;\n}\n20% { margin-left:-1000px;\n}\n35% { margin-left:0px;\n}\n100% { margin-left:0px;\n}\n}\n@keyframes slidein {\n0% { margin-left:-1000px;\n}\n20% { margin-left:-1000px;\n}\n35% { margin-left:0px;\n}\n100% { margin-left:0px;\n}\n}\n@-webkit-keyframes reveal {\n0% {opacity:0;width:0px;\n}\n20% {opacity:1;width:0px;\n}\n30% {width:355px;\n}\n80% {opacity:1;\n}\n100% {opacity:0;width:355px;\n}\n}\n@keyframes reveal {\n0% {opacity:0;width:0px;\n}\n20% {opacity:1;width:0px;\n}\n30% {width:355px;\n}\n80% {opacity:1;\n}\n100% {opacity:0;width:355px;\n}\n}\r\n\r\n/* 스크롤 */\r\n/* width */\n::-webkit-scrollbar {\r\n    width: 9px;\n}\r\n\r\n/* Track */\n::-webkit-scrollbar-track {\r\n    background-color: rgb(208, 208, 208);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle */\n::-webkit-scrollbar-thumb {\r\n    background: rgb(185, 199, 250);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\r\n    background: #5491f7;\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -70640,6 +70640,16 @@ exports.push([module.i, "\n.studentLists {\r\n  overflow-y: scroll;\r\n  max-hei
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -70840,10 +70850,7 @@ var render = function() {
           [
             _c(
               "v-parallax",
-              {
-                staticClass: "mainImage",
-                attrs: { src: "/images/mainImage.jpg", height: "420" }
-              },
+              { attrs: { src: "/images/main.png", height: "480" } },
               [
                 _c("h2", { staticClass: "mainTitle" }, [_vm._v("GRIT")]),
                 _vm._v(" "),
@@ -70898,13 +70905,15 @@ var render = function() {
                                         [
                                           _c(
                                             "v-flex",
-                                            { attrs: { xs12: "", md3: "" } },
+                                            { attrs: { xs12: "", md2: "" } },
                                             [
                                               _c(
                                                 "v-icon",
                                                 {
+                                                  staticClass: "iconStyle",
                                                   attrs: {
-                                                    color: "amber",
+                                                    color:
+                                                      "light-blue darken-2",
                                                     "x-large": ""
                                                   }
                                                 },
@@ -70916,7 +70925,7 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "v-flex",
-                                            { attrs: { xs12: "", md6: "" } },
+                                            { attrs: { xs12: "", md8: "" } },
                                             [
                                               _c(
                                                 "h1",
@@ -70928,15 +70937,26 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "v-flex",
-                                            { attrs: { xs12: "", md3: "" } },
+                                            { attrs: { xs12: "", md2: "" } },
                                             [
-                                              _c("h2", [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm.latenessStudentCount
-                                                  ) + " 명 "
-                                                )
-                                              ])
+                                              _c(
+                                                "h2",
+                                                {
+                                                  staticStyle: {
+                                                    "font-family": "Montserrat",
+                                                    position: "relative",
+                                                    right: "20px",
+                                                    color: "rgb(88, 86, 205)"
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm.latenessStudentCount
+                                                    ) + "/48 "
+                                                  )
+                                                ]
+                                              )
                                             ]
                                           )
                                         ],
@@ -70973,6 +70993,175 @@ var render = function() {
                                           [
                                             _c("v-list-tile-avatar", [
                                               _c("img", {
+                                                staticClass: "elevation-2",
+                                                attrs: { src: datas.photo_url }
+                                              })
+                                            ]),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-tile-content",
+                                              [
+                                                _c("v-list-tile-title", {
+                                                  domProps: {
+                                                    innerHTML: _vm._s(
+                                                      datas.name
+                                                    )
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c("v-list-tile-sub-title", {
+                                                  domProps: {
+                                                    innerHTML: _vm._s(datas.id)
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-tile-content",
+                                              [
+                                                _c("v-list-tile-sub-title", {
+                                                  domProps: {
+                                                    innerHTML: _vm._s(
+                                                      datas.sign_in_time
+                                                    )
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ]
+                                    })
+                                  ],
+                                  2
+                                )
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "", md4: "" } },
+                        [
+                          _c(
+                            "v-card",
+                            { staticClass: "firstLineCard" },
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c(
+                                    "v-container",
+                                    { attrs: { "grid-list-xl": "" } },
+                                    [
+                                      _c(
+                                        "v-layout",
+                                        {
+                                          attrs: {
+                                            row: "",
+                                            wrap: "",
+                                            "align-center": ""
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs12: "", md2: "" } },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                {
+                                                  staticClass: "iconStyle",
+                                                  attrs: {
+                                                    color:
+                                                      "light-blue darken-2",
+                                                    "x-large": ""
+                                                  }
+                                                },
+                                                [_vm._v("highlight_off")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs12: "", md8: "" } },
+                                            [
+                                              _c(
+                                                "h1",
+                                                { staticClass: "firstCard" },
+                                                [_vm._v("금일 결석 학생")]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs12: "", md2: "" } },
+                                            [
+                                              _c(
+                                                "h2",
+                                                {
+                                                  staticStyle: {
+                                                    "font-family": "Montserrat",
+                                                    position: "relative",
+                                                    right: "20px",
+                                                    color: "rgb(88, 86, 205)"
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm.absenceStudentCount
+                                                    ) + "/48 "
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("v-list", { attrs: { "three-line": "" } }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "studentLists" },
+                                  [
+                                    _vm._l(_vm.absenceStudent, function(datas) {
+                                      return [
+                                        _c("v-divider", {
+                                          key: _vm.index,
+                                          attrs: { inset: true }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-list-tile",
+                                          {
+                                            key: datas.index,
+                                            attrs: { avatar: "" },
+                                            on: { click: function($event) {} }
+                                          },
+                                          [
+                                            _c("v-list-tile-avatar", [
+                                              _c("img", {
+                                                staticClass: "elevation-2",
                                                 attrs: { src: datas.photo_url }
                                               })
                                             ]),
@@ -71046,147 +71235,8 @@ var render = function() {
                                                 "v-icon",
                                                 {
                                                   attrs: {
-                                                    color: "red",
-                                                    "x-large": ""
-                                                  }
-                                                },
-                                                [_vm._v("highlight_off")]
-                                              )
-                                            ],
-                                            1
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-flex",
-                                            { attrs: { xs12: "", md6: "" } },
-                                            [
-                                              _c(
-                                                "h1",
-                                                { staticClass: "firstCard" },
-                                                [_vm._v("금일 결석 학생")]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-flex",
-                                            { attrs: { xs12: "", md3: "" } },
-                                            [
-                                              _c("h2", [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm.absenceStudentCount
-                                                  ) + " 명 "
-                                                )
-                                              ])
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c("v-list", { attrs: { "three-line": "" } }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "studentLists" },
-                                  [
-                                    _vm._l(_vm.absenceStudent, function(datas) {
-                                      return [
-                                        _c("v-divider", {
-                                          key: _vm.index,
-                                          attrs: { inset: true }
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-list-tile",
-                                          {
-                                            key: datas.index,
-                                            attrs: { avatar: "" },
-                                            on: { click: function($event) {} }
-                                          },
-                                          [
-                                            _c("v-list-tile-avatar", [
-                                              _c("img", {
-                                                attrs: { src: datas.photo }
-                                              })
-                                            ]),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-list-tile-content",
-                                              [
-                                                _c("v-list-tile-title", {
-                                                  domProps: {
-                                                    innerHTML: _vm._s(
-                                                      datas.name
-                                                    )
-                                                  }
-                                                }),
-                                                _vm._v(" "),
-                                                _c("v-list-tile-sub-title", {
-                                                  domProps: {
-                                                    innerHTML: _vm._s(datas.id)
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ]
-                                    })
-                                  ],
-                                  2
-                                )
-                              ])
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", md4: "" } },
-                        [
-                          _c(
-                            "v-card",
-                            { staticClass: "firstLineCard" },
-                            [
-                              _c(
-                                "v-flex",
-                                { attrs: { xs12: "" } },
-                                [
-                                  _c(
-                                    "v-container",
-                                    { attrs: { "grid-list-xl": "" } },
-                                    [
-                                      _c(
-                                        "v-layout",
-                                        {
-                                          attrs: {
-                                            row: "",
-                                            wrap: "",
-                                            "align-center": ""
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "v-flex",
-                                            { attrs: { xs12: "", md3: "" } },
-                                            [
-                                              _c(
-                                                "v-icon",
-                                                {
-                                                  attrs: {
-                                                    color: "light-green ",
+                                                    color:
+                                                      "light-blue darken-2",
                                                     "x-large": ""
                                                   }
                                                 },
@@ -71223,8 +71273,9 @@ var render = function() {
                                   _c(
                                     "v-chip",
                                     {
+                                      staticClass: "elevation-4",
                                       attrs: {
-                                        color: "blue lighten-1",
+                                        color: "cyan lighten-1",
                                         "text-color": "white"
                                       }
                                     },
@@ -71238,14 +71289,47 @@ var render = function() {
                                   _c(
                                     "v-chip",
                                     {
+                                      staticClass: "elevation-4",
                                       attrs: {
-                                        color: "yellow darken-3",
+                                        color: "blue accent-4",
                                         "text-color": "white"
                                       }
                                     },
                                     [
                                       _vm._v(
                                         "\n                 '이승민' 학생이 관심학생으로 지정되었습니다.\n              "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-chip",
+                                    {
+                                      staticClass: "elevation-4",
+                                      attrs: {
+                                        color: "cyan lighten-1",
+                                        "text-color": "white"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                '황금비' 학생이 관심학생으로 지정되었습니다.\n              "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-chip",
+                                    {
+                                      staticClass: "elevation-4",
+                                      attrs: {
+                                        color: "blue accent-4",
+                                        "text-color": "white"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                 '이하연' 학생이 관심학생으로 지정되었습니다.\n              "
                                       )
                                     ]
                                   )
@@ -73006,12 +73090,10 @@ var render = function() {
                                         _c(
                                           "v-btn",
                                           {
-                                            staticStyle: {
-                                              background:
-                                                "linear-gradient(-90deg, rgb(127, 120, 190), rgb(154, 173, 249))"
-                                            },
+                                            staticStyle: { color: "white" },
                                             attrs: {
                                               slot: "activator",
+                                              color: "blue accent-2",
                                               normal: "",
                                               onclick: props.item.infoLink
                                             },
@@ -73986,7 +74068,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*-- 메뉴 부분 ( 출결관리, 학생 관리 등 )--*/\n.menuBox {\n  margin: 10px 0 0 0;\n}\n.gradeTable {\n  margin: 70px 0 0 0;\n}\n", ""]);
+exports.push([module.i, "\n.menuBox {\n  margin: 10px 0 0 0;\n}\n.gradeTable {\n  margin: 70px 0 0 0;\n}\n#fontSetting td {\n  font-size: 20px;\n  font-family: \"Gothic A1\";\n}\n", ""]);
 
 // exports
 
@@ -73997,6 +74079,10 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -74104,19 +74190,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       /* 성적정보 */
       headers: [{
         text: '학번',
-        value: 'std_id',
-        align: 'center'
+        value: 'std_id'
       }, {
         text: '이름',
-        value: 'name',
-        align: 'center'
+        value: 'name'
       }, {
         text: '성적',
-        value: 'score',
-        align: 'center'
+        value: 'score'
       }, {
-        text: '만점',
-        align: 'center'
+        text: '만점'
       }, {}],
       gradeDatas: [],
       menuDatas: [],
@@ -74355,7 +74437,8 @@ var render = function() {
                     headers: _vm.headers,
                     items: _vm.gradeDatas,
                     pagination: _vm.pagination,
-                    search: _vm.search
+                    search: _vm.search,
+                    id: "fontSetting"
                   },
                   on: {
                     "update:pagination": function($event) {
@@ -74413,6 +74496,8 @@ var render = function() {
                               _c(
                                 "v-btn",
                                 {
+                                  staticStyle: { color: "white" },
+                                  attrs: { color: "blue accent-2" },
                                   on: {
                                     click: function($event) {
                                       _vm.updateGradeData(props.item.position)
@@ -74558,7 +74643,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.studentListArea {\r\n  overflow-y: scroll;\r\n  height: 500px;\n}\n.categoryAttendance {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 39px;\r\n  bottom: 80px;\n}\r\n\r\n/* 공통 css */\n.cardsTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 25px;\n}\n.currentStudentNum {\r\n  font-family: \"Montserrat\";\r\n  font-weight: lighter;\r\n  font-size: 31px;\r\n  position: relative;\r\n  right: 15px;\r\n  bottom:-3px;\n}\n.cardsTitleUnderLine {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n\r\n/* 결석 & 지각 */\n.firstLineCards {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 240px;\r\n  min-height: 680px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\r\n\r\n/* 결석 */\n.absenceInfoArea {\r\n  min-height: 550px;\r\n  max-height: 550px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n/* 등/하교 */\n.attendanceCardBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 247px;\r\n  min-height: 350px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\n.attendanceInfoArea {\r\n  width: 400px;\r\n  height: 330px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n\r\n/* 관심 학생 */\n.interestStudentBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 232px;\r\n  min-height: 200px;\r\n  width: 400px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n  background: -webkit-gradient(linear, right top, left top, from(rgb(127, 120, 190)), to(rgb(154, 173, 249)));\r\n  background: linear-gradient(-90deg, rgb(127, 120, 190), rgb(154, 173, 249));\n}\n.interestInfoArea {\r\n  min-height: 160px;\r\n  max-height: 160px;\r\n  min-width: 374px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n.studentListArea {\r\n  overflow-y: scroll;\r\n  height: 500px;\n}\n.categoryAttendance {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 39px;\r\n  bottom: 80px;\n}\r\n\r\n/* 공통 css */\n.cardsTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 25px;\n}\n.currentStudentNum {\r\n  font-family: \"Montserrat\";\r\n  font-weight: lighter;\r\n  font-size: 31px;\r\n  position: relative;\r\n  right: 15px;\r\n  bottom:-3px;\n}\n.cardsTitleUnderLine {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n\r\n/* 결석 & 지각 */\n.firstLineCards {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 240px;\r\n  min-height: 680px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\r\n\r\n/* 결석 */\n.absenceInfoArea {\r\n  min-height: 550px;\r\n  max-height: 550px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n/* 등/하교 */\n.attendanceCardBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 247px;\r\n  min-height: 350px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\n}\n.attendanceInfoArea {\r\n  width: 400px;\r\n  height: 330px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n\r\n/* 관심 학생 */\n.interestStudentBox {\r\n  border-radius: 0.6975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 232px;\r\n  min-height: 200px;\r\n  width: 400px;\r\n  -webkit-box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n          box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(165, 180, 210)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));\n}\n.interestInfoArea {\r\n  min-height: 160px;\r\n  max-height: 160px;\r\n  min-width: 374px;\r\n  overflow-y: scroll;\r\n  position: relative;\r\n  bottom: 18px;\n}\r\n\r\n/* 스크롤 */\r\n/* width */\n::-webkit-scrollbar {\r\n    width: 9px;\n}\r\n\r\n/* Track */\n::-webkit-scrollbar-track {\r\n    background-color: rgb(208, 208, 208);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle */\n::-webkit-scrollbar-thumb {\r\n    background: rgb(185, 199, 250);\r\n    border-radius: 10px;\n}\r\n\r\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\r\n    background: #5491f7;\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -74569,6 +74654,26 @@ exports.push([module.i, "\n.studentListArea {\r\n  overflow-y: scroll;\r\n  heig
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -75066,7 +75171,7 @@ var render = function() {
                                             "v-icon",
                                             {
                                               attrs: {
-                                                color: "blue lighten-3",
+                                                color: "light-blue darken-2",
                                                 large: ""
                                               }
                                             },
@@ -75125,8 +75230,6 @@ var render = function() {
                                 [
                                   _vm._l(_vm.absenceData, function(absence) {
                                     return [
-                                      _c("v-divider"),
-                                      _vm._v(" "),
                                       _c(
                                         "v-list-tile",
                                         {
@@ -75226,7 +75329,7 @@ var render = function() {
                                             "v-icon",
                                             {
                                               attrs: {
-                                                color: "blue lighten-3",
+                                                color: "light-blue darken-2",
                                                 large: ""
                                               }
                                             },
@@ -75286,8 +75389,6 @@ var render = function() {
                                   [
                                     _vm._l(_vm.lateData, function(late) {
                                       return [
-                                        _c("v-divider"),
-                                        _vm._v(" "),
                                         _c(
                                           "v-list-tile",
                                           {
@@ -75423,7 +75524,7 @@ var render = function() {
                                                             {
                                                               attrs: {
                                                                 color:
-                                                                  "blue lighten-3",
+                                                                  "light-blue darken-2",
                                                                 large: ""
                                                               }
                                                             },
@@ -75507,8 +75608,6 @@ var render = function() {
                                                     datas
                                                   ) {
                                                     return [
-                                                      _c("v-divider"),
-                                                      _vm._v(" "),
                                                       _c(
                                                         "v-list-tile",
                                                         {
@@ -75693,7 +75792,7 @@ var render = function() {
                                     "v-layout",
                                     {
                                       staticStyle: {
-                                        width: "250px",
+                                        width: "400px",
                                         height: "235px"
                                       },
                                       attrs: { row: "", wrap: "" }
@@ -75743,7 +75842,7 @@ var render = function() {
                                                                 large: ""
                                                               }
                                                             },
-                                                            [_vm._v("favorite")]
+                                                            [_vm._v("error")]
                                                           )
                                                         ],
                                                         1
@@ -75782,13 +75881,16 @@ var render = function() {
                                                             "h1",
                                                             {
                                                               staticClass:
-                                                                "currentStudentNum"
+                                                                "currentStudentNum",
+                                                              staticStyle: {
+                                                                color: "white"
+                                                              }
                                                             },
                                                             [
                                                               _vm._v(
                                                                 _vm._s(
                                                                   _vm.loveStudentCount
-                                                                ) + " 명"
+                                                                ) + "/48"
                                                               )
                                                             ]
                                                           )
@@ -76337,12 +76439,10 @@ var render = function() {
                                         _c(
                                           "v-btn",
                                           {
-                                            staticStyle: {
-                                              background:
-                                                "linear-gradient(-90deg, rgb(127, 120, 190), rgb(154, 173, 249))"
-                                            },
+                                            staticStyle: { color: "white" },
                                             attrs: {
                                               slot: "activator",
+                                              color: "blue accent-2",
                                               normal: "",
                                               onclick: props.item.infoLink
                                             },
@@ -76515,7 +76615,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\nbody {\r\n  background-color: rgb(255, 255, 255);\n}\n.fontSetting {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\n#fontSetting td {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\n.setAlertDataArea {\r\n  width: 100%\n}\n.category1 {\r\n    color: #FFFFFF;\r\n    font-size: 30px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\n}\n.category {\r\n    max-width: 600px;\r\n    color: rgba(255, 255, 255, 0.5);\r\n    margin: 0 auto;\r\n    font-size: 17px;\r\n    font-family: \"Montserrat\"\n}\n.panel-header {\r\n  height: 200px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\n.notificationsAddBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 50px;\n}\n.notificationsConfirmBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 60px;\n}\n.cardInsideTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n", ""]);
+exports.push([module.i, "\nbody {\r\n  background-color: rgb(255, 255, 255);\n}\n.fontSetting {\r\n  font-size: 18px;\r\n  font-weight: lighter;\r\n  font-style: 'Gothic A1';\n}\n#fontSetting td {\r\n  font-size: 18px;\r\n  font-weight: lighter;\r\n  font-style: 'Gothic A1';\n}\n.setAlertDataArea {\r\n  width: 100%\n}\n.category1 {\r\n    color: #FFFFFF;\r\n    font-size: 40px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\r\n    position: relative;\r\n    left: 50px;\r\n    top: 40px;\n}\n.notificationsAddBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 100px;\n}\n.notificationsConfirmBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  bottom: 120px;\n}\n.cardInsideTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  border-bottom: 1px solid;\r\n  padding-bottom: 6px;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\r\n", ""]);
 
 // exports
 
@@ -76526,29 +76626,6 @@ exports.push([module.i, "\nbody {\r\n  background-color: rgb(255, 255, 255);\n}\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -76849,31 +76926,15 @@ var render = function() {
     "div",
     { staticClass: "notificationsPage" },
     [
-      _c("div", { staticClass: "panel-header" }, [
-        _c(
-          "div",
-          { staticClass: "header text-center" },
-          [
-            _c(
-              "v-layout",
-              {
-                staticClass: "imgTitle",
-                attrs: { column: "", "align-center": "", "justify-center": "" }
-              },
-              [
-                _c("h1", { staticClass: "category1" }, [
-                  _vm._v("Attendance Management")
-                ]),
-                _vm._v(" "),
-                _c("p", { staticClass: "category" }, [
-                  _vm._v("Notification Settings")
-                ])
-              ]
-            )
-          ],
-          1
-        )
-      ]),
+      _c(
+        "v-parallax",
+        { attrs: { src: "/images/studentManagement.png", height: "300" } },
+        [
+          _c("h1", { staticClass: "category1" }, [
+            _vm._v("Notification Settings")
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "v-container",
@@ -77034,7 +77095,8 @@ var render = function() {
                                 "v-btn",
                                 {
                                   staticClass: "fontSetting",
-                                  attrs: { color: "primary" },
+                                  staticStyle: { color: "white" },
+                                  attrs: { color: "blue accent-2" },
                                   on: {
                                     click: function($event) {
                                       _vm.setAlert()
@@ -77906,7 +77968,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\n.classAttendanceCartBox {\r\n  position: relative;\r\n  bottom: 57px;\r\n  right: 20px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 700px;\r\n  width: 580px;\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.classGradeCartBox {\r\n  position: relative;\r\n  bottom: 57px;\r\n  right: 200px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 700px;\r\n  width: 900px;\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.categoryClassAnalytic {\r\n  color: #FFFFFF;\r\n  font-size: 30px;\r\n  position: relative;\r\n  font-family: \"Montserrat\";\r\n  font-weight: Bold;\r\n  position: relative;\r\n  left: 38px;\r\n  bottom: 60px;\n}\n.classAttendanceCartBox {\r\n  position: relative;\r\n  bottom: 212px;\r\n  right: 20px;\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 700px;\r\n  width: 470px;\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.classGradeCartBox {\r\n  position: relative;\r\n  bottom: 210px;\r\n  right: 117px;\r\n  border-radius: 0.7975rem;\r\n  -webkit-box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 10px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 640px;\r\n  width: 700px;\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -77920,6 +77982,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -78368,8 +78463,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
         labels: this.gradeLabelData,
         datasets: [{
           label: "취득점수 분포도",
-          backgroundColor: false,
-          borderColor: '#f6c202',
+          backgroundColor: '#4867fb',
+          borderColor: '#3c0cc6',
           fill: false,
           data: this.gradeData
         }]
@@ -78707,9 +78802,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
 
         for (var start = 1; start <= 11; start++) {
           if (setting[0]['red'].indexOf(start) != -1) {
-            data.push({ data: [], backgroundColor: "#ff0000" });
+            data.push({ data: [], backgroundColor: "#ff2d2d" });
           } else if (setting[0]['blue'].indexOf(start) != -1) {
-            data.push({ data: [], backgroundColor: "#0080ff" });
+            data.push({ data: [], backgroundColor: "#8f96ff" });
           } else if (setting[0]['none'].indexOf(start) != -1) {
             data.push({ fill: false, data: [] });
           }
@@ -78944,10 +79039,18 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("v-parallax", {
-        staticClass: "mainImage",
-        attrs: { src: "/images/analyticPredition.jpg", height: "300" }
-      }),
+      _c(
+        "v-parallax",
+        {
+          staticClass: "mainImage",
+          attrs: { src: "/images/analyticPredition.jpg", height: "300" }
+        },
+        [
+          _c("h1", { staticClass: "categoryClassAnalytic" }, [
+            _vm._v("Class Analytic Predition")
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "v-dialog",
@@ -79145,51 +79248,124 @@ var render = function() {
                         "v-card",
                         { staticClass: "classAttendanceCartBox" },
                         [
-                          _c("v-card-text", [
-                            _c(
-                              "h2",
-                              { staticClass: "chartTitle" },
-                              [
-                                _vm._v("출결 정보 분석\n              "),
-                                !_vm.dateCheck
-                                  ? _c(
-                                      "v-btn",
-                                      {
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.dialog = !_vm.dialog
-                                          }
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(this.periodSelected))]
-                                    )
-                                  : _c(
-                                      "v-btn",
-                                      {
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.dialog = !_vm.dialog
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(this.periodSelected) +
-                                            "\n                  ( " +
-                                            _vm._s(this.startDate) +
-                                            " ~ " +
-                                            _vm._s(this.endDate) +
-                                            ")\n                "
-                                        )
-                                      ]
-                                    )
-                              ],
-                              1
-                            )
-                          ]),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c(
+                                    "v-layout",
+                                    {
+                                      attrs: {
+                                        row: "",
+                                        wrap: "",
+                                        "align-center": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", md1: "" } },
+                                        [
+                                          _c(
+                                            "v-icon",
+                                            {
+                                              attrs: {
+                                                color: "light-blue darken-2",
+                                                large: ""
+                                              }
+                                            },
+                                            [_vm._v("pie_chart")]
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", md11: "" } },
+                                        [
+                                          _c(
+                                            "h2",
+                                            { staticClass: "chartTitle" },
+                                            [
+                                              _vm._v(
+                                                "출결 정보 분석\n                    "
+                                              ),
+                                              !_vm.dateCheck
+                                                ? _c(
+                                                    "v-btn",
+                                                    {
+                                                      attrs: {
+                                                        round: "",
+                                                        color: "indigo accent-1"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          $event.stopPropagation()
+                                                          _vm.dialog = !_vm.dialog
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          this.periodSelected
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                : _c(
+                                                    "v-btn",
+                                                    {
+                                                      staticClass:
+                                                        "elevation-0",
+                                                      attrs: {
+                                                        color: "transparent"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          $event.stopPropagation()
+                                                          _vm.dialog = !_vm.dialog
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                        " +
+                                                          _vm._s(
+                                                            this.periodSelected
+                                                          ) +
+                                                          "\n                        ( " +
+                                                          _vm._s(
+                                                            this.startDate
+                                                          ) +
+                                                          " ~ " +
+                                                          _vm._s(this.endDate) +
+                                                          ")\n                    "
+                                                      )
+                                                    ]
+                                                  )
+                                            ],
+                                            1
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-flex",
@@ -79211,7 +79387,7 @@ var render = function() {
                                     [
                                       _c(
                                         "v-flex",
-                                        { attrs: { xs4: "" } },
+                                        { attrs: { xs5: "" } },
                                         [
                                           _c("v-select", {
                                             attrs: {
@@ -79234,69 +79410,149 @@ var render = function() {
                                       _vm.attSelect.selected != 3
                                         ? _c(
                                             "v-flex",
-                                            { attrs: { xs8: "" } },
+                                            { attrs: { xs7: "" } },
                                             [
                                               _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: {
-                                                    depressed: "",
-                                                    small: "",
-                                                    round: "",
-                                                    color: "blue accent-3",
-                                                    dark: ""
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.adaChartController(
-                                                        "lateness"
+                                                "v-flex",
+                                                { attrs: { xs12: "" } },
+                                                [
+                                                  _c(
+                                                    "v-container",
+                                                    {
+                                                      staticStyle: {
+                                                        position: "relative",
+                                                        right: "30px"
+                                                      }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: "",
+                                                            "align-center": ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: "",
+                                                                md4: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3",
+                                                                    dark: ""
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.adaChartController(
+                                                                        "lateness"
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [_vm._v("지각")]
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: "",
+                                                                md4: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3",
+                                                                    dark: ""
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.adaChartController(
+                                                                        "absence"
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [_vm._v("결석")]
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: {
+                                                                xs12: "",
+                                                                md4: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3",
+                                                                    dark: ""
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.adaChartController(
+                                                                        "early_leave"
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [_vm._v("조퇴")]
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        ],
+                                                        1
                                                       )
-                                                    }
-                                                  }
-                                                },
-                                                [_vm._v("지각")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: {
-                                                    depressed: "",
-                                                    small: "",
-                                                    round: "",
-                                                    color: "blue accent-3",
-                                                    dark: ""
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.adaChartController(
-                                                        "absence"
-                                                      )
-                                                    }
-                                                  }
-                                                },
-                                                [_vm._v("결석")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: {
-                                                    depressed: "",
-                                                    small: "",
-                                                    round: "",
-                                                    color: "blue accent-3",
-                                                    dark: ""
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.adaChartController(
-                                                        "early_leave"
-                                                      )
-                                                    }
-                                                  }
-                                                },
-                                                [_vm._v("조퇴")]
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
                                               )
                                             ],
                                             1
@@ -79307,89 +79563,121 @@ var render = function() {
                                   ),
                                   _vm._v(" "),
                                   _c(
-                                    "v-layout",
-                                    {
-                                      attrs: {
-                                        row: "",
-                                        wrap: "",
-                                        "align-center": ""
-                                      }
-                                    },
+                                    "v-flex",
+                                    { attrs: { xs12: "" } },
                                     [
-                                      _vm.attSelect.selected != 3
-                                        ? _c("div", [
-                                            _c("h2", [
-                                              _vm._v(
-                                                " " +
-                                                  _vm._s(this.attSelect.text) +
-                                                  " ( " +
-                                                  _vm._s(
-                                                    this.attendanceChartStat
-                                                  ) +
-                                                  " )"
+                                      _c(
+                                        "v-container",
+                                        [
+                                          _c(
+                                            "v-layout",
+                                            {
+                                              attrs: {
+                                                row: "",
+                                                wrap: "",
+                                                "align-center": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-flex",
+                                                {
+                                                  attrs: { xs12: "", md12: "" }
+                                                },
+                                                [
+                                                  _vm.attSelect.selected != 3
+                                                    ? _c("div", [
+                                                        _c(
+                                                          "h2",
+                                                          {
+                                                            staticStyle: {
+                                                              "font-family":
+                                                                "Gothic A1",
+                                                              "font-weight":
+                                                                "lighter"
+                                                            }
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              " " +
+                                                                _vm._s(
+                                                                  this.attSelect
+                                                                    .text
+                                                                ) +
+                                                                " ( " +
+                                                                _vm._s(
+                                                                  this
+                                                                    .attendanceChartStat
+                                                                ) +
+                                                                " )"
+                                                            )
+                                                          ]
+                                                        )
+                                                      ])
+                                                    : _vm._e(),
+                                                  _vm._v(" "),
+                                                  _vm.attSelect.selected == 1
+                                                    ? _c("pie-chart", {
+                                                        attrs: {
+                                                          width: 500,
+                                                          data:
+                                                            _vm.attendanceData,
+                                                          backgroundColor:
+                                                            _vm.attendanceColor,
+                                                          labels:
+                                                            _vm.attendanceLabelData,
+                                                          options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false
+                                                          }
+                                                        }
+                                                      })
+                                                    : _vm._e(),
+                                                  _vm._v(" "),
+                                                  _vm.attSelect.selected == 2
+                                                    ? _c(
+                                                        "line-chart-lateness",
+                                                        {
+                                                          attrs: {
+                                                            width: 500,
+                                                            data:
+                                                              _vm.attendanceLineData,
+                                                            borderColor:
+                                                              _vm.attendanceLineColor,
+                                                            labels:
+                                                              _vm.attendanceLineLabelData,
+                                                            options: {
+                                                              responsive: true,
+                                                              maintainAspectRatio: false
+                                                            }
+                                                          }
+                                                        }
+                                                      )
+                                                    : _vm._e(),
+                                                  _vm._v(" "),
+                                                  _vm.attSelect.selected == 3
+                                                    ? _c("line-chart-holiday", {
+                                                        attrs: {
+                                                          width: 500,
+                                                          data: _vm.holidayData,
+                                                          labels:
+                                                            _vm.holidayLabelData,
+                                                          options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false
+                                                          }
+                                                        }
+                                                      })
+                                                    : _vm._e()
+                                                ],
+                                                1
                                               )
-                                            ])
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-layout",
-                                    {
-                                      attrs: {
-                                        row: "",
-                                        wrap: "",
-                                        "align-center": ""
-                                      }
-                                    },
-                                    [
-                                      _vm.attSelect.selected == 1
-                                        ? _c("pie-chart", {
-                                            attrs: {
-                                              width: 500,
-                                              data: _vm.attendanceData,
-                                              backgroundColor:
-                                                _vm.attendanceColor,
-                                              labels: _vm.attendanceLabelData,
-                                              options: {
-                                                responsive: true,
-                                                maintainAspectRatio: false
-                                              }
-                                            }
-                                          })
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _vm.attSelect.selected == 2
-                                        ? _c("line-chart-lateness", {
-                                            attrs: {
-                                              width: 500,
-                                              data: _vm.attendanceLineData,
-                                              borderColor:
-                                                _vm.attendanceLineColor,
-                                              labels:
-                                                _vm.attendanceLineLabelData,
-                                              options: {
-                                                responsive: true,
-                                                maintainAspectRatio: false
-                                              }
-                                            }
-                                          })
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _vm.attSelect.selected == 3
-                                        ? _c("line-chart-holiday", {
-                                            attrs: {
-                                              width: 500,
-                                              data: _vm.holidayData,
-                                              labels: _vm.holidayLabelData,
-                                              options: {
-                                                responsive: true,
-                                                maintainAspectRatio: false
-                                              }
-                                            }
-                                          })
-                                        : _vm._e()
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
                                     ],
                                     1
                                   )
@@ -79414,51 +79702,124 @@ var render = function() {
                         "v-card",
                         { staticClass: "classGradeCartBox" },
                         [
-                          _c("v-card-text", [
-                            _c(
-                              "h2",
-                              { staticClass: "chartTitle" },
-                              [
-                                _vm._v("학업 정보 분석\n              "),
-                                !_vm.dateCheck
-                                  ? _c(
-                                      "v-btn",
-                                      {
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.dialog = !_vm.dialog
-                                          }
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(this.periodSelected))]
-                                    )
-                                  : _c(
-                                      "v-btn",
-                                      {
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.dialog = !_vm.dialog
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(this.periodSelected) +
-                                            "\n                  ( " +
-                                            _vm._s(this.startDate) +
-                                            " ~ " +
-                                            _vm._s(this.endDate) +
-                                            ")\n                "
-                                        )
-                                      ]
-                                    )
-                              ],
-                              1
-                            )
-                          ]),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c(
+                                    "v-layout",
+                                    {
+                                      attrs: {
+                                        row: "",
+                                        wrap: "",
+                                        "align-center": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", md1: "" } },
+                                        [
+                                          _c(
+                                            "v-icon",
+                                            {
+                                              attrs: {
+                                                color: "light-blue darken-2",
+                                                large: ""
+                                              }
+                                            },
+                                            [_vm._v("bar_chart")]
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", md11: "" } },
+                                        [
+                                          _c(
+                                            "h2",
+                                            { staticClass: "chartTitle" },
+                                            [
+                                              _vm._v(
+                                                "학업 정보 분석\n                    "
+                                              ),
+                                              !_vm.dateCheck
+                                                ? _c(
+                                                    "v-btn",
+                                                    {
+                                                      attrs: {
+                                                        round: "",
+                                                        color: "indigo accent-1"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          $event.stopPropagation()
+                                                          _vm.dialog = !_vm.dialog
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          this.periodSelected
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                : _c(
+                                                    "v-btn",
+                                                    {
+                                                      staticClass:
+                                                        "elevation-0",
+                                                      attrs: {
+                                                        color: "transparent"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          $event.stopPropagation()
+                                                          _vm.dialog = !_vm.dialog
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                        " +
+                                                          _vm._s(
+                                                            this.periodSelected
+                                                          ) +
+                                                          "\n                        ( " +
+                                                          _vm._s(
+                                                            this.startDate
+                                                          ) +
+                                                          " ~ " +
+                                                          _vm._s(this.endDate) +
+                                                          ")\n                      "
+                                                      )
+                                                    ]
+                                                  )
+                                            ],
+                                            1
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-flex",
@@ -79480,7 +79841,7 @@ var render = function() {
                                     [
                                       _c(
                                         "v-flex",
-                                        { attrs: { xs5: "" } },
+                                        { attrs: { xs6: "" } },
                                         [
                                           _c("v-select", {
                                             attrs: {
@@ -79502,7 +79863,7 @@ var render = function() {
                                       _vm._v(" "),
                                       _c(
                                         "v-flex",
-                                        { attrs: { xs5: "" } },
+                                        { attrs: { xs6: "" } },
                                         [
                                           _c("v-select", {
                                             attrs: {
@@ -79526,65 +79887,114 @@ var render = function() {
                                   ),
                                   _vm._v(" "),
                                   _c(
-                                    "v-layout",
-                                    {
-                                      attrs: {
-                                        row: "",
-                                        wrap: "",
-                                        "align-center": ""
-                                      }
-                                    },
+                                    "v-flex",
+                                    { attrs: { xs12: "" } },
                                     [
                                       _c(
-                                        "v-card",
+                                        "v-container",
                                         [
-                                          _c("div", [
-                                            _c("h2", [
-                                              _vm._v(
-                                                "취득점수 분포 범위 ( " +
-                                                  _vm._s(this.studyChartStat) +
-                                                  " )"
-                                              )
-                                            ])
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("bar-plot-chart", {
-                                            attrs: {
-                                              datasets: _vm.plotDataSets,
-                                              labels: _vm.plotLabelData,
-                                              options: {
-                                                responsive: true,
-                                                maintainAspectRatio: false
+                                          _c(
+                                            "v-layout",
+                                            {
+                                              attrs: {
+                                                row: "",
+                                                wrap: "",
+                                                "align-center": ""
                                               }
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-card",
-                                        [
-                                          _c("div", [
-                                            _c("h2", [
-                                              _vm._v(
-                                                "취득점수 분포도 ( " +
-                                                  _vm._s(this.studysChartStat) +
-                                                  " )"
+                                            },
+                                            [
+                                              _c(
+                                                "v-flex",
+                                                {
+                                                  attrs: { xs12: "", md6: "" }
+                                                },
+                                                [
+                                                  _c("div", [
+                                                    _c(
+                                                      "h2",
+                                                      {
+                                                        staticStyle: {
+                                                          "font-family":
+                                                            "Gothic A1",
+                                                          "font-weight":
+                                                            "lighter"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "취득점수 분포 범위 ( " +
+                                                            _vm._s(
+                                                              this
+                                                                .studyChartStat
+                                                            ) +
+                                                            " )"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]),
+                                                  _vm._v(" "),
+                                                  _c("bar-plot-chart", {
+                                                    attrs: {
+                                                      datasets:
+                                                        _vm.plotDataSets,
+                                                      labels: _vm.plotLabelData,
+                                                      options: {
+                                                        responsive: true,
+                                                        maintainAspectRatio: false
+                                                      }
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-flex",
+                                                {
+                                                  attrs: { xs12: "", md6: "" }
+                                                },
+                                                [
+                                                  _c("div", [
+                                                    _c(
+                                                      "h2",
+                                                      {
+                                                        staticStyle: {
+                                                          "font-family":
+                                                            "Gothic A1",
+                                                          "font-weight":
+                                                            "lighter"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "취득점수 분포도 ( " +
+                                                            _vm._s(
+                                                              this
+                                                                .studysChartStat
+                                                            ) +
+                                                            " )"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]),
+                                                  _vm._v(" "),
+                                                  _c("bar-chart", {
+                                                    attrs: {
+                                                      data: _vm.gradeData,
+                                                      labels:
+                                                        _vm.gradeLabelData,
+                                                      options: {
+                                                        responsive: true,
+                                                        maintainAspectRatio: false
+                                                      }
+                                                    }
+                                                  })
+                                                ],
+                                                1
                                               )
-                                            ])
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("bar-chart", {
-                                            attrs: {
-                                              data: _vm.gradeData,
-                                              labels: _vm.gradeLabelData,
-                                              options: {
-                                                responsive: true,
-                                                maintainAspectRatio: false
-                                              }
-                                            }
-                                          })
+                                            ],
+                                            1
+                                          )
                                         ],
                                         1
                                       )
@@ -79712,7 +80122,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  width : 400px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\n.StudentAnalyticPrediction{\r\n  width: 100%;\r\n  height: 100%;\n}\r\n/*-- 차트 --*/\n.chartCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  right : 70px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 1000px;\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.studentInfoBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.studentInfo {\r\n  position: relative;\r\n  left: 87px;\n}\n.textBox {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    font-size: 25px;\r\n    margin: 0 0 10px 0;\n}\n.textBox span {\r\n    font-size: 25px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: lighter;\r\n    color: rgb(82, 82, 82);\r\n    margin: 0 10px 0 0px;\n}\n.attendanceChartTypeSelect {\r\n  position: relative;\r\n  bottom: 100px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n/* */\n.studentInfoDiv {\r\n  overflow-y : scroll;\r\n  height : 1290px;\n}\r\n", ""]);
+exports.push([module.i, "\n.studentPageTopDiv {\r\n  position : relative;\r\n  bottom : 120px;\n}\n.studentChartDiv {\r\n  margin: 25px;\r\n  height: 1500px;\n}\n.studentSelectedDiv {\r\n  margin: 25px;\r\n  height: 1500px;\n}\r\n\r\n\r\n/*-- 헤더 영역 --*/\n.panel-header {\r\n  height: 100px;\r\n  padding-top: 70px;\r\n  padding-bottom: 45px;\r\n  background: #141E30;\r\n  /* fallback for old browsers */\r\n  background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));\r\n  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);\r\n  position: relative;\r\n  overflow: hidden;\n}\n.panel-header-sm {\r\n  height: 135px;\n}\n.panel-header-lg {\r\n  height: 380px;\n}\r\n\r\n/*--- 학생 분류 카드 ---*/\n.studentListCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  width : 400px;\n}\n.studentListTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.buttonBox {\r\n  margin: 0 0 0 3px;\n}\n.StudentAnalyticPrediction{\r\n  width: 100%;\r\n  height: 100%;\n}\r\n/*-- 차트 --*/\n.chartCard {\r\n  position: relative;\r\n  bottom: 57px;\r\n  right : 70px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.36);\r\n  min-height: 1000px;\n}\n.chartTitle {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  font-size: 30px;\n}\n.studentInfoBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.studentInfo {\r\n  position: relative;\r\n  left: 87px;\n}\n.textBox {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    font-size: 25px;\r\n    margin: 0 0 10px 0;\n}\n.textBox span {\r\n    font-size: 25px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: lighter;\r\n    color: rgb(82, 82, 82);\r\n    margin: 0 10px 0 0px;\n}\n.attendanceChartTypeSelect {\r\n  position: relative;\r\n  bottom: 100px;\n}\r\n\r\n/*-- 분류 조건 설정 --*/\n.attendanceSettingTitle{\r\n  position: relative;\r\n  top: 5px;\r\n  left: -10px;\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\n}\r\n\r\n/* */\n.studentInfoDiv {\r\n  overflow-y : scroll;\r\n  height : 1290px;\n}\r\n", ""]);
 
 // exports
 
@@ -79726,6 +80136,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_chartjs__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -80765,6 +81198,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
           _this.$set(_this.studnetInfo[data], 'number', data);
         }
         _this.progressStudent = false;
+        _this.selectStudent(_this.studnetInfo[0]);
       }).catch(function (error) {
         console.log("getStuInfo Err : " + error);
         alert('불러오기에 실패했습니다.');
@@ -81456,1448 +81890,1572 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "v-flex",
-        { attrs: { xs12: "" } },
+        "div",
+        { staticClass: "studentPageTopDiv" },
         [
           _c(
-            "v-container",
-            { attrs: { "grid-list-xl": "" } },
+            "v-flex",
+            { attrs: { xs12: "" } },
             [
               _c(
-                "v-layout",
-                { attrs: { row: "", wrap: "", "align-center": "" } },
+                "v-container",
+                { attrs: { "grid-list-xl": "" } },
                 [
                   _c(
-                    "v-flex",
-                    { attrs: { xs12: "", md4: "" } },
+                    "v-layout",
+                    { attrs: { row: "", wrap: "", "align-center": "" } },
                     [
-                      _c(
-                        "v-card",
-                        { staticClass: "studentListCard" },
-                        [
-                          _c("v-card-text", [
+                      _c("v-flex", { attrs: { xs4: "", md4: "" } }, [
+                        _c(
+                          "div",
+                          { staticClass: "studentSelectedDiv" },
+                          [
                             _c(
-                              "h2",
-                              { staticClass: "studentListTitle" },
+                              "v-card",
                               [
-                                _vm._v("학생목록\n                "),
-                                !_vm.dateCheck
-                                  ? _c(
-                                      "v-btn",
-                                      {
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.dialog = !_vm.dialog
-                                          }
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(this.periodSelected))]
-                                    )
-                                  : _c(
-                                      "v-btn",
-                                      {
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.dialog = !_vm.dialog
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(this.periodSelected) +
-                                            "\n                  ( " +
-                                            _vm._s(this.startDate) +
-                                            " ~ " +
-                                            _vm._s(this.endDate) +
-                                            ")\n                "
-                                        )
-                                      ]
-                                    )
-                              ],
-                              1
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            { staticClass: "buttonBox" },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    round: "",
-                                    outline: "",
-                                    color: "blue accent-2"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.getStudentInfo("total"),
-                                        (_vm.studentSelected = "전체")
-                                    }
-                                  }
-                                },
-                                [_vm._v("전체")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    round: "",
-                                    outline: "",
-                                    color: "blue accent-2"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.getStudentInfo("filter"),
-                                        (_vm.studentSelected = "주목")
-                                    }
-                                  }
-                                },
-                                [_vm._v("주목")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    round: "",
-                                    outline: "",
-                                    color: "blue accent-2"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.getStudentInfo("attention"),
-                                        (_vm.studentSelected = "사랑")
-                                    }
-                                  }
-                                },
-                                [_vm._v("사랑")]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list",
-                            { attrs: { "three-line": "" } },
-                            [
-                              _c("v-subheader", [
-                                _c("h2", [
-                                  _vm._v(
-                                    " " + _vm._s(_vm.studentSelected) + " "
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("v-progress-linear", {
-                                attrs: {
-                                  indeterminate: _vm.progressStudent,
-                                  height: "3"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "studentInfoDiv" },
-                                [
-                                  _vm._l(_vm.studnetInfo, function(datas) {
-                                    return [
-                                      _c("v-divider", {
-                                        attrs: { inset: true }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-list-tile",
-                                        {
-                                          attrs: { avatar: "" },
-                                          on: {
-                                            click: function($event) {
-                                              _vm.selectStudent(datas)
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("v-list-tile-avatar", [
-                                            _c("img", {
-                                              attrs: { src: datas.photo_url }
-                                            })
-                                          ]),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-list-tile-content",
-                                            [
-                                              _c("v-list-tile-title", [
-                                                _vm._v(
-                                                  " " +
-                                                    _vm._s(datas.id) +
-                                                    " " +
-                                                    _vm._s(datas.name)
-                                                )
-                                              ]),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                [
-                                                  datas.attention_level > 0
-                                                    ? _c(
-                                                        "v-icon",
-                                                        {
-                                                          attrs: {
-                                                            small: "",
-                                                            color: "red"
-                                                          }
-                                                        },
-                                                        [_vm._v("favorite")]
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  datas.attention_level > 1
-                                                    ? _c(
-                                                        "v-icon",
-                                                        {
-                                                          attrs: {
-                                                            small: "",
-                                                            color: "red"
-                                                          }
-                                                        },
-                                                        [_vm._v("favorite")]
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  datas.attention_level > 2
-                                                    ? _c(
-                                                        "v-icon",
-                                                        {
-                                                          attrs: {
-                                                            small: "",
-                                                            color: "red"
-                                                          }
-                                                        },
-                                                        [_vm._v("favorite")]
-                                                      )
-                                                    : _vm._e()
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              datas.attention_reason != ""
-                                                ? _c("v-btn", {
-                                                    attrs: {
-                                                      small: "",
-                                                      depressed: "",
-                                                      round: "",
-                                                      color:
-                                                        "light-green lighten-1"
-                                                    },
-                                                    domProps: {
-                                                      innerHTML: _vm._s(
-                                                        datas.attention_reason
-                                                      )
-                                                    }
-                                                  })
-                                                : _vm._e()
-                                            ],
-                                            1
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ]
-                                  })
-                                ],
-                                2
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", md8: "" } },
-                    [
-                      _c(
-                        "v-card",
-                        { staticClass: "chartCard" },
-                        [
-                          _c("v-card-text", [
-                            _c("h2", { staticClass: "chartTitle" }, [
-                              _vm._v("학생 분석 예측")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "studentInfoBox" },
-                            [
-                              _c(
-                                "v-flex",
-                                { attrs: { xs12: "" } },
-                                [
+                                _c("v-card-text", [
                                   _c(
-                                    "v-container",
-                                    { attrs: { "grid-list-xl": "" } },
+                                    "h2",
                                     [
-                                      _vm.btnLock
+                                      _vm._v("학생목록\n                "),
+                                      !_vm.dateCheck
                                         ? _c(
-                                            "v-layout",
+                                            "v-btn",
                                             {
-                                              attrs: {
-                                                row: "",
-                                                wrap: "",
-                                                "align-center": ""
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  _vm.dialog = !_vm.dialog
+                                                }
                                               }
                                             },
                                             [
-                                              _c(
-                                                "v-flex",
-                                                { attrs: { xs1: "" } },
-                                                [
-                                                  _c(
-                                                    "v-card-text",
-                                                    [
-                                                      _c(
-                                                        "v-avatar",
-                                                        {
-                                                          staticClass:
-                                                            "elevation-3",
-                                                          attrs: {
-                                                            size: "120px"
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("img", {
-                                                            attrs: {
-                                                              src:
-                                                                _vm
-                                                                  .selectStudentData
-                                                                  .photo_url
-                                                            }
-                                                          })
-                                                        ]
-                                                      )
-                                                    ],
-                                                    1
-                                                  )
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-flex",
-                                                { attrs: { xs5: "" } },
-                                                [
-                                                  _c(
-                                                    "v-card-text",
-                                                    {
-                                                      staticClass: "studentInfo"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass: "textBox"
-                                                        },
-                                                        [
-                                                          _c("span", [
-                                                            _vm._v(
-                                                              _vm._s(
-                                                                _vm
-                                                                  .selectStudentData
-                                                                  .id
-                                                              )
-                                                            )
-                                                          ]),
-                                                          _vm._v(
-                                                            _vm._s(
-                                                              _vm
-                                                                .selectStudentData
-                                                                .name
-                                                            )
-                                                          )
-                                                        ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _vm.selectStudentData
-                                                        .attention_level > 0
-                                                        ? _c(
-                                                            "v-icon",
-                                                            {
-                                                              attrs: {
-                                                                color: "red"
-                                                              },
-                                                              on: {
-                                                                click: function(
-                                                                  $event
-                                                                ) {
-                                                                  _vm.setAttentionLevel(
-                                                                    _vm.selectStudentData,
-                                                                    1,
-                                                                    "red"
-                                                                  )
-                                                                }
-                                                              }
-                                                            },
-                                                            [_vm._v("favorite")]
-                                                          )
-                                                        : _vm._e(),
-                                                      _vm._v(" "),
-                                                      _vm.selectStudentData
-                                                        .attention_level > 1
-                                                        ? _c(
-                                                            "v-icon",
-                                                            {
-                                                              attrs: {
-                                                                color: "red"
-                                                              },
-                                                              on: {
-                                                                click: function(
-                                                                  $event
-                                                                ) {
-                                                                  _vm.setAttentionLevel(
-                                                                    _vm.selectStudentData,
-                                                                    2,
-                                                                    "red"
-                                                                  )
-                                                                }
-                                                              }
-                                                            },
-                                                            [_vm._v("favorite")]
-                                                          )
-                                                        : _vm._e(),
-                                                      _vm._v(" "),
-                                                      _vm.selectStudentData
-                                                        .attention_level > 2
-                                                        ? _c(
-                                                            "v-icon",
-                                                            {
-                                                              attrs: {
-                                                                color: "red"
-                                                              }
-                                                            },
-                                                            [_vm._v("favorite")]
-                                                          )
-                                                        : _vm._e(),
-                                                      _vm._v(" "),
-                                                      _vm.selectStudentData
-                                                        .attention_level <= 2
-                                                        ? _c(
-                                                            "v-icon",
-                                                            {
-                                                              attrs: {
-                                                                color: "gray"
-                                                              },
-                                                              on: {
-                                                                click: function(
-                                                                  $event
-                                                                ) {
-                                                                  _vm.setAttentionLevel(
-                                                                    _vm.selectStudentData,
-                                                                    1,
-                                                                    "gray"
-                                                                  )
-                                                                }
-                                                              }
-                                                            },
-                                                            [_vm._v("favorite")]
-                                                          )
-                                                        : _vm._e(),
-                                                      _vm._v(" "),
-                                                      _vm.selectStudentData
-                                                        .attention_level <= 1
-                                                        ? _c(
-                                                            "v-icon",
-                                                            {
-                                                              attrs: {
-                                                                color: "gray"
-                                                              },
-                                                              on: {
-                                                                click: function(
-                                                                  $event
-                                                                ) {
-                                                                  _vm.setAttentionLevel(
-                                                                    _vm.selectStudentData,
-                                                                    2,
-                                                                    "gray"
-                                                                  )
-                                                                }
-                                                              }
-                                                            },
-                                                            [_vm._v("favorite")]
-                                                          )
-                                                        : _vm._e(),
-                                                      _vm._v(" "),
-                                                      _vm.selectStudentData
-                                                        .attention_level <= 0
-                                                        ? _c(
-                                                            "v-icon",
-                                                            {
-                                                              attrs: {
-                                                                color: "gray"
-                                                              },
-                                                              on: {
-                                                                click: function(
-                                                                  $event
-                                                                ) {
-                                                                  _vm.setAttentionLevel(
-                                                                    _vm.selectStudentData,
-                                                                    3,
-                                                                    "gray"
-                                                                  )
-                                                                }
-                                                              }
-                                                            },
-                                                            [_vm._v("favorite")]
-                                                          )
-                                                        : _vm._e(),
-                                                      _vm._v(" "),
-                                                      _vm.selectStudentData
-                                                        .attention_reason != ""
-                                                        ? _c("v-btn", {
-                                                            attrs: {
-                                                              small: "",
-                                                              depressed: "",
-                                                              round: "",
-                                                              color:
-                                                                "light-green lighten-1"
-                                                            },
-                                                            domProps: {
-                                                              innerHTML: _vm._s(
-                                                                _vm.datas
-                                                                  .attention_reason
-                                                              )
-                                                            }
-                                                          })
-                                                        : _vm._e()
-                                                    ],
-                                                    1
-                                                  )
-                                                ],
-                                                1
+                                              _vm._v(
+                                                _vm._s(this.periodSelected)
                                               )
-                                            ],
-                                            1
+                                            ]
                                           )
                                         : _c(
-                                            "v-layout",
+                                            "v-btn",
                                             {
-                                              attrs: {
-                                                row: "",
-                                                wrap: "",
-                                                "align-center": ""
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  _vm.dialog = !_vm.dialog
+                                                }
                                               }
                                             },
                                             [
-                                              _c(
-                                                "v-flex",
-                                                { attrs: { xs1: "" } },
-                                                [
-                                                  _c(
-                                                    "v-card-text",
-                                                    [
-                                                      _c(
-                                                        "v-avatar",
-                                                        {
-                                                          staticClass:
-                                                            "elevation-3",
-                                                          attrs: {
-                                                            size: "120px"
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("img", {
-                                                            attrs: { src: "#" }
-                                                          })
-                                                        ]
-                                                      )
-                                                    ],
-                                                    1
-                                                  )
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-flex",
-                                                { attrs: { xs5: "" } },
-                                                [
-                                                  _c(
-                                                    "v-card-text",
-                                                    {
-                                                      staticClass: "studentInfo"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass: "textBox"
-                                                        },
-                                                        [
-                                                          _c("span", [
-                                                            _vm._v(
-                                                              "학생을 선택해주세요."
-                                                            )
-                                                          ])
-                                                        ]
-                                                      )
-                                                    ]
-                                                  )
-                                                ],
-                                                1
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(this.periodSelected) +
+                                                  "\n                  ( " +
+                                                  _vm._s(this.startDate) +
+                                                  " ~ " +
+                                                  _vm._s(this.endDate) +
+                                                  ")\n                "
                                               )
-                                            ],
-                                            1
+                                            ]
                                           )
                                     ],
                                     1
                                   )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "attendanceChartTypeSelect" },
-                            [
-                              _c(
-                                "v-flex",
-                                { attrs: { xs12: "" } },
-                                [
-                                  _c(
-                                    "v-container",
-                                    { attrs: { "grid-list-xl": "" } },
-                                    [
-                                      _c(
-                                        "v-layout",
-                                        {
-                                          attrs: {
-                                            row: "",
-                                            wrap: "",
-                                            "align-center": ""
-                                          }
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-text",
+                                  { staticClass: "buttonBox" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          round: "",
+                                          outline: "",
+                                          color: "blue accent-2"
                                         },
-                                        [
-                                          _c(
-                                            "v-flex",
-                                            { attrs: { xs4: "" } },
-                                            [
-                                              _c("v-select", {
-                                                attrs: {
-                                                  items: _vm.attendance,
-                                                  label:
-                                                    _vm.attendanceSelected.text,
-                                                  "single-line": ""
-                                                },
-                                                model: {
-                                                  value: _vm.attendanceSelected,
-                                                  callback: function($$v) {
-                                                    _vm.attendanceSelected = $$v
-                                                  },
-                                                  expression:
-                                                    "attendanceSelected"
+                                        on: {
+                                          click: function($event) {
+                                            _vm.getStudentInfo("total"),
+                                              (_vm.studentSelected = "전체")
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("전체")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          round: "",
+                                          outline: "",
+                                          color: "blue accent-2"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.getStudentInfo("filter"),
+                                              (_vm.studentSelected = "주목")
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("주목")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          round: "",
+                                          outline: "",
+                                          color: "blue accent-2"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.getStudentInfo("attention"),
+                                              (_vm.studentSelected = "사랑")
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("사랑")]
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-list",
+                                  { attrs: { "three-line": "" } },
+                                  [
+                                    _c("v-subheader", [
+                                      _c("h2", [
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(_vm.studentSelected) +
+                                            " "
+                                        )
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-progress-linear", {
+                                      attrs: {
+                                        indeterminate: _vm.progressStudent,
+                                        height: "3"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "studentInfoDiv" },
+                                      [
+                                        _vm._l(_vm.studnetInfo, function(
+                                          datas
+                                        ) {
+                                          return [
+                                            _c("v-divider", {
+                                              attrs: { inset: true }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-tile",
+                                              {
+                                                attrs: { avatar: "" },
+                                                on: {
+                                                  click: function($event) {
+                                                    _vm.selectStudent(datas)
+                                                  }
                                                 }
-                                              })
-                                            ],
-                                            1
-                                          ),
-                                          _vm._v(" "),
-                                          _vm.attendanceSelected.select == 1
-                                            ? _c(
-                                                "v-flex",
-                                                { attrs: { xs6: "" } },
-                                                [
-                                                  _vm.btnLock
-                                                    ? _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            small: "",
-                                                            dark: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              _vm.selectMinorType(
-                                                                "sign_in",
-                                                                "sign",
-                                                                "등교"
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [_vm._v("등교")]
-                                                      )
-                                                    : _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            small: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3",
-                                                            disabled: ""
-                                                          }
-                                                        },
-                                                        [_vm._v("등교")]
-                                                      ),
-                                                  _vm._v(" "),
-                                                  _vm.btnLock
-                                                    ? _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            small: "",
-                                                            dark: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              _vm.selectMinorType(
-                                                                "sign_out",
-                                                                "sign",
-                                                                "하교"
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [_vm._v("하교")]
-                                                      )
-                                                    : _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            small: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3",
-                                                            disabled: ""
-                                                          }
-                                                        },
-                                                        [_vm._v("하교")]
-                                                      )
-                                                ],
-                                                1
-                                              )
-                                            : _vm.attendanceSelected.select == 2
-                                              ? _c(
-                                                  "v-flex",
-                                                  { attrs: { xs6: "" } },
-                                                  [
-                                                    _vm.btnLock
-                                                      ? _c(
-                                                          "v-btn",
-                                                          {
-                                                            attrs: {
-                                                              depressed: "",
-                                                              small: "",
-                                                              dark: "",
-                                                              round: "",
-                                                              color:
-                                                                "blue accent-3"
-                                                            },
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                _vm.selectMinorType(
-                                                                  "lateness",
-                                                                  "attendance",
-                                                                  "지각"
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v("지각")]
-                                                        )
-                                                      : _c(
-                                                          "v-btn",
-                                                          {
-                                                            attrs: {
-                                                              depressed: "",
-                                                              small: "",
-                                                              round: "",
-                                                              color:
-                                                                "blue accent-3",
-                                                              disabled: ""
-                                                            }
-                                                          },
-                                                          [_vm._v("지각")]
-                                                        ),
-                                                    _vm._v(" "),
-                                                    _vm.btnLock
-                                                      ? _c(
-                                                          "v-btn",
-                                                          {
-                                                            attrs: {
-                                                              depressed: "",
-                                                              small: "",
-                                                              dark: "",
-                                                              round: "",
-                                                              color:
-                                                                "blue accent-3"
-                                                            },
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                _vm.selectMinorType(
-                                                                  "absence",
-                                                                  "attendance",
-                                                                  "결석"
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v("결석")]
-                                                        )
-                                                      : _c(
-                                                          "v-btn",
-                                                          {
-                                                            attrs: {
-                                                              depressed: "",
-                                                              small: "",
-                                                              round: "",
-                                                              color:
-                                                                "blue accent-3",
-                                                              disabled: ""
-                                                            }
-                                                          },
-                                                          [_vm._v("결석")]
-                                                        ),
-                                                    _vm._v(" "),
-                                                    _vm.btnLock
-                                                      ? _c(
-                                                          "v-btn",
-                                                          {
-                                                            attrs: {
-                                                              depressed: "",
-                                                              small: "",
-                                                              dark: "",
-                                                              round: "",
-                                                              color:
-                                                                "blue accent-3"
-                                                            },
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                _vm.selectMinorType(
-                                                                  "early_leave",
-                                                                  "attendance",
-                                                                  "조퇴"
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v("조퇴")]
-                                                        )
-                                                      : _c(
-                                                          "v-btn",
-                                                          {
-                                                            attrs: {
-                                                              depressed: "",
-                                                              small: "",
-                                                              round: "",
-                                                              color:
-                                                                "blue accent-3",
-                                                              disabled: ""
-                                                            }
-                                                          },
-                                                          [_vm._v("조퇴")]
-                                                        )
-                                                  ],
-                                                  1
-                                                )
-                                              : _vm._e()
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-layout",
-                                        {
-                                          attrs: {
-                                            row: "",
-                                            wrap: "",
-                                            "align-center": ""
-                                          }
-                                        },
-                                        [
-                                          _vm.attendanceSelected.select == 1
-                                            ? _c(
-                                                "div",
-                                                [
-                                                  _c("div", [
-                                                    _c("h2", [
-                                                      _vm._v(
-                                                        "등하교 시간 변화량 ( " +
-                                                          _vm._s(_vm.setSign) +
-                                                          " ) "
-                                                      )
-                                                    ])
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "attendance-time-lineChart",
-                                                    {
-                                                      attrs: {
-                                                        width: 1000,
-                                                        data: _vm.timeLineData,
-                                                        labels:
-                                                          _vm.timeLineLabelData,
-                                                        options: {
-                                                          responsive: true,
-                                                          maintainAspectRatio: false
-                                                        }
-                                                      }
+                                              },
+                                              [
+                                                _c("v-list-tile-avatar", [
+                                                  _c("img", {
+                                                    attrs: {
+                                                      src: datas.photo_url
                                                     }
-                                                  )
-                                                ],
-                                                1
-                                              )
-                                            : _vm.attendanceSelected.select == 2
-                                              ? _c(
-                                                  "div",
+                                                  })
+                                                ]),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-list-tile-content",
                                                   [
-                                                    _c("div", [
-                                                      _c("h2", [
-                                                        _vm._v(
-                                                          "출결 횟수 변화 ( " +
-                                                            _vm._s(_vm.setAtt) +
-                                                            " )"
-                                                        )
-                                                      ])
+                                                    _c("v-list-tile-title", [
+                                                      _vm._v(
+                                                        " " +
+                                                          _vm._s(datas.id) +
+                                                          " " +
+                                                          _vm._s(datas.name)
+                                                      )
                                                     ]),
                                                     _vm._v(" "),
                                                     _c(
-                                                      "attendance-count-lineChart",
-                                                      {
-                                                        attrs: {
-                                                          width: 1000,
-                                                          data:
-                                                            _vm.countLineData,
-                                                          labels:
-                                                            _vm.countLineLabelData,
-                                                          options: {
-                                                            responsive: true,
-                                                            maintainAspectRatio: false
+                                                      "div",
+                                                      [
+                                                        datas.attention_level >
+                                                        0
+                                                          ? _c(
+                                                              "v-icon",
+                                                              {
+                                                                attrs: {
+                                                                  small: "",
+                                                                  color: "red"
+                                                                }
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "favorite"
+                                                                )
+                                                              ]
+                                                            )
+                                                          : _vm._e(),
+                                                        _vm._v(" "),
+                                                        datas.attention_level >
+                                                        1
+                                                          ? _c(
+                                                              "v-icon",
+                                                              {
+                                                                attrs: {
+                                                                  small: "",
+                                                                  color: "red"
+                                                                }
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "favorite"
+                                                                )
+                                                              ]
+                                                            )
+                                                          : _vm._e(),
+                                                        _vm._v(" "),
+                                                        datas.attention_level >
+                                                        2
+                                                          ? _c(
+                                                              "v-icon",
+                                                              {
+                                                                attrs: {
+                                                                  small: "",
+                                                                  color: "red"
+                                                                }
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "favorite"
+                                                                )
+                                                              ]
+                                                            )
+                                                          : _vm._e()
+                                                      ],
+                                                      1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    datas.attention_reason != ""
+                                                      ? _c("v-btn", {
+                                                          attrs: {
+                                                            small: "",
+                                                            depressed: "",
+                                                            round: "",
+                                                            color:
+                                                              "light-green lighten-1"
+                                                          },
+                                                          domProps: {
+                                                            innerHTML: _vm._s(
+                                                              datas.attention_reason
+                                                            )
                                                           }
-                                                        }
-                                                      }
+                                                        })
+                                                      : _vm._e()
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          ]
+                                        })
+                                      ],
+                                      2
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("v-flex", { attrs: { xs8: "", md8: "" } }, [
+                        _c(
+                          "div",
+                          { staticClass: "studentChartDiv" },
+                          [
+                            _c(
+                              "v-card",
+                              [
+                                _c("v-card-text", [
+                                  _c("h2", { staticClass: "chartTitle" }, [
+                                    _vm._v("학생 분석 예측")
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "v-flex",
+                                      { attrs: { xs12: "" } },
+                                      [
+                                        _c(
+                                          "v-container",
+                                          { attrs: { "grid-list-xl": "" } },
+                                          [
+                                            _vm.btnLock
+                                              ? _c(
+                                                  "v-layout",
+                                                  {
+                                                    attrs: {
+                                                      row: "",
+                                                      wrap: "",
+                                                      "align-center": ""
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-flex",
+                                                      { attrs: { xs1: "" } },
+                                                      [
+                                                        _c(
+                                                          "v-card-text",
+                                                          [
+                                                            _c(
+                                                              "v-avatar",
+                                                              {
+                                                                staticClass:
+                                                                  "elevation-3",
+                                                                attrs: {
+                                                                  size: "120px"
+                                                                }
+                                                              },
+                                                              [
+                                                                _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      _vm
+                                                                        .selectStudentData
+                                                                        .photo_url
+                                                                  }
+                                                                })
+                                                              ]
+                                                            )
+                                                          ],
+                                                          1
+                                                        )
+                                                      ],
+                                                      1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-flex",
+                                                      { attrs: { xs5: "" } },
+                                                      [
+                                                        _c(
+                                                          "v-card-text",
+                                                          {
+                                                            staticClass:
+                                                              "studentInfo"
+                                                          },
+                                                          [
+                                                            _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "textBox"
+                                                              },
+                                                              [
+                                                                _c("span", [
+                                                                  _vm._v(
+                                                                    _vm._s(
+                                                                      _vm
+                                                                        .selectStudentData
+                                                                        .id
+                                                                    )
+                                                                  )
+                                                                ]),
+                                                                _vm._v(
+                                                                  _vm._s(
+                                                                    _vm
+                                                                      .selectStudentData
+                                                                      .name
+                                                                  )
+                                                                )
+                                                              ]
+                                                            ),
+                                                            _vm._v(" "),
+                                                            _vm
+                                                              .selectStudentData
+                                                              .attention_level >
+                                                            0
+                                                              ? _c(
+                                                                  "v-icon",
+                                                                  {
+                                                                    attrs: {
+                                                                      color:
+                                                                        "red"
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        _vm.setAttentionLevel(
+                                                                          _vm.selectStudentData,
+                                                                          1,
+                                                                          "red"
+                                                                        )
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "favorite"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            _vm
+                                                              .selectStudentData
+                                                              .attention_level >
+                                                            1
+                                                              ? _c(
+                                                                  "v-icon",
+                                                                  {
+                                                                    attrs: {
+                                                                      color:
+                                                                        "red"
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        _vm.setAttentionLevel(
+                                                                          _vm.selectStudentData,
+                                                                          2,
+                                                                          "red"
+                                                                        )
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "favorite"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            _vm
+                                                              .selectStudentData
+                                                              .attention_level >
+                                                            2
+                                                              ? _c(
+                                                                  "v-icon",
+                                                                  {
+                                                                    attrs: {
+                                                                      color:
+                                                                        "red"
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "favorite"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            _vm
+                                                              .selectStudentData
+                                                              .attention_level <=
+                                                            2
+                                                              ? _c(
+                                                                  "v-icon",
+                                                                  {
+                                                                    attrs: {
+                                                                      color:
+                                                                        "gray"
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        _vm.setAttentionLevel(
+                                                                          _vm.selectStudentData,
+                                                                          1,
+                                                                          "gray"
+                                                                        )
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "favorite"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            _vm
+                                                              .selectStudentData
+                                                              .attention_level <=
+                                                            1
+                                                              ? _c(
+                                                                  "v-icon",
+                                                                  {
+                                                                    attrs: {
+                                                                      color:
+                                                                        "gray"
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        _vm.setAttentionLevel(
+                                                                          _vm.selectStudentData,
+                                                                          2,
+                                                                          "gray"
+                                                                        )
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "favorite"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            _vm
+                                                              .selectStudentData
+                                                              .attention_level <=
+                                                            0
+                                                              ? _c(
+                                                                  "v-icon",
+                                                                  {
+                                                                    attrs: {
+                                                                      color:
+                                                                        "gray"
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        _vm.setAttentionLevel(
+                                                                          _vm.selectStudentData,
+                                                                          3,
+                                                                          "gray"
+                                                                        )
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "favorite"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            _vm
+                                                              .selectStudentData
+                                                              .attention_reason !=
+                                                            ""
+                                                              ? _c("v-btn", {
+                                                                  attrs: {
+                                                                    small: "",
+                                                                    depressed:
+                                                                      "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "light-green lighten-1"
+                                                                  },
+                                                                  domProps: {
+                                                                    innerHTML: _vm._s(
+                                                                      _vm.datas
+                                                                        .attention_reason
+                                                                    )
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ],
+                                                          1
+                                                        )
+                                                      ],
+                                                      1
                                                     )
                                                   ],
                                                   1
                                                 )
-                                              : _vm.attendanceSelected.select ==
-                                                3
-                                                ? _c(
-                                                    "div",
-                                                    [
-                                                      _c(
-                                                        "attendance-count-pieChart",
-                                                        {
-                                                          attrs: {
-                                                            width: 1000,
-                                                            data:
-                                                              _vm.countPieData,
-                                                            options: {
-                                                              responsive: true,
-                                                              maintainAspectRatio: false
-                                                            }
-                                                          }
-                                                        }
-                                                      )
-                                                    ],
-                                                    1
-                                                  )
-                                                : _vm._e()
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "attendanceChartTypeSelect" },
-                            [
-                              _c(
-                                "v-flex",
-                                { attrs: { xs12: "" } },
-                                [
-                                  _c(
-                                    "v-container",
-                                    { attrs: { "grid-list-xl": "" } },
-                                    [
-                                      _c(
-                                        "v-layout",
-                                        {
-                                          attrs: {
-                                            row: "",
-                                            wrap: "",
-                                            "align-center": ""
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "v-flex",
-                                            { attrs: { xs4: "" } },
-                                            [
-                                              _c("v-select", {
-                                                attrs: {
-                                                  items: _vm.subjectList,
-                                                  label: _vm.subjectSelect.text,
-                                                  "single-line": ""
-                                                },
-                                                model: {
-                                                  value: _vm.subjectSelect,
-                                                  callback: function($$v) {
-                                                    _vm.subjectSelect = $$v
+                                              : _c(
+                                                  "v-layout",
+                                                  {
+                                                    attrs: {
+                                                      row: "",
+                                                      wrap: "",
+                                                      "align-center": ""
+                                                    }
                                                   },
-                                                  expression: "subjectSelect"
-                                                }
-                                              })
-                                            ],
-                                            1
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-flex",
-                                            { attrs: { xs4: "" } },
-                                            [
-                                              _c("v-select", {
+                                                  [
+                                                    _c(
+                                                      "v-flex",
+                                                      { attrs: { xs1: "" } },
+                                                      [
+                                                        _c(
+                                                          "v-card-text",
+                                                          [
+                                                            _c(
+                                                              "v-avatar",
+                                                              {
+                                                                staticClass:
+                                                                  "elevation-3",
+                                                                attrs: {
+                                                                  size: "120px"
+                                                                }
+                                                              },
+                                                              [
+                                                                _c("img", {
+                                                                  attrs: {
+                                                                    src: "#"
+                                                                  }
+                                                                })
+                                                              ]
+                                                            )
+                                                          ],
+                                                          1
+                                                        )
+                                                      ],
+                                                      1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-flex",
+                                                      { attrs: { xs5: "" } },
+                                                      [
+                                                        _c(
+                                                          "v-card-text",
+                                                          {
+                                                            staticClass:
+                                                              "studentInfo"
+                                                          },
+                                                          [
+                                                            _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "textBox"
+                                                              },
+                                                              [
+                                                                _c("span", [
+                                                                  _vm._v(
+                                                                    "학생을 선택해주세요."
+                                                                  )
+                                                                ])
+                                                              ]
+                                                            )
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "v-flex",
+                                      { attrs: { xs12: "" } },
+                                      [
+                                        _c(
+                                          "v-container",
+                                          { attrs: { "grid-list-xl": "" } },
+                                          [
+                                            _c(
+                                              "v-layout",
+                                              {
                                                 attrs: {
-                                                  items: _vm.grade,
-                                                  label:
-                                                    _vm.greadeSelected.text,
-                                                  "single-line": ""
-                                                },
-                                                model: {
-                                                  value: _vm.greadeSelected,
-                                                  callback: function($$v) {
-                                                    _vm.greadeSelected = $$v
-                                                  },
-                                                  expression: "greadeSelected"
+                                                  row: "",
+                                                  wrap: "",
+                                                  "align-center": ""
                                                 }
-                                              })
-                                            ],
-                                            1
-                                          ),
-                                          _vm._v(" "),
-                                          _vm.greadeSelected.select == 3 ||
-                                          _vm.greadeSelected.select == 4
-                                            ? _c(
-                                                "v-flex",
-                                                { attrs: { xs4: "" } },
-                                                [
-                                                  _vm.btnLock
-                                                    ? _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            dark: "",
-                                                            color:
-                                                              "blue accent-3"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              _vm.selectMinorType(
-                                                                "_quiz",
-                                                                "detailCode",
-                                                                "쪽지"
-                                                              )
-                                                            }
-                                                          }
+                                              },
+                                              [
+                                                _c(
+                                                  "v-flex",
+                                                  { attrs: { xs4: "" } },
+                                                  [
+                                                    _c("v-select", {
+                                                      attrs: {
+                                                        items: _vm.attendance,
+                                                        label:
+                                                          _vm.attendanceSelected
+                                                            .text,
+                                                        "single-line": ""
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.attendanceSelected,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.attendanceSelected = $$v
                                                         },
-                                                        [_vm._v("쪽지")]
-                                                      )
-                                                    : _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3",
-                                                            disabled: ""
-                                                          }
-                                                        },
-                                                        [_vm._v("쪽지")]
-                                                      ),
-                                                  _vm._v(" "),
-                                                  _vm.btnLock
-                                                    ? _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            dark: "",
-                                                            color:
-                                                              "blue accent-3"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              _vm.selectMinorType(
-                                                                "_homework",
-                                                                "detailCode",
-                                                                "과제"
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [_vm._v("과제")]
-                                                      )
-                                                    : _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3",
-                                                            disabled: ""
-                                                          }
-                                                        },
-                                                        [_vm._v("과제")]
-                                                      ),
-                                                  _vm._v(" "),
-                                                  _vm.btnLock
-                                                    ? _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            dark: "",
-                                                            color:
-                                                              "blue accent-3"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              _vm.selectMinorType(
-                                                                "_midterm",
-                                                                "detailCode",
-                                                                "중간"
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [_vm._v("중간")]
-                                                      )
-                                                    : _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3",
-                                                            disabled: ""
-                                                          }
-                                                        },
-                                                        [_vm._v("중간")]
-                                                      ),
-                                                  _vm._v(" "),
-                                                  _vm.btnLock
-                                                    ? _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            dark: "",
-                                                            color:
-                                                              "blue accent-3"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              _vm.selectMinorType(
-                                                                "_final",
-                                                                "detailCode",
-                                                                "기말"
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [_vm._v("기말")]
-                                                      )
-                                                    : _c(
-                                                        "v-btn",
-                                                        {
-                                                          attrs: {
-                                                            depressed: "",
-                                                            round: "",
-                                                            color:
-                                                              "blue accent-3",
-                                                            disabled: ""
-                                                          }
-                                                        },
-                                                        [_vm._v("기말")]
-                                                      )
-                                                ],
+                                                        expression:
+                                                          "attendanceSelected"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _vm.attendanceSelected.select ==
                                                 1
-                                              )
-                                            : _vm._e()
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-flex",
-                                        { attrs: { xs12: "" } },
-                                        [
-                                          _c(
-                                            "v-layout",
-                                            {
-                                              attrs: {
-                                                row: "",
-                                                wrap: "",
-                                                "align-center": ""
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: { xs12: "", md6: "" }
-                                                },
-                                                [
-                                                  _vm.greadeSelected.select == 1
-                                                    ? _c(
-                                                        "div",
-                                                        [
-                                                          _c("div", [
-                                                            _c("h2", [
-                                                              _vm._v(
-                                                                "강의 취득 점수 ( " +
-                                                                  _vm._s(
-                                                                    _vm.setLec
-                                                                  ) +
-                                                                  " )"
-                                                              )
-                                                            ])
-                                                          ]),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "study-lecture-score-lineChart",
-                                                            {
-                                                              attrs: {
-                                                                datasets:
-                                                                  _vm.lectureScoreDataSets,
-                                                                labels:
-                                                                  _vm.lectureScoreLabelData,
-                                                                options: {
-                                                                  responsive: true,
-                                                                  maintainAspectRatio: false
+                                                  ? _c(
+                                                      "v-flex",
+                                                      { attrs: { xs6: "" } },
+                                                      [
+                                                        _vm.btnLock
+                                                          ? _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  small: "",
+                                                                  dark: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    _vm.selectMinorType(
+                                                                      "sign_in",
+                                                                      "sign",
+                                                                      "등교"
+                                                                    )
+                                                                  }
                                                                 }
-                                                              }
-                                                            }
-                                                          )
-                                                        ],
-                                                        1
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.greadeSelected.select == 2
-                                                    ? _c(
-                                                        "div",
-                                                        [
-                                                          _c("div", [
-                                                            _c("h2", [
-                                                              _vm._v(
-                                                                "강의 석차백분율 ( " +
-                                                                  _vm._s(
-                                                                    _vm.setLec
-                                                                  ) +
-                                                                  " )"
-                                                              )
-                                                            ])
-                                                          ]),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "study-lecture-ranking-lineChart",
-                                                            {
-                                                              attrs: {
-                                                                data:
-                                                                  _vm.lectureRankingData,
-                                                                labels:
-                                                                  _vm.lectureRankingLabelData,
-                                                                options: {
-                                                                  responsive: true,
-                                                                  maintainAspectRatio: false
+                                                              },
+                                                              [_vm._v("등교")]
+                                                            )
+                                                          : _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  small: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3",
+                                                                  disabled: ""
                                                                 }
-                                                              }
-                                                            }
-                                                          )
-                                                        ],
-                                                        1
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.greadeSelected.select == 3
-                                                    ? _c(
-                                                        "div",
-                                                        [
-                                                          _c("div", [
-                                                            _c("h2", [
-                                                              _vm._v(
-                                                                "종목별 취득 점수 ( " +
-                                                                  _vm._s(
-                                                                    _vm.setSub
-                                                                  ) +
-                                                                  " )"
-                                                              )
-                                                            ])
-                                                          ]),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "study-subject-score-lineChart",
-                                                            {
-                                                              attrs: {
-                                                                datasets:
-                                                                  _vm.subjectScoreDataSets,
-                                                                labels:
-                                                                  _vm.subjectScoreLabelData,
-                                                                options: {
-                                                                  responsive: true,
-                                                                  maintainAspectRatio: false
+                                                              },
+                                                              [_vm._v("등교")]
+                                                            ),
+                                                        _vm._v(" "),
+                                                        _vm.btnLock
+                                                          ? _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  small: "",
+                                                                  dark: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    _vm.selectMinorType(
+                                                                      "sign_out",
+                                                                      "sign",
+                                                                      "하교"
+                                                                    )
+                                                                  }
                                                                 }
-                                                              }
-                                                            }
-                                                          )
-                                                        ],
-                                                        1
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.greadeSelected.select == 4
-                                                    ? _c(
-                                                        "div",
-                                                        [
-                                                          _c("div", [
-                                                            _c("h2", [
-                                                              _vm._v(
-                                                                "종목별 석차백분율 ( " +
-                                                                  _vm._s(
-                                                                    _vm.setSub
-                                                                  ) +
-                                                                  " )"
-                                                              )
-                                                            ])
-                                                          ]),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "study-subject-ranking-lineChart",
-                                                            {
-                                                              attrs: {
-                                                                data:
-                                                                  _vm.subjectRankingData,
-                                                                labels:
-                                                                  _vm.subjectRankingLabelData,
-                                                                options: {
-                                                                  responsive: true,
-                                                                  maintainAspectRatio: false
+                                                              },
+                                                              [_vm._v("하교")]
+                                                            )
+                                                          : _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  small: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3",
+                                                                  disabled: ""
                                                                 }
-                                                              }
-                                                            }
-                                                          )
+                                                              },
+                                                              [_vm._v("하교")]
+                                                            )
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm.attendanceSelected
+                                                      .select == 2
+                                                    ? _c(
+                                                        "v-flex",
+                                                        { attrs: { xs6: "" } },
+                                                        [
+                                                          _vm.btnLock
+                                                            ? _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    dark: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.selectMinorType(
+                                                                        "lateness",
+                                                                        "attendance",
+                                                                        "지각"
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [_vm._v("지각")]
+                                                              )
+                                                            : _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3",
+                                                                    disabled: ""
+                                                                  }
+                                                                },
+                                                                [_vm._v("지각")]
+                                                              ),
+                                                          _vm._v(" "),
+                                                          _vm.btnLock
+                                                            ? _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    dark: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.selectMinorType(
+                                                                        "absence",
+                                                                        "attendance",
+                                                                        "결석"
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [_vm._v("결석")]
+                                                              )
+                                                            : _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3",
+                                                                    disabled: ""
+                                                                  }
+                                                                },
+                                                                [_vm._v("결석")]
+                                                              ),
+                                                          _vm._v(" "),
+                                                          _vm.btnLock
+                                                            ? _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    dark: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.selectMinorType(
+                                                                        "early_leave",
+                                                                        "attendance",
+                                                                        "조퇴"
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [_vm._v("조퇴")]
+                                                              )
+                                                            : _c(
+                                                                "v-btn",
+                                                                {
+                                                                  attrs: {
+                                                                    depressed:
+                                                                      "",
+                                                                    small: "",
+                                                                    round: "",
+                                                                    color:
+                                                                      "blue accent-3",
+                                                                    disabled: ""
+                                                                  }
+                                                                },
+                                                                [_vm._v("조퇴")]
+                                                              )
                                                         ],
                                                         1
                                                       )
                                                     : _vm._e()
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: { xs12: "", md6: "" }
-                                                },
-                                                [
-                                                  _c("div", [
-                                                    _c("h2", [
-                                                      _vm._v("전공&일본어 수준")
-                                                    ])
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "study-japenese-Major-lineChart",
-                                                    {
-                                                      attrs: {
-                                                        datasets:
-                                                          _vm.jmLineDataSets,
-                                                        labels:
-                                                          _vm.jmLineLabelData,
-                                                        options: {
-                                                          responsive: true,
-                                                          maintainAspectRatio: false
-                                                        }
-                                                      }
-                                                    }
-                                                  )
-                                                ],
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-layout",
+                                              {
+                                                attrs: {
+                                                  row: "",
+                                                  wrap: "",
+                                                  "align-center": ""
+                                                }
+                                              },
+                                              [
+                                                _vm.attendanceSelected.select ==
                                                 1
-                                              )
-                                            ],
-                                            1
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
+                                                  ? _c(
+                                                      "div",
+                                                      [
+                                                        _c("div", [
+                                                          _c("h2", [
+                                                            _vm._v(
+                                                              "등하교 시간 변화량 ( " +
+                                                                _vm._s(
+                                                                  _vm.setSign
+                                                                ) +
+                                                                " ) "
+                                                            )
+                                                          ])
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "attendance-time-lineChart",
+                                                          {
+                                                            attrs: {
+                                                              width: 1000,
+                                                              data:
+                                                                _vm.timeLineData,
+                                                              labels:
+                                                                _vm.timeLineLabelData,
+                                                              options: {
+                                                                responsive: true,
+                                                                maintainAspectRatio: false
+                                                              }
+                                                            }
+                                                          }
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm.attendanceSelected
+                                                      .select == 2
+                                                    ? _c(
+                                                        "div",
+                                                        [
+                                                          _c("div", [
+                                                            _c("h2", [
+                                                              _vm._v(
+                                                                "출결 횟수 변화 ( " +
+                                                                  _vm._s(
+                                                                    _vm.setAtt
+                                                                  ) +
+                                                                  " )"
+                                                              )
+                                                            ])
+                                                          ]),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "attendance-count-lineChart",
+                                                            {
+                                                              attrs: {
+                                                                width: 1000,
+                                                                data:
+                                                                  _vm.countLineData,
+                                                                labels:
+                                                                  _vm.countLineLabelData,
+                                                                options: {
+                                                                  responsive: true,
+                                                                  maintainAspectRatio: false
+                                                                }
+                                                              }
+                                                            }
+                                                          )
+                                                        ],
+                                                        1
+                                                      )
+                                                    : _vm.attendanceSelected
+                                                        .select == 3
+                                                      ? _c(
+                                                          "div",
+                                                          [
+                                                            _c(
+                                                              "attendance-count-pieChart",
+                                                              {
+                                                                attrs: {
+                                                                  width: 1000,
+                                                                  data:
+                                                                    _vm.countPieData,
+                                                                  options: {
+                                                                    responsive: true,
+                                                                    maintainAspectRatio: false
+                                                                  }
+                                                                }
+                                                              }
+                                                            )
+                                                          ],
+                                                          1
+                                                        )
+                                                      : _vm._e()
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "v-flex",
+                                      { attrs: { xs12: "" } },
+                                      [
+                                        _c(
+                                          "v-container",
+                                          { attrs: { "grid-list-xl": "" } },
+                                          [
+                                            _c(
+                                              "v-layout",
+                                              {
+                                                attrs: {
+                                                  row: "",
+                                                  wrap: "",
+                                                  "align-center": ""
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "v-flex",
+                                                  { attrs: { xs4: "" } },
+                                                  [
+                                                    _c("v-select", {
+                                                      attrs: {
+                                                        items: _vm.subjectList,
+                                                        label:
+                                                          _vm.subjectSelect
+                                                            .text,
+                                                        "single-line": ""
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.subjectSelect,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.subjectSelect = $$v
+                                                        },
+                                                        expression:
+                                                          "subjectSelect"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-flex",
+                                                  { attrs: { xs4: "" } },
+                                                  [
+                                                    _c("v-select", {
+                                                      attrs: {
+                                                        items: _vm.grade,
+                                                        label:
+                                                          _vm.greadeSelected
+                                                            .text,
+                                                        "single-line": ""
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.greadeSelected,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.greadeSelected = $$v
+                                                        },
+                                                        expression:
+                                                          "greadeSelected"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _vm.greadeSelected.select ==
+                                                  3 ||
+                                                _vm.greadeSelected.select == 4
+                                                  ? _c(
+                                                      "v-flex",
+                                                      { attrs: { xs4: "" } },
+                                                      [
+                                                        _vm.btnLock
+                                                          ? _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  dark: "",
+                                                                  color:
+                                                                    "blue accent-3"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    _vm.selectMinorType(
+                                                                      "_quiz",
+                                                                      "detailCode",
+                                                                      "쪽지"
+                                                                    )
+                                                                  }
+                                                                }
+                                                              },
+                                                              [_vm._v("쪽지")]
+                                                            )
+                                                          : _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3",
+                                                                  disabled: ""
+                                                                }
+                                                              },
+                                                              [_vm._v("쪽지")]
+                                                            ),
+                                                        _vm._v(" "),
+                                                        _vm.btnLock
+                                                          ? _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  dark: "",
+                                                                  color:
+                                                                    "blue accent-3"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    _vm.selectMinorType(
+                                                                      "_homework",
+                                                                      "detailCode",
+                                                                      "과제"
+                                                                    )
+                                                                  }
+                                                                }
+                                                              },
+                                                              [_vm._v("과제")]
+                                                            )
+                                                          : _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3",
+                                                                  disabled: ""
+                                                                }
+                                                              },
+                                                              [_vm._v("과제")]
+                                                            ),
+                                                        _vm._v(" "),
+                                                        _vm.btnLock
+                                                          ? _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  dark: "",
+                                                                  color:
+                                                                    "blue accent-3"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    _vm.selectMinorType(
+                                                                      "_midterm",
+                                                                      "detailCode",
+                                                                      "중간"
+                                                                    )
+                                                                  }
+                                                                }
+                                                              },
+                                                              [_vm._v("중간")]
+                                                            )
+                                                          : _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3",
+                                                                  disabled: ""
+                                                                }
+                                                              },
+                                                              [_vm._v("중간")]
+                                                            ),
+                                                        _vm._v(" "),
+                                                        _vm.btnLock
+                                                          ? _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  dark: "",
+                                                                  color:
+                                                                    "blue accent-3"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    _vm.selectMinorType(
+                                                                      "_final",
+                                                                      "detailCode",
+                                                                      "기말"
+                                                                    )
+                                                                  }
+                                                                }
+                                                              },
+                                                              [_vm._v("기말")]
+                                                            )
+                                                          : _c(
+                                                              "v-btn",
+                                                              {
+                                                                attrs: {
+                                                                  depressed: "",
+                                                                  round: "",
+                                                                  color:
+                                                                    "blue accent-3",
+                                                                  disabled: ""
+                                                                }
+                                                              },
+                                                              [_vm._v("기말")]
+                                                            )
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm._e()
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-flex",
+                                              { attrs: { xs12: "" } },
+                                              [
+                                                _c(
+                                                  "v-layout",
+                                                  {
+                                                    attrs: {
+                                                      row: "",
+                                                      wrap: "",
+                                                      "align-center": ""
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-flex",
+                                                      {
+                                                        attrs: {
+                                                          xs12: "",
+                                                          md6: ""
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm.greadeSelected
+                                                          .select == 1
+                                                          ? _c(
+                                                              "div",
+                                                              [
+                                                                _c("div", [
+                                                                  _c("h2", [
+                                                                    _vm._v(
+                                                                      "강의 취득 점수 ( " +
+                                                                        _vm._s(
+                                                                          _vm.setLec
+                                                                        ) +
+                                                                        " )"
+                                                                    )
+                                                                  ])
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "study-lecture-score-lineChart",
+                                                                  {
+                                                                    attrs: {
+                                                                      datasets:
+                                                                        _vm.lectureScoreDataSets,
+                                                                      labels:
+                                                                        _vm.lectureScoreLabelData,
+                                                                      options: {
+                                                                        responsive: true,
+                                                                        maintainAspectRatio: false
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          : _vm._e(),
+                                                        _vm._v(" "),
+                                                        _vm.greadeSelected
+                                                          .select == 2
+                                                          ? _c(
+                                                              "div",
+                                                              [
+                                                                _c("div", [
+                                                                  _c("h2", [
+                                                                    _vm._v(
+                                                                      "강의 석차백분율 ( " +
+                                                                        _vm._s(
+                                                                          _vm.setLec
+                                                                        ) +
+                                                                        " )"
+                                                                    )
+                                                                  ])
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "study-lecture-ranking-lineChart",
+                                                                  {
+                                                                    attrs: {
+                                                                      data:
+                                                                        _vm.lectureRankingData,
+                                                                      labels:
+                                                                        _vm.lectureRankingLabelData,
+                                                                      options: {
+                                                                        responsive: true,
+                                                                        maintainAspectRatio: false
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          : _vm._e(),
+                                                        _vm._v(" "),
+                                                        _vm.greadeSelected
+                                                          .select == 3
+                                                          ? _c(
+                                                              "div",
+                                                              [
+                                                                _c("div", [
+                                                                  _c("h2", [
+                                                                    _vm._v(
+                                                                      "종목별 취득 점수 ( " +
+                                                                        _vm._s(
+                                                                          _vm.setSub
+                                                                        ) +
+                                                                        " )"
+                                                                    )
+                                                                  ])
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "study-subject-score-lineChart",
+                                                                  {
+                                                                    attrs: {
+                                                                      datasets:
+                                                                        _vm.subjectScoreDataSets,
+                                                                      labels:
+                                                                        _vm.subjectScoreLabelData,
+                                                                      options: {
+                                                                        responsive: true,
+                                                                        maintainAspectRatio: false
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          : _vm._e(),
+                                                        _vm._v(" "),
+                                                        _vm.greadeSelected
+                                                          .select == 4
+                                                          ? _c(
+                                                              "div",
+                                                              [
+                                                                _c("div", [
+                                                                  _c("h2", [
+                                                                    _vm._v(
+                                                                      "종목별 석차백분율 ( " +
+                                                                        _vm._s(
+                                                                          _vm.setSub
+                                                                        ) +
+                                                                        " )"
+                                                                    )
+                                                                  ])
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "study-subject-ranking-lineChart",
+                                                                  {
+                                                                    attrs: {
+                                                                      data:
+                                                                        _vm.subjectRankingData,
+                                                                      labels:
+                                                                        _vm.subjectRankingLabelData,
+                                                                      options: {
+                                                                        responsive: true,
+                                                                        maintainAspectRatio: false
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          : _vm._e()
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-flex",
+                                                      {
+                                                        attrs: {
+                                                          xs12: "",
+                                                          md6: ""
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("div", [
+                                                          _c("h2", [
+                                                            _vm._v(
+                                                              "전공&일본어 수준"
+                                                            )
+                                                          ])
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "study-japenese-Major-lineChart",
+                                                          {
+                                                            attrs: {
+                                                              datasets:
+                                                                _vm.jmLineDataSets,
+                                                              labels:
+                                                                _vm.jmLineLabelData,
+                                                              options: {
+                                                                responsive: true,
+                                                                maintainAspectRatio: false
+                                                              }
+                                                            }
+                                                          }
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ])
                     ],
                     1
                   )
@@ -83010,7 +83568,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n\r\n/*-- 헤더 영역 --*/\n.categoryAnalyticSetting {\r\n    color: #FFFFFF;\r\n    font-size: 40px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\r\n    position: relative;\r\n    left: 90px;\n}\r\n\r\n/*-- 출석 분류 기준 설정 카드 --*/\n.attendanceSettingCard {\r\n  position: relative;\r\n  bottom: 380px;\r\n  border-radius: 0.2975rem;\r\n  margin: 20px 0 0 0;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\n}\n.attendanceSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 43px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: linear-gradient(-30deg, rgb(70, 90, 145), rgb(154, 173, 249));\n}\n.periodBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.period {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.frequency {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 85px;\r\n  bottom: 56px;\r\n  position: relative;\n}\n.frequency_2 {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 230px;\r\n  bottom: 55px;\r\n  position: relative;\n}\r\n\r\n/*-- 학업 분류 기준 설정 카드 --*/\n.gradeSettingCard {\r\n  position: relative;\r\n  bottom: 225px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n  position: relative;\r\n  z-index: 1;\n}\n.gradeSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 143px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: linear-gradient(-60deg, rgb(70, 90, 145), rgb(154, 173, 249));\n}\n.standardBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.standard {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.lowRankBox {\r\n  position: relative;\r\n  bottom: 20px;\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.lowRankTitle {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\r\n   position: relative;\r\n   right: 35px;\n}\n.lowRankText {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\n}\n.recentProblemsBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.recentProblemsTitle {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    position: relative;\r\n    right: 35px;\n}\n.recentProblemsText {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\n.recentProblemsText_2 {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\r\n\r\n\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n\r\n/*-- 헤더 영역 --*/\n.categoryAnalyticSetting {\r\n    color: #FFFFFF;\r\n    font-size: 40px;\r\n    font-family: \"Montserrat\";\r\n    font-weight: Bold;\r\n    position: relative;\r\n    left: 90px;\n}\r\n\r\n/*-- 출석 분류 기준 설정 카드 --*/\n.attendanceSettingCard {\r\n  position: relative;\r\n  bottom: 380px;\r\n  border-radius: 0.2975rem;\r\n  margin: 20px 0 0 0;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\n}\n.attendanceSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 43px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(165, 180, 210)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));\n}\n.periodBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.period {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.frequency {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 85px;\r\n  bottom: 56px;\r\n  position: relative;\n}\n.frequency_2 {\r\n  font-family: \"Nanum Gothic Coding\";\r\n  font-weight: lighter;\r\n  color: black;\r\n  left: 230px;\r\n  bottom: 55px;\r\n  position: relative;\n}\r\n\r\n/*-- 학업 분류 기준 설정 카드 --*/\n.gradeSettingCard {\r\n  position: relative;\r\n  bottom: 225px;\r\n  border-radius: 0.2975rem;\r\n  -webkit-box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n          box-shadow: 0 4px 12px 0 rgba(161, 161, 161, 0.36);\r\n  position: relative;\r\n  z-index: 1;\n}\n.gradeSettingTitleBox {\r\n  border-radius: 0.3975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 143px;\r\n  bottom: 130px;\r\n  -webkit-box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n          box-shadow:  0 4px 12px 0 rgba(97, 97, 97, 0.36);\r\n  background: -webkit-gradient(linear, left top, right bottom, from(rgb(165, 180, 210)), to(rgb(61, 96, 241)));\r\n  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));\n}\n.standardBox {\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.standard {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    color: black;\r\n    margin: 65px 0 0 20px;\n}\n.lowRankBox {\r\n  position: relative;\r\n  bottom: 20px;\r\n  border-bottom: 1px solid;\r\n  border-color: rgba(187, 187, 187, 0.73);\n}\n.lowRankTitle {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\r\n   position: relative;\r\n   right: 35px;\n}\n.lowRankText {\r\n   font-family: \"Nanum Gothic Coding\";\r\n   font-weight: lighter;\n}\n.recentProblemsBox {\r\n  position: relative;\r\n  bottom: 40px;\n}\n.recentProblemsTitle {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\r\n    position: relative;\r\n    right: 35px;\n}\n.recentProblemsText {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\n.recentProblemsText_2 {\r\n    font-family: \"Nanum Gothic Coding\";\r\n    font-weight: lighter;\n}\r\n\r\n\r\n", ""]);
 
 // exports
 
@@ -85406,6 +85964,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
           std_id: this.$router.history.current.query.getInfoIdType
         }
       }).then(function (response) {
+        console.log(response.data.message);
         _this3.createAttendanceDoubleLineValue(response.data.message);
 
         var datas = [];
@@ -85464,15 +86023,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
         labelData.push(value[start].reg_date);
 
         /* 결석은 패스 */
-        if (value[start].lateness_flag != 'good') {
+        if (value[start].lateness_flag != "good") {
           /* 지각 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
-        } else {
+        } else if (value[start].absence_flag == "good") {
           /* 등교 */
           this.attendanceDatasets[0].data.push(this.cutTime(value[start].sign_in_time, 'in'));
         }
+
         /* 하교타입 확인 : 결석일 경우 미확인 */
-        if (value[start].absence_flag == 'good') {
+        if (value[start].absence_flag == "good") {
           switch (value[start].early_leave_flag) {
             case 'good':
               /* 하교 */
@@ -85501,7 +86061,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
       this.attendanceLabelData = labels;
     },
     cutTime: function cutTime(value, setting) {
-      if (value == null) return null;
 
       /* 출석 시작 기준 값 */
       var checkInStart = '0830';
@@ -85680,7 +86239,7 @@ var render = function() {
                                     fn: function(props) {
                                       return _c(
                                         "v-flex",
-                                        {},
+                                        { attrs: { xs6: "", md6: "" } },
                                         [
                                           _c(
                                             "v-card",

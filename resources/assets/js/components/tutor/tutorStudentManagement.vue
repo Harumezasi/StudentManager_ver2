@@ -24,7 +24,7 @@
                 <td class="text-xs-center" style="height: 70px; font-size: 20px;font-family: Gothic A1" >{{ props.item.id }}</td>
                  <td class="text-xs-center" style="font-size: 20px;font-family: Gothic A1">{{ props.item.name }}</td>
                  <td class="text-xs-center">
-                   <v-btn style="background: linear-gradient(-90deg, rgb(127, 120, 190), rgb(154, 173, 249));" slot="activator" normal :onclick="props.item.infoLink">
+                   <v-btn color = "blue accent-2" style="color:white" slot="activator" normal :onclick="props.item.infoLink">
                      상세보기
                    </v-btn>
                  </td>

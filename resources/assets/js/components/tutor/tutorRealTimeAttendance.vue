@@ -18,7 +18,7 @@
                 <v-flex xs12 class = "cardsTitleUnderLine">
                     <v-layout row wrap align-center>
                       <v-flex xs12 md2>
-                        <v-icon color = "blue lighten-3" large>highlight_off</v-icon>
+                        <v-icon color = "light-blue darken-2" large>highlight_off</v-icon>
                       </v-flex>
                       <v-flex xs12 md6>
                         <h1 class = "cardsTitle">결석 학생</h1>
@@ -34,7 +34,6 @@
               <v-card-text class="absenceAndLateInfoArea">
                 <v-list three-line>
                  <template v-for="absence in absenceData">
-                   <v-divider></v-divider>
                    <v-list-tile :key="absence.name" avatar @click="">
                      <!-- 결석 학생 사진 -->
                      <v-list-tile-avatar size = "40" style="position: relative; top: 8  px;">
@@ -59,7 +58,7 @@
                 <v-flex xs12 class = "cardsTitleUnderLine">
                     <v-layout row wrap align-center>
                       <v-flex xs12 md2>
-                        <v-icon color = "blue lighten-3" large>directions_run</v-icon>
+                        <v-icon color = "light-blue darken-2" large>directions_run</v-icon>
                       </v-flex>
                       <v-flex xs12 md6>
                         <h1 class = "cardsTitle">지각 학생</h1>
@@ -75,7 +74,6 @@
                 <v-list three-line>
                   <div class="studentListArea">
                    <template v-for="late in lateData">
-                    <v-divider></v-divider>
                      <v-list-tile :key="late.name" avatar @click="">
                        <!-- 지각 학생 사진 -->
                        <v-list-tile-avatar size = "40" style="position: relative; top: 8  px;">
@@ -111,7 +109,7 @@
                             <v-flex xs12 class = "cardsTitleUnderLine">
                                 <v-layout row wrap align-center>
                                   <v-flex xs12 md2>
-                                    <v-icon color = "blue lighten-3" large>alarm</v-icon>
+                                    <v-icon color = "light-blue darken-2" large>alarm</v-icon>
                                   </v-flex>
                                   <v-flex xs12 md6>
                                     <h1 class = "cardsTitle">등/하교 학생</h1>
@@ -126,7 +124,6 @@
                           <v-card-text class="attendanceInfoArea">
                             <v-list three-line>
                              <template v-for="datas in signData">
-                                 <v-divider></v-divider>
                                <v-list-tile :key="datas.name" avatar @click="">
                                  <!-- 등/하교 학생 사진 -->
                                  <v-list-tile-avatar size = "40" style="position: relative; top: 8px;">
@@ -160,19 +157,19 @@
 
                   <!-- 관심 학생 -->
                   <v-flex d-flex>
-                    <v-layout row wrap style="width:250px; height:235px">
+                    <v-layout row wrap style="width:400px; height:235px">
                         <v-card class = "interestStudentBox">
                           <v-card-text style="">
                             <v-flex xs12 class = "cardsTitleUnderLine">
                                 <v-layout row wrap align-center>
                                   <v-flex xs12 md2>
-                                    <v-icon color = "red darken-3" large>favorite</v-icon>
+                                    <v-icon color = "red darken-3" large>error</v-icon>
                                   </v-flex>
                                   <v-flex xs12 md6>
                                     <h1 class = "cardsTitle">관심학생</h1>
                                   </v-flex>
                                   <v-flex xs12 md4>
-                                    <h1 class = "currentStudentNum">{{ loveStudentCount }} 명</h1>
+                                    <h1 class = "currentStudentNum" style="color: white">{{ loveStudentCount }}/48</h1>
                                   </v-flex>
                                 </v-layout>
                             </v-flex>
@@ -295,7 +292,7 @@
   min-height: 200px;
   width: 400px;
   box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
-  background: linear-gradient(-90deg, rgb(127, 120, 190), rgb(154, 173, 249));
+  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));
 }
 .interestInfoArea {
   min-height: 160px;
@@ -304,6 +301,29 @@
   overflow-y: scroll;
   position: relative;
   bottom: 18px;
+}
+
+/* 스크롤 */
+/* width */
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: rgb(208, 208, 208);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(185, 199, 250);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #5491f7;
 }
 
 </style>
