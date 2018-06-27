@@ -853,10 +853,11 @@ class TutorController extends Controller
                                         // 결석인 경우 : 1번 단위로 끊어서 출력 / 그 이외: 5번 단위로 끊어서 출력
                                         $key = $minorClass == 'absence' ? $temp : ($temp * 5). '~' .(($temp * $unit) + ($unit - 1));
                                         if(isset($graph[$temp])) {
-                                            $graph[$temp]['name'] = __('ada.count', ['count' => $key]);
+
                                             $graph[$temp]['count']++;
                                         } else {
                                             $graph[$temp]['count'] = 1;
+                                            $graph[$temp]['name'] = __('ada.count', ['count' => $key]);
                                         }
                                         $graph[$temp]['detail'][] = $value;
 
