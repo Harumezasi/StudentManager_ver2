@@ -37,11 +37,11 @@ class TermsTableSeeder extends Seeder
             ],
             '2018-1st_term'     => [
                 'start'     => Carbon::createFromDate(2018, 3, 2),
-                'end'       => Carbon::createFromDate(2018, 7, 1)
+                'end'       => Carbon::createFromDate(2018, 8, 24)
             ],
 
             '2018-summer_vacation'     => [
-                'start'     => Carbon::createFromDate(2018, 7, 2),
+                'start'     => Carbon::createFromDate(2018, 8, 25),
                 'end'       => Carbon::createFromDate(2018, 8, 26)
             ],
 

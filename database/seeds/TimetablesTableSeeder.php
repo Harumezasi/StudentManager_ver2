@@ -23,21 +23,21 @@ class TimetablesTableSeeder extends Seeder
         // 과목별 시간표 등록
         Subject::all()->each(function ($subject) {
             $periods = [];
-            if(stripos($subject->name, "객체지향") !== false) {
+            if(stripos($subject->name, "オブジェクト指向") !== false) {
                 // 객체지향프로그래밍 시간표
                 $periods = [
                     ['day_of_week' => Carbon::TUESDAY, 'period' => 3, 'classroom' => '본관 200호'],
                     ['day_of_week' => Carbon::TUESDAY, 'period' => 4, 'classroom' => '본관 200호'],
                     ['day_of_week' => Carbon::THURSDAY, 'period' => 2, 'classroom' => '본관 200호'],
                 ];
-            } else if(stripos($subject->name, "웹") !== false) {
+            } else if(stripos($subject->name, "ウェブ") !== false) {
                 // 웹프로그래밍 시간표
                 $periods = [
                     ['day_of_week' => Carbon::MONDAY, 'period' => 4, 'classroom' => '본관 200호'],
                     ['day_of_week' => Carbon::FRIDAY, 'period' => 2, 'classroom' => '본관 200호'],
                     ['day_of_week' => Carbon::FRIDAY, 'period' => 3, 'classroom' => '본관 200호'],
                 ];
-            } else if(stripos($subject->name, "캡스톤") !== false) {
+            } else if(stripos($subject->name, "キャップストーン") !== false) {
                 // 캡스톤 디자인 시간표
                 $periods = [
                     ['day_of_week' => Carbon::MONDAY, 'period' => 2, 'classroom' => '본관 200호'],
@@ -52,7 +52,7 @@ class TimetablesTableSeeder extends Seeder
                     ['day_of_week' => Carbon::WEDNESDAY, 'period' => 6, 'classroom' => '본관 200호'],
                     ['day_of_week' => Carbon::WEDNESDAY, 'period' => 7, 'classroom' => '본관 200호'],
                 ];
-            } else if(stripos($subject->name, "일본어") !== false) {
+            } else if(stripos($subject->name, "日本語") !== false) {
                 switch(substr($subject->name, -1)) {
                     case 'A':
                         $periods = [

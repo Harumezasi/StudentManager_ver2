@@ -115,7 +115,7 @@ class Professor extends Model
         if($subjects->exists()) {
             return $subjects->first();
         } else {
-            throw new NotValidatedException("해당 강의에 접근할 권한이 없습니다.");
+            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('study.subject')]));
         }
     }
 
@@ -126,7 +126,7 @@ class Professor extends Model
         if($needCareAlerts->exists()) {
             return $needCareAlerts->first();
         } else {
-            throw new NotValidatedException("해당 알림에 접근할 권한이 없습니다.");
+            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('interface.need_care_alert')]));
         }
     }
 
@@ -149,7 +149,7 @@ class Professor extends Model
         if($students->exists()) {
             return $students->first();
         } else {
-            throw new NotValidatedException("해당 학생의 정보에 접근할 권한이 없습니다.");
+            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('interface.student')]));
         }
     }
 
@@ -160,7 +160,7 @@ class Professor extends Model
         if(sizeof($comments) > 0) {
             return $comments[0];
         } else {
-            throw new NotValidatedException("해당 코멘트에 접근할 권한이 없습니다.");
+            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('interface.comment')]));
         }
     }
 

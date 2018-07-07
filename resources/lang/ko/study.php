@@ -9,6 +9,7 @@
 return [
     // 공통
     'study'             => '학업',
+    'subject'           => '강의',
 
     // 강의 유형
     'japanese'          => '일본어',

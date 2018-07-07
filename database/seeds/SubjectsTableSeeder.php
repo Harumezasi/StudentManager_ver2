@@ -33,22 +33,34 @@ class SubjectsTableSeeder extends Seeder
                 case 'ycjung':
                     // 정영철 교수님  => 객체지향프로그래밍, 웹프로그래밍, 캡스톤디자인
                     $subjects = [
-                        ['name' => '객체지향프로그래밍(Ⅲ)', 'type' => 'major'],
-                        ['name' => '웹프로그래밍(Ⅱ)', 'type' => 'major'],
-                        ['name' => '캡스톤디자인(Ⅰ)', 'type' => 'major']
+//                        ['name' => '객체지향프로그래밍(Ⅲ)', 'type' => 'major'],
+//                        ['name' => '웹프로그래밍(Ⅱ)', 'type' => 'major'],
+//                        ['name' => '캡스톤디자인(Ⅰ)', 'type' => 'major'],
+                        ['name' => 'オブジェクト指向プログラミング(Ⅲ)', 'type' => 'major'],
+                        ['name' => 'ウェブプログラミング(Ⅱ)', 'type' => 'major'],
+                        ['name' => 'キャップストーンデザイン(Ⅰ)', 'type' => 'major']
                     ];
                     break;
                 case 'kjkim':
                     // 김기종 교수님  => DB설계
-                    $subjects = [['name' => 'DB설계', 'type' => 'major']];
+                    $subjects = [
+//                        ['name' => 'DB설계', 'type' => 'major'],
+                        ['name' => 'DB設計', 'type' => 'major'],
+                    ];
                     break;
                 case 'seohk17':
                     // 서희경 교수님  => 실무일본어회화 - A
-                    $subjects = [['name' => '실무일본어회화(Ⅱ) - A', 'type' => 'japanese']];
+                    $subjects = [
+//                        ['name' => '실무일본어회화(Ⅱ) - A', 'type' => 'japanese'],
+                        ['name' => '実務日本語会話(Ⅱ) - A', 'type' => 'japanese']
+                    ];
                     break;
                 case 'figures':
                     // 기쿠치 교수님  => 실무일본어회화 - C
-                    $subjects = [['name' => '실무일본어회화(Ⅱ) - C', 'type' => 'japanese']];
+                    $subjects = [
+//                        ['name' => '실무일본어회화(Ⅱ) - C', 'type' => 'japanese'],
+                        ['name' => '実務日本会話(Ⅱ) - C', 'type' => 'japanese']
+                    ];
                     break;
                 default:
                     // 김종율 교수님, 박성철 교수님
