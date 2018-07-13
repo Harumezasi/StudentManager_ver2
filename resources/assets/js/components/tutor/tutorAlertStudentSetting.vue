@@ -15,17 +15,17 @@
           <v-layout row wrap align-center>
 
             <v-card-text>
-              <h1 class = "cardInsideTitle">알림추가</h1>
+              <h1 class = "cardInsideTitle">お知らせの条件追加</h1>
             </v-card-text>
 
             <!-- 기간 설정 (ex. 일주일, 한달) 부분 -->
             <v-flex xs2 text-xs-center class="fontSetting">
-              <v-select :items="period" v-model="set_days" label="Select" single-line></v-select>동안
+              <v-select :items="period" v-model="set_days" label="Select" single-line></v-select>間
             </v-flex>
 
             <!-- 상태 (ex. 출석, 결석 등) -->
             <v-flex xs2 text-xs-center class="fontSetting">
-              <v-select :items="attendance" v-model="set_ada" label="Select" single-line></v-select>을
+              <v-select :items="attendance" v-model="set_ada" label="Select" single-line></v-select>を
             </v-flex>
 
             <!-- 빈도 (ex. 연속, 누적) -->
@@ -40,18 +40,18 @@
                 id="num"
                 >
               </v-text-field>
-              이상 했을 시,
+              回以上した場合
             </v-flex>
 
             <!-- 알림 보낼 대상 설정 (ex. 교수, 학생) -->
             <v-flex xs2 text-xs-center class="fontSetting">
               <v-select :items="noticeTarget" v-model="set_alert_std" label="Select" single-line></v-select>
-              에게 알림
+              にお知らせ
             </v-flex>
 
             <!-- 알림 추가 버튼 -->
             <v-flex xs2 text-xs-center>
-              <v-btn color = "blue accent-2" style="color:white;" v-on:click="setAlert()" class="fontSetting">추가</v-btn>
+              <v-btn color = "blue accent-2" style="color:white;" v-on:click="setAlert()" class="fontSetting">追加</v-btn>
             </v-flex>
           </v-layout>
         </v-container>
@@ -69,7 +69,7 @@
             <v-layout row wrap align-center>
 
               <v-card-text>
-                <h1 class = "cardInsideTitle">알림확인</h1>
+                <h1 class = "cardInsideTitle">お知らせの条件管理</h1>
               </v-card-text>
 
               <div
@@ -78,7 +78,7 @@
               >
                 <v-flex xs12 md8 class="fontSetting">
                   {{ setAlertData.alert_condition }}
-                  <v-btn color = "red" v-on:click="delAlert(setAlertData.alert_id)" style="color:white" class="fontSetting">삭제</v-btn>
+                  <v-btn color = "red" v-on:click="delAlert(setAlertData.alert_id)" style="color:white" class="fontSetting">消す</v-btn>
                 </v-flex>
               </div>
             </v-layout>
@@ -148,50 +148,50 @@ export default {
     return {
       /*-- 기간 --*/
       period: [{
-          text: '일주일',
+          text: '一週',
           value : 7
         },
         {
-          text: '1개월',
+          text: '１ヶ月',
           value : 30
         },
         {
-          text: '2개월',
+          text: '２ヶ月',
           value : 60
         }
       ],
       /*-- 상태 --*/
       attendance: [
         {
-          text: '지각',
+          text: '遅刻',
           value : 'lateness'
         },
         {
-          text: '조퇴',
+          text: '早引け',
           value : 'early_leave'
         },
         {
-          text: '결석',
+          text: '欠席',
           value : 'absence'
         }
       ],
       /*-- 빈도 --*/
       frequency: [{
-          text: '연속',
+          text: '連続',
           value : true
         },
         {
-          text: '누적',
+          text: '累積',
           value : false
         }
       ],
       /*-- 알림대상 --*/
       noticeTarget: [{
-          text: '교수(나)',
+          text: '教授(自分)',
           value : false
         },
         {
-          text: '교수(나)와 학생',
+          text: '教授(自分)と学生',
           value : true
         }
       ],
@@ -231,40 +231,40 @@ export default {
           /* 기간 */
           switch (response.data.message[start].days_unit) {
             case 7 :
-              setMessageData[start] = start+1 +". 일주일 간 ";
+              setMessageData[start] = start+1 +". 一週間、";
               break;
             case 30 :
-              setMessageData[start] = start+1 +". 1개월 간 ";
+              setMessageData[start] = start+1 +". １ヶ月間、";
               break;
             case 60 :
-              setMessageData[start] = start+1 +". 2개월 간 ";
+              setMessageData[start] = start+1 +". ２ヶ月間、";
               break;
           }
           /* 필터링 타입 */
           switch (response.data.message[start].ada_type) {
             case "lateness":
-              setMessageData[start] += "지각을 ";
+              setMessageData[start] += "遅刻を";
               break;
             case "absence":
-              setMessageData[start] += "결석을 ";
+              setMessageData[start] += "欠席を";
               break;
             case "early_leave":
-              setMessageData[start] += "조퇴를 ";
+              setMessageData[start] += "早引けを";
               break;
           }
           /* 2차 필터링 타입 */
           if(response.data.message[start].continuative_flag){
-            setMessageData[start] += "연속 ";
+            setMessageData[start] += "連続　";
           }else if(!response.data.message[start].continuative_flag){
-            setMessageData[start] += "누적 ";
+            setMessageData[start] += "累積　";
           }
           /* 횟수 */
-          setMessageData[start] += response.data.message[start].count + "회 이상 했을 시, ";
+          setMessageData[start] += response.data.message[start].count + "　回以上した場合、";
           /* 알림 대상 */
           if(response.data.message[start].alert_std_flag){
-            setMessageData[start] += "교수(나)와 학생에게 알림.";
+            setMessageData[start] += "教授(自分)と学生にお知らせ。";
           }else if(!response.data.message[start].alert_std_flag){
-            setMessageData[start] += "교수(나)에게 알림.";
+            setMessageData[start] += "教授(自分)にお知らせ。";
           }
           /* 알림 목록 데이터에 추가 : 삭제를 위한 아이디 값도 추가 */
           /* this.$set 의 경우, 없는 주소를 참조할 수 없으므로 .push를 이용하여 array주소를 생성하는 편법을 사용한다. */

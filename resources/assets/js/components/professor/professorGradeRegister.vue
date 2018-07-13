@@ -16,7 +16,7 @@
       <v-layout column class="my-5" align-center>
         <v-flex xs12 sm4 class="my-3">
           <div class="text-xs-center">
-            <h2 class="headline">두 가지 중 원하는 방식으로 성적을 입력 하십시오</h2>
+            <h2 class="headline">いずれの方法で成績を入力してください。</h2>
           </div>
         </v-flex>
 
@@ -30,18 +30,18 @@
                 </v-card-text>
                 <!-- 엑셀 파일 설명 -->
                 <v-card-title primary-title class="layout justify-center">
-                  <div class="headline text-xs-center">엑셀 양식 다운로드 후, 파일 업로드</div>
+                  <div class="headline text-xs-center">エクセルの様式ダウンロードの後、アップロード</div>
                 </v-card-title>
                 <!-- 다운로드 버튼 -->
                 <v-dialog v-model="dialog1" persistent max-width="600px">
                   <v-btn color="green darken-4" class="white--text" style="height: 100px;" slot="activator" normal>
-                    엑셀 양식 다운로드
+                    エクセルの様式ダウンロード
                     <v-icon right dark>cloud_download</v-icon>
                   </v-btn>
                   <!-- 모달창 메인 -->
                   <v-card>
                     <v-card-title>
-                      <span class="headline">엑셀 양식 다운로드</span>
+                      <span class="headline">エクセルの様式ダウンロード</span>
                     </v-card-title>
                     <v-flex d-flex xs12 sm6 md4>
                       <!-- form 양식 -->
@@ -51,36 +51,36 @@
                         <input type="hidden" name="subject_id" value="5">
 
                         <!-- 파일 이름 입력 -->
-                        <v-chip color="secondary" text-color="white">파일 이름</v-chip>
+                        <v-chip color="secondary" text-color="white">パイル名</v-chip>
                         <v-text-field type="text" name="file_name" maxlength="30" required=""></v-text-field>
 
                         <!-- 실시일자 선택 -->
-                        <v-chip color="secondary" text-color="white">실시 일자</v-chip>
+                        <v-chip color="secondary" text-color="white">実行日</v-chip>
                         <input type="date" v-model="date" name="execute_date" required="">
 
                         <!-- 성적 유형 -->
-                        <v-chip color="secondary" text-color="white">분류</v-chip>
+                        <v-chip color="secondary" text-color="white">分類</v-chip>
                         <select name="score_type" id="score_type">
-                          <option value="midterm">중간</option>
-                          <option value="final">기말</option>
-                          <option value="homework" selected="">과제</option>
-                          <option value="quiz">쪽지</option>
+                          <option value="midterm">中間</option>
+                          <option value="final">期末</option>
+                          <option value="homework" selected="">課題</option>
+                          <option value="quiz">テスト</option>
                         </select>
                         <!-- 만점 설정 -->
-                        <v-chip color="secondary" text-color="white">만점</v-chip>
+                        <v-chip color="secondary" text-color="white">満点</v-chip>
                         <v-text-field type="number" name="perfect_score" min="1" max="999" maxlength="3" required=""></v-text-field>
                         <!-- 성적 상세 내용 -->
-                        <v-chip color="secondary" text-color="white">성적 내용</v-chip>
+                        <v-chip color="secondary" text-color="white">成績の説明</v-chip>
                         <v-text-field type="text" name="content" minlength="2" maxlength="30" required=""></v-text-field>
                         <!-- 출력 파일 유형 -->
-                        <v-chip color="secondary" text-color="white">확장자</v-chip>
+                        <v-chip color="secondary" text-color="white">拡張子</v-chip>
                         <select name="file_type" id="file_type">
                           <option value="xlsx">xlsx</option>
                           <option value="xls">xls</option>
                           <option value="csv">csv</option>
                         </select>
                         <!-- SUBMIT 실행 버튼 영역 -->
-                        <v-btn color="indigo" >양식 다운로드</v-btn>
+                        <v-btn color="indigo" >様式ダウンロード</v-btn>
                         <!-- END -->
                       </v-form>
                       <!-- form End-->
@@ -94,20 +94,20 @@
                 <!-- 업로드 버튼 -->
                 <v-dialog v-model="dialog2" persistent max-width="600px">
                   <v-btn color="green darken-4" class="white--text" style="height: 100px;" slot="activator" normal>
-                    엑셀 파일 업로드
+                    エクセルの様式アップロード
                     <v-icon right dark>cloud_upload</v-icon>
                   </v-btn>
                   <!-- 모달창 메인 -->
                   <v-card>
                     <v-card-title>
-                      <span class="headline">엑셀로 성적 업로드</span>
+                      <span class="headline">エクセルで成績アップロード</span>
                     </v-card-title>
                     <div>
                       <!-- form 양식 -->
                       <!-- 파일 등록 -->
-                      <v-chip color="secondary" text-color="white">파일등록</v-chip>
+                      <v-chip color="secondary" text-color="white">パイル登録</v-chip>
                       <input type="file" id="file" ref='upload_file' required="" accept=".xlsx, .xls, .csv" v-on:change="handleFileUpload()" class="upload_input">
-                      <button v-on:click="submitFile()" class="upload_button">성적 업로드</button>
+                      <button v-on:click="submitFile()" class="upload_button">成績アップロード</button>
                     </div>
                     <v-card-actions>
                       <v-spacer></v-spacer>
@@ -123,15 +123,15 @@
               <!-- 모달창 메인 -->
               <v-card>
                 <v-card-title>
-                  <span class="headline">알림</span>
+                  <span class="headline">お知らせ</span>
                 </v-card-title>
                 <v-flex d-flex xs12 sm6 md4>
                   <!-- form 양식 -->
                   <div v-if="reData">
-                    성적 업로드에 성공하였습니다.
+                    成績のアップロードに成功しました。
                   </div>
                   <div v-else>
-                    성적 업로드에 실패하였습니다.
+                    成績のアップロードに失敗しました。
                   </div>
                   <!-- form End-->
                 </v-flex>
@@ -151,7 +151,7 @@
                   <div class="headline text-xs-center">웹에서 직접 입력</div>
                 </v-card-title>
                 <v-btn outline large color="primary" class="white--text" style="height: 100px;">
-                  등록
+                  登録
                   <v-icon right dark>add_box</v-icon>
                 </v-btn>
               </v-card>

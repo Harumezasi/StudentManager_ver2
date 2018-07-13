@@ -9,7 +9,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">성적조회 (간략히 보기)</h2>
+                <h2 class = "cardInsideTitle">成績照会 (簡単に)</h2>
               </v-card-text>
 
               <v-card-text>
@@ -51,19 +51,19 @@
                       <v-divider></v-divider>
                       <v-list dense>
                         <v-list-tile>
-                          <v-list-tile-content class="fontSetting">횟수</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">回数</v-list-tile-content>
                           <v-list-tile-content class="align-end fontSetting">{{ props.item.count }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content class="fontSetting">총 점수</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">取得可能点数</v-list-tile-content>
                           <v-list-tile-content class="align-end fontSetting">{{ props.item.perfect_score }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content class="fontSetting">취득 점수</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">取得点数</v-list-tile-content>
                           <v-list-tile-content class="align-end fontSetting">{{ props.item.gained_score }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content class="fontSetting">평균</v-list-tile-content>
+                          <v-list-tile-content class="fontSetting">平均</v-list-tile-content>
                           <v-list-tile-content class="align-end fontSetting">{{ props.item.average }}</v-list-tile-content>
                         </v-list-tile>
                       </v-list>
@@ -86,7 +86,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">성적조회 (상세보기)</h2>
+                <h2 class = "cardInsideTitle">成績照会 (詳しく)</h2>
               </v-card-text>
               <v-card-text>
                 <v-container grid-list-xl>
@@ -163,32 +163,20 @@ export default {
      selected: [],
      e1: null,
      semester: [{
-         text: '2016년 1학기'
-       },
-       {
-         text: '2016년 2학기'
-       },
-       {
-         text: '2017년 1학기'
-       },
-       {
-         text: '2017년 2학기'
-       },
-       {
-         text: '2018년 1학기'
-       },
+         text: '準備中です。'
+       }
      ],
      /* 성적조회 (간략) */
      subjectStats     : [],
-     subjectStstsName : '과목을 선택해주세요.',
+     subjectStstsName : '講義を選んでください。',
      /* 성적조회 (상세) */
      subjectScore     : [],
-     subjectScoreName : '과목을 선택해주세요.',
+     subjectScoreName : '講義を選んでください。',
      headers: [
-         { text: '날짜', value: 'date' },
-         { text: '분류', value: 'sort' },
-         { text: '상세', value: 'detailData' },
-         { text: '득점/점수', value: 'score' }
+         { text: '日子', value: 'date' },
+         { text: '分類', value: 'sort' },
+         { text: '説明＆備考', value: 'detailData' },
+         { text: '得点/満点', value: 'score' }
        ],
        /* 강의 메뉴 데이터 */
        examSortData: []

@@ -21,7 +21,7 @@
                         <v-icon color = "light-blue darken-2" large>highlight_off</v-icon>
                       </v-flex>
                       <v-flex xs12 md6>
-                        <h1 class = "cardsTitle">결석 학생</h1>
+                        <h1 class = "cardsTitle">欠席した学生</h1>
                       </v-flex>
                       <!-- 학생 수 -->
                       <v-flex xs12 md4>
@@ -61,7 +61,7 @@
                         <v-icon color = "light-blue darken-2" large>directions_run</v-icon>
                       </v-flex>
                       <v-flex xs12 md6>
-                        <h1 class = "cardsTitle">지각 학생</h1>
+                        <h1 class = "cardsTitle">遅刻した学生</h1>
                       </v-flex>
                       <v-flex xs12 md4>
                         <h1 class = "currentStudentNum">{{ lateCount }}/48</h1>
@@ -110,7 +110,7 @@
                                     <v-icon color = "light-blue darken-2" large>alarm</v-icon>
                                   </v-flex>
                                   <v-flex xs12 md6>
-                                    <h1 class = "cardsTitle">등/하교 학생</h1>
+                                    <h1 class = "cardsTitle">出席した学生</h1>
                                   </v-flex>
                                   <v-flex xs12 md4>
                                     <h1 class = "currentStudentNum">{{ signData.length }}/48</h1>
@@ -137,10 +137,10 @@
                                    <v-flex xs12>
                                        <v-layout row wrap align-center>
                                          <v-flex xs12 md6>
-                                           <v-chip :color="datas.sign_in ? 'light-green' : 'grey lighten-1'">등교완료</v-chip>
+                                           <v-chip :color="datas.sign_in ? 'light-green' : 'grey lighten-1'">登校</v-chip>
                                          </v-flex>
                                          <v-flex xs12 md6>
-                                           <v-chip :color="datas.sign_out ? 'amber' : 'grey lighten-1'">하교완료</v-chip>
+                                           <v-chip :color="datas.sign_out ? 'amber' : 'grey lighten-1'">下校</v-chip>
                                          </v-flex>
                                        </v-layout>
                                     </v-flex>
@@ -164,7 +164,7 @@
                                     <v-icon color = "red darken-3" large>error</v-icon>
                                   </v-flex>
                                   <v-flex xs12 md6>
-                                    <h1 class = "cardsTitle">관심학생</h1>
+                                    <h1 class = "cardsTitle">注意が必要な学生</h1>
                                   </v-flex>
                                   <v-flex xs12 md4>
                                     <h1 class = "currentStudentNum" style="color: white">{{ loveStudentCount }}/48</h1>
@@ -181,7 +181,7 @@
                                         <v-btn slot="activator" icon :onclick="loveStudent.infoLink">
                                           <v-avatar style="box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);" size = "70"><img :src = "loveStudent.photo_url" /></v-avatar>
                                         </v-btn>
-                                      <span><h3>이름 : {{ loveStudent.name }}<br>학번 : {{ loveStudent.id }}<br>사유 : {{ loveStudent.reason }} </h3></span>
+                                      <span><h3>名前 : {{ loveStudent.name }}<br>学生番号 : {{ loveStudent.id }}<br>理由 : {{ loveStudent.reason }} </h3></span>
                                     </v-tooltip>
                                   </v-flex>
                                 </div>

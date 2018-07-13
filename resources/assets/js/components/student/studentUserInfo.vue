@@ -9,8 +9,8 @@
         style = "box-shadow:  0 4px 12px 0 rgba(244, 149, 24, 0.36)"
         >
           <v-card-text style="padding-bottom: 5px;">
-            <h2 style="color: white">회원정보</h2>
-            <p>정보확인 및 수정</p>
+            <h2 style="color: white">会員情報</h2>
+            <p>情報確認＆修正</p>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -86,7 +86,7 @@
                </v-form>
              </v-card-text>
              <v-card-text class = "updateBtn text-xs-right">
-               <v-btn color = "amber darken-2" dark v-on:click="setUserInfo()">회원정보 변경</v-btn>
+               <v-btn color = "amber darken-2" dark v-on:click="setUserInfo()">会員情報セーブ</v-btn>
              </v-card-text>
            </v-flex>
          </div>

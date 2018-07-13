@@ -21,7 +21,7 @@
         <!-- 유저 이름 -->
         <div class="userName text-xs-center">
           <span>
-            {{ userInfoData.name }} 님<br>
+            {{ userInfoData.name }} 様<br>
           </span>
         </div>
         <!-- 유저 정보 버튼 -->
@@ -100,7 +100,7 @@
         </div>
         <!-- 에러일 경우 -->
         <div v-else>
-          ListSet 타입이 존재하지 않습니다.
+          ListSetがありません。
         </div>
       </div>
       </v-list>
@@ -180,13 +180,13 @@ export default {
       student : [
               {
                 action: 'face',
-                title: '출결관리',
+                title: '出席管理',
                 path: '/student/attendanceManagement',
                 listSet : false
               },
               {
                 action: 'settings',
-                title: '학업관리',
+                title: '学業管理',
                 path: '/student/gradeManagement',
                 listSet : false
               }
@@ -195,7 +195,7 @@ export default {
       /* 교과목 교수는 강의 데이터를 함수로부터 받아와야한다. */
       professor : [{
             action: 'subject',
-            title: '강의 관리',
+            title: '講義管理',
             active: true,
             listSet : true,
             subMenu: []
@@ -203,18 +203,18 @@ export default {
       /* 지도 교수 */
       tutor : [{
             action: 'check',
-            title: '출결 관리',
+            title: '出席管理',
             active: false,
             listSet : true,
             subMenu: [
               {
                 action: 'check',
-                title: '등/하교 출결',
+                title: '出席状況',
                 path: '/tutor/attendance'
               },
               {
                 action: 'alarm',
-                title: '알림 설정',
+                title: 'お知らせ設定',
                 path: '/tutor/alertStudentSetting'
               }
             ]
@@ -222,28 +222,28 @@ export default {
           {
             listSet : false,
             action: 'face',
-            title: '지도 학생 정보',
+            title: '指導学生情報',
             path: '/tutor/studentManagement'
           },
           {
             action: 'bar_chart',
-            title: '학생 분석 예측',
+            title: '学生分析',
             active: false,
             listSet : true,
             subMenu: [
               {
                 action: 'person',
-                title: '개인별 분석 예측',
+                title: '個人別分析',
                 path: '/tutor/studentAnalyticPrediction'
               },
               {
                 action: 'group',
-                title: '지도반 분석 예측',
+                title: '指導クラス分析',
                 path: '/tutor/classAnalyticPrediction'
               },
               {
                 action: 'settings',
-                title: '설정',
+                title: '設定',
                 path: '/tutor/studentAnalyticPredictionSetting'
               }
             ]
@@ -319,6 +319,8 @@ export default {
         axios.get('/professor/subject/list')
         .then((response) => {
           let subjects = response.data.message.subjects;
+
+
           /* 강의 메뉴 생성 */
           for(let start = 0; start < subjects.length; start++){
             this.MenuDataList[0].professor[0].subMenu

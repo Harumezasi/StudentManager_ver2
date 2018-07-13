@@ -108,7 +108,8 @@ class Controller extends BaseController
         return [
             'prev'          => $prevWeek,
             'this'          => $thisWeek,
-            'this_format'   => "{$thisWeek->year}년 {$thisWeek->month}월 {$thisWeek->weekOfMonth}주차",
+//            'this_format'   => "{$thisWeek->year}년 {$thisWeek->month}월 {$thisWeek->weekOfMonth}주차",
+            'this_format'   => __('interface.Y-m-w', ['year' => $thisWeek->year, 'month' => $thisWeek->month, 'week' => $thisWeek->weekOfMonth]),
             'next'          => $nextWeek
         ];
     }
@@ -149,7 +150,7 @@ class Controller extends BaseController
             // 이번주
             $thisMonth = Carbon::createFromDate($data[0], $data[1], 1);
         } else {
-            throw new NotValidatedException('데이터 형식이 맞지 않습니다.');
+            throw new NotValidatedException(__('response.wrong_format'));
         }
 
         // 지난달
@@ -161,10 +162,12 @@ class Controller extends BaseController
             $nextMonth = $thisMonth->copy()->addMonth();
         }
 
+
         return [
             'prev'          => $prevMonth,
             'this'          => $thisMonth,
-            'this_format'   => "{$thisMonth->year}년 {$thisMonth->month}월",
+//            'this_format'   => "{$thisMonth->year}년 {$thisMonth->month}월",
+            'this_format'   => __('interface.Y-m', ['year' => $thisMonth->year, 'month' => $thisMonth->month]),
             'next'          => $nextMonth
         ];
     }
@@ -256,21 +259,8 @@ class Controller extends BaseController
         }
 
         // 이번 학기에 대한 출력 양식 지정
-        $thisTermFormat = null;
-        switch(($temp = explode('-', $thisTerm))[1]) {
-            case '1st_term':
-                $thisTermFormat = "{$temp[0]}년도 1학기";
-                break;
-            case 'summer_vacation':
-                $thisTermFormat = "{$temp[0]}년도 여름방학";
-                break;
-            case '2nd_term':
-                $thisTermFormat = "{$temp[0]}년도 2학기";
-                break;
-            case 'winter_vacation':
-                $thisTermFormat = "{$temp[0]}년도 겨울방학";
-                break;
-        }
+        $temp = explode('-', $thisTerm);
+        $thisTermFormat = __('interface.Y-t', ['year' => $temp[0], 'term' => __("interface.{$temp[1]}")]);
 
         // 반환
         return [
@@ -309,6 +299,7 @@ class Controller extends BaseController
         return [
             'prev'  => $prevYear,
             'this'  => $thisYear,
+            'this_format'   => '',
             'next'  => $nextYear
         ];
     }
@@ -321,6 +312,7 @@ class Controller extends BaseController
             case 'xlsx':
                 return \Maatwebsite\Excel\Excel::XLSX;
                 break;
+
             case 'xls':
                 return \Maatwebsite\Excel\Excel::XLS;
                 break;

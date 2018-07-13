@@ -41,21 +41,6 @@
 
               </v-flex>
               <!-- 서비스 소개 끝 -->
-              <!-- 스크롤 테스트용 소스코드-->
-              <v-flex xs12 md6>
-                <v-card hover>
-                  <v-card-title primary-title class="layout justify-center">
-                    <div class="headline">
-                      <v-icon>notifications</v-icon>&nbsp;최근 알림</div>
-                    <v-btn flat class="blue--text">Read More</v-btn>
-                  </v-card-title>
-                  <v-card-text>
-                    Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in aliquet odio. Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse
-                    potenti.
-                  </v-card-text>
-                </v-card>
-              </v-flex>
-              <!-- 추후 삭제 -->
             </v-layout>
           </v-container>
         </v-flex>
@@ -91,14 +76,14 @@
                 <v-text-field prepend-icon="lock" solo-inverted name="password" label="Password" type="password" v-model="pw"></v-text-field>
                 <!-- SUBMIT 실행 버튼 영역 -->
                 <v-card-actions>
-                  <v-btn block outline color="cyan" type='submit' class="loginButton">LOGIN</v-btn>
+                  <v-btn block outline color="cyan" type='submit' class="loginButton">ログイン</v-btn>
                 </v-card-actions>
               </v-form>
               <!-- form End -->
               <!-- join start -->
               <v-card-actions>
-                <v-btn block outline color="orange" type='submit' class="loginButton">회원등록</v-btn>
-                <v-btn block outline color="red" type='submit' class="loginButton">PW 찾기</v-btn>
+                <v-btn block outline color="orange" type='submit' class="loginButton">新規登録</v-btn>
+                <v-btn block outline color="red" type='submit' class="loginButton">PWを探す</v-btn>
               </v-card-actions>
               <!-- join End -->
             </div>

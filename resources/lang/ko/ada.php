@@ -38,5 +38,5 @@ return [
 
 
     // 기타
-    'count'                     => ':count 번',
+    'count'                     => ':count회',
 ];

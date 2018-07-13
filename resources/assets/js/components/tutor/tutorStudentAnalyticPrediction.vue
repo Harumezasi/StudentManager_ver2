@@ -10,13 +10,13 @@
     <v-dialog v-model="dialog" width="750px">
       <v-card>
         <v-card-title class="grey lighten-4 py-4 title" style="font-family:Nanum Gothic Coding;">
-         분석 기간 설정
+         分析の期間設定
         </v-card-title>
         <!-- 분석 조건 설정 : 출석 -->
         <v-container grid-list-sm class="pa-4">
-            <v-btn color="info" depressed round v-on:click="selectPeriod('recently')">최근</v-btn>
-            <v-btn color="info" depressed round v-on:click="selectPeriod('weekly')">주간</v-btn>
-            <v-btn color="info" depressed round v-on:click="selectPeriod('monthly')">월간</v-btn>
+            <v-btn color="info" depressed round v-on:click="selectPeriod('recently')">最近</v-btn>
+            <v-btn color="info" depressed round v-on:click="selectPeriod('weekly')">週間</v-btn>
+            <v-btn color="info" depressed round v-on:click="selectPeriod('monthly')">月間</v-btn>
           <br>
           <v-layout row wrap>
            <v-flex xs10>
@@ -46,7 +46,7 @@
                ></v-date-picker>
                <!-- 최근 일 경우 -->
                <div v-if="setPeriod_type == 'recently'">
-                 <h2 style="font-family: Gothic A1">최근(10주)은 기간을 지정할 수 없습니다.</h2>
+                 <h2 style="font-family: Gothic A1">最近（10週）は期間の変更ができません。</h2>
                </div>
            </v-flex>
          </v-layout>
@@ -54,7 +54,7 @@
         <!-- 취소 / 저장 버튼 -->
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="selectPeriod('save'), dialog = false">확인</v-btn>
+          <v-btn color="primary" @click="selectPeriod('save'), dialog = false">期間変更</v-btn>
         </v-card-actions>
      </v-card>
    </v-dialog>
@@ -74,7 +74,7 @@
                         <v-icon color = "light-blue darken-2" large>format_list_bulleted</v-icon>
                       </v-flex>
                       <v-flex xs12 md10>
-                        <h2 class = "studentListTitle">학생목록
+                        <h2 class = "studentListTitle">学生リスト
                           <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
                           <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
                             {{ this.periodSelected }}
@@ -87,9 +87,9 @@
               </v-card-text>
               <!-- 학생 분류 버튼 -->
               <v-card-text class = "buttonBox">
-                <v-btn round outline color="blue accent-2" @click="getStudentInfo('total'), studentSelected='전체'">전체</v-btn>
-                <v-btn round outline color="blue accent-2" @click="getStudentInfo('filter'), studentSelected='주목'">주목</v-btn>
-                <v-btn round outline color="blue accent-2" @click="getStudentInfo('attention'), studentSelected='사랑'">사랑</v-btn>
+                <v-btn round outline color="blue accent-2" @click="getStudentInfo('total'), studentSelected='全て'">全て</v-btn>
+                <v-btn round outline color="blue accent-2" @click="getStudentInfo('filter'), studentSelected='注目'">注目</v-btn>
+                <v-btn round outline color="blue accent-2" @click="getStudentInfo('attention'), studentSelected='チェック'">チェック</v-btn>
               </v-card-text>
               <!-- 학생 목록 -->
               <v-list three-line>
@@ -115,15 +115,15 @@
                              <!-- 주목된 이유 -->
                              <div>
                                <v-tooltip top v-if="datas.recent_trouble_Check">
-                                 <v-btn slot="activator" small dark depressed  round color="light-green lighten-1" >최근 성적 하락</v-btn>
+                                 <v-btn slot="activator" small dark depressed  round color="light-green lighten-1" >最近、成績が下落</v-btn>
                                  <span><div v-for="data in datas.trouble.recent_trouble"><h3>{{ data }}</h3></div></span>
                                </v-tooltip>
                                <v-tooltip top v-if="datas.ada_Check">
-                                 <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >출석율 저조</v-btn>
+                                 <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >出席率の低調</v-btn>
                                  <span><div v-for="data in datas.trouble.ada"><h3>{{ data }}</h3></div></span>
                                </v-tooltip>
                                <v-tooltip top v-if="datas.low_level_Check">
-                                 <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >성적하위권</v-btn>
+                                 <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >成績が下位</v-btn>
                                  <span><div v-for="data in datas.trouble.low_level"><h3>{{ data }}</h3></div></span>
                                </v-tooltip>
                              </div>
@@ -149,7 +149,7 @@
                             <v-icon  color = "light-blue darken-2" large>show_chart</v-icon>
                           </v-flex>
                           <v-flex xs12 md10>
-                            <h2 class="chartTitle">학생 분석 예측</h2>
+                            <h2 class="chartTitle">学生の分析</h2>
                           </v-flex>
                         </v-layout>
                       </v-flex>
@@ -183,15 +183,15 @@
                                 <div>
                                   <!-- 주목된 이유 -->
                                   <v-tooltip top v-if="selectStudentData.recent_trouble_Check">
-                                    <v-btn slot="activator" small dark depressed  round color="light-green lighten-1" >최근 성적 하락</v-btn>
+                                    <v-btn slot="activator" small dark depressed  round color="light-green lighten-1" >最近、成績が下落</v-btn>
                                     <span><div v-for="data in selectStudentData.trouble.recent_trouble"><h3>{{ data }}</h3></div></span>
                                   </v-tooltip>
                                   <v-tooltip top v-if="selectStudentData.ada_Check">
-                                    <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >출석율 저조</v-btn>
+                                    <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >出席率の低調</v-btn>
                                     <span><div v-for="data in selectStudentData.trouble.ada"><h3>{{ data }}</h3></div></span>
                                   </v-tooltip>
                                   <v-tooltip top v-if="selectStudentData.low_level_Check">
-                                    <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >성적하위권</v-btn>
+                                    <v-btn slot="activator" small dark depressed round color="light-green lighten-1" >成績が下位</v-btn>
                                     <span><div v-for="data in selectStudentData.trouble.low_level"><h3>{{ data }}</h3></div></span>
                                   </v-tooltip>
                                 </div>
@@ -210,7 +210,7 @@
                               <!-- 학생 정보 -->
                               <v-flex xs5>
                                 <v-card-text class = "studentInfo">
-                                  <div class="textBox"><span>학생을 선택해주세요.</span></div>
+                                  <div class="textBox"><span>学生を選んでください。</span></div>
                                 </v-card-text>
                               </v-flex>
                           </v-layout>
@@ -234,30 +234,30 @@
                               </v-flex>
                               <v-flex xs6 v-if="attendanceSelected.select == 1">
                                 <!-- 등하교 버튼 -->
-                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('sign_in', 'sign', '등교')">등교</v-btn>
-                                <v-btn depressed small round color="blue accent-3" v-else disabled>등교</v-btn>
-                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('sign_out', 'sign', '하교')">하교</v-btn>
-                                <v-btn depressed small round color="blue accent-3" v-else disabled>하교</v-btn>
+                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('sign_in', 'sign', '登校')">登校</v-btn>
+                                <v-btn depressed small round color="blue accent-3" v-else disabled>登校</v-btn>
+                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('sign_out', 'sign', '下校')">下校</v-btn>
+                                <v-btn depressed small round color="blue accent-3" v-else disabled>下校</v-btn>
                               </v-flex>
                               <v-flex xs6 v-else-if="attendanceSelected.select == 2">
                                 <!-- 출결 버튼 -->
-                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('lateness', 'attendance', '지각')">지각</v-btn>
-                                <v-btn depressed small round color="blue accent-3" v-else disabled>지각</v-btn>
-                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('absence', 'attendance', '결석')">결석</v-btn>
-                                <v-btn depressed small round color="blue accent-3" v-else disabled>결석</v-btn>
-                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('early_leave', 'attendance', '조퇴')">조퇴</v-btn>
-                                <v-btn depressed small round color="blue accent-3" v-else disabled>조퇴</v-btn>
+                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('lateness', 'attendance', '遅刻')">遅刻</v-btn>
+                                <v-btn depressed small round color="blue accent-3" v-else disabled>遅刻</v-btn>
+                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('absence', 'attendance', '欠席')">欠席</v-btn>
+                                <v-btn depressed small round color="blue accent-3" v-else disabled>欠席</v-btn>
+                                <v-btn depressed small dark round color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('early_leave', 'attendance', '早引げ')">早引げ</v-btn>
+                                <v-btn depressed small round color="blue accent-3" v-else disabled>早引げ</v-btn>
                               </v-flex>
                           </v-layout>
                           <v-flex xs12>
                             <!-- 등교 하교 시간 변화량 그래프 -->
                             <div v-if="attendanceSelected.select == 1">
-                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">등하교 시간 변화량 ( {{ setSign }} ) </h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">登校＆下校の時間の変化 ( {{ setSign }} ) </h2></div>
                               <attendance-time-lineChart :width="1000" :data="timeLineData" :labels="timeLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></attendance-time-lineChart>
                             </div>
                             <!-- 지각 조퇴 결석 ~ 횟수 변화량 그래프 (3 중 1 선택) -->
                             <div v-else-if="attendanceSelected.select == 2">
-                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">출결 횟수 변화 ( {{ setAtt }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">出席の回数変化 ( {{ setAtt }} )</h2></div>
                               <attendance-count-lineChart :width="1000" :data="countLineData" :labels="countLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></attendance-count-lineChart>
                             </div>
                             <!-- 출결 비율 그래프-->
@@ -293,41 +293,41 @@
                               </v-flex>
                               <!-- 종목 선택 -->
                               <v-flex xs4 v-if="greadeSelected.select == 3 || greadeSelected.select == 4">
-                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_quiz', 'detailCode', '쪽지')">쪽지</v-btn>
-                                <v-btn depressed round color="blue accent-3" v-else disabled>쪽지</v-btn>
-                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_homework', 'detailCode', '과제')">과제</v-btn>
-                                <v-btn depressed round color="blue accent-3" v-else disabled>과제</v-btn>
-                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_midterm', 'detailCode', '중간')">중간</v-btn>
-                                <v-btn depressed round color="blue accent-3" v-else disabled>중간</v-btn>
-                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_final', 'detailCode', '기말')">기말</v-btn>
-                                <v-btn depressed round color="blue accent-3" v-else disabled>기말</v-btn>
+                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_quiz', 'detailCode', 'テスト')">テスト</v-btn>
+                                <v-btn depressed round color="blue accent-3" v-else disabled>テスト</v-btn>
+                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_homework', 'detailCode', '課題')">課題</v-btn>
+                                <v-btn depressed round color="blue accent-3" v-else disabled>課題</v-btn>
+                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_midterm', 'detailCode', '中間')">中間</v-btn>
+                                <v-btn depressed round color="blue accent-3" v-else disabled>中間</v-btn>
+                                <v-btn depressed round dark color="blue accent-3" v-if="btnLock" v-on:click="selectMinorType('_final', 'detailCode', '期末')">期末</v-btn>
+                                <v-btn depressed round color="blue accent-3" v-else disabled>期末</v-btn>
                               </v-flex>
                           </v-layout>
                             <v-flex xs12>
                           <v-layout row wrap align-center>
                             <v-flex xs12 md6>
                             <div v-if="greadeSelected.select == 1">
-                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">강의 취득 점수 ( {{ setLec }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">講義の取得点数 ( {{ setLec }} )</h2></div>
                               <!-- 강의 취득점수 비교 그래프 (강의 중 1택) -->
                               <study-lecture-score-lineChart :datasets="lectureScoreDataSets" :labels="lectureScoreLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-lecture-score-lineChart>
                             </div>
                             <div v-if="greadeSelected.select == 2">
-                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">강의 석차백분율 ( {{ setLec }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">講義席次のパーセンテージ ( {{ setLec }} )</h2></div>
                               <study-lecture-ranking-lineChart :data="lectureRankingData" :labels="lectureRankingLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-lecture-ranking-lineChart>
                             </div>
                             <div v-if="greadeSelected.select == 3">
                               <!-- 강의의 항목(중간 기말 쪽지 과제) 별 취득점수 비교 그래프 (4중 1택) -->
-                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">종목별 취득 점수 ( {{ setSub }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">種目別の取得点数 ( {{ setSub }} )</h2></div>
                               <study-subject-score-lineChart :datasets="subjectScoreDataSets" :labels="subjectScoreLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-subject-score-lineChart>
                             </div>
                             <div v-if="greadeSelected.select == 4">
-                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">종목별 석차백분율 ( {{ setSub }} )</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">種目別のパーセンテージ ( {{ setSub }} )</h2></div>
                               <study-subject-ranking-lineChart :data="subjectRankingData" :labels="subjectRankingLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-subject-ranking-lineChart>
                             </div>
                             </v-flex>
                             <!-- 전공 & 일본어 수준 비교 그래프 -->
                             <v-flex xs12 md6>
-                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">전공&일본어 수준</h2></div>
+                              <div><h2 style="font-family: Gothic A1;font-weight: lighter;">専攻&日本語の実力</h2></div>
                               <study-japenese-Major-lineChart :datasets="jmLineDataSets" :labels="jmLineLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></study-japenese-Major-lineChart>
                             </v-flex>
                           </v-layout>
@@ -474,7 +474,7 @@ Vue.component('attendance-time-lineChart', {
       this.renderChart({
         labels: this.timeLineLabelData,
         datasets:[{
-            label : '시간(00:00)',
+            label : '時間(00:00)',
             borderColor: '#4451fb',
             fill : false,
             data: this.timeLineData
@@ -529,7 +529,7 @@ Vue.component('attendance-count-lineChart', {
       this.renderChart({
         labels: this.countLineLabelData,
         datasets:[{
-            label : '횟수',
+            label : '回数',
             borderColor: '#4657fa',
             fill : false,
             data: this.countLineData
@@ -579,7 +579,7 @@ Vue.component('attendance-count-pieChart', {
   methods : {
     renderPieChart : function(){
       this.renderChart({
-        labels : ['출석','지각','결석','조퇴'],
+        labels : ['出席','遅行','欠席','早引け'],
         datasets:[{
             backgroundColor: ['#4657fa','#9f98ed','#ff3333','#808080'],
             fill : false,
@@ -724,7 +724,7 @@ Vue.component('study-lecture-ranking-lineChart', {
       this.renderChart({
         labels: this.lectureRankingLabelData,
         datasets: [{
-            label : "석차 백분율",
+            label : "席次のパーセンテージ",
             borderColor : ['#33ff66'],
             fill : false,
             data: this.lectureRankingData
@@ -828,7 +828,7 @@ Vue.component('study-subject-ranking-lineChart', {
       this.renderChart({
         labels: this.subjectRankingLabelData,
         datasets: [{
-            label : "석차 백분율",
+            label : "席次のパーセンテージ",
             borderColor : ['#33ff66'],
             fill : false,
             data: this.subjectRankingData
@@ -866,29 +866,29 @@ export default {
     data () {
       return {
         /* 출석 그래프 선택 */
-        attendanceSelected : { text: '등/하교 시간 변화', select : 1 },
-        greadeSelected: { text : '강의 취득점수', select : 1 },
+        attendanceSelected : { text: '登校＆下校の時間変化', select : 1 },
+        greadeSelected: { text : '講義の取得点数', select : 1 },
         attendance: [
-          { text: '등/하교 시간 변화', select : 1 },
-          { text: '출결 횟수 변화', select : 2 },
-          { text: '출결별 횟수', select : 3 },
+          { text: '登校＆下校の時間変化', select : 1 },
+          { text: '出席回数の変化', select : 2 },
+          { text: '出席別の回数', select : 3 },
         ],
 
         grade: [
-          { text : '강의 취득점수', select : 1 },
-          { text : '강의 석차 백분율', select : 2 },
-          { text : '종목 취득점수', select : 3 },
-          { text : '종목 석차 백분율', select : 4 },
+          { text : '講義の取得点数', select : 1 },
+          { text : '講義の席次パーセンテージ', select : 2 },
+          { text : '種目別の取得点数', select : 3 },
+          { text : '種目別の席次パーセンテージ', select : 4 },
         ],
         /* 선택한 학생 정보 */
         selectStudentData : [],
         /* 선택 상태 */
-        setSign : '등교',
-        setAtt : '지각',
+        setSign : '登校',
+        setAtt : '遅刻',
         setLec : null,
-        setSub : '쪽지',
+        setSub : 'テスト',
         /* 기간 */
-        periodSelected : '최근',
+        periodSelected : '最近',
         dialog : false,
         fDate : null,
         sDate : null,
@@ -902,11 +902,11 @@ export default {
         /* 학생 목록 */
         studentInfo: [],
         studentsType : 'total',
-        studentSelected : '전체',
+        studentSelected : '全て',
 
         /* 강의 목록 */
-        subjectList : [{ id : '', name : '', text : '강의 정보가 없습니다.'}],
-        subjectSelect : { text : '강의 정보가 없습니다.'},
+        subjectList : [{ id : '', name : '', text : '講義の情報がありません.'}],
+        subjectSelect : { text : '講義の情報がありません.'},
 
         /* 그래프 조회 기본 값*/
         setStd_id : null,
@@ -929,13 +929,13 @@ export default {
         countPieData : [],
         /* 04. 전공 일본어 비교 */
         jmLineDataSets : [{
-              label : '일본어',
+              label : '日本語',
               borderColor: '#0000ff',
               fill : false,
               data: []
             },
             {
-              label : '전공',
+              label : '専攻',
               borderColor: '#ff3333',
               fill : false,
               data: []
@@ -944,13 +944,13 @@ export default {
 
         /* 05. 강의 득점 평균 비교 및 석차백분율 변화 */
         lectureScoreDataSets : [{
-              label : '내 평균',
+              label : '学生の平均',
               borderColor: '#ff3333',
               fill : false,
               data: []
             },
             {
-              label : '반 평균',
+              label : 'クラスの平均',
               borderColor: '#0000ff',
               fill : false,
               data: []
@@ -961,13 +961,13 @@ export default {
         lectureRankingLabelData : [],
         /* 06. 강의 = 상세 종목별 득점 평균 비교 및 석차백분율 변화 */
         subjectScoreDataSets : [{
-              label : '내 평균',
+              label : '学生の平均',
               borderColor: '#ff3333',
               fill : false,
               data: []
             },
             {
-              label : '반 평균',
+              label : 'クラスの平均',
               borderColor: '#0000ff',
               fill : false,
               data: []
@@ -1026,21 +1026,21 @@ export default {
           this.sDate = null;
           this.fDate = null;
           this.setPeriod_type = value;
-          this.periodSelected = '주간';
+          this.periodSelected = '週間';
           this.dateCheck = false;
           break;
         case 'monthly':
           this.sDate = null;
           this.fDate = null;
           this.setPeriod_type = value;
-          this.periodSelected = '월간';
+          this.periodSelected = '月間';
           this.dateCheck = false;
           break;
         case 'recently':
           this.sDate = null;
           this.fDate = null;
           this.setPeriod_type = value;
-          this.periodSelected = '최근';
+          this.periodSelected = '最近';
           this.dateCheck = false;
           break;
         case 'save' :
@@ -1051,10 +1051,10 @@ export default {
             this.sDate = null;
             this.fDate = null;
             this.setPeriod_type = 'recently';
-            this.periodSelected = '최근';
+            this.periodSelected = '最近';
             this.dateCheck = false;
             /* 알림 */
-            alert('(초기화)정상적인 입력이 아닙니다.')
+            alert('(リセット)間違った入力です。')
           }
           /* 학생이 선택된 상태라면 그래프를 그린다. */
           else if(this.btnLock){
@@ -1143,7 +1143,7 @@ export default {
 
       }).catch((error) => {
         console.log("getStuInfo Err : " + error);
-        alert('불러오기에 실패했습니다.')
+        alert('ロードに失敗しました。')
       })
     },
     /* 수강 강의 목록 */
@@ -1550,13 +1550,13 @@ export default {
         if(sDate > eDate){
           if(value == "start"){
             /* 경고 -> 값 초기화 */
-            alert('시작일이 종료일보다 늦을 수 없습니다.')
-            console.log('시작일이 종료일보다 늦을 수 없습니다.');
+            alert('始まりの日が終わりの日より遅いです。')
+            console.log('始まりの日が終わりの日より遅いです。');
             this.fDate = null
           }else if(value == "end"){
             /* 경고 -> 값 초기화 */
-            alert('종료일이 시작일보다 빠를 수 없습니다.')
-            console.log('종료일이 시작일보다 빠를 수 없습니다.');
+            alert('終わりの日が始まりの日より早いです。')
+            console.log('終わりの日が始まりの日より早いです。');
             this.sDate = null
           }
           this.dateCheck = false;

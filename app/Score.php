@@ -133,7 +133,7 @@ class Score extends Model
         $gainedScore = GainedScore::where([['std_id', $stdId], ['score_type', $this->id]])->get()->all();
 
         if(sizeof($gainedScore) <= 0) {
-            throw new NotValidatedException("해당 데이터에 접근할 권한이 없습니다.");
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.data')]));
         } else {
             return $gainedScore[0];
         }

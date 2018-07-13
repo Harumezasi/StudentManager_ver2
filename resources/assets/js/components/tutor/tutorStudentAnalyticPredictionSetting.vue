@@ -16,8 +16,8 @@
           <v-flex xs12 md5>
             <v-card class = "attendanceSettingTitleBox">
               <v-card-text style="padding-bottom: 5px;">
-                <h2 style="color: white">출석</h2>
-                <p>지각, 조퇴, 결석 학생</p>
+                <h2 style="color: white">出席</h2>
+                <p>遅刻、早引け、欠席の学生</p>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -26,8 +26,8 @@
           <v-flex xs12 md5>
             <v-card class = "gradeSettingTitleBox">
               <v-card-text style="padding-bottom: 5px;">
-                <h2 style="color: white">학업</h2>
-                <p>중간, 기말, 과제, 쪽지시험 등</p>
+                <h2 style="color: white">学業</h2>
+                <p>中間、期末、課題、テストなど</p>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -52,13 +52,13 @@
                 <v-container class = "periodBox" fluid>
                   <v-layout row>
                     <v-flex xs3>
-                      <h2 class = "period">기간</h2>
+                      <h2 class = "period">期間</h2>
                     </v-flex>
                     <v-flex xs9>
                       <v-text-field
                        style="margin-top: 40px"
                        label="일"
-                       hint="* 시스템이 학생의 최근 출석 현황을 분석하기 위한 기간 입니다."
+                       hint="* システムが学生の最近の出席の状況を分析するための期間です。"
                        type="number"
                        min=0
                        max=365
@@ -79,16 +79,16 @@
                       <v-btn depressed fab dark color="lime accent-4" >
                         <v-icon dark>directions_run</v-icon>
                       </v-btn>
-                      <h2 class = "frequency">지각</h2>
+                      <h2 class = "frequency">遅刻</h2>
                     </v-flex>
                     <v-flex xs5>
                       <v-text-field
                        style="margin-left: 20px"
-                       label="회"
+                       label="回"
                        type="number"
                        v-model="settingData['lateness_count']"
                      ></v-text-field>
-                     <h2 class = "frequency_2">이상 일 때</h2>
+                     <h2 class = "frequency_2">以上の場合</h2>
                     </v-flex>
                   </v-layout>
                   <!-- 조퇴 횟수 기입 영역-->
@@ -97,16 +97,16 @@
                       <v-btn depressed fab dark color="cyan accent-4" >
                         <v-icon dark>local_hotel</v-icon>
                       </v-btn>
-                      <h2 class = "frequency">조퇴</h2>
+                      <h2 class = "frequency">早引け</h2>
                     </v-flex>
                     <v-flex xs5>
                       <v-text-field
                        style="margin-left: 20px"
-                       label="회"
+                       label="回"
                        type="number"
                        v-model="settingData['early_leave_count']"
                      ></v-text-field>
-                     <h2 class = "frequency_2">이상 일 때</h2>
+                     <h2 class = "frequency_2">以上の場合</h2>
                     </v-flex>
                   </v-layout>
                   <!-- 결석 횟수 기입 영역 -->
@@ -115,24 +115,24 @@
                       <v-btn depressed fab dark color="red" >
                         <v-icon dark>close</v-icon>
                       </v-btn>
-                      <h2 class = "frequency">결석</h2>
+                      <h2 class = "frequency">欠席</h2>
                     </v-flex>
                     <v-flex xs5>
                       <v-text-field
                        style="margin-left: 20px"
-                       label="회"
+                       label="回"
                        type="number"
                        v-model="settingData['absence_count']"
                      ></v-text-field>
-                     <h2 class = "frequency_2">이상 일 때</h2>
+                     <h2 class = "frequency_2">以上の場合</h2>
                     </v-flex>
                   </v-layout>
                 </v-container>
                 <!-- 취소 / 저장 버튼 -->
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="warning" @click="setResetDatas()">되돌리기</v-btn>
-                  <v-btn color="primary" @click="checkSettingDatas()">저장</v-btn>
+                  <v-btn color="warning" @click="setResetDatas()">リセット</v-btn>
+                  <v-btn color="primary" @click="checkSettingDatas()">セーブ</v-btn>
                 </v-card-actions>
               </v-card-text>
             </v-card>
@@ -150,14 +150,14 @@
 
                     <!-- 학생의 평소 학업 성취 현황 판단을 위한 기간 입력 영역 -->
                     <v-flex xs2>
-                      <h2 class = "standard">평소</h2>
+                      <h2 class = "standard">普段</h2>
                     </v-flex>
                     <v-flex xs4>
                       <v-text-field
                        style="margin-top: 40px"
-                       label="회"
+                       label="回"
                        type="number"
-                       hint="시스템이 학생의 평소 학업 성취 현황을 판단하기 위해 분석하는 기간 입니다."
+                       hint="システムが学生の普段の学業成就を分析するための期間です。"
                        persistent-hint
                        v-model="settingData['study_usual']"
                      ></v-text-field>
@@ -165,14 +165,14 @@
 
                     <!-- 학생의 최근 학업 성취 현황 판단을 위한 기간 입력 영역 -->
                     <v-flex xs2>
-                      <h2 class = "standard">최근</h2>
+                      <h2 class = "standard">最近</h2>
                     </v-flex>
                     <v-flex xs4>
                       <v-text-field
                        style="margin-top: 40px"
-                       label="회"
+                       label="回"
                        type="number"
-                       hint="시스템이 학생의 최근 학업 성취 상태를 판단하기 위해 분석하는 기간 입니다."
+                       hint="システムが学生の最近の学業成就を分析するための期間です。"
                        persistent-hint
                        v-model="settingData['study_recent']"
                      ></v-text-field>
@@ -194,12 +194,12 @@
                         </v-btn>
                       </v-flex>
                       <v-flex xs12 md9>
-                        <h1 class = "lowRankTitle">하위권</h1>
+                        <h1 class = "lowRankTitle">下位圏</h1>
                       </v-flex>
 
                       <!-- 백분율 입력 영역 -->
                       <v-flex xs12 md6>
-                        <h2 class = "lowRankText">석차 백분율이 하위</h2>
+                        <h2 class = "lowRankText">席次パーセンテージが下位</h2>
                       </v-flex>
                       <v-flex xs12 md4>
                         <v-text-field
@@ -211,22 +211,22 @@
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md2>
-                        <h2 class = "lowRankText">미만</h2>
+                        <h2 class = "lowRankText">未満</h2>
                       </v-flex>
 
                       <!-- 반 평균 대비 점수 입력 영역 -->
                       <v-flex xs12 md5>
-                        <h2 class = "lowRankText">반 평균 대비</h2>
+                        <h2 class = "lowRankText">クラスの平均に比べ</h2>
                       </v-flex>
                       <v-flex xs12 md3>
                         <v-text-field
-                          label="점"
+                          label="点"
                           type="number"
                           v-model="settingData['low_score']"
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md4>
-                        <h2 class = "lowRankText">이상 차이</h2>
+                        <h2 class = "lowRankText">以上の差</h2>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -246,12 +246,12 @@
                         </v-btn>
                       </v-flex>
                       <v-flex xs12 md9>
-                        <h1 class = "recentProblemsTitle">최근 문제 발생</h1>
+                        <h1 class = "recentProblemsTitle">最近問題発生</h1>
                       </v-flex>
 
                       <!-- 석차 백분율 하락치 입력 영역 -->
                       <v-flex xs12 md6>
-                        <h2 class = "recentProblemsText">석차 백분율이</h2>
+                        <h2 class = "recentProblemsText">席次パーセンテージが</h2>
                       </v-flex>
                       <v-flex xs12 md4>
                         <v-text-field
@@ -263,22 +263,22 @@
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md2>
-                        <h2 class = "recentProblemsText_2">하락</h2>
+                        <h2 class = "recentProblemsText_2">下落</h2>
                       </v-flex>
 
                       <!-- 평소 본인의 평균 대비 하락한 점수 입력 영역 -->
                       <v-flex xs12 md6>
-                        <h2 class = "recentProblemsText">본인 평균 대비</h2>
+                        <h2 class = "recentProblemsText">学生自信の平均に比べ</h2>
                       </v-flex>
                       <v-flex xs12 md4>
                         <v-text-field
-                          label="점"
+                          label="点"
                           type="number"
                           v-model="settingData['recent_score']"
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 md2>
-                        <h2 class = "recentProblemsText_2">하락</h2>
+                        <h2 class = "recentProblemsText_2">下落</h2>
                       </v-flex>
                     </v-layout>
                   </v-container>

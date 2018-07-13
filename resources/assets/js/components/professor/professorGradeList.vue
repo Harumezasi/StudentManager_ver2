@@ -58,7 +58,7 @@
               <v-text-field
                id="testing"
                name="input-1"
-               label="성적"
+               label="成績"
                v-model="props.item.score"
               ></v-text-field>
             </v-flex>
@@ -67,7 +67,7 @@
             {{ perfect_score }}
           </td>
           <td>
-            <v-btn color = "blue accent-2" style="color:white" @click="updateGradeData(props.item.position)">성적 수정</v-btn>
+            <v-btn color = "blue accent-2" style="color:white" @click="updateGradeData(props.item.position)">成績修正</v-btn>
           </td>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -107,19 +107,19 @@ export default {
     },
     /* 성적정보 */
     headers: [{
-        text: '학번',
+        text: '学生番号',
         value: 'std_id',
       },
       {
-        text: '이름',
+        text: '名前',
         value: 'name',
       },
       {
-        text: '성적',
+        text: '成績',
         value: 'score',
       },
       {
-        text: '만점',
+        text: '満点',
       },
       {}
     ],
@@ -128,7 +128,7 @@ export default {
     subject_id_url : null,
     perfect_score : null,
 
-    selectedGradeData : '조회된 성적 데이터가 없습니다.',
+    selectedGradeData : '成績のデータがありません',
     loadingValue : false,
   }),
   methods: {
@@ -145,16 +145,16 @@ export default {
           /* 메뉴 타이틀 수정 */
           switch (this.menuDatas[start].type) {
             case 'quiz' :
-              this.menuDatas[start].execute_date += " (퀴즈)";
+              this.menuDatas[start].execute_date += " (テスト)";
               break;
             case 'homework' :
-              this.menuDatas[start].execute_date += " (과제)";
+              this.menuDatas[start].execute_date += " (課題)";
               break;
             case 'midterm' :
-              this.menuDatas[start].execute_date += " (중간고사)";
+              this.menuDatas[start].execute_date += " (中間)";
               break;
             case 'final' :
-              this.menuDatas[start].execute_date += " (기말고사)";
+              this.menuDatas[start].execute_date += " (期末)";
               break;
           }
         }

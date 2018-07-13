@@ -8,7 +8,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color= "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">출결 그래프</h2>
+                <h2 class = "cardInsideTitle">出席のグラフ</h2>
                 <v-container>
                   <v-layout>
                     <v-flex xs6>
@@ -36,7 +36,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">상세보기</h2>
+                <h2 class = "cardInsideTitle">詳しく</h2>
               </v-card-text>
               <v-container fluid grid-list-md>
                 <v-data-iterator
@@ -114,7 +114,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">출결 분석</h2>
+                <h2 class = "cardInsideTitle">出席分析</h2>
               </v-card-text>
               <v-data-table
                 :headers="headers"
@@ -200,7 +200,7 @@ Vue.component('attendance-pie-chart', {
     renderPieChart : function(){
       this.renderChart({
         /* 기간 내의 날짜 */
-        labels: ['출석','지각','결석','조퇴'],
+        labels: ['出席','遅刻','欠席','早引け'],
         datasets: [{
             backgroundColor: ['#10a236', '#f9cd41', '#fe7272', '#5c7add'],
             pointBackgroundColor: 'white',
@@ -278,13 +278,13 @@ export default {
      /* */
      attendanceLabelData : [],
      attendanceDatasets : [{
-       label: '등교&지각',
+       label: '登校&遅刻',
        borderColor: '#18a62a',
        fill: false,
        data: []
      },
      {
-       label: '하교&조퇴',
+       label: '下校&早引け',
        borderColor: '#f48080',
        fill: false,
        data: []
@@ -292,39 +292,39 @@ export default {
      /*--- 출결 상세정보 테이블 --*/
      attendanceStats: [
        {
-         name: '출석',
-         countType : '횟수',
+         name: '出席',
+         countType : '回数',
          count: null,
-         continuityType : '등교 시간',
+         continuityType : '登校の時間',
          continuityNum: null,
-         recentlyType : '하교 시간',
+         recentlyType : '下校の時間',
          recentlyDate: null
        },
        {
-         name: '지각',
-         countType : '횟수',
+         name: '遅刻',
+         countType : '回数',
          count : null,
-         continuityType : '연속 횟수',
+         continuityType : '続いた回数',
          continuityNum : null,
-         recentlyType : '최근 일자',
+         recentlyType : '最近の日',
          recentlyDate : null
        },
        {
-         name: '결석',
-         countType : '횟수',
+         name: '欠席',
+         countType : '回数',
          count: null,
-         continuityType : '연속 횟수',
+         continuityType : '続いた回数',
          continuityNum: null,
-         recentlyType : '최근 일자',
+         recentlyType : '最近の日',
          recentlyDate: null
        },
        {
-         name: '조퇴',
-         countType : '횟수',
+         name: '早引け',
+         countType : '回数',
          count: null,
-         continuityType : '연속 횟수',
+         continuityType : '続いた回数',
          continuityNum: null,
-         recentlyType : '최근 일자',
+         recentlyType : '最近の日',
          recentlyDate: null
        }
      ],
@@ -337,54 +337,54 @@ export default {
       attendanceDatas : [],
       attendanceHeaders: [
         {
-          text: '날짜',
+          text: '年月日',
           sortable: false,
           align: 'center'
         },
         {
-          text: '등교',
+          text: '登校',
           sortable: false,
           align: 'center'
         },
         {
-         text: '시간',
+         text: '時間',
          sortable: false,
          align: 'center'
        },
        {
-         text: '비고',
+         text: '備考',
          sortable: false,
          align: 'center'
        },
        {
-         text: '하교',
+         text: '下校',
          sortable: false,
          align: 'center'
        },
        {
-         text: '시간',
+         text: '時間',
          sortable: false,
          align: 'center'
        },
        {
-         text: '비고',
+         text: '備考',
          sortable: false,
          align: 'center'
        }
      ],
      /*--- 출결 분석 테이블 --*/
      headers: [
-       {text: '자주 지각하는 요일', value: 'lateWeek'},
-       {text: '자주 조퇴하는 요일', value: 'leaveEarlyWeek'},
-       {text: '자주 결석하는 요일', value: 'absenceWeek'},
-       {text: '평균 지각 시간', value: 'averageLateTime'},
+       {text: 'よく遅刻する曜日', value: 'lateWeek'},
+       {text: 'よく早引けする曜日', value: 'leaveEarlyWeek'},
+       {text: 'よく欠席する曜日', value: 'absenceWeek'},
+       {text: '平均遅刻の時間', value: 'averageLateTime'},
      ],
      attendanceAnalysis: [],
      headers2: [
-       {text: '월 평균 지각 횟수', value: 'lateNum'},
-       {text: '월 평균 조퇴 횟수', value: 'leaveEarlyNum'},
-       {text: '월 평균 결석 횟수', value: 'absenceNum'},
-       {text: '조퇴/지각 주요 사유', value: 'reason'},
+       {text: '月平均の遅刻回数', value: 'lateNum'},
+       {text: '月平均の早引け回数', value: 'leaveEarlyNum'},
+       {text: '月平均の欠席回数', value: 'absenceNum'},
+       {text: '早引け＆遅刻の頻繁な理由', value: 'reason'},
      ],
      attendanceAnalysisMonth: [],
    }),
@@ -400,8 +400,8 @@ export default {
         this.attendanceAnalysis.push(response.data.message);
         this.attendanceAnalysisMonth.push(response.data.message);
         /* 지각 시간 메세지 가공 */
-        let str = Math.floor(parseInt(this.attendanceAnalysisMonth[0].lateness_average)/60)+"분 "+
-        parseInt(this.attendanceAnalysisMonth[0].lateness_average)%60+"초";
+        let str = Math.floor(parseInt(this.attendanceAnalysisMonth[0].lateness_average)/60)+"分 "+
+        parseInt(this.attendanceAnalysisMonth[0].lateness_average)%60+"秒";
         /* 저장 */
         this.attendanceAnalysisMonth[0].lateness_average=str;
       }).catch((error) => {
@@ -473,18 +473,18 @@ export default {
           /* 등교타입 확인 */
           if(response.data.message[start].absence_flag != 'good'){
             /* 결석 */
-            this.$set(datas[start], 'sign_in', '결석');
+            this.$set(datas[start], 'sign_in', '欠席');
             this.$set(datas[start], 'sign_in_time', 'ㅡ');
             this.$set(datas[start], 'sign_in_message', 'ㅡ');
           }else if(response.data.message[start].lateness_flag != 'good'){
             /* 지각 */
-            this.$set(datas[start], 'sign_in', '지각');
+            this.$set(datas[start], 'sign_in', '遅刻');
             this.$set(datas[start], 'sign_in_time', response.data.message[start].sign_in_time);
             this.$set(datas[start], 'sign_in_message', response.data.message[start].detail[0].sign_in_message);
 
           }else {
             /* 등교 */
-            this.$set(datas[start], 'sign_in', '출석');
+            this.$set(datas[start], 'sign_in', '出席');
             this.$set(datas[start], 'sign_in_time', response.data.message[start].sign_in_time);
             this.$set(datas[start], 'sign_in_message', 'ㅡ');
           }
@@ -494,13 +494,13 @@ export default {
             switch (response.data.message[start].early_leave_flag) {
               case 'good':
                 /* 하교 */
-                this.$set(datas[start], 'sign_out', '하교');
+                this.$set(datas[start], 'sign_out', '下校');
                 this.$set(datas[start], 'sign_out_time', response.data.message[start].sign_out_time);
                 this.$set(datas[start], 'sign_out_message', 'ㅡ');
                 break;
               case 'unreason':
                 /* 조퇴 */
-                this.$set(datas[start], 'sign_out', '조퇴');
+                this.$set(datas[start], 'sign_out', '早引け');
                 this.$set(datas[start], 'sign_out_time', response.data.message[start].sign_out_time);
                 this.$set(datas[start], 'sign_out_message', response.data.message[start].detail[0].sign_out_message);
                 break;

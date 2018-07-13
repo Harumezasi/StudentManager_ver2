@@ -145,7 +145,7 @@ class AdminController extends Controller
 
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 삽입 거부
         if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
-            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+            throw new NotValidatedException(__('response.schedule_already_exists'));
         }
 
         // 03. 스케쥴 등록
@@ -209,7 +209,7 @@ class AdminController extends Controller
         $schedule       = Schedule::findOrFail($request->post('id'));
         if(!$schedule->typeCheck(Schedule::TYPE['common'])) {
             // 일정 유형이 공통이 아닌 경우 => 데이터에 대한 접근 거부
-            throw new NotValidatedException('해당 데이터에 접근할 권한이 없습니다.');
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.schedule')]));
         }
 
         $startDate      = Carbon::parse($request->post('start_date'));
@@ -224,7 +224,7 @@ class AdminController extends Controller
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 수정 거부
         if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->
             common()->where('id', '!=', $schedule->id)->exists()) {
-            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+            throw new NotValidatedException(__('response.schedule_already_exists'));
         }
 
         // 시간 데이터 획득
@@ -282,7 +282,7 @@ class AdminController extends Controller
         // 02. 데이터 획득
         $schedule = Schedule::findOrFail($request->post('id'));
         if(!$schedule->typeCheck(Schedule::TYPE['common'])) {
-            throw new NotValidatedException('해당 데이터에 대한 접근권한이 없습니다.');
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.data')]));
         }
 
         // 03. 일정 삭제

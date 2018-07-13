@@ -22,7 +22,7 @@
                   <v-flex xs12 md2>
                     <v-dialog v-model="dialog1" persistent max-width="600px">
                       <v-btn depressed round color="green" class="white--text" slot="activator" normal style="position:relative;right:15px;">
-                        성적 양식 다운로드
+                        成績登録向けのエクセル様式をダウンロード
                         <v-icon right dark>cloud_download</v-icon>
                       </v-btn>
                       <!-- 모달창 메인 -->
@@ -30,7 +30,7 @@
                          <v-card-title
                            class="grey lighten-4 py-4 title"
                          >
-                           성적 양식 다운로드
+                           成績様式ダウンロード
                          </v-card-title>
                          <v-container grid-list-sm class="pa-4">
                            <v-layout row wrap>
@@ -39,7 +39,7 @@
                                  <v-text-field
                                     id="fileName"
                                     name="file_name"
-                                    label="파일 이름"
+                                    label="パイル名"
                                     v-model="filename"
                                   ></v-text-field>
                                </v-layout>
@@ -77,7 +77,7 @@
                                <v-select
                                  :items="types"
                                  v-model="subType"
-                                 label="분류"
+                                 label="分類"
                                  class="input-group--focused"
                                ></v-select>
                              </v-flex>
@@ -85,7 +85,7 @@
                                <v-text-field
                                  id="perfectScore"
                                  name="perfect_score"
-                                 label="만점"
+                                 label="満点"
                                  v-model="perfectScore"
                                ></v-text-field>
                              </v-flex>
@@ -93,7 +93,7 @@
                                <v-text-field
                                  id="content"
                                  name="content"
-                                 label="성적 내용"
+                                 label="試験の説明"
                                  v-model="content"
                                ></v-text-field>
                              </v-flex>
@@ -101,7 +101,7 @@
                                <v-select
                                  :items="fileTypes"
                                  v-model="fileType"
-                                 label="확장자"
+                                 label="拡張子"
                                  class="input-group--focused"
                                  item-value="text"
                                ></v-select>
@@ -121,19 +121,19 @@
                   <v-flex xs12 md2>
                     <v-dialog v-model="dialog2" persistent max-width="600px">
                       <v-btn depressed round color="green" class="white--text" slot="activator" normal>
-                        성적 파일 업로드
+                        成績のパイルアップロード
                         <v-icon right dark>cloud_upload</v-icon>
                       </v-btn>
                       <!-- 모달창 메인 -->
                       <v-card style="padding: 20px 20px 20px 20px;">
                         <v-card-title>
-                          <span class="headline">엑셀로 성적 파일 업로드</span>
+                          <span class="headline">エクセルで成績アップロード</span>
                         </v-card-title>
                         <div>
                           <!-- form 양식 -->
                           <!-- 파일 등록 -->
                           <input type="file" id="file" ref='upload_file' required="" accept=".xlsx, .xls, .csv" v-on:change="handleFileUpload()" class="upload_input">
-                          <v-btn color = "blue accent-2" v-on:click="submitFile()" class="upload_button">성적 업로드</v-btn>
+                          <v-btn color = "blue accent-2" v-on:click="submitFile()" class="upload_button">成績アップロード</v-btn>
                         </div>
                         <v-card-actions>
                           <v-spacer></v-spacer>
@@ -146,15 +146,15 @@
                       <!-- 모달창 메인 -->
                       <v-card>
                         <v-card-title>
-                          <span class="headline">알림</span>
+                          <span class="headline">お知らせ</span>
                         </v-card-title>
                         <v-flex d-flex xs12 sm6 md4>
                           <!-- form 양식 -->
                           <div v-if="reData">
-                            성적 업로드에 성공하였습니다.
+                            成績のアップロードに成功しました。
                           </div>
                           <div v-else>
-                            성적 업로드에 실패하였습니다.
+                            成績のアップロードに失敗しました。
                           </div>
                           <!-- form End-->
                         </v-flex>
@@ -168,7 +168,7 @@
 
                   <v-flex xs12 md2>
                     <v-btn depressed round color="green" class="white--text" :onclick="checkGradePageUrl" style="position:relative;right:-1px;">
-                      등록된 성적 확인
+                      登録した成績確認＆修正
                       <v-icon right dark>check</v-icon>
                     </v-btn>
                   </v-flex>
@@ -190,7 +190,7 @@
                  <td class="text-xs-center" style="font-size: 20px;font-family: Gothic A1">{{ props.item.name }}</td>
                  <td class="text-xs-center" style="font-size: 20px;font-family: Gothic A1">
                      <v-btn color = "blue accent-2" style="color:white" slot="activator" normal :onclick="props.item.infoLink">
-                       상세보기
+                       詳しく見る
                      </v-btn>
                  </td>
              </template>
@@ -284,10 +284,10 @@ export default {
       search: '',
       pagination: {},
       types: [
-        {text:'중간', select : 'midterm' },
-        {text:'기말', select : 'final' },
-        {text:'과제', select : 'homework' },
-        {text:'쪽지', select : 'quiz' }
+        {text:'中間', select : 'midterm' },
+        {text:'期末', select : 'final' },
+        {text:'課題', select : 'homework' },
+        {text:'テスト', select : 'quiz' }
       ],
       fileTypes: [
         {text:'xlsx'},
@@ -296,14 +296,14 @@ export default {
       ],
       headers: [{
           class: 'display-1',
-          text: '학번',
+          text: '学生番号',
           value: 'studentNum',
           sortable: true,
           align: 'center'
         },
         {
           class: 'display-1',
-          text: '이름',
+          text: '名前',
           sortable: true,
           value: 'name',
           align: 'center'

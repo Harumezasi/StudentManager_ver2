@@ -9,13 +9,13 @@
         <v-dialog v-model="dialog" width="750px">
           <v-card>
             <v-card-title class="grey lighten-4 py-4 title" style="font-family:Nanum Gothic Coding;">
-             분석 기간 설정
+             分析の期間設定
             </v-card-title>
             <!-- 분석 조건 설정 : 출석 -->
             <v-container grid-list-sm class="pa-4">
-              <v-btn color="info" depressed round v-on:click="selectPeriod('recently')">최근</v-btn>
-              <v-btn color="info" depressed round v-on:click="selectPeriod('weekly')">주간</v-btn>
-              <v-btn color="info" depressed round v-on:click="selectPeriod('monthly')">월간</v-btn>
+              <v-btn color="info" depressed round v-on:click="selectPeriod('recently')">最近</v-btn>
+              <v-btn color="info" depressed round v-on:click="selectPeriod('weekly')">週間</v-btn>
+              <v-btn color="info" depressed round v-on:click="selectPeriod('monthly')">月間</v-btn>
               <br>
               <v-layout row wrap>
                <v-flex xs10>
@@ -45,7 +45,7 @@
                    ></v-date-picker>
                    <!-- 최근 일 경우 -->
                    <div v-if="setPeriod_type == 'recently'">
-                     <h2>최근(10주)은 기간을 지정할 수 없습니다.</h2>
+                     <h2>最近（10週）は期間の変更ができません。</h2>
                    </div>
                </v-flex>
              </v-layout>
@@ -53,7 +53,7 @@
             <!-- 취소 / 저장 버튼 -->
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="selectPeriod('save'), dialog = false">확인</v-btn>
+              <v-btn color="primary" @click="selectPeriod('save'), dialog = false">期間変更</v-btn>
             </v-card-actions>
          </v-card>
        </v-dialog>
@@ -73,7 +73,7 @@
                     <v-icon color = "light-blue darken-2" large>pie_chart</v-icon>
                   </v-flex>
                   <v-flex xs12 md11>
-                    <h2 class = "chartTitle">출결 정보 분석
+                    <h2 class = "chartTitle">出席の情報分析
                       <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
                         <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
                           {{ this.periodSelected }}
@@ -100,13 +100,13 @@
                         <v-container style="position:relative; right: 30px;">
                           <v-layout row wrap align-center>
                             <v-flex xs12 md4>
-                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('lateness')">지각</v-btn>
+                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('lateness')">遅刻</v-btn>
                             </v-flex>
                             <v-flex xs12 md4>
-                              <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('absence')">결석</v-btn>
+                              <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('absence')">欠席</v-btn>
                             </v-flex>
                             <v-flex xs12 md4>
-                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('early_leave')">조퇴</v-btn>
+                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('early_leave')">早引け</v-btn>
                             </v-flex>
                           </v-layout>
                         </v-container>
@@ -142,7 +142,7 @@
                     <v-icon color = "light-blue darken-2" large>bar_chart</v-icon>
                   </v-flex>
                   <v-flex xs12 md11>
-                    <h2 class = "chartTitle">학업 정보 분석
+                    <h2 class = "chartTitle">学業情報分析
                       <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
                         <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
                           {{ this.periodSelected }}
@@ -177,11 +177,11 @@
                   <v-container>
                     <v-layout row wrap align-center>
                       <v-flex xs12 md6>
-                        <div><h2 style="font-family: Gothic A1;font-weight: lighter;">취득점수 분포 범위 ( {{ this.studyChartStat }} )</h2></div>
+                        <div><h2 style="font-family: Gothic A1;font-weight: lighter;">取得点数分布範囲 ( {{ this.studyChartStat }} )</h2></div>
                         <bar-plot-chart :datasets="plotDataSets" :labels="plotLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-plot-chart>
                       </v-flex>
                       <v-flex xs12 md6>
-                        <div><h2 style="font-family: Gothic A1;font-weight: lighter;">취득점수 분포도 ( {{ this.studysChartStat }} )</h2></div>
+                        <div><h2 style="font-family: Gothic A1;font-weight: lighter;">取得点数分布図 ( {{ this.studysChartStat }} )</h2></div>
                         <bar-chart :data="gradeData" :labels="gradeLabelData" :options="{ responsive: true, maintainAspectRatio: false }"></bar-chart>
                       </v-flex>
                     </v-layout>
@@ -327,7 +327,7 @@ Vue.component('line-chart-lateness', {
         labels:this.attendanceLineLabelData,
         datasets:[
           {
-            label: '지각',
+            label: '遅刻',
             backgroundColor : false,
             borderColor: '#f6c202',
             fill: false,
@@ -382,7 +382,7 @@ Vue.component('line-chart-holiday', {
         labels:this.holidayLabelData,
         datasets:[
           {
-            label: '휴일 등교인원',
+            label: '週末の出席した学生の数',
             borderColor: '#f53e3e',
             fill: false,
             data: this.holidayData
@@ -493,7 +493,7 @@ Vue.component('bar-chart', {
         labels: this.gradeLabelData,
         datasets:[
           {
-            label : "취득점수 분포도",
+            label : "取得点数分布図",
             backgroundColor : '#4867fb',
             borderColor: '#3c0cc6',
             fill: false,
@@ -530,17 +530,17 @@ export default {
     data () {
         return {
           /* 출석 차트 종류 */
-          attSelect : { text: '출결 횟수 비율', selected:'1' },
-          subjectSelect : { text: '조회 중 입니다.'},
-          subjectsSelect : { text: '조회 중 입니다.'},
+          attSelect : { text: '出席回数比率', selected:'1' },
+          subjectSelect : { text: '情報を探しています。'},
+          subjectsSelect : { text: '情報を探しています。'},
           attendance: [
-            { text : '출결 횟수 비율', selected:'1' },
-            { text : '평균 출결 인원', selected:'2' },
-            { text : '휴일 등교 인원', selected:'3' },
+            { text : '出席回数比率', selected:'1' },
+            { text : '平均出席した人の数', selected:'2' },
+            { text : '週末に出席した学生の数', selected:'3' },
           ],
           /* 기간 설정 */
           dialog : false,
-          periodSelected : '최근',
+          periodSelected : '最近',
           fDate : null,
           sDate : null,
           startDate : null,
@@ -553,8 +553,8 @@ export default {
           studyChartStat : '',
           studysChartStat : '',
           /* 과목 */
-          subjectList : [{ id : '', name : '진행중인 강의가 없습니다.' }],
-          subjectsList: [{ id : '', name : '조회된 시험이 없습니다.' }],
+          subjectList : [{ id : '', name : '行っている講義がありません。' }],
+          subjectsList: [{ id : '', name : '試験の情報がありません。' }],
           subjectCode : null,
           subjectsCode : null,
           /* 그래프 값 변수들*/
@@ -581,15 +581,15 @@ export default {
         /* 상태표시 */
         switch (select) {
           case 'lateness':
-            this.attendanceChartStat = '지각';
+            this.attendanceChartStat = '遅行';
             this.selectAtt = 'lateness';
             break;
           case 'early_leave':
-            this.attendanceChartStat = '조퇴';
+            this.attendanceChartStat = '早引け';
             this.selectAtt = 'early_leave';
             break;
           case 'absence':
-            this.attendanceChartStat = '결석';
+            this.attendanceChartStat = '欠席';
             this.selectAtt = 'absence';
             break;
         }
@@ -625,21 +625,21 @@ export default {
             this.fDate = null;
             this.dateCheck = false;
             this.setPeriod_type = value;
-            this.periodSelected = '주간';
+            this.periodSelected = '週間';
             break;
           case 'monthly':
             this.sDate = null;
             this.fDate = null;
             this.dateCheck = false;
             this.setPeriod_type = value;
-            this.periodSelected = '월간';
+            this.periodSelected = '月間';
             break;
           case 'recently':
             this.sDate = null;
             this.fDate = null;
             this.dateCheck = false;
             this.setPeriod_type = value;
-            this.periodSelected = '최근';
+            this.periodSelected = '最近';
             break;
           case 'save' :
             /* 날짜 예외처리 = 정상 값 확인 */
@@ -649,10 +649,10 @@ export default {
               this.sDate = null;
               this.fDate = null;
               this.setPeriod_type = 'recently';
-              this.periodSelected = '최근';
+              this.periodSelected = '最近';
               this.dateCheck = false;
               /* 알림 */
-              alert('(초기화)정상적인 입력이 아닙니다.')
+              alert('(リセット)間違って入力です。')
             }else{
               this.adaChartController();
               this.getStudyScore();
@@ -958,7 +958,7 @@ export default {
           for(let dupCheck = 0; dupCheck < start-1; dupCheck++){
             // 지금 만들어 낸 것과 이전의 값을 비교
             if(rgbColor[dupCheck] == rgbColor[start]){
-              console.log('중복확인 :' + start + ':' + rgbColor[start]);
+              //console.log('중복확인 :' + start + ':' + rgbColor[start]);
               // 중복 확인시, 초기화 -> 재생성
               rgbColor[start] = '';
               start--;
@@ -1008,13 +1008,13 @@ export default {
           if(sDate > eDate){
             if(value == "start"){
               /* 경고 -> 값 초기화 */
-              alert('시작일이 종료일보다 늦을 수 없습니다.')
-              console.log('시작일이 종료일보다 늦을 수 없습니다.');
+              alert('始まりの日が終わりの日より遅いです。')
+              console.log('始まりの日が終わりの日より遅いです。');
               this.fDate = null
             }else if(value == "end"){
               /* 경고 -> 값 초기화 */
-              alert('종료일이 시작일보다 빠를 수 없습니다.')
-              console.log('종료일이 시작일보다 빠를 수 없습니다.');
+              alert('終わりの日が始まりの日より早いです。')
+              console.log('終わりの日が始まりの日より早いです。');
               this.sDate = null
             }
             this.dateCheck = false;

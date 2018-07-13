@@ -112,7 +112,7 @@ export default {
       photo_url : '/images/default.jpg',
       study_class : 'not Data',
       id : '1234567',
-      name : '홍길동',
+      name : '木村　語',
       email : 'group8@grid.system',
       phone : '010-XXXX-XXXX'
     }],

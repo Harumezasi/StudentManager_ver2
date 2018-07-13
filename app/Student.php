@@ -160,7 +160,7 @@ class Student extends Model
         if(sizeof($subjects) > 0) {
             return Subject::findOrFail($subjectId);
         } else {
-            throw new NotValidatedException("해당 강의에 접근할 권한이 없습니다.");
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('study.subject')]));
         }
     }
 
@@ -179,14 +179,19 @@ class Student extends Model
      *  @return                          $this
      */
     public function selectScoresList($subjectId = null) {
+        $final = __('study.final');
+        $midterm = __('study.midterm');
+        $homework = __('study.homework');
+        $quiz = __('study.quiz');
+
         return $this->gainedScores()
             ->rightJoin('scores', function($join) use ($subjectId){
                 $join->on('gained_scores.score_type', 'scores.id')->where('subject_id', $subjectId);
             })->select([
                 'scores.execute_date', 'scores.detail',
                 'scores.perfect_score', 'gained_scores.score AS gained_score',
-                DB::raw("(CASE scores.type WHEN 'final' THEN '기말' WHEN 'midterm' THEN '중간'
-                    WHEN 'homework' THEN '과제' WHEN 'quiz' THEN '쪽지' END) AS type")
+                DB::raw("(CASE scores.type WHEN 'final' THEN '{$final}' WHEN 'midterm' THEN '{$midterm}'
+                    WHEN 'homework' THEN '{$homework}' WHEN 'quiz' THEN '{$quiz}' END) AS type")
             ])->orderBy('scores.execute_date', 'desc');
     }
 
@@ -243,7 +248,7 @@ class Student extends Model
         // 성적 통계표
         $stats = [
             'final'     => [
-                'type'          => '기말',
+//                'type'          => '기말',
                 'count'         => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->count,
                 'perfect_score' => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->perfect_score,
                 'gained_score'  => sizeof($finalStats) <= 0 ? 0 : $finalStats[0]->gained_score,
@@ -251,7 +256,7 @@ class Student extends Model
                 'reflection'    => number_format($subject->final_reflection * 100, 0)
             ],
             'midterm'   => [
-                'type'          => '중간',
+//                'type'          => '중간',
                 'count'         => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->count,
                 'perfect_score' => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->perfect_score,
                 'gained_score'  => sizeof($midtermStats) <= 0 ? 0 : $midtermStats[0]->gained_score,
@@ -259,7 +264,7 @@ class Student extends Model
                 'reflection'    => number_format($subject->midterm_reflection * 100, 0)
             ],
             'homework'  => [
-                'type'          => '과제',
+//                'type'          => '과제',
                 'count'         => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->count,
                 'perfect_score' => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->perfect_score,
                 'gained_score'  => sizeof($homeworkStats) <= 0 ? 0 : $homeworkStats[0]->gained_score,
@@ -267,7 +272,7 @@ class Student extends Model
                 'reflection'    => number_format($subject->homework_reflection * 100, 0)
             ],
             'quiz'      => [
-                'type'          => '쪽지',
+//                'type'          => '쪽지',
                 'count'         => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->count,
                 'perfect_score' => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->perfect_score,
                 'gained_score'  => sizeof($quizStats) <= 0 ? 0 : $quizStats[0]->gained_score,
@@ -275,6 +280,9 @@ class Student extends Model
                 'reflection'    => number_format($subject->quiz_reflection * 100, 0)
             ]
         ];
+        foreach($stats as $key => $value) {
+            $stats[$key]['type'] = __("study.{$key}");
+        }
 
         return $stats;
     }
@@ -376,28 +384,18 @@ class Student extends Model
         foreach($frequentDay as $adaType => $adaDataArray) {
             // ##### (지각|결석|조퇴) 비율이 일정 비율(기본값 : 0.2)을 넘기지 못할 경우 => 연산 중단 ######
             if(($adaDataArray->count() / $attendances->count()) < 0.2) {
-                switch($adaType) {
-                    case 'lateness':
-                        $type = "지각";
-                        break;
-                    case 'absence':
-                        $type = "결석";
-                        break;
-                    case 'early_leave':
-                        $type = "조퇴";
-                        break;
-                }
-                $frequentResult[$adaType] = "{$type}율 20% 미만";
+                $type = __("ada.{$adaType}");
+                $frequentResult[$adaType] = __('tutor.percent_not_enough', ['type' => $type, 'percent' => 20]);
                 continue;
             }
 
             // 유형별 (지각|결석|조퇴)가 잦은 요일 획득
             $dailyCount = [
-                '월요일'   => 0,
-                '화요일'   => 0,
-                "수요일"   => 0,
-                "목요일"   => 0,
-                '금요일'   => 0
+                'monday'   => 0,
+                'tuesday'   => 0,
+                "wednesday"   => 0,
+                "thursday"   => 0,
+                'friday'   => 0
             ];
             foreach($adaDataArray->get()->all() as $attendance) {
                 $regDate = explode('-', $attendance->reg_date);
@@ -406,26 +404,27 @@ class Student extends Model
                 // 각 요일별 (지각|결석|조퇴) 횟수 획득
                 switch ($regDate->dayOfWeek) {
                     case Carbon::MONDAY:
-                        $dailyCount['월요일']++;
+                        $dailyCount[__('interface.monday')]++;
                         break;
                     case Carbon::TUESDAY:
-                        $dailyCount['화요일']++;
+                        $dailyCount[__('interface.tuesday')]++;
                         break;
                     case Carbon::WEDNESDAY:
-                        $dailyCount['수요일']++;
+                        $dailyCount[__('interface.wednesday')]++;
                         break;
                     case Carbon::THURSDAY:
-                        $dailyCount['목요일']++;
+                        $dailyCount[__('interface.thursday')]++;
                         break;
                     case Carbon::FRIDAY:
-                        $dailyCount['금요일']++;
+                        $dailyCount[__('interface.friday')]++;
                         break;
                     default:
                         continue 2;
                 }
 
                 arsort($dailyCount);
-                $frequentResult[$adaType] = array_search($max = max($dailyCount), $dailyCount)." ({$max} 회)";
+                $frequentResult[$adaType] = array_search($max = max($dailyCount), $dailyCount).//" ({$max} 회)";\
+                                            sprintf("(%s)", __('interface.count', ['count' => $max]));
             }
         }
 
@@ -451,16 +450,6 @@ class Student extends Model
     // (지각|조퇴|결석) 주요 사유 조회
     public function selectAttendanceReason() {
         // 01. 출석 데이터 획득
-        $reasonValue = [
-            'good'      => '정상',
-            'unreason'  => '무단',
-            'personal'  => '개인사정',
-            'sick'      => '병',
-            'hometown'  => '고향',
-            'accident'  => '사고',
-            'disaster'  => '천재지변',
-            'etc'       => '기타',
-        ];
         $attendances = $this->attendances()->recent();
 
         // 02. 각 유형별 데이터 획득
@@ -485,7 +474,7 @@ class Student extends Model
             foreach($reason as $row) {
                 if($row->count > $maxValue) {
                     $maxValue = $row->count;
-                    $reasonResult[$type] = $reasonValue[$row->reason];
+                    $reasonResult[$type] = __("ada.{$row->reason}");
                 }
             }
         }

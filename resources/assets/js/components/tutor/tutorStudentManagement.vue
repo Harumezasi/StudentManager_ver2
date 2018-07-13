@@ -25,7 +25,7 @@
                  <td class="text-xs-center" style="font-size: 20px;font-family: Gothic A1">{{ props.item.name }}</td>
                  <td class="text-xs-center">
                    <v-btn color = "blue accent-2" style="color:white" slot="activator" normal :onclick="props.item.infoLink">
-                     상세보기
+                     詳しく見る
                    </v-btn>
                  </td>
               </template>
@@ -75,31 +75,19 @@ export default {
       selected: [],
       e1: null,
       semester: [{
-          text: '2016년 1학기'
-        },
-        {
-          text: '2016년 2학기'
-        },
-        {
-          text: '2017년 1학기'
-        },
-        {
-          text: '2017년 2학기'
-        },
-        {
-          text: '2018년 1학기'
-        },
+          text: '準備中です。'
+        }
       ],
       headers: [{
           class: 'display-1',
-          text: '학번',
+          text: '学生番号',
           value: 'studentNum',
           align: 'center',
           fontSize: '30px'
         },
         {
           class: 'display-1',
-          text: '이름',
+          text: '名前',
           sortable: true,
           value: 'name',
           align: 'center'

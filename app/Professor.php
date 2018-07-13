@@ -115,7 +115,7 @@ class Professor extends Model
         if($subjects->exists()) {
             return $subjects->first();
         } else {
-            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('study.subject')]));
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('study.subject')]));
         }
     }
 
@@ -126,7 +126,7 @@ class Professor extends Model
         if($needCareAlerts->exists()) {
             return $needCareAlerts->first();
         } else {
-            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('interface.need_care_alert')]));
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.need_care_alert')]));
         }
     }
 
@@ -149,7 +149,7 @@ class Professor extends Model
         if($students->exists()) {
             return $students->first();
         } else {
-            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('interface.student')]));
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.student')]));
         }
     }
 
@@ -160,7 +160,7 @@ class Professor extends Model
         if(sizeof($comments) > 0) {
             return $comments[0];
         } else {
-            throw new NotValidatedException(__('exception.no_authority', ['contents' => __('interface.comment')]));
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.comment')]));
         }
     }
 

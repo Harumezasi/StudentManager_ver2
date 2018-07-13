@@ -18,22 +18,22 @@
 
                     <v-flex xs12 sm4>
                       <!-- 조회 기준 설정 -->
-                      <div><v-btn color="info" v-on:click="weeklyClick()">주간</v-btn>
-                      <v-btn color="info" v-on:click="monthlyClick()">월간</v-btn></div>
+                      <div><v-btn color="info" v-on:click="weeklyClick()">週間</v-btn>
+                      <v-btn color="info" v-on:click="monthlyClick()">月間</v-btn></div>
 
                       <div v-if="period == 'monthly'">
-                        <v-btn color="info" v-if="prevDate != null" v-on:click="prevClick()">이전 달</v-btn>
-                        <v-btn color="info" v-else disabled>이전 달</v-btn>
+                        <v-btn color="info" v-if="prevDate != null" v-on:click="prevClick()">先月</v-btn>
+                        <v-btn color="info" v-else disabled>先月</v-btn>
                         {{ pagiNationInfo.this }}
-                        <v-btn color="info" v-if="nextDate != null" v-on:click="nextClick()">다음 달</v-btn>
-                        <v-btn color="info" v-else disabled>다음 달</v-btn>
+                        <v-btn color="info" v-if="nextDate != null" v-on:click="nextClick()">来月</v-btn>
+                        <v-btn color="info" v-else disabled>来月</v-btn>
                       </div>
                       <div v-else-if="period == 'weekly'">
-                        <v-btn color="info" v-if="prevDate != null" v-on:click="prevClick()">이전 주</v-btn>
-                        <v-btn color="info" v-else disabled>이전 주</v-btn>
+                        <v-btn color="info" v-if="prevDate != null" v-on:click="prevClick()">先週</v-btn>
+                        <v-btn color="info" v-else disabled>先週</v-btn>
                         {{ pagiNationInfo.this }}
-                        <v-btn color="info" v-if="nextDate != null" v-on:click="nextClick()">다음 주</v-btn>
-                        <v-btn color="info" v-else disabled>다음 주</v-btn>
+                        <v-btn color="info" v-if="nextDate != null" v-on:click="nextClick()">来週</v-btn>
+                        <v-btn color="info" v-else disabled>来週</v-btn>
 
                       </div>
                     </v-flex>
@@ -44,7 +44,7 @@
                             <v-flex xs12 md3>
                                 <!-- 출석률 ( 도넛그래프 ) -->
                                 <div class="attendance_content">
-                                  <v-chip color="green" text-color="white">출석률</v-chip>
+                                  <v-chip color="green" text-color="white">出席率</v-chip>
                                 </div>
                                 <div class="attendance_content">
                                   <!-- attendace doughnut-Grahp start -->
@@ -122,7 +122,7 @@
         methods: {
           renderBarChart : function(){
             this.renderChart({
-              labels:['출석', '지각', '결석', '조퇴'],
+              labels:['出席', '遅刻', '欠席', '早引け'],
               datasets:[{
                   backgroundColor: ['#009a92', '#f6c202', '#f53e3e', '#787878'],
                   data: this.dataChart
@@ -163,14 +163,14 @@
         data () {
             return {
                 headers: [
-                    { text: '출석', value: 'sign_in', align :'center', sortable: false },
-                    { text: '최근출석', value: 'recent_sign_in', align :'center', sortable: false },
-                    { text: '지각', value: 'lateness', align :'center', sortable: false },
-                    { text: '최근지각', value: 'recent_lateness', align :'center', sortable: false },
-                    { text: '결석', value: 'absence', align :'center', sortable: false },
-                    { text: '최근결석', value: 'recent_absence', align :'center', sortable: false },
-                    { text: '조퇴', value: 'early_leave', align :'center', sortable: false },
-                    { text: '최근조퇴', value: 'recent_early_leave', align :'center', sortable: false }
+                    { text: '出席', value: 'sign_in', align :'center', sortable: false },
+                    { text: '最近の出席', value: 'recent_sign_in', align :'center', sortable: false },
+                    { text: '遅刻', value: 'lateness', align :'center', sortable: false },
+                    { text: '最近の遅刻', value: 'recent_lateness', align :'center', sortable: false },
+                    { text: '欠席', value: 'absence', align :'center', sortable: false },
+                    { text: '最近の欠席', value: 'recent_absence', align :'center', sortable: false },
+                    { text: '早引け', value: 'early_leave', align :'center', sortable: false },
+                    { text: '最近の早引け', value: 'recent_early_leave', align :'center', sortable: false }
                 ],
                 attendanceData: [],
                 // 출석률
@@ -237,7 +237,7 @@
 
                     } else {
                         // 조회된 기록이 없을 경우
-                        alert('조회된 기록이 없습니다.')
+                        alert('照会できる情報がありません・')
                     }
                 }).catch((error) => {
                 console.log('getDataErr :' + error);

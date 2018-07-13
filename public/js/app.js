@@ -67209,21 +67209,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -67365,60 +67350,7 @@ var render = function() {
                       _c(
                         "v-layout",
                         { attrs: { row: "", wrap: "", "align-center": "" } },
-                        [
-                          _c("v-flex", { attrs: { xs12: "", md6: "" } }),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs12: "", md6: "" } },
-                            [
-                              _c(
-                                "v-card",
-                                { attrs: { hover: "" } },
-                                [
-                                  _c(
-                                    "v-card-title",
-                                    {
-                                      staticClass: "layout justify-center",
-                                      attrs: { "primary-title": "" }
-                                    },
-                                    [
-                                      _c(
-                                        "div",
-                                        { staticClass: "headline" },
-                                        [
-                                          _c("v-icon", [
-                                            _vm._v("notifications")
-                                          ]),
-                                          _vm._v(" 최근 알림")
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-btn",
-                                        {
-                                          staticClass: "blue--text",
-                                          attrs: { flat: "" }
-                                        },
-                                        [_vm._v("Read More")]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c("v-card-text", [
-                                    _vm._v(
-                                      "\n                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in aliquet odio. Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse\n                  potenti.\n                "
-                                    )
-                                  ])
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
+                        [_c("v-flex", { attrs: { xs12: "", md6: "" } })],
                         1
                       )
                     ],
@@ -67543,7 +67475,7 @@ var render = function() {
                                     type: "submit"
                                   }
                                 },
-                                [_vm._v("LOGIN")]
+                                [_vm._v("ログイン")]
                               )
                             ],
                             1
@@ -67566,7 +67498,7 @@ var render = function() {
                                 type: "submit"
                               }
                             },
-                            [_vm._v("회원등록")]
+                            [_vm._v("新規登録")]
                           ),
                           _vm._v(" "),
                           _c(
@@ -67580,7 +67512,7 @@ var render = function() {
                                 type: "submit"
                               }
                             },
-                            [_vm._v("PW 찾기")]
+                            [_vm._v("PWを探す")]
                           )
                         ],
                         1
@@ -67886,12 +67818,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /* 학생 */
         student: [{
           action: 'face',
-          title: '출결관리',
+          title: '出席管理',
           path: '/student/attendanceManagement',
           listSet: false
         }, {
           action: 'settings',
-          title: '학업관리',
+          title: '学業管理',
           path: '/student/gradeManagement',
           listSet: false
         }],
@@ -67899,7 +67831,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /* 교과목 교수는 강의 데이터를 함수로부터 받아와야한다. */
         professor: [{
           action: 'subject',
-          title: '강의 관리',
+          title: '講義管理',
           active: true,
           listSet: true,
           subMenu: []
@@ -67907,39 +67839,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /* 지도 교수 */
         tutor: [{
           action: 'check',
-          title: '출결 관리',
+          title: '出席管理',
           active: false,
           listSet: true,
           subMenu: [{
             action: 'check',
-            title: '등/하교 출결',
+            title: '出席状況',
             path: '/tutor/attendance'
           }, {
             action: 'alarm',
-            title: '알림 설정',
+            title: 'お知らせ設定',
             path: '/tutor/alertStudentSetting'
           }]
         }, {
           listSet: false,
           action: 'face',
-          title: '지도 학생 정보',
+          title: '指導学生情報',
           path: '/tutor/studentManagement'
         }, {
           action: 'bar_chart',
-          title: '학생 분석 예측',
+          title: '学生分析',
           active: false,
           listSet: true,
           subMenu: [{
             action: 'person',
-            title: '개인별 분석 예측',
+            title: '個人別分析',
             path: '/tutor/studentAnalyticPrediction'
           }, {
             action: 'group',
-            title: '지도반 분석 예측',
+            title: '指導クラス分析',
             path: '/tutor/classAnalyticPrediction'
           }, {
             action: 'settings',
-            title: '설정',
+            title: '設定',
             path: '/tutor/studentAnalyticPredictionSetting'
           }]
         }]
@@ -68015,6 +67947,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       axios.get('/professor/subject/list').then(function (response) {
         var subjects = response.data.message.subjects;
+
         /* 강의 메뉴 생성 */
         for (var start = 0; start < subjects.length; start++) {
           _this3.MenuDataList[0].professor[0].subMenu.push({
@@ -68100,7 +68033,7 @@ var render = function() {
                   _c("div", { staticClass: "userName text-xs-center" }, [
                     _c("span", [
                       _vm._v(
-                        "\n          " + _vm._s(_vm.userInfoData.name) + " 님"
+                        "\n          " + _vm._s(_vm.userInfoData.name) + " 様"
                       ),
                       _c("br")
                     ])
@@ -68293,9 +68226,7 @@ var render = function() {
                             1
                           )
                         : _c("div", [
-                            _vm._v(
-                              "\n        ListSet 타입이 존재하지 않습니다.\n      "
-                            )
+                            _vm._v("\n        ListSetがありません。\n      ")
                           ])
                   ])
                 })
@@ -68821,7 +68752,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-Attendance-bar-ch
   methods: {
     renderBarChart: function renderBarChart() {
       this.renderChart({
-        labels: ['출석', '지각', '결석', '조퇴'],
+        labels: ['出席', '遅刻', '欠席', '早引け'],
         datasets: [{
           backgroundColor: ['#009a92', '#f6c202', '#f53e3e', '#787878'],
           data: this.dataChart
@@ -68859,7 +68790,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-Attendance-bar-ch
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      headers: [{ text: '출석', value: 'sign_in', align: 'center', sortable: false }, { text: '최근출석', value: 'recent_sign_in', align: 'center', sortable: false }, { text: '지각', value: 'lateness', align: 'center', sortable: false }, { text: '최근지각', value: 'recent_lateness', align: 'center', sortable: false }, { text: '결석', value: 'absence', align: 'center', sortable: false }, { text: '최근결석', value: 'recent_absence', align: 'center', sortable: false }, { text: '조퇴', value: 'early_leave', align: 'center', sortable: false }, { text: '최근조퇴', value: 'recent_early_leave', align: 'center', sortable: false }],
+      headers: [{ text: '出席', value: 'sign_in', align: 'center', sortable: false }, { text: '最近の出席', value: 'recent_sign_in', align: 'center', sortable: false }, { text: '遅刻', value: 'lateness', align: 'center', sortable: false }, { text: '最近の遅刻', value: 'recent_lateness', align: 'center', sortable: false }, { text: '欠席', value: 'absence', align: 'center', sortable: false }, { text: '最近の欠席', value: 'recent_absence', align: 'center', sortable: false }, { text: '早引け', value: 'early_leave', align: 'center', sortable: false }, { text: '最近の早引け', value: 'recent_early_leave', align: 'center', sortable: false }],
       attendanceData: [],
       // 출석률
       value: 0,
@@ -68926,7 +68857,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-Attendance-bar-ch
           _this.dataChart = [response.data.message['sign_in'], response.data.message['lateness'], response.data.message['absence'], response.data.message['early_leave']];
         } else {
           // 조회된 기록이 없을 경우
-          alert('조회된 기록이 없습니다.');
+          alert('照会できる情報がありません・');
         }
       }).catch(function (error) {
         console.log('getDataErr :' + error);
@@ -69193,7 +69124,7 @@ var render = function() {
                               }
                             }
                           },
-                          [_vm._v("주간")]
+                          [_vm._v("週間")]
                         ),
                         _vm._v(" "),
                         _c(
@@ -69206,7 +69137,7 @@ var render = function() {
                               }
                             }
                           },
-                          [_vm._v("월간")]
+                          [_vm._v("月間")]
                         )
                       ],
                       1
@@ -69227,12 +69158,12 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._v("이전 달")]
+                                  [_vm._v("先月")]
                                 )
                               : _c(
                                   "v-btn",
                                   { attrs: { color: "info", disabled: "" } },
-                                  [_vm._v("이전 달")]
+                                  [_vm._v("先月")]
                                 ),
                             _vm._v(
                               "\n                    " +
@@ -69250,12 +69181,12 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._v("다음 달")]
+                                  [_vm._v("来月")]
                                 )
                               : _c(
                                   "v-btn",
                                   { attrs: { color: "info", disabled: "" } },
-                                  [_vm._v("다음 달")]
+                                  [_vm._v("来月")]
                                 )
                           ],
                           1
@@ -69275,12 +69206,12 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_vm._v("이전 주")]
+                                    [_vm._v("先週")]
                                   )
                                 : _c(
                                     "v-btn",
                                     { attrs: { color: "info", disabled: "" } },
-                                    [_vm._v("이전 주")]
+                                    [_vm._v("先週")]
                                   ),
                               _vm._v(
                                 "\n                    " +
@@ -69298,12 +69229,12 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_vm._v("다음 주")]
+                                    [_vm._v("来週")]
                                   )
                                 : _c(
                                     "v-btn",
                                     { attrs: { color: "info", disabled: "" } },
-                                    [_vm._v("다음 주")]
+                                    [_vm._v("来週")]
                                   )
                             ],
                             1
@@ -69332,7 +69263,7 @@ var render = function() {
                                       "text-color": "white"
                                     }
                                   },
-                                  [_vm._v("출석률")]
+                                  [_vm._v("出席率")]
                                 )
                               ],
                               1
@@ -69703,8 +69634,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -69718,19 +69647,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       /* 성적테이블 상단 메뉴 */
       gradeType: {
         t1: "",
-        t2: "횟수",
-        t3: "만점",
-        t4: "득점",
-        t5: "평균",
-        t6: "반영비율"
+        t2: "回数",
+        t3: "満点",
+        t4: "得点",
+        t5: "平均"
       },
       /* 상세보기 테이블 메뉴 */
       plusType: {
-        t1: "날짜",
-        t2: "타입",
-        t3: "상세",
-        t4: "득점",
-        t5: "만점"
+        t1: "日子",
+        t2: "タイプ",
+        t3: "備考",
+        t4: "得点",
+        t5: "満点"
       },
       /* 테이블 선 나오게 함 */
       bordered: true,
@@ -69874,14 +69802,6 @@ var render = function() {
                             _c("tr", [
                               _c("td", [
                                 _vm._v(" " + _vm._s(datas.title) + " ")
-                              ]),
-                              _vm._v(" "),
-                              _c("td", { attrs: { colspan: "6" } }, [
-                                _vm._v(
-                                  " 학업성취도 : " +
-                                    _vm._s(datas.achievement) +
-                                    " %"
-                                )
                               ])
                             ])
                           ]),
@@ -69895,7 +69815,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._v("상세보기")]
+                            [_vm._v("詳しく見る")]
                           ),
                           _vm._v(" "),
                           datas.pageOpen == true
@@ -70263,10 +70183,10 @@ var render = function() {
                     { staticStyle: { "padding-bottom": "5px" } },
                     [
                       _c("h2", { staticStyle: { color: "white" } }, [
-                        _vm._v("회원정보")
+                        _vm._v("会員情報")
                       ]),
                       _vm._v(" "),
-                      _c("p", [_vm._v("정보확인 및 수정")])
+                      _c("p", [_vm._v("情報確認＆修正")])
                     ]
                   )
                 ],
@@ -70492,7 +70412,7 @@ var render = function() {
                                             }
                                           }
                                         },
-                                        [_vm._v("회원정보 변경")]
+                                        [_vm._v("会員情報セーブ")]
                                       )
                                     ],
                                     1
@@ -70628,13 +70548,6 @@ exports.push([module.i, "\n.studentLists {\r\n  overflow-y: scroll;\r\n  max-hei
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -70913,7 +70826,7 @@ var render = function() {
                                               _c(
                                                 "h1",
                                                 { staticClass: "firstCard" },
-                                                [_vm._v("금일 지각 학생")]
+                                                [_vm._v("今日遅刻した学生")]
                                               )
                                             ]
                                           ),
@@ -71068,7 +70981,7 @@ var render = function() {
                                               _c(
                                                 "h1",
                                                 { staticClass: "firstCard" },
-                                                [_vm._v("금일 결석 학생")]
+                                                [_vm._v("今日欠席した学生")]
                                               )
                                             ]
                                           ),
@@ -71220,7 +71133,7 @@ var render = function() {
                                               _c(
                                                 "h1",
                                                 { staticClass: "firstCard" },
-                                                [_vm._v("최근 알림")]
+                                                [_vm._v("最近のお知らせ")]
                                               )
                                             ]
                                           )
@@ -71234,75 +71147,7 @@ var render = function() {
                                 1
                               ),
                               _vm._v(" "),
-                              _c(
-                                "v-card-text",
-                                [
-                                  _c(
-                                    "v-chip",
-                                    {
-                                      staticClass: "elevation-4",
-                                      attrs: {
-                                        color: "cyan lighten-1",
-                                        "text-color": "white"
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                '박효동' 학생이 관심학생으로 지정되었습니다.\n              "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-chip",
-                                    {
-                                      staticClass: "elevation-4",
-                                      attrs: {
-                                        color: "blue accent-4",
-                                        "text-color": "white"
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                 '이승민' 학생이 관심학생으로 지정되었습니다.\n              "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-chip",
-                                    {
-                                      staticClass: "elevation-4",
-                                      attrs: {
-                                        color: "cyan lighten-1",
-                                        "text-color": "white"
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                '황금비' 학생이 관심학생으로 지정되었습니다.\n              "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-chip",
-                                    {
-                                      staticClass: "elevation-4",
-                                      attrs: {
-                                        color: "blue accent-4",
-                                        "text-color": "white"
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                 '이하연' 학생이 관심학생으로 지정되었습니다.\n              "
-                                      )
-                                    ]
-                                  )
-                                ],
-                                1
-                              )
+                              _c("v-card-text")
                             ],
                             1
                           )
@@ -71765,7 +71610,7 @@ var render = function() {
               [
                 _c("div", { staticClass: "text-xs-center" }, [
                   _c("h2", { staticClass: "headline" }, [
-                    _vm._v("두 가지 중 원하는 방식으로 성적을 입력 하십시오")
+                    _vm._v("いずれの方法で成績を入力してください。")
                   ])
                 ])
               ]
@@ -71811,7 +71656,11 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "headline text-xs-center" },
-                                  [_vm._v("엑셀 양식 다운로드 후, 파일 업로드")]
+                                  [
+                                    _vm._v(
+                                      "エクセルの様式ダウンロードの後、アップロード"
+                                    )
+                                  ]
                                 )
                               ]
                             ),
@@ -71843,7 +71692,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n                  엑셀 양식 다운로드\n                  "
+                                      "\n                  エクセルの様式ダウンロード\n                  "
                                     ),
                                     _c(
                                       "v-icon",
@@ -71859,7 +71708,7 @@ var render = function() {
                                   [
                                     _c("v-card-title", [
                                       _c("span", { staticClass: "headline" }, [
-                                        _vm._v("엑셀 양식 다운로드")
+                                        _vm._v("エクセルの様式ダウンロード")
                                       ])
                                     ]),
                                     _vm._v(" "),
@@ -71900,7 +71749,7 @@ var render = function() {
                                                   "text-color": "white"
                                                 }
                                               },
-                                              [_vm._v("파일 이름")]
+                                              [_vm._v("パイル名")]
                                             ),
                                             _vm._v(" "),
                                             _c("v-text-field", {
@@ -71920,7 +71769,7 @@ var render = function() {
                                                   "text-color": "white"
                                                 }
                                               },
-                                              [_vm._v("실시 일자")]
+                                              [_vm._v("実行日")]
                                             ),
                                             _vm._v(" "),
                                             _c("input", {
@@ -71956,7 +71805,7 @@ var render = function() {
                                                   "text-color": "white"
                                                 }
                                               },
-                                              [_vm._v("분류")]
+                                              [_vm._v("分類")]
                                             ),
                                             _vm._v(" "),
                                             _c(
@@ -71973,13 +71822,13 @@ var render = function() {
                                                   {
                                                     attrs: { value: "midterm" }
                                                   },
-                                                  [_vm._v("중간")]
+                                                  [_vm._v("中間")]
                                                 ),
                                                 _vm._v(" "),
                                                 _c(
                                                   "option",
                                                   { attrs: { value: "final" } },
-                                                  [_vm._v("기말")]
+                                                  [_vm._v("期末")]
                                                 ),
                                                 _vm._v(" "),
                                                 _c(
@@ -71990,13 +71839,13 @@ var render = function() {
                                                       selected: ""
                                                     }
                                                   },
-                                                  [_vm._v("과제")]
+                                                  [_vm._v("課題")]
                                                 ),
                                                 _vm._v(" "),
                                                 _c(
                                                   "option",
                                                   { attrs: { value: "quiz" } },
-                                                  [_vm._v("쪽지")]
+                                                  [_vm._v("テスト")]
                                                 )
                                               ]
                                             ),
@@ -72009,7 +71858,7 @@ var render = function() {
                                                   "text-color": "white"
                                                 }
                                               },
-                                              [_vm._v("만점")]
+                                              [_vm._v("満点")]
                                             ),
                                             _vm._v(" "),
                                             _c("v-text-field", {
@@ -72031,7 +71880,7 @@ var render = function() {
                                                   "text-color": "white"
                                                 }
                                               },
-                                              [_vm._v("성적 내용")]
+                                              [_vm._v("成績の説明")]
                                             ),
                                             _vm._v(" "),
                                             _c("v-text-field", {
@@ -72052,7 +71901,7 @@ var render = function() {
                                                   "text-color": "white"
                                                 }
                                               },
-                                              [_vm._v("확장자")]
+                                              [_vm._v("拡張子")]
                                             ),
                                             _vm._v(" "),
                                             _c(
@@ -72087,7 +71936,7 @@ var render = function() {
                                             _c(
                                               "v-btn",
                                               { attrs: { color: "indigo" } },
-                                              [_vm._v("양식 다운로드")]
+                                              [_vm._v("様式ダウンロード")]
                                             )
                                           ],
                                           1
@@ -72154,7 +72003,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n                  엑셀 파일 업로드\n                  "
+                                      "\n                  エクセルの様式アップロード\n                  "
                                     ),
                                     _c(
                                       "v-icon",
@@ -72170,7 +72019,7 @@ var render = function() {
                                   [
                                     _c("v-card-title", [
                                       _c("span", { staticClass: "headline" }, [
-                                        _vm._v("엑셀로 성적 업로드")
+                                        _vm._v("エクセルで成績アップロード")
                                       ])
                                     ]),
                                     _vm._v(" "),
@@ -72185,7 +72034,7 @@ var render = function() {
                                               "text-color": "white"
                                             }
                                           },
-                                          [_vm._v("파일등록")]
+                                          [_vm._v("パイル登録")]
                                         ),
                                         _vm._v(" "),
                                         _c("input", {
@@ -72214,7 +72063,7 @@ var render = function() {
                                               }
                                             }
                                           },
-                                          [_vm._v("성적 업로드")]
+                                          [_vm._v("成績アップロード")]
                                         )
                                       ],
                                       1
@@ -72274,7 +72123,7 @@ var render = function() {
                           [
                             _c("v-card-title", [
                               _c("span", { staticClass: "headline" }, [
-                                _vm._v("알림")
+                                _vm._v("お知らせ")
                               ])
                             ]),
                             _vm._v(" "),
@@ -72292,12 +72141,12 @@ var render = function() {
                                 _vm.reData
                                   ? _c("div", [
                                       _vm._v(
-                                        "\n                  성적 업로드에 성공하였습니다.\n                "
+                                        "\n                  成績のアップロードに成功しました。\n                "
                                       )
                                     ])
                                   : _c("div", [
                                       _vm._v(
-                                        "\n                  성적 업로드에 실패하였습니다.\n                "
+                                        "\n                  成績のアップロードに失敗しました。\n                "
                                       )
                                     ])
                               ]
@@ -72383,7 +72232,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                등록\n                "
+                                  "\n                登録\n                "
                                 ),
                                 _c(
                                   "v-icon",
@@ -72819,17 +72668,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       /* 학생정보 */
       search: '',
       pagination: {},
-      types: [{ text: '중간', select: 'midterm' }, { text: '기말', select: 'final' }, { text: '과제', select: 'homework' }, { text: '쪽지', select: 'quiz' }],
+      types: [{ text: '中間', select: 'midterm' }, { text: '期末', select: 'final' }, { text: '課題', select: 'homework' }, { text: 'テスト', select: 'quiz' }],
       fileTypes: [{ text: 'xlsx' }, { text: 'xls' }, { text: 'csv' }],
       headers: [{
         class: 'display-1',
-        text: '학번',
+        text: '学生番号',
         value: 'studentNum',
         sortable: true,
         align: 'center'
       }, {
         class: 'display-1',
-        text: '이름',
+        text: '名前',
         sortable: true,
         value: 'name',
         align: 'center'
@@ -73062,7 +72911,7 @@ var render = function() {
                                                 },
                                                 [
                                                   _vm._v(
-                                                    "\r\n                        성적 양식 다운로드\r\n                        "
+                                                    "\r\n                        成績登録向けのエクセル様式をダウンロード\r\n                        "
                                                   ),
                                                   _c(
                                                     "v-icon",
@@ -73089,7 +72938,7 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\r\n                           성적 양식 다운로드\r\n                         "
+                                                        "\r\n                           成績様式ダウンロード\r\n                         "
                                                       )
                                                     ]
                                                   ),
@@ -73142,7 +72991,7 @@ var render = function() {
                                                                         name:
                                                                           "file_name",
                                                                         label:
-                                                                          "파일 이름"
+                                                                          "パイル名"
                                                                       },
                                                                       model: {
                                                                         value:
@@ -73343,7 +73192,7 @@ var render = function() {
                                                                 attrs: {
                                                                   items:
                                                                     _vm.types,
-                                                                  label: "분류"
+                                                                  label: "分類"
                                                                 },
                                                                 model: {
                                                                   value:
@@ -73378,7 +73227,7 @@ var render = function() {
                                                                     name:
                                                                       "perfect_score",
                                                                     label:
-                                                                      "만점"
+                                                                      "満点"
                                                                   },
                                                                   model: {
                                                                     value:
@@ -73414,7 +73263,7 @@ var render = function() {
                                                                     name:
                                                                       "content",
                                                                     label:
-                                                                      "성적 내용"
+                                                                      "試験の説明"
                                                                   },
                                                                   model: {
                                                                     value:
@@ -73448,7 +73297,7 @@ var render = function() {
                                                                   items:
                                                                     _vm.fileTypes,
                                                                   label:
-                                                                    "확장자",
+                                                                    "拡張子",
                                                                   "item-value":
                                                                     "text"
                                                                 },
@@ -73559,7 +73408,7 @@ var render = function() {
                                                 },
                                                 [
                                                   _vm._v(
-                                                    "\r\n                        성적 파일 업로드\r\n                        "
+                                                    "\r\n                        成績のパイルアップロード\r\n                        "
                                                   ),
                                                   _c(
                                                     "v-icon",
@@ -73592,7 +73441,7 @@ var render = function() {
                                                       },
                                                       [
                                                         _vm._v(
-                                                          "엑셀로 성적 파일 업로드"
+                                                          "エクセルで成績アップロード"
                                                         )
                                                       ]
                                                     )
@@ -73638,7 +73487,11 @@ var render = function() {
                                                             }
                                                           }
                                                         },
-                                                        [_vm._v("성적 업로드")]
+                                                        [
+                                                          _vm._v(
+                                                            "成績アップロード"
+                                                          )
+                                                        ]
                                                       )
                                                     ],
                                                     1
@@ -73702,7 +73555,7 @@ var render = function() {
                                                       {
                                                         staticClass: "headline"
                                                       },
-                                                      [_vm._v("알림")]
+                                                      [_vm._v("お知らせ")]
                                                     )
                                                   ]),
                                                   _vm._v(" "),
@@ -73720,12 +73573,12 @@ var render = function() {
                                                       _vm.reData
                                                         ? _c("div", [
                                                             _vm._v(
-                                                              "\r\n                            성적 업로드에 성공하였습니다.\r\n                          "
+                                                              "\r\n                            成績のアップロードに成功しました。\r\n                          "
                                                             )
                                                           ])
                                                         : _c("div", [
                                                             _vm._v(
-                                                              "\r\n                            성적 업로드에 실패하였습니다.\r\n                          "
+                                                              "\r\n                            成績のアップロードに失敗しました。\r\n                          "
                                                             )
                                                           ])
                                                     ]
@@ -73789,7 +73642,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\r\n                      등록된 성적 확인\r\n                      "
+                                                "\r\n                      登録した成績確認＆修正\r\n                      "
                                               ),
                                               _c(
                                                 "v-icon",
@@ -73897,7 +73750,7 @@ var render = function() {
                                           },
                                           [
                                             _vm._v(
-                                              "\r\n                       상세보기\r\n                     "
+                                              "\r\n                       詳しく見る\r\n                     "
                                             )
                                           ]
                                         )
@@ -74183,23 +74036,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       /* 성적정보 */
       headers: [{
-        text: '학번',
+        text: '学生番号',
         value: 'std_id'
       }, {
-        text: '이름',
+        text: '名前',
         value: 'name'
       }, {
-        text: '성적',
+        text: '成績',
         value: 'score'
       }, {
-        text: '만점'
+        text: '満点'
       }, {}],
       gradeDatas: [],
       menuDatas: [],
       subject_id_url: null,
       perfect_score: null,
 
-      selectedGradeData: '조회된 성적 데이터가 없습니다.',
+      selectedGradeData: '成績のデータがありません',
       loadingValue: false
     };
   },
@@ -74219,16 +74072,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           /* 메뉴 타이틀 수정 */
           switch (_this.menuDatas[start].type) {
             case 'quiz':
-              _this.menuDatas[start].execute_date += " (퀴즈)";
+              _this.menuDatas[start].execute_date += " (テスト)";
               break;
             case 'homework':
-              _this.menuDatas[start].execute_date += " (과제)";
+              _this.menuDatas[start].execute_date += " (課題)";
               break;
             case 'midterm':
-              _this.menuDatas[start].execute_date += " (중간고사)";
+              _this.menuDatas[start].execute_date += " (中間)";
               break;
             case 'final':
-              _this.menuDatas[start].execute_date += " (기말고사)";
+              _this.menuDatas[start].execute_date += " (期末)";
               break;
           }
         }
@@ -74459,7 +74312,7 @@ var render = function() {
                                     attrs: {
                                       id: "testing",
                                       name: "input-1",
-                                      label: "성적"
+                                      label: "成績"
                                     },
                                     model: {
                                       value: props.item.score,
@@ -74498,7 +74351,7 @@ var render = function() {
                                     }
                                   }
                                 },
-                                [_vm._v("성적 수정")]
+                                [_vm._v("成績修正")]
                               )
                             ],
                             1
@@ -75180,7 +75033,7 @@ var render = function() {
                                           _c(
                                             "h1",
                                             { staticClass: "cardsTitle" },
-                                            [_vm._v("결석 학생")]
+                                            [_vm._v("欠席した学生")]
                                           )
                                         ]
                                       ),
@@ -75338,7 +75191,7 @@ var render = function() {
                                           _c(
                                             "h1",
                                             { staticClass: "cardsTitle" },
-                                            [_vm._v("지각 학생")]
+                                            [_vm._v("遅刻した学生")]
                                           )
                                         ]
                                       ),
@@ -75541,7 +75394,7 @@ var render = function() {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "등/하교 학생"
+                                                                "出席した学生"
                                                               )
                                                             ]
                                                           )
@@ -75705,7 +75558,7 @@ var render = function() {
                                                                             },
                                                                             [
                                                                               _vm._v(
-                                                                                "등교완료"
+                                                                                "登校"
                                                                               )
                                                                             ]
                                                                           )
@@ -75737,7 +75590,7 @@ var render = function() {
                                                                             },
                                                                             [
                                                                               _vm._v(
-                                                                                "하교완료"
+                                                                                "下校"
                                                                               )
                                                                             ]
                                                                           )
@@ -75853,7 +75706,11 @@ var render = function() {
                                                               staticClass:
                                                                 "cardsTitle"
                                                             },
-                                                            [_vm._v("관심학생")]
+                                                            [
+                                                              _vm._v(
+                                                                "注意が必要な学生"
+                                                              )
+                                                            ]
                                                           )
                                                         ]
                                                       ),
@@ -75982,7 +75839,7 @@ var render = function() {
                                                                     _c("span", [
                                                                       _c("h3", [
                                                                         _vm._v(
-                                                                          "이름 : " +
+                                                                          "名前 : " +
                                                                             _vm._s(
                                                                               loveStudent.name
                                                                             )
@@ -75991,7 +75848,7 @@ var render = function() {
                                                                           "br"
                                                                         ),
                                                                         _vm._v(
-                                                                          "학번 : " +
+                                                                          "学生番号 : " +
                                                                             _vm._s(
                                                                               loveStudent.id
                                                                             )
@@ -76000,7 +75857,7 @@ var render = function() {
                                                                           "br"
                                                                         ),
                                                                         _vm._v(
-                                                                          "사유 : " +
+                                                                          "理由 : " +
                                                                             _vm._s(
                                                                               loveStudent.reason
                                                                             ) +
@@ -76241,25 +76098,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       selected: [],
       e1: null,
       semester: [{
-        text: '2016년 1학기'
-      }, {
-        text: '2016년 2학기'
-      }, {
-        text: '2017년 1학기'
-      }, {
-        text: '2017년 2학기'
-      }, {
-        text: '2018년 1학기'
+        text: '準備中です。'
       }],
       headers: [{
         class: 'display-1',
-        text: '학번',
+        text: '学生番号',
         value: 'studentNum',
         align: 'center',
         fontSize: '30px'
       }, {
         class: 'display-1',
-        text: '이름',
+        text: '名前',
         sortable: true,
         value: 'name',
         align: 'center'
@@ -76444,7 +76293,7 @@ var render = function() {
                                           },
                                           [
                                             _vm._v(
-                                              "\n                     상세보기\n                   "
+                                              "\n                     詳しく見る\n                   "
                                             )
                                           ]
                                         )
@@ -76770,40 +76619,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       /*-- 기간 --*/
       period: [{
-        text: '일주일',
+        text: '一週',
         value: 7
       }, {
-        text: '1개월',
+        text: '１ヶ月',
         value: 30
       }, {
-        text: '2개월',
+        text: '２ヶ月',
         value: 60
       }],
       /*-- 상태 --*/
       attendance: [{
-        text: '지각',
+        text: '遅刻',
         value: 'lateness'
       }, {
-        text: '조퇴',
+        text: '早引け',
         value: 'early_leave'
       }, {
-        text: '결석',
+        text: '欠席',
         value: 'absence'
       }],
       /*-- 빈도 --*/
       frequency: [{
-        text: '연속',
+        text: '連続',
         value: true
       }, {
-        text: '누적',
+        text: '累積',
         value: false
       }],
       /*-- 알림대상 --*/
       noticeTarget: [{
-        text: '교수(나)',
+        text: '教授(自分)',
         value: false
       }, {
-        text: '교수(나)와 학생',
+        text: '教授(自分)と学生',
         value: true
       }],
       /* 설정할 알림 데이터 값 */
@@ -76846,40 +76695,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           /* 기간 */
           switch (response.data.message[start].days_unit) {
             case 7:
-              setMessageData[start] = start + 1 + ". 일주일 간 ";
+              setMessageData[start] = start + 1 + ". 一週間、";
               break;
             case 30:
-              setMessageData[start] = start + 1 + ". 1개월 간 ";
+              setMessageData[start] = start + 1 + ". １ヶ月間、";
               break;
             case 60:
-              setMessageData[start] = start + 1 + ". 2개월 간 ";
+              setMessageData[start] = start + 1 + ". ２ヶ月間、";
               break;
           }
           /* 필터링 타입 */
           switch (response.data.message[start].ada_type) {
             case "lateness":
-              setMessageData[start] += "지각을 ";
+              setMessageData[start] += "遅刻を";
               break;
             case "absence":
-              setMessageData[start] += "결석을 ";
+              setMessageData[start] += "欠席を";
               break;
             case "early_leave":
-              setMessageData[start] += "조퇴를 ";
+              setMessageData[start] += "早引けを";
               break;
           }
           /* 2차 필터링 타입 */
           if (response.data.message[start].continuative_flag) {
-            setMessageData[start] += "연속 ";
+            setMessageData[start] += "連続　";
           } else if (!response.data.message[start].continuative_flag) {
-            setMessageData[start] += "누적 ";
+            setMessageData[start] += "累積　";
           }
           /* 횟수 */
-          setMessageData[start] += response.data.message[start].count + "회 이상 했을 시, ";
+          setMessageData[start] += response.data.message[start].count + "　回以上した場合、";
           /* 알림 대상 */
           if (response.data.message[start].alert_std_flag) {
-            setMessageData[start] += "교수(나)와 학생에게 알림.";
+            setMessageData[start] += "教授(自分)と学生にお知らせ。";
           } else if (!response.data.message[start].alert_std_flag) {
-            setMessageData[start] += "교수(나)에게 알림.";
+            setMessageData[start] += "教授(自分)にお知らせ。";
           }
           /* 알림 목록 데이터에 추가 : 삭제를 위한 아이디 값도 추가 */
           /* this.$set 의 경우, 없는 주소를 참조할 수 없으므로 .push를 이용하여 array주소를 생성하는 편법을 사용한다. */
@@ -76955,7 +76804,7 @@ var render = function() {
                         [
                           _c("v-card-text", [
                             _c("h1", { staticClass: "cardInsideTitle" }, [
-                              _vm._v("알림추가")
+                              _vm._v("お知らせの条件追加")
                             ])
                           ]),
                           _vm._v(" "),
@@ -76980,7 +76829,7 @@ var render = function() {
                                   expression: "set_days"
                                 }
                               }),
-                              _vm._v("동안\n          ")
+                              _vm._v("間\n          ")
                             ],
                             1
                           ),
@@ -77006,7 +76855,7 @@ var render = function() {
                                   expression: "set_ada"
                                 }
                               }),
-                              _vm._v("을\n          ")
+                              _vm._v("を\n          ")
                             ],
                             1
                           ),
@@ -77050,7 +76899,7 @@ var render = function() {
                                   expression: "set_count"
                                 }
                               }),
-                              _vm._v("\n            이상 했을 시,\n          ")
+                              _vm._v("\n            回以上した場合\n          ")
                             ],
                             1
                           ),
@@ -77076,7 +76925,7 @@ var render = function() {
                                   expression: "set_alert_std"
                                 }
                               }),
-                              _vm._v("\n            에게 알림\n          ")
+                              _vm._v("\n            にお知らせ\n          ")
                             ],
                             1
                           ),
@@ -77097,7 +76946,7 @@ var render = function() {
                                     }
                                   }
                                 },
-                                [_vm._v("추가")]
+                                [_vm._v("追加")]
                               )
                             ],
                             1
@@ -77143,7 +76992,7 @@ var render = function() {
                         [
                           _c("v-card-text", [
                             _c("h1", { staticClass: "cardInsideTitle" }, [
-                              _vm._v("알림확인")
+                              _vm._v("お知らせの条件管理")
                             ])
                           ]),
                           _vm._v(" "),
@@ -77176,7 +77025,7 @@ var render = function() {
                                           }
                                         }
                                       },
-                                      [_vm._v("삭제")]
+                                      [_vm._v("消す")]
                                     )
                                   ],
                                   1
@@ -77474,6 +77323,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -77497,6 +77347,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log('getUserInfo Error : ' + error);
       });
     },
+
+    /* 회원정보 수정 */
     setUserInfo: function setUserInfo() {
       var _this2 = this;
 
@@ -77516,7 +77368,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(params);
         console.log(this.photoData);
       }
-      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+      //axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
       axios.post('/professor/info/update', params[0]).then(function (response) {
         /* 통신 테스트 */
@@ -77590,11 +77442,11 @@ var render = function() {
                     { staticStyle: { "padding-bottom": "5px" } },
                     [
                       _c("h1", { staticStyle: { color: "white" } }, [
-                        _vm._v("회원정보")
+                        _vm._v("会員情報")
                       ]),
                       _vm._v(" "),
                       _c("p", { staticStyle: { "font-size": "20px" } }, [
-                        _vm._v("정보확인 및 수정")
+                        _vm._v("情報確認＆修正")
                       ])
                     ]
                   )
@@ -77837,7 +77689,7 @@ var render = function() {
                                             }
                                           }
                                         },
-                                        [_vm._v("회원정보 변경")]
+                                        [_vm._v("会員情報セーブ")]
                                       )
                                     ],
                                     1
@@ -78304,7 +78156,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('line-chart-lateness', {
         /* 기간 내의 날짜 */
         labels: this.attendanceLineLabelData,
         datasets: [{
-          label: '지각',
+          label: '遅刻',
           backgroundColor: false,
           borderColor: '#f6c202',
           fill: false,
@@ -78357,7 +78209,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('line-chart-holiday', {
         /* 기간 내의 날짜 */
         labels: this.holidayLabelData,
         datasets: [{
-          label: '휴일 등교인원',
+          label: '週末の出席した学生の数',
           borderColor: '#f53e3e',
           fill: false,
           data: this.holidayData
@@ -78465,7 +78317,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
         /* 기간 내의 날짜 */
         labels: this.gradeLabelData,
         datasets: [{
-          label: "취득점수 분포도",
+          label: "取得点数分布図",
           backgroundColor: '#4867fb',
           borderColor: '#3c0cc6',
           fill: false,
@@ -78499,13 +78351,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
   data: function data() {
     return {
       /* 출석 차트 종류 */
-      attSelect: { text: '출결 횟수 비율', selected: '1' },
-      subjectSelect: { text: '조회 중 입니다.' },
-      subjectsSelect: { text: '조회 중 입니다.' },
-      attendance: [{ text: '출결 횟수 비율', selected: '1' }, { text: '평균 출결 인원', selected: '2' }, { text: '휴일 등교 인원', selected: '3' }],
+      attSelect: { text: '出席回数比率', selected: '1' },
+      subjectSelect: { text: '情報を探しています。' },
+      subjectsSelect: { text: '情報を探しています。' },
+      attendance: [{ text: '出席回数比率', selected: '1' }, { text: '平均出席した人の数', selected: '2' }, { text: '週末に出席した学生の数', selected: '3' }],
       /* 기간 설정 */
       dialog: false,
-      periodSelected: '최근',
+      periodSelected: '最近',
       fDate: null,
       sDate: null,
       startDate: null,
@@ -78518,8 +78370,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
       studyChartStat: '',
       studysChartStat: '',
       /* 과목 */
-      subjectList: [{ id: '', name: '진행중인 강의가 없습니다.' }],
-      subjectsList: [{ id: '', name: '조회된 시험이 없습니다.' }],
+      subjectList: [{ id: '', name: '行っている講義がありません。' }],
+      subjectsList: [{ id: '', name: '試験の情報がありません。' }],
       subjectCode: null,
       subjectsCode: null,
       /* 그래프 값 변수들*/
@@ -78547,15 +78399,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
       /* 상태표시 */
       switch (select) {
         case 'lateness':
-          this.attendanceChartStat = '지각';
+          this.attendanceChartStat = '遅行';
           this.selectAtt = 'lateness';
           break;
         case 'early_leave':
-          this.attendanceChartStat = '조퇴';
+          this.attendanceChartStat = '早引け';
           this.selectAtt = 'early_leave';
           break;
         case 'absence':
-          this.attendanceChartStat = '결석';
+          this.attendanceChartStat = '欠席';
           this.selectAtt = 'absence';
           break;
       }
@@ -78592,21 +78444,21 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
           this.fDate = null;
           this.dateCheck = false;
           this.setPeriod_type = value;
-          this.periodSelected = '주간';
+          this.periodSelected = '週間';
           break;
         case 'monthly':
           this.sDate = null;
           this.fDate = null;
           this.dateCheck = false;
           this.setPeriod_type = value;
-          this.periodSelected = '월간';
+          this.periodSelected = '月間';
           break;
         case 'recently':
           this.sDate = null;
           this.fDate = null;
           this.dateCheck = false;
           this.setPeriod_type = value;
-          this.periodSelected = '최근';
+          this.periodSelected = '最近';
           break;
         case 'save':
           /* 날짜 예외처리 = 정상 값 확인 */
@@ -78616,10 +78468,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
             this.sDate = null;
             this.fDate = null;
             this.setPeriod_type = 'recently';
-            this.periodSelected = '최근';
+            this.periodSelected = '最近';
             this.dateCheck = false;
             /* 알림 */
-            alert('(초기화)정상적인 입력이 아닙니다.');
+            alert('(リセット)間違って入力です。');
           } else {
             this.adaChartController();
             this.getStudyScore();
@@ -78928,7 +78780,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
         for (var dupCheck = 0; dupCheck < start - 1; dupCheck++) {
           // 지금 만들어 낸 것과 이전의 값을 비교
           if (rgbColor[dupCheck] == rgbColor[start]) {
-            console.log('중복확인 :' + start + ':' + rgbColor[start]);
+            //console.log('중복확인 :' + start + ':' + rgbColor[start]);
             // 중복 확인시, 초기화 -> 재생성
             rgbColor[start] = '';
             start--;
@@ -78980,13 +78832,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
         if (sDate > eDate) {
           if (value == "start") {
             /* 경고 -> 값 초기화 */
-            alert('시작일이 종료일보다 늦을 수 없습니다.');
-            console.log('시작일이 종료일보다 늦을 수 없습니다.');
+            alert('始まりの日が終わりの日より遅いです。');
+            console.log('始まりの日が終わりの日より遅いです。');
             this.fDate = null;
           } else if (value == "end") {
             /* 경고 -> 값 초기화 */
-            alert('종료일이 시작일보다 빠를 수 없습니다.');
-            console.log('종료일이 시작일보다 빠를 수 없습니다.');
+            alert('終わりの日が始まりの日より早いです。');
+            console.log('終わりの日が始まりの日より早いです。');
             this.sDate = null;
           }
           this.dateCheck = false;
@@ -79077,7 +78929,7 @@ var render = function() {
                   staticClass: "grey lighten-4 py-4 title",
                   staticStyle: { "font-family": "Nanum Gothic Coding" }
                 },
-                [_vm._v("\n             분석 기간 설정\n            ")]
+                [_vm._v("\n             分析の期間設定\n            ")]
               ),
               _vm._v(" "),
               _c(
@@ -79094,7 +78946,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("최근")]
+                    [_vm._v("最近")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -79107,7 +78959,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("주간")]
+                    [_vm._v("週間")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -79120,7 +78972,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("월간")]
+                    [_vm._v("月間")]
                   ),
                   _vm._v(" "),
                   _c("br"),
@@ -79189,7 +79041,7 @@ var render = function() {
                             ? _c("div", [
                                 _c("h2", [
                                   _vm._v(
-                                    "최근(10주)은 기간을 지정할 수 없습니다."
+                                    "最近（10週）は期間の変更ができません。"
                                   )
                                 ])
                               ])
@@ -79219,7 +79071,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("확인")]
+                    [_vm._v("期間変更")]
                   )
                 ],
                 1
@@ -79300,7 +79152,7 @@ var render = function() {
                                                 { staticClass: "chartTitle" },
                                                 [
                                                   _vm._v(
-                                                    "출결 정보 분석\n                      "
+                                                    "出席の情報分析\n                      "
                                                   ),
                                                   !_vm.dateCheck
                                                     ? _c(
@@ -79485,7 +79337,7 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _vm._v(
-                                                                        "지각"
+                                                                        "遅刻"
                                                                       )
                                                                     ]
                                                                   )
@@ -79528,7 +79380,7 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _vm._v(
-                                                                        "결석"
+                                                                        "欠席"
                                                                       )
                                                                     ]
                                                                   )
@@ -79571,7 +79423,7 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _vm._v(
-                                                                        "조퇴"
+                                                                        "早引け"
                                                                       )
                                                                     ]
                                                                   )
@@ -79799,7 +79651,7 @@ var render = function() {
                                                 { staticClass: "chartTitle" },
                                                 [
                                                   _vm._v(
-                                                    "학업 정보 분석\n                      "
+                                                    "学業情報分析\n                      "
                                                   ),
                                                   !_vm.dateCheck
                                                     ? _c(
@@ -79984,7 +79836,7 @@ var render = function() {
                                                           },
                                                           [
                                                             _vm._v(
-                                                              "취득점수 분포 범위 ( " +
+                                                              "取得点数分布範囲 ( " +
                                                                 _vm._s(
                                                                   this
                                                                     .studyChartStat
@@ -80033,7 +79885,7 @@ var render = function() {
                                                           },
                                                           [
                                                             _vm._v(
-                                                              "취득점수 분포도 ( " +
+                                                              "取得点数分布図 ( " +
                                                                 _vm._s(
                                                                   this
                                                                     .studysChartStat
@@ -80682,7 +80534,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-time-lineChart
       this.renderChart({
         labels: this.timeLineLabelData,
         datasets: [{
-          label: '시간(00:00)',
+          label: '時間(00:00)',
           borderColor: '#4451fb',
           fill: false,
           data: this.timeLineData
@@ -80736,7 +80588,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-count-lineChar
       this.renderChart({
         labels: this.countLineLabelData,
         datasets: [{
-          label: '횟수',
+          label: '回数',
           borderColor: '#4657fa',
           fill: false,
           data: this.countLineData
@@ -80785,7 +80637,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-count-pieChart
   methods: {
     renderPieChart: function renderPieChart() {
       this.renderChart({
-        labels: ['출석', '지각', '결석', '조퇴'],
+        labels: ['出席', '遅行', '欠席', '早引け'],
         datasets: [{
           backgroundColor: ['#4657fa', '#9f98ed', '#ff3333', '#808080'],
           fill: false,
@@ -80928,7 +80780,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-lecture-ranking-lin
       this.renderChart({
         labels: this.lectureRankingLabelData,
         datasets: [{
-          label: "석차 백분율",
+          label: "席次のパーセンテージ",
           borderColor: ['#33ff66'],
           fill: false,
           data: this.lectureRankingData
@@ -81030,7 +80882,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
       this.renderChart({
         labels: this.subjectRankingLabelData,
         datasets: [{
-          label: "석차 백분율",
+          label: "席次のパーセンテージ",
           borderColor: ['#33ff66'],
           fill: false,
           data: this.subjectRankingData
@@ -81066,20 +80918,20 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
   data: function data() {
     return {
       /* 출석 그래프 선택 */
-      attendanceSelected: { text: '등/하교 시간 변화', select: 1 },
-      greadeSelected: { text: '강의 취득점수', select: 1 },
-      attendance: [{ text: '등/하교 시간 변화', select: 1 }, { text: '출결 횟수 변화', select: 2 }, { text: '출결별 횟수', select: 3 }],
+      attendanceSelected: { text: '登校＆下校の時間変化', select: 1 },
+      greadeSelected: { text: '講義の取得点数', select: 1 },
+      attendance: [{ text: '登校＆下校の時間変化', select: 1 }, { text: '出席回数の変化', select: 2 }, { text: '出席別の回数', select: 3 }],
 
-      grade: [{ text: '강의 취득점수', select: 1 }, { text: '강의 석차 백분율', select: 2 }, { text: '종목 취득점수', select: 3 }, { text: '종목 석차 백분율', select: 4 }],
+      grade: [{ text: '講義の取得点数', select: 1 }, { text: '講義の席次パーセンテージ', select: 2 }, { text: '種目別の取得点数', select: 3 }, { text: '種目別の席次パーセンテージ', select: 4 }],
       /* 선택한 학생 정보 */
       selectStudentData: [],
       /* 선택 상태 */
-      setSign: '등교',
-      setAtt: '지각',
+      setSign: '登校',
+      setAtt: '遅刻',
       setLec: null,
-      setSub: '쪽지',
+      setSub: 'テスト',
       /* 기간 */
-      periodSelected: '최근',
+      periodSelected: '最近',
       dialog: false,
       fDate: null,
       sDate: null,
@@ -81093,11 +80945,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
       /* 학생 목록 */
       studentInfo: [],
       studentsType: 'total',
-      studentSelected: '전체',
+      studentSelected: '全て',
 
       /* 강의 목록 */
-      subjectList: [{ id: '', name: '', text: '강의 정보가 없습니다.' }],
-      subjectSelect: { text: '강의 정보가 없습니다.' },
+      subjectList: [{ id: '', name: '', text: '講義の情報がありません.' }],
+      subjectSelect: { text: '講義の情報がありません.' },
 
       /* 그래프 조회 기본 값*/
       setStd_id: null,
@@ -81120,12 +80972,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
       countPieData: [],
       /* 04. 전공 일본어 비교 */
       jmLineDataSets: [{
-        label: '일본어',
+        label: '日本語',
         borderColor: '#0000ff',
         fill: false,
         data: []
       }, {
-        label: '전공',
+        label: '専攻',
         borderColor: '#ff3333',
         fill: false,
         data: []
@@ -81134,12 +80986,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
 
       /* 05. 강의 득점 평균 비교 및 석차백분율 변화 */
       lectureScoreDataSets: [{
-        label: '내 평균',
+        label: '学生の平均',
         borderColor: '#ff3333',
         fill: false,
         data: []
       }, {
-        label: '반 평균',
+        label: 'クラスの平均',
         borderColor: '#0000ff',
         fill: false,
         data: []
@@ -81150,12 +81002,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
       lectureRankingLabelData: [],
       /* 06. 강의 = 상세 종목별 득점 평균 비교 및 석차백분율 변화 */
       subjectScoreDataSets: [{
-        label: '내 평균',
+        label: '学生の平均',
         borderColor: '#ff3333',
         fill: false,
         data: []
       }, {
-        label: '반 평균',
+        label: 'クラスの平均',
         borderColor: '#0000ff',
         fill: false,
         data: []
@@ -81216,21 +81068,21 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
           this.sDate = null;
           this.fDate = null;
           this.setPeriod_type = value;
-          this.periodSelected = '주간';
+          this.periodSelected = '週間';
           this.dateCheck = false;
           break;
         case 'monthly':
           this.sDate = null;
           this.fDate = null;
           this.setPeriod_type = value;
-          this.periodSelected = '월간';
+          this.periodSelected = '月間';
           this.dateCheck = false;
           break;
         case 'recently':
           this.sDate = null;
           this.fDate = null;
           this.setPeriod_type = value;
-          this.periodSelected = '최근';
+          this.periodSelected = '最近';
           this.dateCheck = false;
           break;
         case 'save':
@@ -81241,10 +81093,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
             this.sDate = null;
             this.fDate = null;
             this.setPeriod_type = 'recently';
-            this.periodSelected = '최근';
+            this.periodSelected = '最近';
             this.dateCheck = false;
             /* 알림 */
-            alert('(초기화)정상적인 입력이 아닙니다.');
+            alert('(リセット)間違った入力です。');
           }
           /* 학생이 선택된 상태라면 그래프를 그린다. */
           else if (this.btnLock) {
@@ -81335,7 +81187,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
         }
       }).catch(function (error) {
         console.log("getStuInfo Err : " + error);
-        alert('불러오기에 실패했습니다.');
+        alert('ロードに失敗しました。');
       });
     },
 
@@ -81751,13 +81603,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
         if (sDate > eDate) {
           if (value == "start") {
             /* 경고 -> 값 초기화 */
-            alert('시작일이 종료일보다 늦을 수 없습니다.');
-            console.log('시작일이 종료일보다 늦을 수 없습니다.');
+            alert('始まりの日が終わりの日より遅いです。');
+            console.log('始まりの日が終わりの日より遅いです。');
             this.fDate = null;
           } else if (value == "end") {
             /* 경고 -> 값 초기화 */
-            alert('종료일이 시작일보다 빠를 수 없습니다.');
-            console.log('종료일이 시작일보다 빠를 수 없습니다.');
+            alert('終わりの日が始まりの日より早いです。');
+            console.log('終わりの日が始まりの日より早いです。');
             this.sDate = null;
           }
           this.dateCheck = false;
@@ -81869,7 +81721,7 @@ var render = function() {
                   staticClass: "grey lighten-4 py-4 title",
                   staticStyle: { "font-family": "Nanum Gothic Coding" }
                 },
-                [_vm._v("\n       분석 기간 설정\n      ")]
+                [_vm._v("\n       分析の期間設定\n      ")]
               ),
               _vm._v(" "),
               _c(
@@ -81886,7 +81738,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("최근")]
+                    [_vm._v("最近")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -81899,7 +81751,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("주간")]
+                    [_vm._v("週間")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -81912,7 +81764,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("월간")]
+                    [_vm._v("月間")]
                   ),
                   _vm._v(" "),
                   _c("br"),
@@ -81986,7 +81838,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "최근(10주)은 기간을 지정할 수 없습니다."
+                                      "最近（10週）は期間の変更ができません。"
                                     )
                                   ]
                                 )
@@ -82017,7 +81869,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("확인")]
+                    [_vm._v("期間変更")]
                   )
                 ],
                 1
@@ -82106,7 +81958,7 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "학생목록\n                        "
+                                                      "学生リスト\n                        "
                                                     ),
                                                     !_vm.dateCheck
                                                       ? _c(
@@ -82202,11 +82054,11 @@ var render = function() {
                                         on: {
                                           click: function($event) {
                                             _vm.getStudentInfo("total"),
-                                              (_vm.studentSelected = "전체")
+                                              (_vm.studentSelected = "全て")
                                           }
                                         }
                                       },
-                                      [_vm._v("전체")]
+                                      [_vm._v("全て")]
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -82220,11 +82072,11 @@ var render = function() {
                                         on: {
                                           click: function($event) {
                                             _vm.getStudentInfo("filter"),
-                                              (_vm.studentSelected = "주목")
+                                              (_vm.studentSelected = "注目")
                                           }
                                         }
                                       },
-                                      [_vm._v("주목")]
+                                      [_vm._v("注目")]
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -82238,11 +82090,11 @@ var render = function() {
                                         on: {
                                           click: function($event) {
                                             _vm.getStudentInfo("attention"),
-                                              (_vm.studentSelected = "사랑")
+                                              (_vm.studentSelected = "チェック")
                                           }
                                         }
                                       },
-                                      [_vm._v("사랑")]
+                                      [_vm._v("チェック")]
                                     )
                                   ],
                                   1
@@ -82397,7 +82249,7 @@ var render = function() {
                                                                   },
                                                                   [
                                                                     _vm._v(
-                                                                      "최근 성적 하락"
+                                                                      "最近、成績が下落"
                                                                     )
                                                                   ]
                                                                 ),
@@ -82462,7 +82314,7 @@ var render = function() {
                                                                   },
                                                                   [
                                                                     _vm._v(
-                                                                      "출석율 저조"
+                                                                      "出席率の低調"
                                                                     )
                                                                   ]
                                                                 ),
@@ -82527,7 +82379,7 @@ var render = function() {
                                                                   },
                                                                   [
                                                                     _vm._v(
-                                                                      "성적하위권"
+                                                                      "成績が下位"
                                                                     )
                                                                   ]
                                                                 ),
@@ -82644,7 +82496,7 @@ var render = function() {
                                                 _c(
                                                   "h2",
                                                   { staticClass: "chartTitle" },
-                                                  [_vm._v("학생 분석 예측")]
+                                                  [_vm._v("学生の分析")]
                                                 )
                                               ]
                                             )
@@ -82970,7 +82822,7 @@ var render = function() {
                                                                           },
                                                                           [
                                                                             _vm._v(
-                                                                              "최근 성적 하락"
+                                                                              "最近、成績が下落"
                                                                             )
                                                                           ]
                                                                         ),
@@ -83044,7 +82896,7 @@ var render = function() {
                                                                           },
                                                                           [
                                                                             _vm._v(
-                                                                              "출석율 저조"
+                                                                              "出席率の低調"
                                                                             )
                                                                           ]
                                                                         ),
@@ -83118,7 +82970,7 @@ var render = function() {
                                                                           },
                                                                           [
                                                                             _vm._v(
-                                                                              "성적하위권"
+                                                                              "成績が下位"
                                                                             )
                                                                           ]
                                                                         ),
@@ -83229,7 +83081,7 @@ var render = function() {
                                                               [
                                                                 _c("span", [
                                                                   _vm._v(
-                                                                    "학생을 선택해주세요."
+                                                                    "学生を選んでください。"
                                                                   )
                                                                 ])
                                                               ]
@@ -83327,12 +83179,12 @@ var render = function() {
                                                                     _vm.selectMinorType(
                                                                       "sign_in",
                                                                       "sign",
-                                                                      "등교"
+                                                                      "登校"
                                                                     )
                                                                   }
                                                                 }
                                                               },
-                                                              [_vm._v("등교")]
+                                                              [_vm._v("登校")]
                                                             )
                                                           : _c(
                                                               "v-btn",
@@ -83346,7 +83198,7 @@ var render = function() {
                                                                   disabled: ""
                                                                 }
                                                               },
-                                                              [_vm._v("등교")]
+                                                              [_vm._v("登校")]
                                                             ),
                                                         _vm._v(" "),
                                                         _vm.btnLock
@@ -83368,12 +83220,12 @@ var render = function() {
                                                                     _vm.selectMinorType(
                                                                       "sign_out",
                                                                       "sign",
-                                                                      "하교"
+                                                                      "下校"
                                                                     )
                                                                   }
                                                                 }
                                                               },
-                                                              [_vm._v("하교")]
+                                                              [_vm._v("下校")]
                                                             )
                                                           : _c(
                                                               "v-btn",
@@ -83387,7 +83239,7 @@ var render = function() {
                                                                   disabled: ""
                                                                 }
                                                               },
-                                                              [_vm._v("하교")]
+                                                              [_vm._v("下校")]
                                                             )
                                                       ],
                                                       1
@@ -83418,12 +83270,12 @@ var render = function() {
                                                                       _vm.selectMinorType(
                                                                         "lateness",
                                                                         "attendance",
-                                                                        "지각"
+                                                                        "遅刻"
                                                                       )
                                                                     }
                                                                   }
                                                                 },
-                                                                [_vm._v("지각")]
+                                                                [_vm._v("遅刻")]
                                                               )
                                                             : _c(
                                                                 "v-btn",
@@ -83438,7 +83290,7 @@ var render = function() {
                                                                     disabled: ""
                                                                   }
                                                                 },
-                                                                [_vm._v("지각")]
+                                                                [_vm._v("遅刻")]
                                                               ),
                                                           _vm._v(" "),
                                                           _vm.btnLock
@@ -83461,12 +83313,12 @@ var render = function() {
                                                                       _vm.selectMinorType(
                                                                         "absence",
                                                                         "attendance",
-                                                                        "결석"
+                                                                        "欠席"
                                                                       )
                                                                     }
                                                                   }
                                                                 },
-                                                                [_vm._v("결석")]
+                                                                [_vm._v("欠席")]
                                                               )
                                                             : _c(
                                                                 "v-btn",
@@ -83481,7 +83333,7 @@ var render = function() {
                                                                     disabled: ""
                                                                   }
                                                                 },
-                                                                [_vm._v("결석")]
+                                                                [_vm._v("欠席")]
                                                               ),
                                                           _vm._v(" "),
                                                           _vm.btnLock
@@ -83504,12 +83356,16 @@ var render = function() {
                                                                       _vm.selectMinorType(
                                                                         "early_leave",
                                                                         "attendance",
-                                                                        "조퇴"
+                                                                        "早引げ"
                                                                       )
                                                                     }
                                                                   }
                                                                 },
-                                                                [_vm._v("조퇴")]
+                                                                [
+                                                                  _vm._v(
+                                                                    "早引げ"
+                                                                  )
+                                                                ]
                                                               )
                                                             : _c(
                                                                 "v-btn",
@@ -83524,7 +83380,11 @@ var render = function() {
                                                                     disabled: ""
                                                                   }
                                                                 },
-                                                                [_vm._v("조퇴")]
+                                                                [
+                                                                  _vm._v(
+                                                                    "早引げ"
+                                                                  )
+                                                                ]
                                                               )
                                                         ],
                                                         1
@@ -83556,7 +83416,7 @@ var render = function() {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "등하교 시간 변화량 ( " +
+                                                                "登校＆下校の時間の変化 ( " +
                                                                   _vm._s(
                                                                     _vm.setSign
                                                                   ) +
@@ -83603,7 +83463,7 @@ var render = function() {
                                                               },
                                                               [
                                                                 _vm._v(
-                                                                  "출결 횟수 변화 ( " +
+                                                                  "出席の回数変化 ( " +
                                                                     _vm._s(
                                                                       _vm.setAtt
                                                                     ) +
@@ -83770,12 +83630,12 @@ var render = function() {
                                                                     _vm.selectMinorType(
                                                                       "_quiz",
                                                                       "detailCode",
-                                                                      "쪽지"
+                                                                      "テスト"
                                                                     )
                                                                   }
                                                                 }
                                                               },
-                                                              [_vm._v("쪽지")]
+                                                              [_vm._v("テスト")]
                                                             )
                                                           : _c(
                                                               "v-btn",
@@ -83788,7 +83648,7 @@ var render = function() {
                                                                   disabled: ""
                                                                 }
                                                               },
-                                                              [_vm._v("쪽지")]
+                                                              [_vm._v("テスト")]
                                                             ),
                                                         _vm._v(" "),
                                                         _vm.btnLock
@@ -83809,12 +83669,12 @@ var render = function() {
                                                                     _vm.selectMinorType(
                                                                       "_homework",
                                                                       "detailCode",
-                                                                      "과제"
+                                                                      "課題"
                                                                     )
                                                                   }
                                                                 }
                                                               },
-                                                              [_vm._v("과제")]
+                                                              [_vm._v("課題")]
                                                             )
                                                           : _c(
                                                               "v-btn",
@@ -83827,7 +83687,7 @@ var render = function() {
                                                                   disabled: ""
                                                                 }
                                                               },
-                                                              [_vm._v("과제")]
+                                                              [_vm._v("課題")]
                                                             ),
                                                         _vm._v(" "),
                                                         _vm.btnLock
@@ -83848,12 +83708,12 @@ var render = function() {
                                                                     _vm.selectMinorType(
                                                                       "_midterm",
                                                                       "detailCode",
-                                                                      "중간"
+                                                                      "中間"
                                                                     )
                                                                   }
                                                                 }
                                                               },
-                                                              [_vm._v("중간")]
+                                                              [_vm._v("中間")]
                                                             )
                                                           : _c(
                                                               "v-btn",
@@ -83866,7 +83726,7 @@ var render = function() {
                                                                   disabled: ""
                                                                 }
                                                               },
-                                                              [_vm._v("중간")]
+                                                              [_vm._v("中間")]
                                                             ),
                                                         _vm._v(" "),
                                                         _vm.btnLock
@@ -83887,12 +83747,12 @@ var render = function() {
                                                                     _vm.selectMinorType(
                                                                       "_final",
                                                                       "detailCode",
-                                                                      "기말"
+                                                                      "期末"
                                                                     )
                                                                   }
                                                                 }
                                                               },
-                                                              [_vm._v("기말")]
+                                                              [_vm._v("期末")]
                                                             )
                                                           : _c(
                                                               "v-btn",
@@ -83905,7 +83765,7 @@ var render = function() {
                                                                   disabled: ""
                                                                 }
                                                               },
-                                                              [_vm._v("기말")]
+                                                              [_vm._v("期末")]
                                                             )
                                                       ],
                                                       1
@@ -83956,7 +83816,7 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _vm._v(
-                                                                        "강의 취득 점수 ( " +
+                                                                        "講義の取得点数 ( " +
                                                                           _vm._s(
                                                                             _vm.setLec
                                                                           ) +
@@ -84004,7 +83864,7 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _vm._v(
-                                                                        "강의 석차백분율 ( " +
+                                                                        "講義席次のパーセンテージ ( " +
                                                                           _vm._s(
                                                                             _vm.setLec
                                                                           ) +
@@ -84052,7 +83912,7 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _vm._v(
-                                                                        "종목별 취득 점수 ( " +
+                                                                        "種目別の取得点数 ( " +
                                                                           _vm._s(
                                                                             _vm.setSub
                                                                           ) +
@@ -84100,7 +83960,7 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _vm._v(
-                                                                        "종목별 석차백분율 ( " +
+                                                                        "種目別のパーセンテージ ( " +
                                                                           _vm._s(
                                                                             _vm.setSub
                                                                           ) +
@@ -84154,7 +84014,7 @@ var render = function() {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "전공&일본어 수준"
+                                                                "専攻&日本語の実力"
                                                               )
                                                             ]
                                                           )
@@ -84741,10 +84601,10 @@ var render = function() {
                             { staticStyle: { "padding-bottom": "5px" } },
                             [
                               _c("h2", { staticStyle: { color: "white" } }, [
-                                _vm._v("출석")
+                                _vm._v("出席")
                               ]),
                               _vm._v(" "),
-                              _c("p", [_vm._v("지각, 조퇴, 결석 학생")])
+                              _c("p", [_vm._v("遅刻、早引け、欠席の学生")])
                             ]
                           )
                         ],
@@ -84767,10 +84627,10 @@ var render = function() {
                             { staticStyle: { "padding-bottom": "5px" } },
                             [
                               _c("h2", { staticStyle: { color: "white" } }, [
-                                _vm._v("학업")
+                                _vm._v("学業")
                               ]),
                               _vm._v(" "),
-                              _c("p", [_vm._v("중간, 기말, 과제, 쪽지시험 등")])
+                              _c("p", [_vm._v("中間、期末、課題、テストなど")])
                             ]
                           )
                         ],
@@ -84825,7 +84685,7 @@ var render = function() {
                                     [
                                       _c("v-flex", { attrs: { xs3: "" } }, [
                                         _c("h2", { staticClass: "period" }, [
-                                          _vm._v("기간")
+                                          _vm._v("期間")
                                         ])
                                       ]),
                                       _vm._v(" "),
@@ -84840,7 +84700,7 @@ var render = function() {
                                             attrs: {
                                               label: "일",
                                               hint:
-                                                "* 시스템이 학생의 최근 출석 현황을 분석하기 위한 기간 입니다.",
+                                                "* システムが学生の最近の出席の状況を分析するための期間です。",
                                               type: "number",
                                               min: "0",
                                               max: "365",
@@ -84916,7 +84776,7 @@ var render = function() {
                                           _c(
                                             "h2",
                                             { staticClass: "frequency" },
-                                            [_vm._v("지각")]
+                                            [_vm._v("遅刻")]
                                           )
                                         ],
                                         1
@@ -84931,7 +84791,7 @@ var render = function() {
                                               "margin-left": "20px"
                                             },
                                             attrs: {
-                                              label: "회",
+                                              label: "回",
                                               type: "number"
                                             },
                                             model: {
@@ -84954,7 +84814,7 @@ var render = function() {
                                           _c(
                                             "h2",
                                             { staticClass: "frequency_2" },
-                                            [_vm._v("이상 일 때")]
+                                            [_vm._v("以上の場合")]
                                           )
                                         ],
                                         1
@@ -84994,7 +84854,7 @@ var render = function() {
                                           _c(
                                             "h2",
                                             { staticClass: "frequency" },
-                                            [_vm._v("조퇴")]
+                                            [_vm._v("早引け")]
                                           )
                                         ],
                                         1
@@ -85009,7 +84869,7 @@ var render = function() {
                                               "margin-left": "20px"
                                             },
                                             attrs: {
-                                              label: "회",
+                                              label: "回",
                                               type: "number"
                                             },
                                             model: {
@@ -85032,7 +84892,7 @@ var render = function() {
                                           _c(
                                             "h2",
                                             { staticClass: "frequency_2" },
-                                            [_vm._v("이상 일 때")]
+                                            [_vm._v("以上の場合")]
                                           )
                                         ],
                                         1
@@ -85072,7 +84932,7 @@ var render = function() {
                                           _c(
                                             "h2",
                                             { staticClass: "frequency" },
-                                            [_vm._v("결석")]
+                                            [_vm._v("欠席")]
                                           )
                                         ],
                                         1
@@ -85087,7 +84947,7 @@ var render = function() {
                                               "margin-left": "20px"
                                             },
                                             attrs: {
-                                              label: "회",
+                                              label: "回",
                                               type: "number"
                                             },
                                             model: {
@@ -85110,7 +84970,7 @@ var render = function() {
                                           _c(
                                             "h2",
                                             { staticClass: "frequency_2" },
-                                            [_vm._v("이상 일 때")]
+                                            [_vm._v("以上の場合")]
                                           )
                                         ],
                                         1
@@ -85137,7 +84997,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_vm._v("되돌리기")]
+                                    [_vm._v("リセット")]
                                   ),
                                   _vm._v(" "),
                                   _c(
@@ -85150,7 +85010,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_vm._v("저장")]
+                                    [_vm._v("セーブ")]
                                   )
                                 ],
                                 1
@@ -85189,7 +85049,7 @@ var render = function() {
                                     [
                                       _c("v-flex", { attrs: { xs2: "" } }, [
                                         _c("h2", { staticClass: "standard" }, [
-                                          _vm._v("평소")
+                                          _vm._v("普段")
                                         ])
                                       ]),
                                       _vm._v(" "),
@@ -85202,10 +85062,10 @@ var render = function() {
                                               "margin-top": "40px"
                                             },
                                             attrs: {
-                                              label: "회",
+                                              label: "回",
                                               type: "number",
                                               hint:
-                                                "시스템이 학생의 평소 학업 성취 현황을 판단하기 위해 분석하는 기간 입니다.",
+                                                "システムが学生の普段の学業成就を分析するための期間です。",
                                               "persistent-hint": ""
                                             },
                                             model: {
@@ -85228,7 +85088,7 @@ var render = function() {
                                       _vm._v(" "),
                                       _c("v-flex", { attrs: { xs2: "" } }, [
                                         _c("h2", { staticClass: "standard" }, [
-                                          _vm._v("최근")
+                                          _vm._v("最近")
                                         ])
                                       ]),
                                       _vm._v(" "),
@@ -85241,10 +85101,10 @@ var render = function() {
                                               "margin-top": "40px"
                                             },
                                             attrs: {
-                                              label: "회",
+                                              label: "回",
                                               type: "number",
                                               hint:
-                                                "시스템이 학생의 최근 학업 성취 상태를 판단하기 위해 분석하는 기간 입니다.",
+                                                "システムが学生の最近の学業成就を分析するための期間です。",
                                               "persistent-hint": ""
                                             },
                                             model: {
@@ -85332,7 +85192,7 @@ var render = function() {
                                               _c(
                                                 "h1",
                                                 { staticClass: "lowRankTitle" },
-                                                [_vm._v("하위권")]
+                                                [_vm._v("下位圏")]
                                               )
                                             ]
                                           ),
@@ -85344,7 +85204,11 @@ var render = function() {
                                               _c(
                                                 "h2",
                                                 { staticClass: "lowRankText" },
-                                                [_vm._v("석차 백분율이 하위")]
+                                                [
+                                                  _vm._v(
+                                                    "席次パーセンテージが下位"
+                                                  )
+                                                ]
                                               )
                                             ]
                                           ),
@@ -85387,7 +85251,7 @@ var render = function() {
                                               _c(
                                                 "h2",
                                                 { staticClass: "lowRankText" },
-                                                [_vm._v("미만")]
+                                                [_vm._v("未満")]
                                               )
                                             ]
                                           ),
@@ -85399,7 +85263,7 @@ var render = function() {
                                               _c(
                                                 "h2",
                                                 { staticClass: "lowRankText" },
-                                                [_vm._v("반 평균 대비")]
+                                                [_vm._v("クラスの平均に比べ")]
                                               )
                                             ]
                                           ),
@@ -85410,7 +85274,7 @@ var render = function() {
                                             [
                                               _c("v-text-field", {
                                                 attrs: {
-                                                  label: "점",
+                                                  label: "点",
                                                   type: "number"
                                                 },
                                                 model: {
@@ -85440,7 +85304,7 @@ var render = function() {
                                               _c(
                                                 "h2",
                                                 { staticClass: "lowRankText" },
-                                                [_vm._v("이상 차이")]
+                                                [_vm._v("以上の差")]
                                               )
                                             ]
                                           )
@@ -85519,7 +85383,7 @@ var render = function() {
                                                   staticClass:
                                                     "recentProblemsTitle"
                                                 },
-                                                [_vm._v("최근 문제 발생")]
+                                                [_vm._v("最近問題発生")]
                                               )
                                             ]
                                           ),
@@ -85534,7 +85398,7 @@ var render = function() {
                                                   staticClass:
                                                     "recentProblemsText"
                                                 },
-                                                [_vm._v("석차 백분율이")]
+                                                [_vm._v("席次パーセンテージが")]
                                               )
                                             ]
                                           ),
@@ -85580,7 +85444,7 @@ var render = function() {
                                                   staticClass:
                                                     "recentProblemsText_2"
                                                 },
-                                                [_vm._v("하락")]
+                                                [_vm._v("下落")]
                                               )
                                             ]
                                           ),
@@ -85595,7 +85459,7 @@ var render = function() {
                                                   staticClass:
                                                     "recentProblemsText"
                                                 },
-                                                [_vm._v("본인 평균 대비")]
+                                                [_vm._v("学生自信の平均に比べ")]
                                               )
                                             ]
                                           ),
@@ -85606,7 +85470,7 @@ var render = function() {
                                             [
                                               _c("v-text-field", {
                                                 attrs: {
-                                                  label: "점",
+                                                  label: "点",
                                                   type: "number"
                                                 },
                                                 model: {
@@ -85639,7 +85503,7 @@ var render = function() {
                                                   staticClass:
                                                     "recentProblemsText_2"
                                                 },
-                                                [_vm._v("하락")]
+                                                [_vm._v("下落")]
                                               )
                                             ]
                                           )
@@ -85882,6 +85746,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+
       /* 지됴교수인지 교과목교수인지 체크 prof, tutor */
       profType: null,
       /* 메뉴 링크 (학번을 get 타입으로 지정해놓는다.) */
@@ -85895,10 +85760,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         photo_url: '/images/default.jpg',
         study_class: 'not Data',
         id: '1234567',
-        name: '홍길동',
+        name: '木村　語',
         email: 'group8@grid.system',
         phone: '010-XXXX-XXXX'
-      }]
+      }],
+      updateCheck: false
     };
   },
   methods: {
@@ -85912,6 +85778,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
       }).then(function (response) {
         _this.userInfoData[0] = response.data.message;
+        _this.updateCheck = true;
       }).catch(function (error) {
         console.log('getInfo Error : ' + error);
       });
@@ -85997,19 +85864,25 @@ var render = function() {
                             "v-flex",
                             { attrs: { xs1: "" } },
                             [
-                              _c(
-                                "v-card-text",
-                                [
-                                  _c("v-avatar", { attrs: { size: "120px" } }, [
-                                    _c("img", {
-                                      attrs: {
-                                        src: _vm.userInfoData[0].photo_url
-                                      }
-                                    })
-                                  ])
-                                ],
-                                1
-                              )
+                              _vm.updateCheck
+                                ? _c(
+                                    "v-card-text",
+                                    [
+                                      _c(
+                                        "v-avatar",
+                                        { attrs: { size: "120px" } },
+                                        [
+                                          _c("img", {
+                                            attrs: {
+                                              src: _vm.userInfoData[0].photo_url
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                : _vm._e()
                             ],
                             1
                           ),
@@ -86018,44 +85891,56 @@ var render = function() {
                             "v-flex",
                             { attrs: { xs5: "" } },
                             [
-                              _c(
-                                "v-card-text",
-                                { staticClass: "studentName text-xs-left" },
-                                [
-                                  _c("div", { staticClass: "className" }, [
-                                    _c("span", [
-                                      _vm._v(
-                                        " " +
-                                          _vm._s(_vm.userInfoData[0].id) +
-                                          " "
+                              _vm.updateCheck
+                                ? _c(
+                                    "v-card-text",
+                                    { staticClass: "studentName text-xs-left" },
+                                    [
+                                      _c("div", { staticClass: "className" }, [
+                                        _c("span", [
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(_vm.userInfoData[0].id) +
+                                              " "
+                                          )
+                                        ]),
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(_vm.userInfoData[0].name) +
+                                            " "
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "studentEmail" },
+                                        [
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(
+                                                _vm.userInfoData[0].email
+                                              ) +
+                                              " "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "studentPhone" },
+                                        [
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(
+                                                _vm.userInfoData[0].study_class
+                                              ) +
+                                              " "
+                                          )
+                                        ]
                                       )
-                                    ]),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.userInfoData[0].name) +
-                                        " "
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "studentEmail" }, [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.userInfoData[0].email) +
-                                        " "
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "studentPhone" }, [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(
-                                          _vm.userInfoData[0].study_class
-                                        ) +
-                                        " "
-                                    )
-                                  ])
-                                ]
-                              )
+                                    ]
+                                  )
+                                : _vm._e()
                             ],
                             1
                           ),
@@ -86466,7 +86351,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('attendance-pie-chart', {
     renderPieChart: function renderPieChart() {
       this.renderChart({
         /* 기간 내의 날짜 */
-        labels: ['출석', '지각', '결석', '조퇴'],
+        labels: ['出席', '遅刻', '欠席', '早引け'],
         datasets: [{
           backgroundColor: ['#10a236', '#f9cd41', '#fe7272', '#5c7add'],
           pointBackgroundColor: 'white',
@@ -86541,48 +86426,48 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
       /* */
       attendanceLabelData: [],
       attendanceDatasets: [{
-        label: '등교&지각',
+        label: '登校&遅刻',
         borderColor: '#18a62a',
         fill: false,
         data: []
       }, {
-        label: '하교&조퇴',
+        label: '下校&早引け',
         borderColor: '#f48080',
         fill: false,
         data: []
       }],
       /*--- 출결 상세정보 테이블 --*/
       attendanceStats: [{
-        name: '출석',
-        countType: '횟수',
+        name: '出席',
+        countType: '回数',
         count: null,
-        continuityType: '등교 시간',
+        continuityType: '登校の時間',
         continuityNum: null,
-        recentlyType: '하교 시간',
+        recentlyType: '下校の時間',
         recentlyDate: null
       }, {
-        name: '지각',
-        countType: '횟수',
+        name: '遅刻',
+        countType: '回数',
         count: null,
-        continuityType: '연속 횟수',
+        continuityType: '続いた回数',
         continuityNum: null,
-        recentlyType: '최근 일자',
+        recentlyType: '最近の日',
         recentlyDate: null
       }, {
-        name: '결석',
-        countType: '횟수',
+        name: '欠席',
+        countType: '回数',
         count: null,
-        continuityType: '연속 횟수',
+        continuityType: '続いた回数',
         continuityNum: null,
-        recentlyType: '최근 일자',
+        recentlyType: '最近の日',
         recentlyDate: null
       }, {
-        name: '조퇴',
-        countType: '횟수',
+        name: '早引け',
+        countType: '回数',
         count: null,
-        continuityType: '연속 횟수',
+        continuityType: '続いた回数',
         continuityNum: null,
-        recentlyType: '최근 일자',
+        recentlyType: '最近の日',
         recentlyDate: null
       }],
       /* 상세 데이터  순차적 */
@@ -86593,38 +86478,38 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
       },
       attendanceDatas: [],
       attendanceHeaders: [{
-        text: '날짜',
+        text: '年月日',
         sortable: false,
         align: 'center'
       }, {
-        text: '등교',
+        text: '登校',
         sortable: false,
         align: 'center'
       }, {
-        text: '시간',
+        text: '時間',
         sortable: false,
         align: 'center'
       }, {
-        text: '비고',
+        text: '備考',
         sortable: false,
         align: 'center'
       }, {
-        text: '하교',
+        text: '下校',
         sortable: false,
         align: 'center'
       }, {
-        text: '시간',
+        text: '時間',
         sortable: false,
         align: 'center'
       }, {
-        text: '비고',
+        text: '備考',
         sortable: false,
         align: 'center'
       }],
       /*--- 출결 분석 테이블 --*/
-      headers: [{ text: '자주 지각하는 요일', value: 'lateWeek' }, { text: '자주 조퇴하는 요일', value: 'leaveEarlyWeek' }, { text: '자주 결석하는 요일', value: 'absenceWeek' }, { text: '평균 지각 시간', value: 'averageLateTime' }],
+      headers: [{ text: 'よく遅刻する曜日', value: 'lateWeek' }, { text: 'よく早引けする曜日', value: 'leaveEarlyWeek' }, { text: 'よく欠席する曜日', value: 'absenceWeek' }, { text: '平均遅刻の時間', value: 'averageLateTime' }],
       attendanceAnalysis: [],
-      headers2: [{ text: '월 평균 지각 횟수', value: 'lateNum' }, { text: '월 평균 조퇴 횟수', value: 'leaveEarlyNum' }, { text: '월 평균 결석 횟수', value: 'absenceNum' }, { text: '조퇴/지각 주요 사유', value: 'reason' }],
+      headers2: [{ text: '月平均の遅刻回数', value: 'lateNum' }, { text: '月平均の早引け回数', value: 'leaveEarlyNum' }, { text: '月平均の欠席回数', value: 'absenceNum' }, { text: '早引け＆遅刻の頻繁な理由', value: 'reason' }],
       attendanceAnalysisMonth: []
     };
   },
@@ -86641,7 +86526,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
         _this.attendanceAnalysis.push(response.data.message);
         _this.attendanceAnalysisMonth.push(response.data.message);
         /* 지각 시간 메세지 가공 */
-        var str = Math.floor(parseInt(_this.attendanceAnalysisMonth[0].lateness_average) / 60) + "분 " + parseInt(_this.attendanceAnalysisMonth[0].lateness_average) % 60 + "초";
+        var str = Math.floor(parseInt(_this.attendanceAnalysisMonth[0].lateness_average) / 60) + "分 " + parseInt(_this.attendanceAnalysisMonth[0].lateness_average) % 60 + "秒";
         /* 저장 */
         _this.attendanceAnalysisMonth[0].lateness_average = str;
       }).catch(function (error) {
@@ -86718,17 +86603,17 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
           /* 등교타입 확인 */
           if (response.data.message[start].absence_flag != 'good') {
             /* 결석 */
-            _this3.$set(datas[start], 'sign_in', '결석');
+            _this3.$set(datas[start], 'sign_in', '欠席');
             _this3.$set(datas[start], 'sign_in_time', 'ㅡ');
             _this3.$set(datas[start], 'sign_in_message', 'ㅡ');
           } else if (response.data.message[start].lateness_flag != 'good') {
             /* 지각 */
-            _this3.$set(datas[start], 'sign_in', '지각');
+            _this3.$set(datas[start], 'sign_in', '遅刻');
             _this3.$set(datas[start], 'sign_in_time', response.data.message[start].sign_in_time);
             _this3.$set(datas[start], 'sign_in_message', response.data.message[start].detail[0].sign_in_message);
           } else {
             /* 등교 */
-            _this3.$set(datas[start], 'sign_in', '출석');
+            _this3.$set(datas[start], 'sign_in', '出席');
             _this3.$set(datas[start], 'sign_in_time', response.data.message[start].sign_in_time);
             _this3.$set(datas[start], 'sign_in_message', 'ㅡ');
           }
@@ -86738,13 +86623,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
             switch (response.data.message[start].early_leave_flag) {
               case 'good':
                 /* 하교 */
-                _this3.$set(datas[start], 'sign_out', '하교');
+                _this3.$set(datas[start], 'sign_out', '下校');
                 _this3.$set(datas[start], 'sign_out_time', response.data.message[start].sign_out_time);
                 _this3.$set(datas[start], 'sign_out_message', 'ㅡ');
                 break;
               case 'unreason':
                 /* 조퇴 */
-                _this3.$set(datas[start], 'sign_out', '조퇴');
+                _this3.$set(datas[start], 'sign_out', '早引け');
                 _this3.$set(datas[start], 'sign_out_time', response.data.message[start].sign_out_time);
                 _this3.$set(datas[start], 'sign_out_message', response.data.message[start].detail[0].sign_out_message);
                 break;
@@ -86873,7 +86758,7 @@ var render = function() {
                             "v-card-text",
                             [
                               _c("h2", { staticClass: "cardInsideTitle" }, [
-                                _vm._v("출결 그래프")
+                                _vm._v("出席のグラフ")
                               ]),
                               _vm._v(" "),
                               _c(
@@ -86962,7 +86847,7 @@ var render = function() {
                         [
                           _c("v-card-text", [
                             _c("h2", { staticClass: "cardInsideTitle" }, [
-                              _vm._v("상세보기")
+                              _vm._v("詳しく")
                             ])
                           ]),
                           _vm._v(" "),
@@ -87302,7 +87187,7 @@ var render = function() {
                         [
                           _c("v-card-text", [
                             _c("h2", { staticClass: "cardInsideTitle" }, [
-                              _vm._v("출결 분석")
+                              _vm._v("出席分析")
                             ])
                           ]),
                           _vm._v(" "),
@@ -87685,23 +87570,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       selected: [],
       e1: null,
       semester: [{
-        text: '2016년 1학기'
-      }, {
-        text: '2016년 2학기'
-      }, {
-        text: '2017년 1학기'
-      }, {
-        text: '2017년 2학기'
-      }, {
-        text: '2018년 1학기'
+        text: '準備中です。'
       }],
       /* 성적조회 (간략) */
       subjectStats: [],
-      subjectStstsName: '과목을 선택해주세요.',
+      subjectStstsName: '講義を選んでください。',
       /* 성적조회 (상세) */
       subjectScore: [],
-      subjectScoreName: '과목을 선택해주세요.',
-      headers: [{ text: '날짜', value: 'date' }, { text: '분류', value: 'sort' }, { text: '상세', value: 'detailData' }, { text: '득점/점수', value: 'score' }],
+      subjectScoreName: '講義を選んでください。',
+      headers: [{ text: '日子', value: 'date' }, { text: '分類', value: 'sort' }, { text: '説明＆備考', value: 'detailData' }, { text: '得点/満点', value: 'score' }],
       /* 강의 메뉴 데이터 */
       examSortData: []
     };
@@ -87815,7 +87692,7 @@ var render = function() {
                         [
                           _c("v-card-text", [
                             _c("h2", { staticClass: "cardInsideTitle" }, [
-                              _vm._v("성적조회 (간략히 보기)")
+                              _vm._v("成績照会 (簡単に)")
                             ])
                           ]),
                           _vm._v(" "),
@@ -87945,7 +87822,7 @@ var render = function() {
                                                           staticClass:
                                                             "fontSetting"
                                                         },
-                                                        [_vm._v("횟수")]
+                                                        [_vm._v("回数")]
                                                       ),
                                                       _vm._v(" "),
                                                       _c(
@@ -87975,7 +87852,7 @@ var render = function() {
                                                           staticClass:
                                                             "fontSetting"
                                                         },
-                                                        [_vm._v("총 점수")]
+                                                        [_vm._v("取得可能点数")]
                                                       ),
                                                       _vm._v(" "),
                                                       _c(
@@ -88006,7 +87883,7 @@ var render = function() {
                                                           staticClass:
                                                             "fontSetting"
                                                         },
-                                                        [_vm._v("취득 점수")]
+                                                        [_vm._v("取得点数")]
                                                       ),
                                                       _vm._v(" "),
                                                       _c(
@@ -88037,7 +87914,7 @@ var render = function() {
                                                           staticClass:
                                                             "fontSetting"
                                                         },
-                                                        [_vm._v("평균")]
+                                                        [_vm._v("平均")]
                                                       ),
                                                       _vm._v(" "),
                                                       _c(
@@ -88114,7 +87991,7 @@ var render = function() {
                         [
                           _c("v-card-text", [
                             _c("h2", { staticClass: "cardInsideTitle" }, [
-                              _vm._v("성적조회 (상세보기)")
+                              _vm._v("成績照会 (詳しく)")
                             ])
                           ]),
                           _vm._v(" "),
@@ -88580,8 +88457,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (response.data.message.comments.length == 14 && response.data.message.comments == '조회된 코멘트가 없습니다.') {
           /* 조회된 코멘트가 없을 경우 */
           _this.commentData = [{
-            'name': '안녕하세요!',
-            'content': '등록된 코멘트가 없습니다. 학생에 대해 알려주세요!',
+            'name': 'こんにちは!',
+            'content': '登録されたコメントがありません。学生について教えてください！',
             'isOwner': false,
             'photo_url': '/images/default.png'
           }];
@@ -88655,7 +88532,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /* 코멘트 삭제 후, 새로 업데이트한다. */
         _this4.getComment();
         /* 삭제 알림 */
-        alert('삭제완료');
+        alert('成功的に消しました。');
       }).catch(function (error) {
         console.log('delCom Error :' + error);
       });
@@ -88726,7 +88603,7 @@ var render = function() {
                                   [
                                     _vm._v(_vm._s(comment.name)),
                                     _c("br"),
-                                    _vm._v("교수님")
+                                    _vm._v("教授")
                                   ]
                                 )
                               ]),
@@ -88893,7 +88770,7 @@ var render = function() {
                               _c("v-text-field", {
                                 attrs: {
                                   name: "input-1",
-                                  label: "코멘트를 입력하세요.",
+                                  label: "コメントを入力してください。",
                                   textarea: ""
                                 },
                                 model: {

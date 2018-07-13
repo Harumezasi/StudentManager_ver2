@@ -9,8 +9,8 @@
         style = "box-shadow:  0 4px 12px 0 rgba(244, 149, 24, 0.36)"
         >
           <v-card-text style="padding-bottom: 5px;">
-            <h1 style="color: white">회원정보</h1>
-            <p style="font-size:20px">정보확인 및 수정</p>
+            <h1 style="color: white">会員情報</h1>
+            <p style="font-size:20px">情報確認＆修正</p>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -35,6 +35,7 @@
 
               <!-- 프로필 사진 업데이트 버튼 -->
               <v-card-text class = "uploadBtn text-xs-center">
+                <!-- 이미지 -->
                 <input type="file" v-on:change="handleFileUpload">
               </v-card-text>
              </v-flex>
@@ -99,7 +100,7 @@
                </v-form>
              </v-card-text>
              <v-card-text class = "updateBtn text-xs-right">
-               <v-btn color = "amber darken-2" dark v-on:click="setUserInfo()" class="fontSetting">회원정보 변경</v-btn>
+               <v-btn color = "amber darken-2" dark v-on:click="setUserInfo()" class="fontSetting">会員情報セーブ</v-btn>
              </v-card-text>
            </v-flex>
          </div>
@@ -182,6 +183,7 @@ export default {
          console.log('getUserInfo Error : ' + error);
        })
      },
+     /* 회원정보 수정 */
      setUserInfo(){
 
        let params = [{
@@ -200,10 +202,11 @@ export default {
          console.log(params);
          console.log(this.photoData);
        }
-       axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+       //axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
-       axios.post('/professor/info/update', params[0])
-       .then((response) => {
+       axios.post('/professor/info/update',
+       params[0]
+     ).then((response) => {
          /* 통신 테스트 */
          console.log("update success");
          alert(response.data.message)

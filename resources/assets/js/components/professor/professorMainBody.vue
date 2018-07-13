@@ -26,7 +26,7 @@
                       <v-icon class = "iconStyle" color = "blue accent-2" x-large>alarm</v-icon>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <h1 class = "firstCard">금일 지각 학생</h1>
+                      <h1 class = "firstCard">今日遅刻した学生</h1>
                     </v-flex>
                     <v-flex xs12 md2>
                       <h2 style="font-family:Montserrat; position: relative; right: 20px;color:rgb(104, 142, 240)">{{ latenessStudentCount }}/48 </h2>
@@ -66,7 +66,7 @@
                       <v-icon class = "iconStyle" color = "blue accent-2" x-large>highlight_off</v-icon>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <h1 class = "firstCard">금일 결석 학생</h1>
+                      <h1 class = "firstCard">今日欠席した学生</h1>
                     </v-flex>
                     <v-flex xs12 md2>
                       <h2 style="font-family:Montserrat;position: relative; right: 20px; color:rgb(104, 142, 240)">{{ absenceStudentCount }}/48 </h2>
@@ -108,24 +108,17 @@
                       <v-icon color = "blue accent-2" x-large>notifications_none</v-icon>
                     </v-flex>
                     <v-flex xs12 md9>
-                      <h1 class = "firstCard">최근 알림</h1>
+                      <h1 class = "firstCard">最近のお知らせ</h1>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </v-flex>
               <v-card-text>
+                <!--
                 <v-chip class = "elevation-4" color="cyan lighten-1" text-color="white">
                   '박효동' 학생이 관심학생으로 지정되었습니다.
                 </v-chip>
-                <v-chip class = "elevation-4" color="blue accent-4" text-color="white">
-                   '이승민' 학생이 관심학생으로 지정되었습니다.
-                </v-chip>
-                <v-chip class = "elevation-4" color="cyan lighten-1" text-color="white">
-                  '황금비' 학생이 관심학생으로 지정되었습니다.
-                </v-chip>
-                <v-chip class = "elevation-4" color="blue accent-4" text-color="white">
-                   '이하연' 학생이 관심학생으로 지정되었습니다.
-                </v-chip>
+              -->
               </v-card-text>
             </v-card>
           </v-flex>

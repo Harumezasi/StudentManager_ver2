@@ -50,12 +50,10 @@
                             <tr>
                             <!-- 강의명 -->
                               <td> {{ datas.title }} </td>
-                            <!-- 학업성취도 -->
-                              <td colspan="6"> 학업성취도 : {{ datas.achievement }} %</td>
                             </tr>
                           </table>
                           <!-- 상세보기 / 하단의 div와 pageOpen제어 click 이벤트 연결 -->
-                          <button v-on:click="datas.pageOpen = !datas.pageOpen">상세보기</button>
+                          <button v-on:click="datas.pageOpen = !datas.pageOpen">詳しく見る</button>
                           <!-- 상세보기 영역 div / pageOpen으로 제어-->
                           <div v-if="datas.pageOpen == true">
                             <table class="gradeDataTablePlus">
@@ -158,19 +156,18 @@ export default {
       /* 성적테이블 상단 메뉴 */
       gradeType: {
         t1 : "",
-        t2 : "횟수",
-        t3 : "만점",
-        t4 : "득점",
-        t5 : "평균",
-        t6 : "반영비율"
+        t2 : "回数",
+        t3 : "満点",
+        t4 : "得点",
+        t5 : "平均",
       },
       /* 상세보기 테이블 메뉴 */
       plusType: {
-        t1 : "날짜",
-        t2 : "타입",
-        t3 : "상세",
-        t4 : "득점",
-        t5 : "만점",
+        t1 : "日子",
+        t2 : "タイプ",
+        t3 : "備考",
+        t4 : "得点",
+        t5 : "満点",
       },
       /* 테이블 선 나오게 함 */
       bordered: true,

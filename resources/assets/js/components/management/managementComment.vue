@@ -22,7 +22,7 @@
                     <img :src="comment.photo_url" />
                   </v-avatar>
                   <div>
-                    <span style="color: black">{{ comment.name }}<br>교수님</span>
+                    <span style="color: black">{{ comment.name }}<br>教授</span>
                   </div>
                   <!-- 보여지는 코멘트 -->
                   <div class="box3 sb14" v-if="!comment.textView"> {{ comment.content }} </div>
@@ -74,7 +74,7 @@
             <v-flex xs9>
               <v-text-field
                 name="input-1"
-                label="코멘트를 입력하세요."
+                label="コメントを入力してください。"
                 textarea
                 v-model="setData"
               ></v-text-field>
@@ -212,8 +212,8 @@ export default {
            response.data.message.comments == '조회된 코멘트가 없습니다.'){
              /* 조회된 코멘트가 없을 경우 */
              this.commentData = [{
-               'name' : '안녕하세요!',
-               'content' : '등록된 코멘트가 없습니다. 학생에 대해 알려주세요!',
+               'name' : 'こんにちは!',
+               'content' : '登録されたコメントがありません。学生について教えてください！',
                'isOwner' : false,
                'photo_url' : '/images/default.png'
              }]
@@ -278,7 +278,7 @@ export default {
          /* 코멘트 삭제 후, 새로 업데이트한다. */
          this.getComment();
          /* 삭제 알림 */
-         alert('삭제완료');
+         alert('成功的に消しました。');
        }).catch((error) => {
          console.log('delCom Error :' + error);
        })
