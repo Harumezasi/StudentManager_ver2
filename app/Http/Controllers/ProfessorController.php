@@ -235,7 +235,7 @@ class ProfessorController extends Controller
         // 03. 데이터 수정
         $updateInfo['password'] = $password;
         $updateInfo['phone']    = $phone;
-        $updateInfo['email']    = $email;
+        $updateInfo['email']   = $email;
         $updateInfo['office']   = $office;
 
         if(!is_null($photo)) {
@@ -257,11 +257,11 @@ class ProfessorController extends Controller
             session()->put('user', $professor->user->selectUserInfo());
 
             return response()->json(new ResponseObject(
-                true, "정보 갱신을 완료했습니다."
+                true, __('response.update_success', ['element' => __('interface.info')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "정보 갱신을 실패했습니다."
+                false, __('response.update_failed', ['element' => __('interface.info')])
             ), 200);
         }
     }
@@ -310,7 +310,7 @@ class ProfessorController extends Controller
         // ###### 조회된 과목 리스트가 없을 경우 ######
         if(sizeof($subjects) <= 0) {
             return response()->json(new ResponseObject(
-                false, "해당 학기에 조회된 강의가 없습니다."
+                false, __('response.none_subject')
             ), 200);
         }
 
@@ -440,12 +440,12 @@ class ProfessorController extends Controller
 
         // 03. 엑셀에 삽입할 데이터 구성
         $data = [
-            ['강의 코드', $subject->id],
-            ['등록일자', $executeDate],
-            ['유형', $scoreType],
-            ['만점', $perfectScore],
-            ['설명', $content],
-            ['학번', '이름', '취득점수'],
+            [__('interface.sub_num'), $subject->id],
+            [__('interface.execute_date'), $executeDate],
+            [__('interface.type'), $scoreType],
+            [__('interface.perfect_score'), $perfectScore],
+            [__('interface.contents'), $content],
+            [__('interface.std_id'), __('interface.name'), __('interface.gained_score')],
         ];
         $data = array_merge_recursive($data, $studentList);
 
@@ -561,7 +561,7 @@ class ProfessorController extends Controller
                                 break;
                             }
                         }
-                        throw new NotValidatedException("등록되지 않은 학생이 존재합니다.");
+                        throw new NotValidatedException(__('response.none_student'));
                     case 'B':
                         // 학생의 이름 칸 => 건너뛰기
                         continue;
@@ -573,7 +573,7 @@ class ProfessorController extends Controller
                                 break;
                             }
                         }
-                        throw new NotValidatedException('형식에 맞지 않게 입력된 점수가 존재합니다.');
+                        throw new NotValidatedException(__("response.wrong_score"));
                 }
             }
 
@@ -591,11 +591,11 @@ class ProfessorController extends Controller
         // 각 학생별로 취득 점수 등록
         if($score->insertScoreList($extractData['std_list'])) {
             return response()->json(new ResponseObject(
-                true, "성적 등록에 성공하였습니다."
+                true, __('response.insert_success', ['element' => __('interface.score')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "성적 등록에 실패하였습니다."
+                false, __('response.insert_failed', ['element' => __('interface.score')])
             ), 200);
         }
     }
@@ -651,7 +651,7 @@ class ProfessorController extends Controller
         foreach($request->post('gained_score') as $stdId => $gainedScore) {
             if($gainedScore < 0 || $gainedScore > $request->post('perfect_score')) {
                 // 입력된 점수가 형식에 맞지 않을 때 => 알고리즘 종료
-                throw new NotValidatedException("형식에 맞지 않게 입력된 점수가 존재합니다.");
+                throw new NotValidatedException(__('response.wrong_score'));
             }
 
             if(in_array($stdId, $signUpList)) {
@@ -659,7 +659,7 @@ class ProfessorController extends Controller
                 $gainedScoreList[$stdId] = $gainedScore;
             } else {
                 // 입력된 학생 목록 중 해당 강의의 수강생이 아닐 경우
-                throw new NotValidatedException("등록되지 않은 학생이 존재합니다.");
+                throw new NotValidatedException(__('response.none_student'));
             }
         }
 
@@ -675,11 +675,11 @@ class ProfessorController extends Controller
         // 각 학생별로 취득 점수 등록
         if($score->insertScoreList($score, $gainedScoreList)) {
             return response()->json(new ResponseObject(
-                true, "성적 등록에 성공하였습니다."
+                true, __('response.insert_success', ['element' => __('interface.score')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "성적 등록에 실패하였습니다."
+                false, __('response.insert_failed', ['element' => __('interface.score')])
             ), 200);
         }
     }
@@ -804,14 +804,14 @@ class ProfessorController extends Controller
 
         if(!in_array($student->id, $subject->joinLists()->get(['std_id'])->pluck('std_id')->all())) {
             // ###### 성적 수정을 요청한 학생이 해당 강의의 수강생이 아닐 때 ######
-            throw new NotValidatedException("해당 학생은 이 강의의 수강생이 아닙니다.");
+            throw new NotValidatedException(__('response.not_registered_student'));
         }
 
         $score          = $request->post('score');
 
         if($score > $scoreType->perfect_score) {
             // ##### 입력된 성적이 만점을 초과할 경우 #####
-            throw new NotValidatedException("입력한 성적이 만점을 초과합니다.");
+            throw new NotValidatedException(__('response.score_overflow'));
         }
 
 
@@ -819,11 +819,11 @@ class ProfessorController extends Controller
         $gainedScore->score = $score;
         if($gainedScore->save() === true) {
             return response()->json(new ResponseObject(
-                true, "성적 수정이 완료되었습니다."
+                true, __('response.update_success', ['element' => __('interface.score')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, '성적 수정이 실패하였습니다.'
+                false, __('response.update_failed', ['element' => __('interface.score')])
             ), 200);
         }
     }
@@ -1005,7 +1005,7 @@ class ProfessorController extends Controller
 
         // ##### 해당 과목을 수강하는 학생이 아닐 때 ######
         if(is_null($student)) {
-            throw new NotValidatedException("잘못된 학번입니다.");
+            throw new NotValidatedException(__('response.wrong_std_id'));
         }
 
         // 03. View 단에 반환할 성적 목록 획득
@@ -1093,11 +1093,11 @@ class ProfessorController extends Controller
 
         if($comment->save()) {
             return response()->json(new ResponseObject(
-                true, "코멘트 등록에 성공하였습니다."
+                true, __('response.insert_success', ['element' => 'interface.comment'])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "코멘트 등록에 실패하였습니다."
+                false, __('response.insert_failed', ['element' => 'interface.comment'])
             ), 200);
         }
     }
@@ -1124,11 +1124,11 @@ class ProfessorController extends Controller
 
         if($comment->save()) {
             return response()->json(new ResponseObject(
-                true, "코멘트 수정에 성공하였습니다."
+                true, __('response.update_success', ['element' => 'interface.comment'])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "코멘트 수정에 실패하였습니다."
+                false, __('response.update_failed', ['element' => 'interface.comment'])
             ), 200);
         }
     }
@@ -1150,11 +1150,11 @@ class ProfessorController extends Controller
 
         if($comment->delete()) {
             return response()->json(new ResponseObject(
-                true, "코멘트를 성공적으로 삭제하였습니다."
+                true, __('response.delete_success', ['element' => 'interface.comment'])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "코멘트 삭제를 실패하였습니다."
+                false, __('response.delete_failed', ['element' => 'interface.comment'])
             ), 200);
         }
     }

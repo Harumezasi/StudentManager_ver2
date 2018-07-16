@@ -16,7 +16,7 @@ return [
     'major'             => '전공',
 
     // 성적 유형
-    'midterm'           => '중간',
+    'midterm'           => '中間',
     'final'             => '기말',
     'homework'          => '과제',
     'quiz'              => '쪽지',

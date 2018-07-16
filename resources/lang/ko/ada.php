@@ -37,6 +37,15 @@ return [
     'weekend'                   => '주말',
 
 
+    // 출결 필터링
+    'continuative_lateness'     => "연속 지각 :count회",
+    'continuative_early_leave'  => "연속 조퇴 :count회",
+    'continuative_absence'      => "연속 결석 :count회",
+    'total_lateness'            => "누적 지각 :count회",
+    'total_early_leave'         => "누적 조퇴 :count회",
+    'total_absence'             => "누적 결석 :count회",
+
+
     // 기타
     'count'                     => ':count회',
 ];

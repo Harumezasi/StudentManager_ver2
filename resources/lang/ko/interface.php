@@ -10,11 +10,27 @@ return [
     // 공통: 회원 유형
     'student'               => '학생',
 
+    // 공통 : 회원정보
+    'std_id'                => '학번',
+    'name'                  => '이름',
+
+    // 공통 : 강의관리
+    'score'                 => '성적',
+    'sub_num'               => '강의 코드',
+    'execute_date'          => '실시일자',
+    'type'                  => '유형',
+    'perfect_score'         => '만점',
+    'gained_score'          => '취득 점수',
+    'contents'              => '설명',
+
     // 공통 : 기능
     'need_care_alert'       => '알람',
+    'notice'                => '알림',
+    'evaluation'            => '기준',
     'comment'               => '코멘트',
     'schedule'              => '일정',
     'data'                  => '데이터',
+    'info'                  => '정보',
     'count'                 => ':count회',
 
     // 요일

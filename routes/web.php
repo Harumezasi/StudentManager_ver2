@@ -30,11 +30,11 @@ Route::name('test.')->group(function() {
 
     Route::match(['GET', 'POST'], '/test', [
         'as'    => 'index',
-        'uses'  => function (){
-            return view('test');
-        }
+//        'uses'  => function (){
+//            return view('mail_form');
+//        }
 
-//        'uses'  => 'HomeController@test'
+        'uses'  => 'HomeController@test'
     ]);
 });
 

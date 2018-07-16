@@ -59,7 +59,7 @@ class SubjectsTableSeeder extends Seeder
                     // 기쿠치 교수님  => 실무일본어회화 - C
                     $subjects = [
 //                        ['name' => '실무일본어회화(Ⅱ) - C', 'type' => 'japanese'],
-                        ['name' => '実務日本会話(Ⅱ) - C', 'type' => 'japanese']
+                        ['name' => '実務日本語会話(Ⅱ) - C', 'type' => 'japanese']
                     ];
                     break;
                 default:

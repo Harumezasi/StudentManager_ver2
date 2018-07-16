@@ -26,60 +26,99 @@ class TimetablesTableSeeder extends Seeder
             if(stripos($subject->name, "オブジェクト指向") !== false) {
                 // 객체지향프로그래밍 시간표
                 $periods = [
-                    ['day_of_week' => Carbon::TUESDAY, 'period' => 3, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::TUESDAY, 'period' => 4, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::THURSDAY, 'period' => 2, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::TUESDAY, 'period' => 3, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::TUESDAY, 'period' => 4, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::THURSDAY, 'period' => 2, 'classroom' => '본관 200호'],
+
+                    ['day_of_week' => Carbon::TUESDAY, 'period' => 3, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::TUESDAY, 'period' => 4, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::THURSDAY, 'period' => 2, 'classroom' => '本館200号'],
                 ];
             } else if(stripos($subject->name, "ウェブ") !== false) {
                 // 웹프로그래밍 시간표
                 $periods = [
-                    ['day_of_week' => Carbon::MONDAY, 'period' => 4, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::FRIDAY, 'period' => 2, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::FRIDAY, 'period' => 3, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::MONDAY, 'period' => 4, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::FRIDAY, 'period' => 2, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::FRIDAY, 'period' => 3, 'classroom' => '본관 200호'],
+
+                    ['day_of_week' => Carbon::MONDAY, 'period' => 4, 'classroom' => '本願200号'],
+                    ['day_of_week' => Carbon::FRIDAY, 'period' => 2, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::FRIDAY, 'period' => 3, 'classroom' => '本館200号'],
                 ];
             } else if(stripos($subject->name, "キャップストーン") !== false) {
                 // 캡스톤 디자인 시간표
                 $periods = [
-                    ['day_of_week' => Carbon::MONDAY, 'period' => 2, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::MONDAY, 'period' => 3, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::THURSDAY, 'period' => 6, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::THURSDAY, 'period' => 7, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::MONDAY, 'period' => 2, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::MONDAY, 'period' => 3, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::THURSDAY, 'period' => 6, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::THURSDAY, 'period' => 7, 'classroom' => '본관 200호'],
+
+                    ['day_of_week' => Carbon::MONDAY, 'period' => 2, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::MONDAY, 'period' => 3, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::THURSDAY, 'period' => 6, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::THURSDAY, 'period' => 7, 'classroom' => '本館200号'],
                 ];
             } else if(stripos($subject->name, "DB") !== false) {
                 // DB설계 시간표
                 $periods = [
-                    ['day_of_week' => Carbon::MONDAY, 'period' => 6, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::WEDNESDAY, 'period' => 6, 'classroom' => '본관 200호'],
-                    ['day_of_week' => Carbon::WEDNESDAY, 'period' => 7, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::MONDAY, 'period' => 6, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::WEDNESDAY, 'period' => 6, 'classroom' => '본관 200호'],
+//                    ['day_of_week' => Carbon::WEDNESDAY, 'period' => 7, 'classroom' => '본관 200호'],
+
+                    ['day_of_week' => Carbon::MONDAY, 'period' => 6, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::WEDNESDAY, 'period' => 6, 'classroom' => '本館200号'],
+                    ['day_of_week' => Carbon::WEDNESDAY, 'period' => 7, 'classroom' => '本館200号'],
                 ];
             } else if(stripos($subject->name, "日本語") !== false) {
                 switch(substr($subject->name, -1)) {
                     case 'A':
                         $periods = [
-                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '본관 200호'],
-                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '본관 200호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '본관 200호'],
+
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '本館200号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '本館200号'],
                         ];
                         break;
                     case 'C':
                         $periods = [
-                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '정보관 507호'],
-                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '정보관 507호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '정보관 507호'],
+
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '情報館507号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '情報館507号'],
                         ];
                         break;
                 }

@@ -36,7 +36,7 @@
               <!-- 프로필 사진 업데이트 버튼 -->
               <v-card-text class = "uploadBtn text-xs-center">
                 <!-- 이미지 -->
-                <input type="file" v-on:change="handleFileUpload">
+                <input type="file" id="file" ref="myFiles" v-on:change="handleFileUpload" accept="image/*">
               </v-card-text>
              </v-flex>
            </div>
@@ -186,26 +186,21 @@ export default {
      /* 회원정보 수정 */
      setUserInfo(){
 
-       let params = [{
-         'password'       : this.userPassword,
-         'password_check' : this.userPasswordCheck,
-         'phone'          : this.userInfoDatas.phone,
-         'email'          : this.userInfoDatas.email,
-         'office'         : this.userInfoDatas.office
-       }]
+       let formData = new FormData();
+
+       formData.append('password', this.userPassword);
+       formData.append('password_check', this.userPasswordCheck);
+       formData.append('phone', this.userInfoDatas.phone);
+       formData.append('email', this.userInfoDatas.email);
+       formData.append('office', this.userInfoDatas.office);
 
        /* 이미지 파일의 유무를 판단. */
        if(this.photoData != null){
-         let test = this.photoData.split('data:')
-         console.log(test[1]);
-         this.$set(params[0], 'photo', this.photoData)
-         console.log(params);
-         console.log(this.photoData);
+         formData.append('photo', this.photoData);
        }
-       //axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
        axios.post('/professor/info/update',
-       params[0]
+        formData
      ).then((response) => {
          /* 통신 테스트 */
          console.log("update success");
@@ -222,20 +217,9 @@ export default {
          console.log('setUserInfo Error : ' + error);
        })
      },
-     handleFileUpload(e){
-       var files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-        return;
-        this.createImage(files[0]);
-    },
-    createImage(file) {
-      var image = new Image();
-      var reader = new FileReader();
-
-      reader.onload = (e) => {
-        this.photoData = e.target.result;
-      };
-      reader.readAsDataURL(file);
+     handleFileUpload(){
+       this.photoData = this.$refs.myFiles.files[0]
+       console.log(this.photoData);
     }
    },
    created(){

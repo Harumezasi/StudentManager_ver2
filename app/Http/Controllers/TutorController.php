@@ -132,15 +132,15 @@ class TutorController extends Controller
                 switch($alert->notification_flag) {
                     case 'continuative_lateness':
                         if($attendanceStat['continuative_lateness'] >= $alert->count) {
-                            $student->reason = "연속 지각 {$alert->count}회";
+                            $student->reason = __('ada.continuative_lateness', ['count' => $alert->count]);
                             $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
                         }
                         break;
-                    case 'continuative_leave':
+                    case 'continuative_early_leave':
                         if($attendanceStat['continuative_early_leave'] >= $alert->count) {
-                            $student->reason = "연속 결석 {$alert->count}회";
+                            $student->reason = __('ada.continuative_early_leave', ['count' => $alert->count]);
                             $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
@@ -148,7 +148,7 @@ class TutorController extends Controller
                         break;
                     case 'continuative_absence':
                         if($attendanceStat['continuative_early_leave'] >= $alert->count) {
-                            $student->reason = "연속 조퇴 {$alert->count}회";
+                            $student->reason = __('ada.continuative_absence', ['count' => $alert->count]);
                             $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
@@ -156,7 +156,7 @@ class TutorController extends Controller
                         break;
                     case 'total_lateness':
                         if($attendanceStat['total_lateness'] >= $alert->count) {
-                            $student->reason = "누적 지각 {$alert->count}회";
+                            $student->reason = __('ada.total_lateness', ['count' => $alert->count]);
                             $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
@@ -164,7 +164,7 @@ class TutorController extends Controller
                         break;
                     case 'total_early_leave':
                         if($attendanceStat['total_early_leave'] >= $alert->count) {
-                            $student->reason = "누적 조퇴 {$alert->count}회";
+                            $student->reason = __('ada.total_early_leave', ['count' => $alert->count]);
                             $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
@@ -172,7 +172,7 @@ class TutorController extends Controller
                         break;
                     case 'total_absence':
                         if($attendanceStat['total_absence'] >= $alert->count) {
-                            $student->reason = "누적 결석 {$alert->count}회";
+                            $student->reason = __('ada.total_absence', ['count' => $alert->count]);
                             $student->sign_in_time = is_null($attendance) ? null : $attendance->sign_in_time;
                             $attendanceRecords['need_care'][] = $student;
                             continue 3;
@@ -278,11 +278,11 @@ class TutorController extends Controller
 
         if($model->save()) {
             return response()->json(new ResponseObject(
-                true, "알림을 등록하였습니다."
+                true, __('response.insert_success', ['content' => __('interface.notice')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "알림 등록에 실패하였습니다."
+                false, __('response.insert_failed', ['content' => __('interface.notice')])
             ), 200);
         }
     }
@@ -354,11 +354,11 @@ class TutorController extends Controller
         // 03. 알림 삭제
         if($alert->delete()) {
             return response()->json(new ResponseObject(
-                true, "알림을 삭제하였습니다."
+                true, __('response.delete_success', ['content' => __('interface.notice')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "알림 삭제가 실패하였습니다."
+                false, __('response.delete_failed', ['content' => __('interface.notice')])
             ), 200);
         }
     }
@@ -415,11 +415,11 @@ class TutorController extends Controller
 
         if($studyClass->updateCriteria($data->getArrayCopy())) {
             return response()->json(new ResponseObject(
-                true, "갱신 성공하였습니다."
+                true, __('response.update_success', ['content' => __('interface.evaluation')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, '갱신에 실패하였습니다.'
+                false, __('response.update_failed', ['content' => __('interface.evaluation')])
             ), 200);
         }
     }
@@ -648,7 +648,7 @@ class TutorController extends Controller
                 break;
         }
         if($startDate->gt($endDate)) {
-            throw new NotValidatedException('시작일은 종료일보다 과거여야 합니다.');
+            throw new NotValidatedException(__('response.start_must_before_end'));
         }
 
         // 값 반환
@@ -961,7 +961,7 @@ class TutorController extends Controller
                                     break;
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                             break;
 
@@ -1041,12 +1041,12 @@ class TutorController extends Controller
                                     break;
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                             break;
 
                         default:
-                            throw new NotValidatedException("지원하지 않는 소분류입니다.");
+                            throw new NotValidatedException(__('response.not_usable_minor_class'));
                     }
                     break;
 
@@ -1095,13 +1095,13 @@ class TutorController extends Controller
                                     } else {
                                         // 해당 기간에 조회된 데이터가 없을 경우
                                         return response()->json(new ResponseObject(
-                                            false, '조회된 데이터가 없습니다.'
+                                            false, __('response.data_not_found')
                                         ), 200);
                                     }
                                     break;
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                             break;
 
@@ -1145,12 +1145,12 @@ class TutorController extends Controller
                                     break;
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                             break;
 
                         default:
-                            throw new NotValidatedException("지원하지 않는 소분류입니다.");
+                            throw new NotValidatedException(__('response.not_usable_minor_class'));
                     }
                     break;
             }
@@ -1255,7 +1255,7 @@ class TutorController extends Controller
                                     break;
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                             break;
 
@@ -1318,7 +1318,7 @@ class TutorController extends Controller
                                     break;
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                             break;
 
@@ -1388,7 +1388,7 @@ class TutorController extends Controller
                                     break;
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                     }
                     break;
@@ -1444,7 +1444,7 @@ class TutorController extends Controller
                                     ), 200);
 
                                 default:
-                                    throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                    throw new NotValidatedException(__('response.not_usable_graph_type'));
                             }
                             break;
 
@@ -1465,7 +1465,7 @@ class TutorController extends Controller
                             break;
 
                         default:
-                            throw new NotValidatedException("지원하지 않는 소분류입니다.");
+                            throw new NotValidatedException(__('response.not_usable_minor_class'));
                     }
 
                     // 기간 단위에 따른 성적 데이터 도출
@@ -1582,7 +1582,7 @@ class TutorController extends Controller
                                 break;
 
                             default:
-                                throw new NotValidatedException("지원하지 않는 그래프 유형입니다.");
+                                throw new NotValidatedException(__('response.not_usable_graph_type'));
                         }
                     }
                     break;
@@ -1777,7 +1777,7 @@ class TutorController extends Controller
         // ##### 조회 결과가 없을 경우 #####
         if(with(clone $attendances)->count() <= 0) {
             return response()->json(new ResponseObject(
-                false, "조회된 출석기록이 없습니다."
+                false, __('response.none_adas')
             ), 200);
         }
 
@@ -1885,7 +1885,7 @@ class TutorController extends Controller
         // ##### 조회된 출석 기록이 없을 때 ######
         if(sizeof($attendance) <= 0) {
             return response()->json(new ResponseObject(
-                false, "조회된 출석 기록이 없습니다."
+                false, __('response.none_adas')
             ), 200);
         }
 
@@ -2131,7 +2131,7 @@ class TutorController extends Controller
 
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 삽입 거부
         if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->common()->exists()) {
-            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+            throw new NotValidatedException(__('response.schedule_already_exists'));
         }
 
         // 03. 스케쥴 등록
@@ -2195,7 +2195,7 @@ class TutorController extends Controller
         $schedule       = Schedule::findOrFail($request->post('id'));
         if(!$schedule->classCheck(Professor::findOrFail(session()->get('user')->id)->studyClass->id)) {
             // 일정 유형이 내 지도반 코드가 아닌 경우 => 데이터에 대한 접근 거부
-            throw new NotValidatedException('해당 데이터에 접근할 권한이 없습니다.');
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.data')]));
         }
 
         $startDate      = Carbon::parse($request->post('start_date'));
@@ -2210,7 +2210,7 @@ class TutorController extends Controller
         // 지정된 기간동안 이미 정의된 일정이 있을 경우 => 수정 거부
         if(Schedule::selectBetweenDate($startDate->format("Y-m-d"), $endDate->format('Y-m-d'))->
         common()->where('id', '!=', $schedule->id)->exists()) {
-            throw new NotValidatedException("지정 기간 이내에 이미 일정이 존재합니다.");
+            throw new NotValidatedException(__('response.schedule_already_exists'));
         }
 
         // 시간 데이터 획득
@@ -2268,7 +2268,7 @@ class TutorController extends Controller
         // 02. 데이터 획득
         $schedule = Schedule::findOrFail($request->post('id'));
         if(!$schedule->classCheck(Professor::findOrFail(session()->get("user")->id)->studyClass->id)) {
-            throw new NotValidatedException('해당 데이터에 대한 접근권한이 없습니다.');
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.data')]));
         }
 
         // 03. 일정 삭제

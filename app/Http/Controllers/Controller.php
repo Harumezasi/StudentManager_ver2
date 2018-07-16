@@ -299,7 +299,6 @@ class Controller extends BaseController
         return [
             'prev'  => $prevYear,
             'this'  => $thisYear,
-            'this_format'   => '',
             'next'  => $nextYear
         ];
     }

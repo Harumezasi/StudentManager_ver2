@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\NotValidatedException;
 use App\Http\Middleware\Language;
+use App\Mail\TempPasswordGenerated;
 use App\Student;
 use App\Professor;
 use Validator;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\StudyClass;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 
 /**
@@ -135,7 +137,7 @@ class HomeController extends Controller
         // 조회된 사용자 정보가 없을 경우
         if(is_null($user)) {
             return response()->json(new ResponseObject(
-                false, "아이디 또는 비밀번호가 틀렸습니다."
+                false, __('response.wrong_id_or_password')
             ), 200);
         }
 
@@ -145,13 +147,13 @@ class HomeController extends Controller
             session()->put('user', $user->selectUserInfo());
 
             return response()->json(new ResponseObject(
-                true, "로그인 성공!"
+                true, __('response.sign_in_success')
             ), 200);
 
         } else {
             // 비밀번호가 틀린 경우 => 로그인 실패
             return response()->json(new ResponseObject(
-                false, "아이디 또는 비밀번호가 틀렸습니다."
+                false, __('response.wrong_id_or_password')
             ), 200);
         }
     }
@@ -210,7 +212,7 @@ class HomeController extends Controller
 
                 if (is_null($student)) {
                     return response()->json(new ResponseObject(
-                        false, "해당 학생은 존재하지 않습니다."
+                        false, __('response.not_exists_student')
                     ), 200);
                 } else if (strlen($student->user->password) <= 0) {
                     return response()->json(new ResponseObject(
@@ -218,7 +220,7 @@ class HomeController extends Controller
                     ), 200);
                 } else {
                     return response()->json(new ResponseObject(
-                        false, "해당 학번은 이미 회원가입되어 있습니다."
+                        false, __('response.already_joined_student')
                     ), 200);
                 }
             case 'professor':
@@ -226,11 +228,11 @@ class HomeController extends Controller
 
                 if(is_null($user)) {
                     return response()->json(new ResponseObject(
-                        true, "사용 가능한 아이디입니다."
+                        true, __('response.usable_id')
                     ), 200);
                 } else {
                     return response()->json(new ResponseObject(
-                        false, "이미 사용중인 아이디입니다."
+                        false, __('response.already_joined_id')
                     ), 200);
                 }
         }
@@ -265,7 +267,7 @@ class HomeController extends Controller
             case 'student':
                 $user = Student::find($id);
                 if(is_null($user)) {
-                    throw new NotValidatedException("해당 학번은 존재하지 않습니다.");
+                    throw new NotValidatedException(__('response.not_exists_student'));
                 }
                 break;
             case 'professor':
@@ -301,21 +303,21 @@ class HomeController extends Controller
                     'photo'     => $user->photo
                 ])) {
                     return response()->json(new ResponseObject(
-                        true, "회원가입 완료했습니다."
+                        true, __('response.join_success')
                     ), 200);
                 } else {
                     return response()->json(new ResponseObject(
-                        false, "회원가입에 실패했습니다."
+                        false, __('response.join_failed')
                     ), 200);
                 }
             case 'professor':
                 if($user->insertMyInfo()) {
                     return response()->json(new ResponseObject(
-                        true, "회원가입 완료했습니다."
+                        true, __('response.join_success')
                     ), 200);
                 } else {
                     return response()->json(new ResponseObject(
-                        false, "회원가입에 실패했습니다."
+                        false, __('response.join_failed')
                     ), 200);
                 }
         }
@@ -347,7 +349,7 @@ class HomeController extends Controller
         // ##### DB에 등록되지 않은 ID인 경우 #####
         if(is_null($student)) {
             return response()->json(new ResponseObject(
-                false, "아이디 또는 비밀번호가 틀렸습니다."
+                false, __('response.wrong_id_or_password')
             ), 200);
         }
 
@@ -365,13 +367,13 @@ class HomeController extends Controller
         } else if(strlen($userInfo->password) <= 0) {
             // 패스워드가 없음 => 등록되지 않은 학생
             return response()->json(new ResponseObject(
-                false, "회원가입이 되지 않았습니다. 먼저 회원가입을 하세요."
+                false, __('response.not_joined')
             ), 200);
 
         } else {
             // 패스워드가 틀림
             return response()->json(new ResponseObject(
-                false, "아이디 또는 비밀번호가 틀렸습니다."
+                false, __('response.wrong_id_or_password')
             ), 200);
         }
     }
@@ -473,6 +475,8 @@ class HomeController extends Controller
 
     // 시험용 메서드
     public function test() {
+        $to = 'smlee95kr@naver.com';
 
+        return Mail::to($to)->send(new TempPasswordGenerated());
     }
 }

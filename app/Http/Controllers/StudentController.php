@@ -154,11 +154,11 @@ class StudentController extends Controller
             session()->put('user', $student->user->selectUserInfo());
 
             return response()->json(new ResponseObject(
-                true, "정보 갱신을 완료했습니다."
+                true, __('response.update_success', ['element' => __('interface.info')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "정보 갱신을 실패했습니다."
+                false, __('response.update_failed', ['element' => __('interface.info')])
             ), 200);
         }
     }
@@ -246,7 +246,7 @@ class StudentController extends Controller
         ##### 조회 결과가 없을 경우 #####
         if(with(clone $attendances)->count() <= 0) {
             return response()->json(new ResponseObject(
-                false, "조회된 출석기록이 없습니다."
+                false, __('response.none.adas')
             ), 200);
         }
 
@@ -298,7 +298,7 @@ class StudentController extends Controller
         ]);
 
         if($validator->fails()) {
-            throw new ValidationException("허가되지 않은 접근입니다.");
+            throw new ValidationException(__('response.not_authorized'));
         }
 
         // 02. 데이터 획득
@@ -319,7 +319,7 @@ class StudentController extends Controller
         if($adaRecordOfToday->exists()) {
             // 오늘의 출석기록이 있으면 => 출석 인증 중단
             return response()->json(new ResponseObject(
-                false, "오늘은 이미 출석하셨습니다."
+                false, __('response.already_sign_in')
             ), 200);
         }
 
@@ -345,7 +345,7 @@ class StudentController extends Controller
         // 자정 12시부터 지도교수 지정 출석시간의 30분 전까지는 출석 금지 시간
         if($signInTime->lt($signInStart)) {
             return response()->json(new ResponseObject(
-                false, "자정부터 출석시간 30분 이전까지는 등교할 수 없습니다."
+                false, __('response.sign_in_disable_time')
             ), 200);
         }
 
@@ -386,7 +386,7 @@ class StudentController extends Controller
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, "출석 인증에 실패하였습니다."
+                false, __('response.sign_in_error_etc')
             ), 200);
         }
     }
@@ -400,7 +400,7 @@ class StudentController extends Controller
         ]);
 
         if($validator->fails()) {
-            throw new NotValidatedException("허가되지 않은 접근입니다.");
+            throw new NotValidatedException(__('response.not_authorized'));
         }
 
         // 02. 데이터 획득
@@ -529,7 +529,7 @@ class StudentController extends Controller
         // ##### 조회된 과목정보가 없을 때 ######
         if(sizeof($subjects) <= 0) {
             return response()->json(new ResponseObject(
-                false, "해당 학기에 수강한 강의가 존재하지 않습니다."
+                false, __('response.none_subject')
             ));
         }
 
