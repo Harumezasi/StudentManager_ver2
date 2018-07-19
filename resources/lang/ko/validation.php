@@ -99,6 +99,8 @@ return [
     |
     */
 
+    'not_exists' => '선택된 :attribute은(는) 이미 존재합니다.',
+
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

@@ -67,6 +67,20 @@ class UsersTableSeeder extends Seeder
 //                'office'            => '본관 322호',
 //                'photo'             => 'scpack.jpg'
 //            ],
+//            'gjchoe'      => [
+//                'name'              => '최금주',
+//                'phone'             => '053-000-0000',
+//                'email'             => 'gjchoe@dummy.kr',
+//                'office'            => '본관000호',
+//                'photo'             => ''
+//            ],
+//            'komagata'    => [
+//                'name'              => '고마가타 사토루',
+//                'phone'             => '053-000-0000',
+//                'email'             => 'skom1030@naver.com',
+//                'office'            => '본관000호',
+//                'photo'             => ''
+//            ]
 
             'ycjung'    => [
                 'name'              => 'ジョン・ヨンチョル',
@@ -110,6 +124,20 @@ class UsersTableSeeder extends Seeder
                 'office'            => '本館322号',
                 'photo'             => 'scpack.jpg'
             ],
+            'gjchoe'      => [
+                'name'              => 'チェ・グンズ',
+                'phone'             => '053-000-0000',
+                'email'             => 'gjchoe@dummy.kr',
+                'office'            => '本館000号',
+                'photo'             => ''
+            ],
+            'komagata'    => [
+                'name'              => '駒形　悟',
+                'phone'             => '053-000-0000',
+                'email'             => 'skom1030@naver.com',
+                'office'            => '本館000号',
+                'photo'             => ''
+            ]
         ];
 
         foreach($professors as $id => $value) {

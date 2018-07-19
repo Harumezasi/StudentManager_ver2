@@ -93,8 +93,12 @@ class User extends Model
                     $data->photo_url = Storage::url('source/std_face/').'default.png';
                 }
 
-                if(strlen($data->attention_reason) <= 0) {
-                    $data->attention_reason = null;
+                if(session()->has('user')) {
+                    if ($this->student->studyClass->tutor == session()->get("user")->id) {
+                        if (strlen($data->attention_reason) <= 0) {
+                            $data->attention_reason = null;
+                        }
+                    }
                 }
 
                 return $data;

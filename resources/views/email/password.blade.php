@@ -16,10 +16,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>{{ $title }} {{ $user->name }}</h1>
-    <hr/>
-    <p>{{ $body }}</p>
-    <hr/>
-    <footer>Mail from {{ config('app.url') }}</footer>
+    <header>
+        <h1>@lang('mail.usual_hello', ['user' => $user->name])</h1>
+        <hr/>
+    </header>
+    <section>
+        <p>@lang('mail.password_body')</p>
+        <a href="{{ route('home.password_change.page', ['key' => $user->verify_key]) }}">@lang('mail.password_change')</a>
+        <hr/>
+    </section>
+    <footer>
+        <p>@lang('mail.usual_bye')</p>
+        <a href="{{ config('app.url') }}"><img src="{{ config('app.url') }}/images/logo.png" alt="GRIT"></a>
+    </footer>
 </body>
 </html>

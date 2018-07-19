@@ -16948,8 +16948,8 @@ module.exports = {
 
 "use strict";
 /* unused harmony export VueCharts */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__ = __webpack_require__(251);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseCharts__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_index_js__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseCharts__ = __webpack_require__(257);
 /* unused harmony reexport Bar */
 /* unused harmony reexport HorizontalBar */
 /* unused harmony reexport Doughnut */
@@ -31196,7 +31196,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(152);
-module.exports = __webpack_require__(342);
+module.exports = __webpack_require__(347);
 
 
 /***/ }),
@@ -31226,48 +31226,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Login_vue__ = __webpack_require__(231);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_Login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue__ = __webpack_require__(237);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_student_studentMainBody_vue__ = __webpack_require__(242);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_student_studentMainBody_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_student_studentMainBody_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue__ = __webpack_require__(247);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue__ = __webpack_require__(254);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue__ = __webpack_require__(259);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue__ = __webpack_require__(264);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_professor_professorGradeRegister_vue__ = __webpack_require__(269);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_professor_professorGradeRegister_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_professor_professorGradeRegister_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue__ = __webpack_require__(276);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_professor_professorGradeList_vue__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_professor_professorGradeList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_professor_professorGradeList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_tutor_tutorRealTimeAttendance_vue__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_tutor_tutorRealTimeAttendance_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__components_tutor_tutorRealTimeAttendance_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorStudentManagement_vue__ = __webpack_require__(291);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorStudentManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorStudentManagement_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorAlertStudentSetting_vue__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorAlertStudentSetting_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorAlertStudentSetting_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorUserInfo_vue__ = __webpack_require__(301);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorUserInfo_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorUserInfo_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorClassAnalyticPrediction_vue__ = __webpack_require__(306);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorClassAnalyticPrediction_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorClassAnalyticPrediction_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorStudentAnalyticPrediction_vue__ = __webpack_require__(311);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorStudentAnalyticPrediction_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorStudentAnalyticPrediction_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPredictionSetting_vue__ = __webpack_require__(316);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPredictionSetting_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPredictionSetting_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_management_managementMenu_vue__ = __webpack_require__(321);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_management_managementMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27__components_management_managementMenu_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_management_managementMain_vue__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_management_managementMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_28__components_management_managementMain_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_management_managementGrade_vue__ = __webpack_require__(331);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_management_managementGrade_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_29__components_management_managementGrade_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_management_managementComment_vue__ = __webpack_require__(336);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_management_managementComment_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_30__components_management_managementComment_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_test_vue__ = __webpack_require__(341);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_test_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_31__components_test_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_join_vue__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_join_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_join_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_serviceMenu_vue__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_serviceMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_serviceMenu_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_student_studentMainBody_vue__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_student_studentMainBody_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_student_studentMainBody_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_student_studentAttendanceManagement_vue__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_student_studentAttendanceManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_student_studentAttendanceManagement_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_student_studentGradeManagement_vue__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_student_studentGradeManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_student_studentGradeManagement_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_student_studentUserInfo_vue__ = __webpack_require__(264);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_student_studentUserInfo_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_student_studentUserInfo_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_professor_professorMainBody_vue__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_professor_professorMainBody_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_professor_professorMainBody_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_professor_professorGradeRegister_vue__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_professor_professorGradeRegister_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_professor_professorGradeRegister_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_professor_professorStudentManagement_vue__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_professor_professorStudentManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_professor_professorStudentManagement_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_professor_professorGradeList_vue__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_professor_professorGradeList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__components_professor_professorGradeList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorRealTimeAttendance_vue__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorRealTimeAttendance_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorRealTimeAttendance_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorStudentManagement_vue__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorStudentManagement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorStudentManagement_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorAlertStudentSetting_vue__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorAlertStudentSetting_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorAlertStudentSetting_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorClassAnalyticPrediction_vue__ = __webpack_require__(311);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorClassAnalyticPrediction_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorClassAnalyticPrediction_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue__ = __webpack_require__(316);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue__ = __webpack_require__(321);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue__ = __webpack_require__(326);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue__ = __webpack_require__(336);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue__ = __webpack_require__(341);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_test_vue__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_test_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_32__components_test_vue__);
 /* import vue's */
 
 
@@ -31298,6 +31300,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_8_vue_
 
 
 /* 회원가입 */
+
+
+/* 비밀번호 찾기 */
+//import help from './components/help.vue'
 
 /* 메뉴 */
 
@@ -31337,134 +31343,144 @@ var routes = [
 /* 테스트 페이지 */
 {
   path: '/test',
-  component: __WEBPACK_IMPORTED_MODULE_31__components_test_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_32__components_test_vue___default.a
 },
 /* 로그인 페이지 */
 {
   path: '/',
   component: __WEBPACK_IMPORTED_MODULE_10__components_Login_vue___default.a
 },
+/* 회원가입 페이지 */
+{
+  path: '/join',
+  component: __WEBPACK_IMPORTED_MODULE_11__components_join_vue___default.a
+},
+/* 비밀번호 찾기 페이지 */
+// {
+//   path: '/help',
+//   component:help
+// },
 /* 학생 페이지 */
 {
   path: '/student',
-  component: __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue___default.a,
+  component: __WEBPACK_IMPORTED_MODULE_12__components_serviceMenu_vue___default.a,
   children: [{
     path: '/student',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_14__components_student_studentAttendanceManagement_vue___default.a
     }
   },, {
     path: '/student/main',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_14__components_student_studentAttendanceManagement_vue___default.a
     }
   }, {
     path: '/student/attendanceManagement',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_13__components_student_studentAttendanceManagement_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_14__components_student_studentAttendanceManagement_vue___default.a
     }
   }, {
     path: '/student/gradeManagement',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_14__components_student_studentGradeManagement_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_15__components_student_studentGradeManagement_vue___default.a
     }
   }, {
     path: '/student/userinfo',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_15__components_student_studentUserInfo_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_16__components_student_studentUserInfo_vue___default.a
     }
   }]
 },
 /* 교과목 교수 페이지 */
 {
   path: '/professor',
-  component: __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue___default.a,
+  component: __WEBPACK_IMPORTED_MODULE_12__components_serviceMenu_vue___default.a,
   children: [{
     path: '/professor',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_17__components_professor_professorMainBody_vue___default.a
     }
   }, {
     path: '/professor/main',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_16__components_professor_professorMainBody_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_17__components_professor_professorMainBody_vue___default.a
     }
   }, {
     path: '/professor/studentManagement',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_18__components_professor_professorStudentManagement_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_19__components_professor_professorStudentManagement_vue___default.a
     }
   }, {
     path: '/professor/userInfo',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorUserInfo_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue___default.a
     }
   }]
 },
 /* 등록된 성적 확인 (새창)*/
 {
   path: '/professor/gradeCheck',
-  component: __WEBPACK_IMPORTED_MODULE_19__components_professor_professorGradeList_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_20__components_professor_professorGradeList_vue___default.a
 },
 /* 지도 교수 페이지 */
 {
   path: '/tutor',
-  component: __WEBPACK_IMPORTED_MODULE_11__components_serviceMenu_vue___default.a,
+  component: __WEBPACK_IMPORTED_MODULE_12__components_serviceMenu_vue___default.a,
   children: [{
     path: '/tutor/attendance',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_20__components_tutor_tutorRealTimeAttendance_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorRealTimeAttendance_vue___default.a
     }
   }, {
     path: '/tutor/alertStudentSetting',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorAlertStudentSetting_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorAlertStudentSetting_vue___default.a
     }
   }, {
     path: '/tutor/studentManagement',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_21__components_tutor_tutorStudentManagement_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_22__components_tutor_tutorStudentManagement_vue___default.a
     }
   }, {
     path: '/tutor/userInfo',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_23__components_tutor_tutorUserInfo_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorUserInfo_vue___default.a
     }
   }, {
     path: '/tutor/classAnalyticPrediction',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_24__components_tutor_tutorClassAnalyticPrediction_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorClassAnalyticPrediction_vue___default.a
     }
   }, {
     path: '/tutor/studentAnalyticPrediction',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_25__components_tutor_tutorStudentAnalyticPrediction_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPrediction_vue___default.a
     }
   }, {
     path: '/tutor/studentAnalyticPredictionSetting',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_26__components_tutor_tutorStudentAnalyticPredictionSetting_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_27__components_tutor_tutorStudentAnalyticPredictionSetting_vue___default.a
     }
   }]
 },
 /* 학생 정보 페이지 (새창) */
 {
   path: '/studentManagement',
-  component: __WEBPACK_IMPORTED_MODULE_27__components_management_managementMenu_vue___default.a,
+  component: __WEBPACK_IMPORTED_MODULE_28__components_management_managementMenu_vue___default.a,
   children: [{
     path: '/studentManagement/main',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_28__components_management_managementMain_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_29__components_management_managementMain_vue___default.a
     }
   }, {
     path: '/studentManagement/grade',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_29__components_management_managementGrade_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_30__components_management_managementGrade_vue___default.a
     }
   }, {
     path: '/studentManagement/comment',
     components: {
-      body: __WEBPACK_IMPORTED_MODULE_30__components_management_managementComment_vue___default.a
+      body: __WEBPACK_IMPORTED_MODULE_31__components_management_managementComment_vue___default.a
     }
   }]
 }];
@@ -69854,12 +69870,12 @@ var render = function() {
                           _c(
                             "v-btn",
                             {
-                              staticClass: "loginButton",
                               attrs: {
                                 block: "",
                                 outline: "",
                                 color: "orange",
-                                type: "submit"
+                                type: "submit",
+                                to: "/join"
                               }
                             },
                             [_vm._v("新規登録")]
@@ -69933,6 +69949,924 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources\\assets\\js\\components\\join.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fac87bfe", Component.options)
+  } else {
+    hotAPI.reload("data-v-fac87bfe", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(239);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("05220cfb", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fac87bfe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./join.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fac87bfe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./join.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.inputArea {\n  width : 30em;\n  display: inline-block;\n}\n.labelArea {\n  width : 80px;\n  display: inline-block;\n}\n.formArea {\n  width : 650px;\n}\n.formAreaDiv {\n  padding-left : 50px;\n  padding-bottom : 25px;\n}\n.backBtnPositionDiv {\n  height: 30px;\n  width: 150px;\n}\n.btnSizeDiv {\n  padding: 10px;\n  float: left;\n  width: 250px;\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 240 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      /* 회원가입 체크 */
+      joinCheck: false,
+      /* 입력 메세지 (학생, 교수)*/
+      message: null,
+      /* 체크 데이터 */
+      id_Number: null,
+      join_Type: null,
+
+      professorCheck: false,
+
+      /* 회원등록 정보 */
+      name: null,
+      id: null,
+      pw: null,
+      pw_check: null,
+      phone: null,
+      mail: null,
+      office: null,
+
+      /* 이미지 */
+      photoUrl: null,
+      photoName: null,
+      photoFile: null
+    };
+  },
+  mounted: function mounted() {
+    this.join_Type = 'student';
+  },
+
+  methods: {
+    /* 회원등록 여부 확인 */
+    checkJoin: function checkJoin() {
+      var _this = this;
+
+      if (this.id_Number == null) alert('情報を入力してください。');else axios.get('/join/check', {
+        params: {
+          id: this.id_Number,
+          type: this.join_Type
+        }
+      }).then(function (response) {
+        console.log(response);
+
+        if (response.data.status) {
+          _this.joinCheck = true;
+          if (_this.join_Type == 'professor') {
+            /* 기본 아이디를 추가 */
+            _this.id = _this.id_Number;
+            _this.professorCheck = true;
+          } else {
+            /* 이름을 추가 */
+            _this.name = response.data.message;
+            _this.professorCheck = false;
+          }
+        } else {
+          _this.joinCheck = false;
+          _this.professorCheck = false;
+        }
+
+        alert(response.data.message);
+      }).catch(function (error) {
+        alert('入力した情報をもう一度確認してください。');
+        console.log('joinCheck Err :' + error);
+      });
+    },
+
+    /* 회원등록 요청 */
+    join: function join() {
+      var _this2 = this;
+
+      /* 입력한 비밀번호가 같은지 확인 */
+      if (this.pw != this.pw_check) {
+
+        alert('パスワードが間違っています、もう一度確認してください。');
+      } else if (this.pw == this.pw_check) {
+        var formData = new FormData();
+        console.log(this.joinCheck);
+        formData.append('type', this.join_Type);
+        formData.append('id', this.id);
+        formData.append('id_check', 1);
+        formData.append('password', this.pw);
+        formData.append('password_check', this.pw_check);
+        formData.append('name', this.name);
+        formData.append('email', this.mail);
+        formData.append('phone', this.phone);
+
+        /* 교수 여부 확인 = 연구실 위치 추가 */
+        if (this.professorCheck) formData.append('office', this.office);
+
+        /* 이미지 등록 여부 확인 = 이미지 추가 */
+        if (this.photoFile != null) formData.append('photo', this.photoFile);
+
+        /* 회원가입 요청 시작 */
+        axios.post('/join', formData).then(function (response) {
+
+          if (response.data.status) {
+            alert(response.data.message);
+            _this2.$router.push('/');
+          }
+        }).catch(function (error) {
+          console.log('joinErr :' + error);
+        });
+      }
+    },
+    pageOut: function pageOut() {
+      this.$router.push('/');
+    },
+
+    /* 이미지 등록 함수들 */
+    pickFile: function pickFile() {
+      this.$refs.image.click();
+    },
+    onFilePicked: function onFilePicked(e) {
+      var _this3 = this;
+
+      var files = e.target.files;
+      if (files[0] !== undefined) {
+        this.photoName = files[0].name;
+        if (this.photoName.lastIndexOf('.') <= 0) {
+          return;
+        }
+        var fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener('load', function () {
+          _this3.photoUrl = fr.result;
+          _this3.photoFile = files[0]; // this is an image file that can be sent to server...
+        });
+      } else {
+        this.photoName = '';
+        this.photoFile = '';
+        this.photoUrl = '';
+      }
+    },
+
+    /* 초기화 */
+    reset: function reset() {
+      this.joinCheck = false;
+      this.professorCheck = false;
+      this.name = null;
+      this.id = null;
+      this.pw = null;
+      this.pw_check = null;
+      this.phone = null;
+      this.mail = null;
+      this.office = null;
+      this.photoUrl = null;
+      this.photoName = null;
+      this.photoFile = null;
+    }
+  },
+  watch: {
+    join_Type: function join_Type() {
+      if (this.join_Type == 'student') {
+        this.message = "学生番号を入力してください。";
+      } else if (this.join_Type == 'professor') {
+        this.message = "指定した ID を入力してください。";
+      }
+    }
+  }
+
+});
+
+/***/ }),
+/* 241 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      [
+        _c(
+          "v-flex",
+          { attrs: { xs12: "" } },
+          [
+            _c(
+              "v-container",
+              { attrs: { "grid-list-xl": "" } },
+              [
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "", "align-center": "" } },
+                  [
+                    _c(
+                      "v-card",
+                      { staticClass: "formArea" },
+                      [
+                        _c(
+                          "v-card-title",
+                          [
+                            _c("h2", [_vm._v("新規登録　（ID チェック）")]),
+                            _vm._v(" "),
+                            _c("v-spacer"),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "backBtnPositionDiv" },
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: {
+                                      block: "",
+                                      outline: "",
+                                      color: "red"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.pageOut()
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("戻る")]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-card-actions",
+                          [
+                            _c(
+                              "div",
+                              { staticStyle: { width: "80px" } },
+                              [
+                                _c(
+                                  "v-radio-group",
+                                  {
+                                    model: {
+                                      value: _vm.join_Type,
+                                      callback: function($$v) {
+                                        _vm.join_Type = $$v
+                                      },
+                                      expression: "join_Type"
+                                    }
+                                  },
+                                  [
+                                    !_vm.joinCheck
+                                      ? _c("v-radio", {
+                                          attrs: {
+                                            label: "学生",
+                                            value: "student"
+                                          }
+                                        })
+                                      : _c("v-radio", {
+                                          attrs: {
+                                            label: "学生",
+                                            value: "student",
+                                            disabled: ""
+                                          }
+                                        }),
+                                    _vm._v(" "),
+                                    !_vm.joinCheck
+                                      ? _c("v-radio", {
+                                          attrs: {
+                                            label: "教授",
+                                            value: "professor"
+                                          }
+                                        })
+                                      : _c("v-radio", {
+                                          attrs: {
+                                            label: "教授",
+                                            value: "professor",
+                                            disabled: ""
+                                          }
+                                        })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              [
+                                !_vm.joinCheck
+                                  ? _c("v-text-field", {
+                                      staticClass: "inputArea",
+                                      attrs: {
+                                        "prepend-icon": "person",
+                                        "solo-inverted": "",
+                                        name: "id",
+                                        label: _vm.message,
+                                        type: "text"
+                                      },
+                                      model: {
+                                        value: _vm.id_Number,
+                                        callback: function($$v) {
+                                          _vm.id_Number = $$v
+                                        },
+                                        expression: "id_Number"
+                                      }
+                                    })
+                                  : _c("v-text-field", {
+                                      staticClass: "inputArea",
+                                      attrs: {
+                                        "prepend-icon": "person",
+                                        "solo-inverted": "",
+                                        name: "id",
+                                        label: _vm.message,
+                                        type: "text",
+                                        disabled: ""
+                                      },
+                                      model: {
+                                        value: _vm.id_Number,
+                                        callback: function($$v) {
+                                          _vm.id_Number = $$v
+                                        },
+                                        expression: "id_Number"
+                                      }
+                                    })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            !_vm.joinCheck
+                              ? _c(
+                                  "v-btn",
+                                  {
+                                    attrs: {
+                                      block: "",
+                                      outline: "",
+                                      color: "green"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.checkJoin()
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("ID チェック")]
+                                )
+                              : _c(
+                                  "v-btn",
+                                  {
+                                    attrs: {
+                                      block: "",
+                                      outline: "",
+                                      color: "green",
+                                      disabled: ""
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.checkJoin()
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("ID チェック")]
+                                )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _vm.joinCheck
+      ? _c(
+          "div",
+          [
+            _c(
+              "v-flex",
+              { attrs: { xs12: "" } },
+              [
+                _c(
+                  "v-container",
+                  { attrs: { "grid-list-xl": "" } },
+                  [
+                    _c(
+                      "v-layout",
+                      { attrs: { row: "", wrap: "", "align-center": "" } },
+                      [
+                        _c(
+                          "v-card",
+                          { staticClass: "formArea" },
+                          [
+                            _c("v-card-title", [
+                              _c("h2", [_vm._v("会員情報入力")])
+                            ]),
+                            _vm._v(" "),
+                            _c("v-card-actions", [
+                              _c(
+                                "div",
+                                { staticClass: "formAreaDiv" },
+                                [
+                                  _c("div", { staticClass: "labelArea" }),
+                                  _vm._v(" "),
+                                  _vm.photoUrl
+                                    ? _c("img", {
+                                        attrs: {
+                                          src: _vm.photoUrl,
+                                          height: "150",
+                                          width: "150"
+                                        }
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "labelArea" }, [
+                                    _vm._v(" 写真 ")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "inputArea",
+                                    attrs: {
+                                      "solo-inverted": "",
+                                      label: "Select Image",
+                                      "prepend-icon": "attach_file"
+                                    },
+                                    on: { click: _vm.pickFile },
+                                    model: {
+                                      value: _vm.photoName,
+                                      callback: function($$v) {
+                                        _vm.photoName = $$v
+                                      },
+                                      expression: "photoName"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    ref: "image",
+                                    staticStyle: { display: "none" },
+                                    attrs: { type: "file", accept: "image/*" },
+                                    on: { change: _vm.onFilePicked }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "labelArea" }, [
+                                    _vm._v(" 名前 ")
+                                  ]),
+                                  _vm._v(" "),
+                                  !_vm.professorCheck
+                                    ? _c("v-text-field", {
+                                        staticClass: "inputArea",
+                                        attrs: {
+                                          "solo-inverted": "",
+                                          type: "text",
+                                          disabled: ""
+                                        },
+                                        model: {
+                                          value: _vm.name,
+                                          callback: function($$v) {
+                                            _vm.name = $$v
+                                          },
+                                          expression: "name"
+                                        }
+                                      })
+                                    : _c("v-text-field", {
+                                        staticClass: "inputArea",
+                                        attrs: {
+                                          "solo-inverted": "",
+                                          type: "text"
+                                        },
+                                        model: {
+                                          value: _vm.name,
+                                          callback: function($$v) {
+                                            _vm.name = $$v
+                                          },
+                                          expression: "name"
+                                        }
+                                      }),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "labelArea" }, [
+                                    _vm._v(" ID ")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "inputArea",
+                                    attrs: {
+                                      "solo-inverted": "",
+                                      type: "text"
+                                    },
+                                    model: {
+                                      value: _vm.id,
+                                      callback: function($$v) {
+                                        _vm.id = $$v
+                                      },
+                                      expression: "id"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "labelArea" }, [
+                                    _vm._v(" PW ")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "inputArea",
+                                    attrs: {
+                                      "solo-inverted": "",
+                                      type: "password"
+                                    },
+                                    model: {
+                                      value: _vm.pw,
+                                      callback: function($$v) {
+                                        _vm.pw = $$v
+                                      },
+                                      expression: "pw"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "labelArea" }, [
+                                    _vm._v(" PW 確認 ")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "inputArea",
+                                    attrs: {
+                                      "solo-inverted": "",
+                                      type: "password"
+                                    },
+                                    model: {
+                                      value: _vm.pw_check,
+                                      callback: function($$v) {
+                                        _vm.pw_check = $$v
+                                      },
+                                      expression: "pw_check"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "labelArea" }, [
+                                    _vm._v(" メール ")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "inputArea",
+                                    attrs: {
+                                      "solo-inverted": "",
+                                      type: "text"
+                                    },
+                                    model: {
+                                      value: _vm.mail,
+                                      callback: function($$v) {
+                                        _vm.mail = $$v
+                                      },
+                                      expression: "mail"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "labelArea" }, [
+                                    _vm._v(" 電話番号 ")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "inputArea",
+                                    attrs: {
+                                      "solo-inverted": "",
+                                      type: "text"
+                                    },
+                                    model: {
+                                      value: _vm.phone,
+                                      callback: function($$v) {
+                                        _vm.phone = $$v
+                                      },
+                                      expression: "phone"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _vm.professorCheck
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "labelArea" },
+                                            [_vm._v(" 研究室 ")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("v-text-field", {
+                                            staticClass: "inputArea",
+                                            attrs: {
+                                              "solo-inverted": "",
+                                              type: "text"
+                                            },
+                                            model: {
+                                              value: _vm.office,
+                                              callback: function($$v) {
+                                                _vm.office = $$v
+                                              },
+                                              expression: "office"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("br"),
+                                          _c("br")
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "btnSizeDiv" },
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: {
+                                            block: "",
+                                            outline: "",
+                                            color: "blue"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.reset()
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("リセット")]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "btnSizeDiv" },
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: {
+                                            block: "",
+                                            outline: "",
+                                            color: "red"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.join()
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("会員登録")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-fac87bfe", module.exports)
+  }
+}
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(243)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(245)
+/* template */
+var __vue_template__ = __webpack_require__(246)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources\\assets\\js\\components\\serviceMenu.vue"
 
 /* hot reload */
@@ -69955,13 +70889,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 238 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(239);
+var content = __webpack_require__(244);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -69981,7 +70915,7 @@ if(false) {
 }
 
 /***/ }),
-/* 239 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -69995,7 +70929,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 240 */
+/* 245 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70331,7 +71265,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 241 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70659,19 +71593,19 @@ if (false) {
 }
 
 /***/ }),
-/* 242 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(243)
+  __webpack_require__(248)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(245)
+var __vue_script__ = __webpack_require__(250)
 /* template */
-var __vue_template__ = __webpack_require__(246)
+var __vue_template__ = __webpack_require__(251)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70710,13 +71644,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 243 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(244);
+var content = __webpack_require__(249);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -70736,7 +71670,7 @@ if(false) {
 }
 
 /***/ }),
-/* 244 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -70750,7 +71684,7 @@ exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80p
 
 
 /***/ }),
-/* 245 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70824,7 +71758,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 246 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70892,19 +71826,19 @@ if (false) {
 }
 
 /***/ }),
-/* 247 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(248)
+  __webpack_require__(253)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(250)
+var __vue_script__ = __webpack_require__(255)
 /* template */
-var __vue_template__ = __webpack_require__(253)
+var __vue_template__ = __webpack_require__(258)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70943,13 +71877,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 248 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(249);
+var content = __webpack_require__(254);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -70969,7 +71903,7 @@ if(false) {
 }
 
 /***/ }),
-/* 249 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -70983,7 +71917,7 @@ exports.push([module.i, "\n.panel-header {\n    height: 200px;\n    padding-top:
 
 
 /***/ }),
-/* 250 */
+/* 255 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71231,7 +72165,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-Attendance-bar-ch
 });
 
 /***/ }),
-/* 251 */
+/* 256 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71322,7 +72256,7 @@ var reactiveProp = {
 });
 
 /***/ }),
-/* 252 */
+/* 257 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71430,7 +72364,7 @@ var Scatter = generateChart('scatter-chart', 'scatter');
 });
 
 /***/ }),
-/* 253 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71761,19 +72695,19 @@ if (false) {
 }
 
 /***/ }),
-/* 254 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(255)
+  __webpack_require__(260)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(257)
+var __vue_script__ = __webpack_require__(262)
 /* template */
-var __vue_template__ = __webpack_require__(258)
+var __vue_template__ = __webpack_require__(263)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -71812,13 +72746,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 255 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(256);
+var content = __webpack_require__(261);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -71838,7 +72772,7 @@ if(false) {
 }
 
 /***/ }),
-/* 256 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -71852,7 +72786,7 @@ exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80p
 
 
 /***/ }),
-/* 257 */
+/* 262 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72058,7 +72992,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 258 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72242,19 +73176,19 @@ if (false) {
 }
 
 /***/ }),
-/* 259 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(260)
+  __webpack_require__(265)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(262)
+var __vue_script__ = __webpack_require__(267)
 /* template */
-var __vue_template__ = __webpack_require__(263)
+var __vue_template__ = __webpack_require__(268)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72293,13 +73227,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 260 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(261);
+var content = __webpack_require__(266);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -72319,7 +73253,7 @@ if(false) {
 }
 
 /***/ }),
-/* 261 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -72327,17 +73261,62 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.profileTitleBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 35px;\r\n  top: 60px;\n}\n.profileBox {\r\n  padding: 60px 10px 30px 20px;\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 40px;\n}\n.profilePic {\r\n  position: relative;\r\n  bottom: 70px;\n}\n.uploadBtn {\r\n  position: relative;\r\n  bottom: 90px;\n}\n.updateBtn {\r\n  position: relative;\r\n  top: 30px;\n}\r\n/**/\n.userImageArea {\r\n  width:10%;\r\n  min-width:250px;\n}\n.userInfoDataArea {\r\n  width:60%;\r\n  min-width:400px;\n}\r\n", ""]);
+exports.push([module.i, "\n.fontSetting {\r\n  font-size: 25px;\r\n  font-style: 'Gothic A1';\n}\n#fontSetting {\r\n  font-size: 30px;\r\n  font-style: 'Gothic A1';\n}\n.profileTitleBox {\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 2;\r\n  left: 35px;\r\n  top: 60px;\n}\n.profileBox {\r\n  padding: 60px 10px 30px 20px;\r\n  border-radius: 0.2975rem;\r\n  position: relative;\r\n  z-index: 1;\r\n  bottom: 40px;\n}\n.profilePic {\r\n  position: relative;\r\n  bottom: 70px;\n}\n.uploadBtn {\r\n  position: relative;\r\n  bottom: 90px;\n}\n.updateBtn {\r\n  position: relative;\r\n  top: 30px;\n}\r\n/**/\n.userImageArea {\r\n  width:10%;\r\n  min-width:250px;\n}\n.userInfoDataArea {\r\n  width:60%;\r\n  min-width:400px;\n}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 262 */
+/* 267 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -72487,7 +73466,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       userInfoDatas: [],
       userPassword: null,
       userPasswordCheck: null,
-      photoData: null
+      photoData: null,
+      photoName: null,
+      photoUrl: null,
+      /* */
+      checkCount: 0,
+
+      phone: null,
+      phoneType: "###########"
     };
   },
   methods: {
@@ -72495,6 +73481,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       axios.get('/student/info/select').then(function (response) {
+        _this.phone = response.data.message.phone;
         _this.userInfoDatas = response.data.message;
         console.log(_this.userInfoDatas);
       }).catch(function (error) {
@@ -72502,22 +73489,111 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
 
-    /* 회원정보 변경 */
+    /* 회원정보 수정 */
     setUserInfo: function setUserInfo() {
-      console.log('미구현');
+      var _this2 = this;
+
+      this.checkCount = 0;
+      var formData = new FormData();
+
+      if (this.userPassword == null) {
+        this.checkCount += 1;
+      }
+      if (this.userPasswordCheck == null) {
+        this.checkCount += 1;
+      }
+      if (this.phone == null) {
+        this.checkCount += 1;
+      }
+      if (this.userInfoDatas.email == null) {
+        this.checkCount += 1;
+      }
+      if (this.userPassword != this.userPasswordCheck) {
+        this.checkCount += 1;
+      }
+
+      /* 이미지 파일의 유무를 판단. */
+      if (this.photoData != null) {
+        formData.append('photo', this.photoData);
+      }
+
+      formData.append('password', this.userPassword);
+      formData.append('password_check', this.userPasswordCheck);
+      formData.append('phone', this.phone);
+      formData.append('email', this.userInfoDatas.email);
+
+      if (this.checkCount <= 0) axios.post('/student/info/update', formData).then(function (response) {
+        /* 통신 테스트 */
+        console.log("update success");
+        alert(response.data.message);
+        /* 통신 완료 후, 입력한 비밀번호 초기화 */
+        _this2.userPassword = null;
+        _this2.userPasswordCheck = null;
+        /* 이미지 초기화 */
+        _this2.photoData = null;
+        /* 업데이트 후, 변경된 데이터를 보여주기 위해서 데이터를 다시 받아온다. */
+        _this2.getUserInfo();
+      }).catch(function (error) {
+
+        console.log('setUserInfo Error : ' + error);
+      });else if (this.userPassword != this.userPasswordCheck) alert('パスワードが間違っています。');else alert('入力しない情報があります。');
     },
-    handleFileUpload: function handleFileUpload() {
-      /* 업로드 할 이미지 파일 변경*/
-      this.photoData = this.$refs.photo.files[0];
+
+    /* 이미지 등록 */
+    pickFile: function pickFile() {
+      this.$refs.myFiles.click();
+    },
+    handleFileUpload: function handleFileUpload(e) {
+      var _this3 = this;
+
+      console.log(e.target);
+      console.log(e.target.files);
+
+      var files = e.target.files;
+      if (files[0] !== undefined) {
+        this.photoName = files[0].name;
+        if (this.photoName.lastIndexOf('.') <= 0) {
+          return;
+        }
+        var fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener('load', function () {
+          _this3.photoUrl = fr.result;
+          _this3.photoData = files[0];
+        });
+      }
+    },
+    imageDataReset: function imageDataReset() {
+      this.photoName = '';
+      this.photoData = '';
+      this.photoUrl = '';
+    }
+  },
+  watch: {
+    phone: function phone() {
+      console.log('w');
+      if (this.phone.length >= 11) {
+        this.phoneType = "###-####-####";
+      } else {
+        this.phoneType = "(###)###-#####";
+      }
+
+      console.log(this.phone);
+      console.log(this.phoneType);
     }
   },
   created: function created() {
+    console.log('c');
+    this.getUserInfo();
+  },
+  mounted: function mounted() {
+    console.log('m');
     this.getUserInfo();
   }
 });
 
 /***/ }),
-/* 263 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72550,11 +73626,13 @@ var render = function() {
                     "v-card-text",
                     { staticStyle: { "padding-bottom": "5px" } },
                     [
-                      _c("h2", { staticStyle: { color: "white" } }, [
+                      _c("h1", { staticStyle: { color: "white" } }, [
                         _vm._v("会員情報")
                       ]),
                       _vm._v(" "),
-                      _c("p", [_vm._v("情報確認＆修正")])
+                      _c("p", { staticStyle: { "font-size": "20px" } }, [
+                        _vm._v("情報確認＆修正")
+                      ])
                     ]
                   )
                 ],
@@ -72609,13 +73687,19 @@ var render = function() {
                                         "v-avatar",
                                         { attrs: { size: "125px" } },
                                         [
-                                          _c("img", {
-                                            staticClass:
-                                              "img-circle elevation-3",
-                                            attrs: {
-                                              src: _vm.userInfoDatas.photo
-                                            }
-                                          })
+                                          _vm.photoUrl
+                                            ? _c("img", {
+                                                staticClass:
+                                                  "img-circle elevation-3",
+                                                attrs: { src: _vm.photoUrl }
+                                              })
+                                            : _c("img", {
+                                                staticClass:
+                                                  "img-circle elevation-3",
+                                                attrs: {
+                                                  src: _vm.userInfoDatas.photo
+                                                }
+                                              })
                                         ]
                                       )
                                     ],
@@ -72626,20 +73710,38 @@ var render = function() {
                                     "v-card-text",
                                     { staticClass: "uploadBtn text-xs-center" },
                                     [
+                                      _vm.photoUrl
+                                        ? _c(
+                                            "v-btn",
+                                            {
+                                              staticStyle: { width: "120px" },
+                                              attrs: { color: "red" },
+                                              on: { click: _vm.imageDataReset }
+                                            },
+                                            [_vm._v(" リセット ")]
+                                          )
+                                        : _c(
+                                            "v-btn",
+                                            {
+                                              staticStyle: { width: "120px" },
+                                              attrs: { color: "blue" },
+                                              on: { click: _vm.pickFile }
+                                            },
+                                            [_vm._v(" 写真変更 ")]
+                                          ),
+                                      _vm._v(" "),
                                       _c("input", {
-                                        ref: "photo",
+                                        ref: "myFiles",
+                                        staticStyle: { display: "none" },
                                         attrs: {
                                           type: "file",
-                                          value: "프로필 사진 변경",
-                                          id: "file"
+                                          id: "file",
+                                          accept: "image/*"
                                         },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.handleFileUpload()
-                                          }
-                                        }
+                                        on: { change: _vm.handleFileUpload }
                                       })
-                                    ]
+                                    ],
+                                    1
                                   )
                                 ],
                                 1
@@ -72675,6 +73777,7 @@ var render = function() {
                                           _c("v-text-field", {
                                             attrs: {
                                               label: "Name",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -72693,6 +73796,7 @@ var render = function() {
                                           _c("v-text-field", {
                                             attrs: {
                                               label: "E-mail",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -72710,20 +73814,17 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("v-text-field", {
                                             attrs: {
+                                              mask: _vm.phoneType,
                                               label: "Phone",
-                                              mask: "phone",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
-                                              value: _vm.userInfoDatas.phone,
+                                              value: _vm.phone,
                                               callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.userInfoDatas,
-                                                  "phone",
-                                                  $$v
-                                                )
+                                                _vm.phone = $$v
                                               },
-                                              expression: "userInfoDatas.phone"
+                                              expression: "phone"
                                             }
                                           }),
                                           _vm._v(" "),
@@ -72731,6 +73832,7 @@ var render = function() {
                                             attrs: {
                                               label: "Password",
                                               type: "password",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -72746,6 +73848,7 @@ var render = function() {
                                             attrs: {
                                               label: "Password Check",
                                               type: "password",
+                                              id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
@@ -72770,6 +73873,7 @@ var render = function() {
                                       _c(
                                         "v-btn",
                                         {
+                                          staticClass: "fontSetting",
                                           attrs: {
                                             color: "amber darken-2",
                                             dark: ""
@@ -72820,19 +73924,19 @@ if (false) {
 }
 
 /***/ }),
-/* 264 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(265)
+  __webpack_require__(270)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(267)
+var __vue_script__ = __webpack_require__(272)
 /* template */
-var __vue_template__ = __webpack_require__(268)
+var __vue_template__ = __webpack_require__(273)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72871,13 +73975,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 265 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(266);
+var content = __webpack_require__(271);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -72897,7 +74001,7 @@ if(false) {
 }
 
 /***/ }),
-/* 266 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -72911,7 +74015,7 @@ exports.push([module.i, "\n.studentLists {\r\n  overflow-y: scroll;\r\n  max-hei
 
 
 /***/ }),
-/* 267 */
+/* 272 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73097,7 +74201,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 268 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73547,19 +74651,19 @@ if (false) {
 }
 
 /***/ }),
-/* 269 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(270)
+  __webpack_require__(275)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(272)
+var __vue_script__ = __webpack_require__(277)
 /* template */
-var __vue_template__ = __webpack_require__(273)
+var __vue_template__ = __webpack_require__(278)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73598,13 +74702,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 270 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(271);
+var content = __webpack_require__(276);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -73624,7 +74728,7 @@ if(false) {
 }
 
 /***/ }),
-/* 271 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -73638,7 +74742,7 @@ exports.push([module.i, "\n.panel-header {\n  height: 200px;\n  padding-top: 80p
 
 
 /***/ }),
-/* 272 */
+/* 277 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73932,7 +75036,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 273 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -74009,7 +75113,7 @@ var render = function() {
                                     width: "70px",
                                     height: "auto"
                                   },
-                                  attrs: { src: __webpack_require__(274) }
+                                  attrs: { src: __webpack_require__(279) }
                                 })
                               ]
                             ),
@@ -74566,7 +75670,7 @@ var render = function() {
                                     height: "auto"
                                   },
                                   attrs: {
-                                    src: __webpack_require__(275)
+                                    src: __webpack_require__(280)
                                   }
                                 })
                               ]
@@ -74641,31 +75745,31 @@ if (false) {
 }
 
 /***/ }),
-/* 274 */
+/* 279 */
 /***/ (function(module, exports) {
 
 module.exports = "/images/excel.png?8eabac72086832d37b56f33dc113243b";
 
 /***/ }),
-/* 275 */
+/* 280 */
 /***/ (function(module, exports) {
 
 module.exports = "/images/registration.png?259ed0c770439a8f46dba6896ce5d500";
 
 /***/ }),
-/* 276 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(277)
+  __webpack_require__(282)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(279)
+var __vue_script__ = __webpack_require__(284)
 /* template */
-var __vue_template__ = __webpack_require__(280)
+var __vue_template__ = __webpack_require__(285)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -74704,13 +75808,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 277 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(278);
+var content = __webpack_require__(283);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -74730,7 +75834,7 @@ if(false) {
 }
 
 /***/ }),
-/* 278 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -74744,7 +75848,7 @@ exports.push([module.i, "\n.category1 {\r\n  color: #FFFFFF;\r\n  font-size: 50p
 
 
 /***/ }),
-/* 279 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75180,7 +76284,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 }));
 
 /***/ }),
-/* 280 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -76198,19 +77302,19 @@ if (false) {
 }
 
 /***/ }),
-/* 281 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(282)
+  __webpack_require__(287)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(284)
+var __vue_script__ = __webpack_require__(289)
 /* template */
-var __vue_template__ = __webpack_require__(285)
+var __vue_template__ = __webpack_require__(290)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -76249,13 +77353,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 282 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(283);
+var content = __webpack_require__(288);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76275,7 +77379,7 @@ if(false) {
 }
 
 /***/ }),
-/* 283 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -76289,7 +77393,7 @@ exports.push([module.i, "\n.menuBox {\n  margin: 10px 0 0 0;\n}\n.gradeTable {\n
 
 
 /***/ }),
-/* 284 */
+/* 289 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -76513,7 +77617,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 285 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -76773,19 +77877,19 @@ if (false) {
 }
 
 /***/ }),
-/* 286 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(287)
+  __webpack_require__(292)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(289)
+var __vue_script__ = __webpack_require__(294)
 /* template */
-var __vue_template__ = __webpack_require__(290)
+var __vue_template__ = __webpack_require__(295)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -76824,13 +77928,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 287 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(288);
+var content = __webpack_require__(293);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -76850,7 +77954,7 @@ if(false) {
 }
 
 /***/ }),
-/* 288 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -76864,7 +77968,7 @@ exports.push([module.i, "\n.studentListArea {\r\n  overflow-y: scroll;\r\n  heig
 
 
 /***/ }),
-/* 289 */
+/* 294 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77312,7 +78416,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 290 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -78293,19 +79397,19 @@ if (false) {
 }
 
 /***/ }),
-/* 291 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(292)
+  __webpack_require__(297)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(294)
+var __vue_script__ = __webpack_require__(299)
 /* template */
-var __vue_template__ = __webpack_require__(295)
+var __vue_template__ = __webpack_require__(300)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -78344,13 +79448,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 292 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(293);
+var content = __webpack_require__(298);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -78370,7 +79474,7 @@ if(false) {
 }
 
 /***/ }),
-/* 293 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -78384,7 +79488,7 @@ exports.push([module.i, "\n.categoryManage {\n  color: #FFFFFF;\n  font-size: 50
 
 
 /***/ }),
-/* 294 */
+/* 299 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78518,7 +79622,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 295 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -78741,19 +79845,19 @@ if (false) {
 }
 
 /***/ }),
-/* 296 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(297)
+  __webpack_require__(302)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(299)
+var __vue_script__ = __webpack_require__(304)
 /* template */
-var __vue_template__ = __webpack_require__(300)
+var __vue_template__ = __webpack_require__(305)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -78792,13 +79896,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 297 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(298);
+var content = __webpack_require__(303);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -78818,7 +79922,7 @@ if(false) {
 }
 
 /***/ }),
-/* 298 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -78832,7 +79936,7 @@ exports.push([module.i, "\nbody {\r\n  background-color: rgb(255, 255, 255);\n}\
 
 
 /***/ }),
-/* 299 */
+/* 304 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -79126,7 +80230,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 300 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -79432,19 +80536,19 @@ if (false) {
 }
 
 /***/ }),
-/* 301 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(302)
+  __webpack_require__(307)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(304)
+var __vue_script__ = __webpack_require__(309)
 /* template */
-var __vue_template__ = __webpack_require__(305)
+var __vue_template__ = __webpack_require__(310)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -79483,13 +80587,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 302 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(303);
+var content = __webpack_require__(308);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -79509,7 +80613,7 @@ if(false) {
 }
 
 /***/ }),
-/* 303 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -79523,11 +80627,40 @@ exports.push([module.i, "\n.fontSetting {\r\n  font-size: 25px;\r\n  font-style:
 
 
 /***/ }),
-/* 304 */
+/* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -79701,7 +80834,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       userInfoDatas: [],
       userPassword: null,
       userPasswordCheck: null,
-      photoData: null
+      photoData: null,
+      photoName: null,
+      photoUrl: null,
+      /* */
+      checkCount: 0,
+
+      phone: null,
+      phoneType: "###########"
     };
   },
   methods: {
@@ -79709,6 +80849,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       axios.get('/professor/info/select').then(function (response) {
+        _this.phone = response.data.message.phone;
         _this.userInfoDatas = response.data.message;
         console.log(_this.userInfoDatas);
       }).catch(function (error) {
@@ -79720,20 +80861,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     setUserInfo: function setUserInfo() {
       var _this2 = this;
 
+      this.checkCount = 0;
       var formData = new FormData();
 
-      formData.append('password', this.userPassword);
-      formData.append('password_check', this.userPasswordCheck);
-      formData.append('phone', this.userInfoDatas.phone);
-      formData.append('email', this.userInfoDatas.email);
-      formData.append('office', this.userInfoDatas.office);
+      if (this.userPassword == null) {
+        this.checkCount += 1;
+      }
+      if (this.userPasswordCheck == null) {
+        this.checkCount += 1;
+      }
+      if (this.phone == null) {
+        this.checkCount += 1;
+      }
+      if (this.userInfoDatas.email == null) {
+        this.checkCount += 1;
+      }
+      if (this.userInfoDatas.office == null) {
+        this.checkCount += 1;
+      }
+      if (this.userPassword != this.userPasswordCheck) {
+        this.checkCount += 1;
+      }
 
       /* 이미지 파일의 유무를 판단. */
       if (this.photoData != null) {
         formData.append('photo', this.photoData);
       }
 
-      axios.post('/professor/info/update', formData).then(function (response) {
+      formData.append('password', this.userPassword);
+      formData.append('password_check', this.userPasswordCheck);
+      formData.append('phone', this.phone);
+      formData.append('email', this.userInfoDatas.email);
+      formData.append('office', this.userInfoDatas.office);
+
+      if (this.checkCount <= 0) axios.post('/professor/info/update', formData).then(function (response) {
         /* 통신 테스트 */
         console.log("update success");
         alert(response.data.message);
@@ -79745,21 +80906,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /* 업데이트 후, 변경된 데이터를 보여주기 위해서 데이터를 다시 받아온다. */
         _this2.getUserInfo();
       }).catch(function (error) {
+
         console.log('setUserInfo Error : ' + error);
-      });
+      });else if (this.userPassword != this.userPasswordCheck) alert('パスワードが間違っています。');else alert('入力しない情報があります。');
     },
-    handleFileUpload: function handleFileUpload() {
-      this.photoData = this.$refs.myFiles.files[0];
-      console.log(this.photoData);
+
+    /* 이미지 등록 */
+    pickFile: function pickFile() {
+      this.$refs.myFiles.click();
+    },
+    handleFileUpload: function handleFileUpload(e) {
+      var _this3 = this;
+
+      console.log(e.target);
+      console.log(e.target.files);
+
+      var files = e.target.files;
+      if (files[0] !== undefined) {
+        this.photoName = files[0].name;
+        if (this.photoName.lastIndexOf('.') <= 0) {
+          return;
+        }
+        var fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener('load', function () {
+          _this3.photoUrl = fr.result;
+          _this3.photoData = files[0];
+        });
+      }
+    },
+    imageDataReset: function imageDataReset() {
+      this.photoName = '';
+      this.photoData = '';
+      this.photoUrl = '';
+    }
+  },
+  watch: {
+    phone: function phone() {
+      console.log('w');
+      if (this.phone.length >= 11) {
+        this.phoneType = "###-####-####";
+      } else {
+        this.phoneType = "(###)###-#####";
+      }
+
+      console.log(this.phone);
+      console.log(this.phoneType);
     }
   },
   created: function created() {
+    console.log('c');
+    this.getUserInfo();
+  },
+  mounted: function mounted() {
+    console.log('m');
     this.getUserInfo();
   }
 });
 
 /***/ }),
-/* 305 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -79853,13 +81059,19 @@ var render = function() {
                                         "v-avatar",
                                         { attrs: { size: "125px" } },
                                         [
-                                          _c("img", {
-                                            staticClass:
-                                              "img-circle elevation-3",
-                                            attrs: {
-                                              src: _vm.userInfoDatas.photo
-                                            }
-                                          })
+                                          _vm.photoUrl
+                                            ? _c("img", {
+                                                staticClass:
+                                                  "img-circle elevation-3",
+                                                attrs: { src: _vm.photoUrl }
+                                              })
+                                            : _c("img", {
+                                                staticClass:
+                                                  "img-circle elevation-3",
+                                                attrs: {
+                                                  src: _vm.userInfoDatas.photo
+                                                }
+                                              })
                                         ]
                                       )
                                     ],
@@ -79870,8 +81082,29 @@ var render = function() {
                                     "v-card-text",
                                     { staticClass: "uploadBtn text-xs-center" },
                                     [
+                                      _vm.photoUrl
+                                        ? _c(
+                                            "v-btn",
+                                            {
+                                              staticStyle: { width: "120px" },
+                                              attrs: { color: "red" },
+                                              on: { click: _vm.imageDataReset }
+                                            },
+                                            [_vm._v(" リセット ")]
+                                          )
+                                        : _c(
+                                            "v-btn",
+                                            {
+                                              staticStyle: { width: "120px" },
+                                              attrs: { color: "blue" },
+                                              on: { click: _vm.pickFile }
+                                            },
+                                            [_vm._v(" 写真変更 ")]
+                                          ),
+                                      _vm._v(" "),
                                       _c("input", {
                                         ref: "myFiles",
+                                        staticStyle: { display: "none" },
                                         attrs: {
                                           type: "file",
                                           id: "file",
@@ -79879,7 +81112,8 @@ var render = function() {
                                         },
                                         on: { change: _vm.handleFileUpload }
                                       })
-                                    ]
+                                    ],
+                                    1
                                   )
                                 ],
                                 1
@@ -79952,21 +81186,17 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("v-text-field", {
                                             attrs: {
+                                              mask: _vm.phoneType,
                                               label: "Phone",
-                                              mask: "phone",
                                               id: "fontSetting",
                                               required: ""
                                             },
                                             model: {
-                                              value: _vm.userInfoDatas.phone,
+                                              value: _vm.phone,
                                               callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.userInfoDatas,
-                                                  "phone",
-                                                  $$v
-                                                )
+                                                _vm.phone = $$v
                                               },
-                                              expression: "userInfoDatas.phone"
+                                              expression: "phone"
                                             }
                                           }),
                                           _vm._v(" "),
@@ -80085,19 +81315,19 @@ if (false) {
 }
 
 /***/ }),
-/* 306 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(307)
+  __webpack_require__(312)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(309)
+var __vue_script__ = __webpack_require__(314)
 /* template */
-var __vue_template__ = __webpack_require__(310)
+var __vue_template__ = __webpack_require__(315)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -80136,13 +81366,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 307 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(308);
+var content = __webpack_require__(313);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -80162,7 +81392,7 @@ if(false) {
 }
 
 /***/ }),
-/* 308 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -80176,7 +81406,7 @@ exports.push([module.i, "\n.classPageTopDiv {\r\n  position : relative;\r\n  bot
 
 
 /***/ }),
-/* 309 */
+/* 314 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81240,7 +82470,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('bar-chart', {
 });
 
 /***/ }),
-/* 310 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -82314,19 +83544,19 @@ if (false) {
 }
 
 /***/ }),
-/* 311 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(312)
+  __webpack_require__(317)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(314)
+var __vue_script__ = __webpack_require__(319)
 /* template */
-var __vue_template__ = __webpack_require__(315)
+var __vue_template__ = __webpack_require__(320)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -82365,13 +83595,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 312 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(313);
+var content = __webpack_require__(318);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -82391,7 +83621,7 @@ if(false) {
 }
 
 /***/ }),
-/* 313 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -82405,7 +83635,7 @@ exports.push([module.i, "\n.studentPageTopDiv {\r\n  position : relative;\r\n  b
 
 
 /***/ }),
-/* 314 */
+/* 319 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84034,7 +85264,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('study-subject-ranking-lin
 });
 
 /***/ }),
-/* 315 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86443,19 +87673,19 @@ if (false) {
 }
 
 /***/ }),
-/* 316 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(317)
+  __webpack_require__(322)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(319)
+var __vue_script__ = __webpack_require__(324)
 /* template */
-var __vue_template__ = __webpack_require__(320)
+var __vue_template__ = __webpack_require__(325)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -86494,13 +87724,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 317 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(318);
+var content = __webpack_require__(323);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -86520,7 +87750,7 @@ if(false) {
 }
 
 /***/ }),
-/* 318 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -86534,7 +87764,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 319 */
+/* 324 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -86911,7 +88141,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 320 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -87905,19 +89135,19 @@ if (false) {
 }
 
 /***/ }),
-/* 321 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(322)
+  __webpack_require__(327)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(324)
+var __vue_script__ = __webpack_require__(329)
 /* template */
-var __vue_template__ = __webpack_require__(325)
+var __vue_template__ = __webpack_require__(330)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -87956,13 +89186,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 322 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(323);
+var content = __webpack_require__(328);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -87982,7 +89212,7 @@ if(false) {
 }
 
 /***/ }),
-/* 323 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -87996,7 +89226,7 @@ exports.push([module.i, "\n.line {\r\n  border-bottom: 1px solid rgb(218, 218, 2
 
 
 /***/ }),
-/* 324 */
+/* 329 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88182,7 +89412,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 325 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88405,19 +89635,19 @@ if (false) {
 }
 
 /***/ }),
-/* 326 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(327)
+  __webpack_require__(332)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(329)
+var __vue_script__ = __webpack_require__(334)
 /* template */
-var __vue_template__ = __webpack_require__(330)
+var __vue_template__ = __webpack_require__(335)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88456,13 +89686,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 327 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(328);
+var content = __webpack_require__(333);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -88482,7 +89712,7 @@ if(false) {
 }
 
 /***/ }),
-/* 328 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -88496,7 +89726,7 @@ exports.push([module.i, "\n.cardInsideTitle {\r\n  font-family: \"Nanum Gothic C
 
 
 /***/ }),
-/* 329 */
+/* 334 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -89076,7 +90306,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkInOut-doubleLine-cha
 });
 
 /***/ }),
-/* 330 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -89664,19 +90894,19 @@ if (false) {
 }
 
 /***/ }),
-/* 331 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(332)
+  __webpack_require__(337)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(334)
+var __vue_script__ = __webpack_require__(339)
 /* template */
-var __vue_template__ = __webpack_require__(335)
+var __vue_template__ = __webpack_require__(340)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -89715,13 +90945,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 332 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(333);
+var content = __webpack_require__(338);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -89741,7 +90971,7 @@ if(false) {
 }
 
 /***/ }),
-/* 333 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -89755,7 +90985,7 @@ exports.push([module.i, "\n.fontSetting {\r\n  font-size: 18px;\r\n  font-weight
 
 
 /***/ }),
-/* 334 */
+/* 339 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -90012,7 +91242,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 335 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -90498,19 +91728,19 @@ if (false) {
 }
 
 /***/ }),
-/* 336 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(337)
+  __webpack_require__(342)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(339)
+var __vue_script__ = __webpack_require__(344)
 /* template */
-var __vue_template__ = __webpack_require__(340)
+var __vue_template__ = __webpack_require__(345)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -90549,13 +91779,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 337 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(338);
+var content = __webpack_require__(343);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -90575,7 +91805,7 @@ if(false) {
 }
 
 /***/ }),
-/* 338 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -90589,7 +91819,7 @@ exports.push([module.i, "\n.professor {\n}\n.professorPic {\r\n  margin: 0 0 10p
 
 
 /***/ }),
-/* 339 */
+/* 344 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -90901,7 +92131,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 340 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -91196,7 +92426,7 @@ if (false) {
 }
 
 /***/ }),
-/* 341 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var normalizeComponent = __webpack_require__(3)
@@ -91226,7 +92456,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 342 */
+/* 347 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

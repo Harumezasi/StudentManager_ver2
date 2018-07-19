@@ -95,7 +95,7 @@ class Subject extends Model
 
     // 03. 스코프 정의
     /**
-     *  함수명:                         scopeWhen
+     *  함수명:                         scopeTerm
      *  함수 설명:                      조회 학기를 지정
      *  만든날:                         2018년 4월 29일
      *

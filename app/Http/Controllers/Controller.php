@@ -14,8 +14,10 @@ use Mockery\Exception;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    const TERM_TYPE     = ['1st_term', 'summer_vacation', '2nd_term', 'winter_vacation'];
     const SCORE_TYPE    = ['final', 'midterm', 'homework', 'quiz'];
     const ADA_TYPE      = ['lateness', 'early_leave', 'absence'];
+    const REASON_TYPE   = ['good','unreason','personal','sick','hometown','accident','disaster','etc'];
 
     // 01. 공통 메서드 선언
     public function getDailyValue($argDate = null) {

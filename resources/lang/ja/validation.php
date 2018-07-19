@@ -100,6 +100,8 @@ return [
     |
     */
 
+    'not_exists' => '選んだ:attributeはすでに存在します。',
+
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

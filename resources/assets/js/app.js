@@ -28,6 +28,10 @@ import App from './App.vue';
 import Login from './components/Login.vue'
 
 /* 회원가입 */
+import join from './components/join.vue'
+
+/* 비밀번호 찾기 */
+//import help from './components/help.vue'
 
 /* 메뉴 */
 import serviceMenu from './components/serviceMenu.vue'
@@ -76,6 +80,16 @@ const routes = [
     path: '/',
     component: Login
   },
+  /* 회원가입 페이지 */
+  {
+    path: '/join',
+    component:join
+  },
+  /* 비밀번호 찾기 페이지 */
+  // {
+  //   path: '/help',
+  //   component:help
+  // },
   /* 학생 페이지 */
   {
     path: '/student',

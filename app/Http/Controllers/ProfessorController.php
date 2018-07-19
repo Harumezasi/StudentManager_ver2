@@ -14,7 +14,7 @@ use App\Student;
 use App\Score;
 use App\Comment;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\UploadScoresFormExport;
+use App\Exports\ExportArrayToExcel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
@@ -450,20 +450,21 @@ class ProfessorController extends Controller
         $data = array_merge_recursive($data, $studentList);
 
         // 04. 확장자 지정
-        switch(strtolower($fileType)) {
-            case 'xlsx':
-                $fileType = \Maatwebsite\Excel\Excel::XLSX;
-                break;
-            case 'xls':
-                $fileType = \Maatwebsite\Excel\Excel::XLS;
-                break;
-            case 'csv':
-                $fileType = \Maatwebsite\Excel\Excel::CSV;
-                break;
-        }
+//        switch(strtolower($fileType)) {
+//            case 'xlsx':
+//                $fileType = \Maatwebsite\Excel\Excel::XLSX;
+//                break;
+//            case 'xls':
+//                $fileType = \Maatwebsite\Excel\Excel::XLS;
+//                break;
+//            case 'csv':
+//                $fileType = \Maatwebsite\Excel\Excel::CSV;
+//                break;
+//        }
+        $fileType = $this->getType($fileType);
 
         // 05. 엑셀 파일 생성
-        return Excel::download(new UploadScoresFormExport($data), $fileName.'.'.$fileType, $fileType);
+        return Excel::download(new ExportArrayToExcel($data), $fileName.'.'.$fileType, $fileType);
     }
 
     /**

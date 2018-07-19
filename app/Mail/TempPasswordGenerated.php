@@ -11,16 +11,18 @@ use App\User;
 class TempPasswordGenerated extends Mailable
 {
     use Queueable, SerializesModels;
+    private $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $argUser)
     {
         //
-        $this->title = 'Studying sending email in Laravel';
+        $this->subject  = __('mail.password_title');
+        $this->user     = $argUser;
     }
 
     /**
@@ -31,9 +33,7 @@ class TempPasswordGenerated extends Mailable
     public function build()
     {
         $data = [
-            'title' => 'Hi there',
-            'body'  => 'This is the body of an email message',
-            'user'  => User::find(1401213)
+            'user'  => $this->user
         ];
 
         return $this->view('email.password', $data);

@@ -55,11 +55,25 @@ class SubjectsTableSeeder extends Seeder
                         ['name' => '実務日本語会話(Ⅱ) - A', 'type' => 'japanese']
                     ];
                     break;
+                case 'gjchoe':
+                    // 최금주 교수님  => 실무일본어회화 - B
+                    $subjects = [
+//                        ['name' => '실무일본어회화(Ⅱ) - B', 'type' => 'japanese'],
+                        ['name' => '実務日本語会話(Ⅱ) - B', 'type' => 'japanese']
+                    ];
+                    break;
                 case 'figures':
                     // 기쿠치 교수님  => 실무일본어회화 - C
                     $subjects = [
 //                        ['name' => '실무일본어회화(Ⅱ) - C', 'type' => 'japanese'],
                         ['name' => '実務日本語会話(Ⅱ) - C', 'type' => 'japanese']
+                    ];
+                    break;
+                case 'komagata':
+                    // 고마가타 교수님  => 실무일본어회화 - D
+                    $subjects = [
+//                        ['name' => '실무일본어회화(Ⅱ) - D', 'type' => 'japanese'],
+                        ['name' => '実務日本語会話(Ⅱ) - D', 'type' => 'japanese']
                     ];
                     break;
                 default:

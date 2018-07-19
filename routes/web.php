@@ -30,11 +30,11 @@ Route::name('test.')->group(function() {
 
     Route::match(['GET', 'POST'], '/test', [
         'as'    => 'index',
-//        'uses'  => function (){
-//            return view('mail_form');
-//        }
+        'uses'  => function (){
+            return view('test');
+        }
 
-        'uses'  => 'HomeController@test'
+//        'uses'  => 'HomeController@test'
     ]);
 });
 
@@ -79,11 +79,38 @@ Route::name('home.')->group(function() {
         'uses'  => 'HomeController@logout'
     ]);
 
-    // 아이디/비밀번호 찾기 관련 기능 정의
-    Route::get('/forgot', [
-        'as'   => 'forgot',
-        'uses' => 'HomeController@forgot'
-    ]);
+    // 비밀번호 변경
+    Route::group([
+        'as'        => 'password_change.',
+        'prefix'    => 'password_change'
+    ], function() {
+        // 비밀번호 교환 자격 확인
+        Route::post('/verify', [
+            'as'   => 'verify',
+            'uses' => 'HomeController@verifyChangePasswordAuthority'
+        ]);
+
+        // 비밀변호 변경 웹페이지 호출
+        Route::get('/page/{key}', [
+            'as'    => 'page',
+            'uses'  => function($key) {
+                return view('change_password', ['key' => $key]);
+            }
+        ]);
+
+        // 비밀번호 변경키 유효성 검증
+        Route::post('/check', [
+            'as'    => 'check',
+            'uses'  => 'HomeController@checkVerifyKey'
+        ]);
+
+        // 비밀변호 변경
+        Route::post('/change', [
+            'as'    => 'active',
+            'uses'  => 'HomeController@changePassword'
+        ]);
+    });
+
 
 
 
@@ -489,8 +516,8 @@ Route::group([
 
             // 출결알림 관리
             Route::group([
-               'as'     => 'care.',
-               'prefix' => 'care'
+                'as'     => 'care.',
+                'prefix' => 'care'
             ], function() {
                 // 알림 저장
                 Route::post('/insert', [
@@ -531,6 +558,17 @@ Route::group([
                 'uses'  => 'TutorController@selectSubjectsList'
             ]);
 
+            // 지도반 이름 변경
+            Route::post('/update_name', [
+                'as'    => 'update_name',
+                'uses'  => 'TutorController@updateClassName'
+            ]);
+
+            // 지도반 등하교 시간 갱신
+            Route::post('/update_time', [
+                'as'    => 'update_time',
+                'uses'  => 'TutorController@updateSignInOutTime'
+            ]);
 
             // 일정 관리
             Route::group([
@@ -614,6 +652,12 @@ Route::group([
                 'as'        => 'attendance.',
                 'prefix'    => 'attendance'
             ], function() {
+                // 해당 학생의 출결기록 갱신
+                Route::post('update', [
+                    'as'    => 'update',
+                    'uses'  => 'TutorController@updateReasonOfAttendance'
+                ]);
+
                 // 해당 학생의 출석 통계 조회
                 Route::get('/stat', [
                     'as'    => 'stat',
@@ -684,9 +728,207 @@ Route::group([
         ]);
 
 
-
         // 회원관리
+        // 학생 관리
+        Route::group([
+            'as'        => 'student.',
+            'prefix'    => 'student'
+        ], function() {
+            // 학생 목록 획득
+            Route::get('/select_list', [
+                'as'    => 'select_list',
+                'uses'  => 'AdminController@selectStudentsList'
+            ]);
 
+            // 학생별 상세 정보 획득
+            Route::get('/select_info', [
+                'as'    => 'select_info',
+                'uses'  => 'AdminController@selectStudentInfo'
+            ]);
+
+            // 내 지도반 학생 등록
+            Route::post('/insert', [
+                'as'    => 'insert',
+                'uses'  => 'AdminController@insertStudent'
+            ]);
+
+            // 내 지도반 학생 등록을 위한 엑셀 양식 출력
+            Route::get('/get_form', [
+                'as'    => 'get_form',
+                'uses'  => 'AdminController@getStudentRegisterExcel'
+            ]);
+
+            // 엑셀 파일을 통한 내 지도반 학생 등록
+            Route::post('/import', [
+                'as'    => 'import',
+                'uses'  => 'AdminController@importStudentRegisterExcel'
+            ]);
+
+            // 학생 지도반 수정
+            Route::post('/update', [
+                'as'    => 'update',
+                'uses'  => 'AdminController@updateStudent'
+            ]);
+
+            // 학생 삭제
+            Route::post('/delete', [
+                'as'    => 'delete',
+                'uses'  => 'AdminController@deleteStudent'
+            ]);
+        });
+
+        // 교수 관리
+        Route::group([
+            'as'        => 'professor.',
+            'prefix'    => 'professor'
+        ], function() {
+            // 교수 목록 획득
+            Route::get('/select_list', [
+                'as'    => 'select_list',
+                'uses'  => 'AdminController@selectProfessors'
+            ]);
+
+            // 해당 교수에 대한 상세 정보 획득
+            Route::get('/select_info', [
+                'as'    => 'select_info',
+                'uses'  => 'AdminController@selectProfessorInfo'
+            ]);
+
+            // 교수 정보 수정
+            Route::post('/update', [
+                'as'    => 'update',
+                'uses'  => 'AdminController@updateProfessor'
+            ]);
+
+            // 교수 삭제
+            Route::post('/delete', [
+                'as'    => 'delete',
+                'uses'  => 'AdminController@deleteProfessor'
+            ]);
+        });
+
+        // 지도반 관리
+        Route::group([
+            'as'        => 'class.',
+            'prefix'    => 'class'
+        ], function() {
+            // 지도반 목록 조회
+            Route::get('/select_list', [
+                'as'    => 'select_list',
+                'uses'  => 'AdminController@selectClassesList'
+            ]);
+
+            // 지도반 등록
+            Route::post('/insert', [
+                'as'    => 'insert',
+                'uses'  => 'AdminController@insertClass'
+            ]);
+
+            // 지도반 삭제
+            Route::post('/delete', [
+                'as'    => 'delete',
+                'uses'  => 'AdminController@deleteClass'
+            ]);
+        });
+
+
+        // 각 지도반별 강의 관리
+        Route::group([
+            'as'        => 'subject.',
+            'prefix'    => 'subject'
+        ], function() {
+            // 강의목록 조회
+            Route::get('/select_list', [
+                'as'    => 'select_list',
+                'uses'  => 'AdminController@selectSubjects'
+            ]);
+
+            // 자체 인터페이스를 이용한 강의 등록
+            Route::post('/insert', [
+                'as'    => 'insert',
+                'uses'  => 'AdminController@insertSubjects'
+            ]);
+
+            // 강의 등록을 위한 엑셀 양식 출력
+            Route::get('/get_form', [
+                'as'    => 'get_form',
+                'uses'  => 'AdminController@getSubjectRegisterExcel'
+            ]);
+
+            // 엑셀 파일을 이용한 강의 등록
+            Route::post('/import', [
+                'as'    => 'import',
+                'uses'  => 'AdminController@importSubjects'
+            ]);
+
+            // 강의 수정
+            Route::post('/update', [
+                'as'    => 'update',
+                'uses'  => 'AdminController@updateSubject'
+            ]);
+
+            // 강의 삭제
+            Route::post('/delete', [
+                'as'    => 'delete',
+                'uses'  => 'AdminController@deleteSubject'
+            ]);
+
+
+            // 수강목록 관리
+            Route::group([
+                'as'     => 'join_list.',
+                'prefix' => 'join_list'
+            ], function() {
+                // 조회
+                Route::get('/select', [
+                    'as'    => 'select',
+                    'uses'  => 'AdminController@selectJoinList'
+                ]);
+
+                // 등록
+                Route::post('/insert', [
+                    'as'    => 'insert',
+                    'uses'  => 'AdminController@insertJoinList'
+                ]);
+
+                // 삭제
+                Route::post('/delete', [
+                    'as'    => 'delete',
+                    'uses'  => 'AdminController@deleteJoinList'
+                ]);
+            });
+
+
+            // 지도반별 시간표 관리
+            Route::group([
+                'as'        => 'timetable.',
+                'prefix'    => 'timetable'
+            ], function() {
+                // 시간표 조회
+                Route::get('/select', [
+                    'as'    => 'select',
+                    'uses'  => 'AdminController@selectTimetable'
+                ]);
+
+                // 자체 인터페이스를 이용한 시간표 등록
+                Route::post('/insert', [
+                    'as'    => 'insert',
+                    'uses'  => 'AdminController@insertTimetables'
+                ]);
+
+                // 시간표 등록을 위한 엑셀 양식 받기
+                Route::get('/get_form', [
+                    'as'    => 'get_form',
+                    'uses'  => 'AdminController@getTimetableRegisterExcel'
+                ]);
+
+                // 엑셀 양식을 이용해 시간표 등록
+                Route::post('/import', [
+                    'as'    => 'import',
+                    'uses'  => 'AdminController@importTimetablesRegister'
+                ]);
+            });
+        });
 
 
         // 일정 관리

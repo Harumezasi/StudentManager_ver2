@@ -27,16 +27,45 @@
                <v-card-text class = "profilePic text-xs-center">
                 <v-avatar size = "125px">
                   <img
+                  v-if="photoUrl"
+                  class = "img-circle elevation-3"
+                  :src = "photoUrl"
+                  >
+                  <img
+                  v-else
                   class = "img-circle elevation-3"
                   :src = "userInfoDatas.photo"
                   >
                 </v-avatar>
               </v-card-text>
-
               <!-- 프로필 사진 업데이트 버튼 -->
               <v-card-text class = "uploadBtn text-xs-center">
+                <!-- 보여지는 버튼 -->
+
+                <v-btn
+                v-if="photoUrl"
+                v-on:click='imageDataReset'
+                style="width:120px"
+                color="red"
+                > リセット </v-btn>
+
+                <v-btn
+                v-else
+                v-on:click='pickFile'
+                style="width:120px"
+                color="blue"
+                > 写真変更 </v-btn>
+
+
                 <!-- 이미지 -->
-                <input type="file" id="file" ref="myFiles" v-on:change="handleFileUpload" accept="image/*">
+                <input
+                  type="file"
+                  id="file"
+                  ref="myFiles"
+                  style="display:none;"
+                  v-on:change="handleFileUpload"
+                  accept="image/*"
+                />
               </v-card-text>
              </v-flex>
            </div>
@@ -64,10 +93,10 @@
 
                  <!-- 연락처 -->
                  <v-text-field
-                   v-model="userInfoDatas.phone"
+                   :mask="phoneType"
                    label="Phone"
-                   mask="phone"
                    id="fontSetting"
+                   v-model="phone"
                    required
                  ></v-text-field>
 
@@ -170,12 +199,20 @@ export default {
      userInfoDatas : [],
      userPassword : null,
      userPasswordCheck : null,
-     photoData : null
+     photoData : null,
+     photoName : null,
+     photoUrl : null,
+     /* */
+     checkCount : 0,
+
+     phone : null,
+     phoneType : "###########"
    }),
    methods : {
      getUserInfo(){
        axios.get('/professor/info/select')
        .then((response) => {
+         this.phone = response.data.message.phone;
          this.userInfoDatas = response.data.message;
          console.log(this.userInfoDatas);
        })
@@ -185,44 +222,110 @@ export default {
      },
      /* 회원정보 수정 */
      setUserInfo(){
+      this.checkCount = 0;
+      let formData = new FormData();
 
-       let formData = new FormData();
+      if(this.userPassword == null){
+        this.checkCount += 1;
+      }
+      if(this.userPasswordCheck == null){
+        this.checkCount += 1;
+      }
+      if(this.phone == null){
+        this.checkCount += 1;
+      }
+      if(this.userInfoDatas.email == null){
+        this.checkCount += 1;
+      }
+      if(this.userInfoDatas.office == null){
+         this.checkCount += 1;
+      }
+      if(this.userPassword != this.userPasswordCheck){
+        this.checkCount += 1;
+      }
 
-       formData.append('password', this.userPassword);
-       formData.append('password_check', this.userPasswordCheck);
-       formData.append('phone', this.userInfoDatas.phone);
-       formData.append('email', this.userInfoDatas.email);
-       formData.append('office', this.userInfoDatas.office);
-
-       /* 이미지 파일의 유무를 판단. */
-       if(this.photoData != null){
+      /* 이미지 파일의 유무를 판단. */
+      if(this.photoData != null){
          formData.append('photo', this.photoData);
+      }
+
+      formData.append('password', this.userPassword);
+      formData.append('password_check', this.userPasswordCheck);
+      formData.append('phone', this.phone);
+      formData.append('email', this.userInfoDatas.email);
+      formData.append('office', this.userInfoDatas.office);
+
+      if(this.checkCount <= 0)
+        axios.post('/professor/info/update',formData)
+        .then((response) => {
+          /* 통신 테스트 */
+          console.log("update success");
+          alert(response.data.message)
+          /* 통신 완료 후, 입력한 비밀번호 초기화 */
+          this.userPassword      = null;
+          this.userPasswordCheck = null;
+          /* 이미지 초기화 */
+          this.photoData = null;
+          /* 업데이트 후, 변경된 데이터를 보여주기 위해서 데이터를 다시 받아온다. */
+          this.getUserInfo();
+
+        }).catch((error) => {
+
+        console.log('setUserInfo Error : ' + error);
+
+        })
+      else if(this.userPassword != this.userPasswordCheck)
+        alert('パスワードが間違っています。')
+      else
+        alert('入力しない情報があります。')
+     },
+     /* 이미지 등록 */
+     pickFile() {
+       this.$refs.myFiles.click()
+     },
+     handleFileUpload (e) {
+      console.log(e.target);
+      console.log(e.target.files);
+
+       const files = e.target.files
+       if(files[0] !== undefined) {
+         this.photoName = files[0].name
+         if(this.photoName.lastIndexOf('.') <= 0) {
+           return
+         }
+         const fr = new FileReader ()
+         fr.readAsDataURL(files[0])
+         fr.addEventListener('load', () => {
+           this.photoUrl = fr.result
+           this.photoData = files[0]
+         })
+       }
+     },
+     imageDataReset(){
+        this.photoName = ''
+        this.photoData = ''
+        this.photoUrl = ''
+     }
+   },
+   watch : {
+     phone : function(){
+       console.log('w');
+       if(this.phone.length >= 11){
+         this.phoneType = "###-####-####"
+       }else{
+         this.phoneType = "(###)###-#####"
        }
 
-       axios.post('/professor/info/update',
-        formData
-     ).then((response) => {
-         /* 통신 테스트 */
-         console.log("update success");
-         alert(response.data.message)
-         /* 통신 완료 후, 입력한 비밀번호 초기화 */
-         this.userPassword      = null;
-         this.userPasswordCheck = null;
-         /* 이미지 초기화 */
-         this.photoData = null;
-         /* 업데이트 후, 변경된 데이터를 보여주기 위해서 데이터를 다시 받아온다. */
-         this.getUserInfo();
-       })
-       .catch((error) => {
-         console.log('setUserInfo Error : ' + error);
-       })
-     },
-     handleFileUpload(){
-       this.photoData = this.$refs.myFiles.files[0]
-       console.log(this.photoData);
-    }
+       console.log(this.phone);
+       console.log(this.phoneType);
+     }
    },
    created(){
+     console.log('c');
+     this.getUserInfo();
+   },
+   mounted(){
+     console.log('m');
      this.getUserInfo();
    }
  }

@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 /**
- * 클래스명:                       UploadScoresFormExport
+ * 클래스명:                       ExportArrayToExcel
  * @package                        App\Exports
  * 클래스 설명:                    성적 업로드 양식 지정에 사용하는 클래스
  * 만든이:                         3-WDJ 8조 春目指し 1401213 이승민
@@ -26,7 +26,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
  * 멤버 메서드 목록
  *
  */
-class UploadScoresFormExport implements FromCollection, WithColumnFormatting, ShouldAutoSize {
+class ExportArrayToExcel implements FromCollection, WithColumnFormatting, ShouldAutoSize {
     // 엑셀로 반환할 데이터 배열
     private $data;
 

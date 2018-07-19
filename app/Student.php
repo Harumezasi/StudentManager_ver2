@@ -3,10 +3,13 @@
 namespace App;
 
 use App\Exceptions\NotValidatedException;
+use App\Rules\NotExists;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use Validator;
 
 /**
  *  클래스명:               Student
@@ -287,18 +290,64 @@ class Student extends Model
         return $stats;
     }
 
-    // 학생 정보 갱신 메서드
+    // 학생 정보 삽입
+    public static function insertInfo($argId, $argName, $argClassId) {
+        // 01. 정보 유효성 검사
+//        if(!(is_numeric($argId) && strlen($argId) == 7)) {
+//            throw new NotValidatedException();
+//        }
+        $validator = Validator::make([
+            'id'        => $argId,
+            'name'      => $argName,
+            'class_id'  => $argClassId
+        ], [
+            'id'        => ['required', 'regex:#\d{7}#', new NotExists('users', 'id')],
+            'name'      => 'required|string|min:2',
+            'class_id'  => 'required|exists:study_classes,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 학생 & 사용자 정보 저장
+        try {
+            $user = new User();
+            $user->id = $argId;
+            $user->password = "";
+            $user->name = $argName;
+            $user->email = "";
+            $user->phone = "";
+            $user->type = 'student';
+            $user->photo = "";
+
+            $user->save();
+
+            $student = new Student();
+            $student->study_class = $argClassId;
+            $user->student()->save($student);
+
+            return true;
+        } catch(QueryException $e) {
+            return false;
+        }
+    }
+
+    // 학생 정보 갱신
     public function updateMyInfo(Array $dataArray) {
         // 01. 사용자의 데이터 갱신
         $user = $this->user;
 
         if(isset($dataArray['password']))
             $user->password = password_hash($dataArray['password'], PASSWORD_DEFAULT);
+        if(isset($dataArray['name']))       $user->name     = $dataArray['name'];
         if(isset($dataArray['email']))      $user->email    = $dataArray['email'];
         if(isset($dataArray['phone']))      $user->phone    = $dataArray['phone'];
         if(isset($dataArray['photo']))      $user->photo    = $dataArray['photo'];
 
         if($user->save() !== true) return false;
+
+        if(isset($dataArray['study_class']))   $this->study_class  = $dataArray['study_class'];
 
         return true;
     }
@@ -508,5 +557,21 @@ class Student extends Model
     // 내가 수강하는 강의 목록 조회
     public function selectSubjectList() {
         return Subject::whereIn('id', $this->joinLists()->pluck('subject_id')->all());
+    }
+
+    // 학생 삭제
+    public function delete() {
+        if(parent::delete()) {
+            if (!is_null($this->user)) {
+                $this->user->delete();
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+        return true;
     }
 }

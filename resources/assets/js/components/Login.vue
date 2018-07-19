@@ -82,7 +82,7 @@
               <!-- form End -->
               <!-- join start -->
               <v-card-actions>
-                <v-btn block outline color="orange" type='submit' class="loginButton">新規登録</v-btn>
+                <v-btn block outline color="orange" type='submit' to='/join'>新規登録</v-btn>
                 <v-btn block outline color="red" type='submit' class="loginButton">PWを探す</v-btn>
               </v-card-actions>
               <!-- join End -->

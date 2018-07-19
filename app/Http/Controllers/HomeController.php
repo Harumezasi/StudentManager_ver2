@@ -7,6 +7,7 @@ use App\Http\Middleware\Language;
 use App\Mail\TempPasswordGenerated;
 use App\Student;
 use App\Professor;
+use http\Env\Response;
 use Validator;
 use Illuminate\Http\Request;
 use App\User;
@@ -323,10 +324,104 @@ class HomeController extends Controller
         }
     }
 
-    // 아이디 찾기
-
 
     // 비밀번호 찾기
+    // 비밀번호 교환 자격 확인
+    public function verifyChangePasswordAuthority(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'id'        => 'required|exists:users,id'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 사용자 획득
+        try {
+            $user = User::findOrFail($request->post('id'));
+
+            // 03. 사용자 검증용 키값 생성
+            $key = null;
+            while(is_null($key) || User::where('verify_key', $key)->exists()) {
+                $key = str_random(10);
+            }
+            $user->verify_key = $key;
+
+            // 04. 이메일 전송
+            if ($user->save()) {
+                // 인증키 등록 => 메일 전송
+
+                Mail::to($user->email)->send(new TempPasswordGenerated($user));
+
+                if (count(Mail::failures()) > 0) {
+                    // 메일 전송 실패시 알림
+                    throw new Exception(__('response.send_mail_failed'));
+                } else {
+                    return response()->json(new ResponseObject(
+                        true, __('response.send_mail_success')
+                    ), 200);
+                }
+            } else {
+                // 인증키 등록 실패
+                throw new Exception(__('response.generate_key_failed'));
+            }
+        } catch(Exception $e) {
+            // 예외 처리 -> 상황에 따른 예외 메시지 발생
+            return response()->json(new ResponseObject(
+                false, $e->getMessage()
+            ), 200);
+        }
+    }
+
+    // 비밀번호 변경키 유효성 검증
+    public function checkVerifyKey(Request $request) {
+        // 01. 요청 유효성 검증
+        $validator  = Validator::make($request->all(), [
+            'key'       => 'required|string|size:10'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        return response()->json(User::where('verify_key', $request->post('key'))->exists());
+    }
+
+    // 비밀번호 갱신
+    public function changePassword(Request $request) {
+        // 01. 요청 유효성 검사
+        $validator = Validator::make($request->all(), [
+            'key'               => 'required|exists:users,verify_key',
+            'password'          => 'required',
+            'password_check'    => 'required|same:password'
+        ]);
+
+        if($validator->fails()) {
+            throw new NotValidatedException($validator->errors());
+        }
+
+        // 02. 사용자 획득
+        $user = User::where('verify_key', $request->post('key'))->first();
+
+        // 03. 비밀번호 변경
+        $user->password     = password_hash($request->post('password'), PASSWORD_DEFAULT);
+        $user->verify_key   = null;
+
+        // 04. 결과 알림
+        if($user->save()) {
+            // 비밀번호 변경 성공
+            return response()->json(new ResponseObject(
+                true, __('response.update_success', ['element', __('interface.password')])
+            ), 200);
+
+        } else {
+            // 변경 실패
+            return response()->json(new ResponseObject(
+                false, __('response.update_failed', ['element', __('interface.password')])
+            ), 200);
+        }
+    }
 
 
 
@@ -475,8 +570,5 @@ class HomeController extends Controller
 
     // 시험용 메서드
     public function test() {
-        $to = 'smlee95kr@naver.com';
-
-        return Mail::to($to)->send(new TempPasswordGenerated());
     }
 }

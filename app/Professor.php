@@ -101,6 +101,17 @@ class Professor extends Model
         return self::join('users', 'users.id', 'professors.id');
     }
 
+    // 지도교수 여부에 의한 교수목록 조회
+    public static function isTutor($flag = true) {
+        $tutorList = StudyClass::all()->pluck('tutor')->all();
+
+        if($flag) {
+            return self::whereIn('id', $tutorList);
+        } else {
+            return self::whereNotIn('id', $tutorList);
+        }
+    }
+
 
 
     // 05. 멤버 메서드 정의
@@ -116,6 +127,17 @@ class Professor extends Model
             return $subjects->first();
         } else {
             throw new NotValidatedException(__('response.no_authority', ['contents' => __('study.subject')]));
+        }
+    }
+
+    // 사용자가 해당 지도반의 지도교수인지 조회
+    public function isMyClass($classId) {
+        $studyClass = $this->studyClass()->where('id', $classId);
+
+        if($studyClass->exists()) {
+            return $studyClass->first();
+        } else {
+            throw new NotValidatedException(__('response.no_authority', ['contents' => __('interface.class')]));
         }
     }
 
@@ -171,6 +193,7 @@ class Professor extends Model
 
         if(isset($dataArray['password']))
             $user->password = password_hash($dataArray['password'], PASSWORD_DEFAULT);
+        if(isset($dataArray['name']))       $user->name     = $dataArray['name'];
         if(isset($dataArray['email']))      $user->email    = $dataArray['email'];
         if(isset($dataArray['phone']))      $user->phone    = $dataArray['phone'];
         if(isset($dataArray['photo']))      $user->photo    = $dataArray['photo'];
@@ -214,5 +237,21 @@ class Professor extends Model
         } else {
             return false;
         }
+    }
+
+    // 교수 삭제
+    public function delete() {
+        if(parent::delete()) {
+            if (!is_null($this->user)) {
+                $this->user->delete();
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+        return true;
     }
 }

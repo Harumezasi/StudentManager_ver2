@@ -96,6 +96,33 @@ class TimetablesTableSeeder extends Seeder
                             ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '本館200号'],
                         ];
                         break;
+
+                    case 'B':
+                        $periods = [
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '정보관 102호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '정보관 102호'],
+
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '情報館102号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '情報館102号'],
+                        ];
+                        break;
+
                     case 'C':
                         $periods = [
 //                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '정보관 507호'],
@@ -119,6 +146,32 @@ class TimetablesTableSeeder extends Seeder
                             ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '情報館507号'],
                             ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '情報館507号'],
                             ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '情報館507号'],
+                        ];
+                        break;
+
+                    case 'D':
+                        $periods = [
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '정보관 513호'],
+//                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '정보관 513호'],
+
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 8, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::MONDAY, 'period' => 9, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 8, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::TUESDAY, 'period' => 9, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 8, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::WEDNESDAY, 'period' => 9, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 8, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::THURSDAY, 'period' => 9, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 8, 'classroom' => '情報館513号'],
+                            ['day_of_week' => Carbon::FRIDAY, 'period' => 9, 'classroom' => '情報館513号'],
                         ];
                         break;
                 }
