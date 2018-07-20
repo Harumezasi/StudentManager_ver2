@@ -136,10 +136,10 @@
                                  <v-list-tile-action>
                                    <v-flex xs12>
                                        <v-layout row wrap align-center>
-                                         <v-flex xs12 md6>
+                                         <v-flex xs12 md6 v-if="datas.sign_out">
                                            <v-chip :color="datas.sign_in ? 'light-green' : 'grey lighten-1'">登校</v-chip>
                                          </v-flex>
-                                         <v-flex xs12 md6>
+                                         <v-flex xs12 md6 v-else>
                                            <v-chip :color="datas.sign_out ? 'amber' : 'grey lighten-1'">下校</v-chip>
                                          </v-flex>
                                        </v-layout>
