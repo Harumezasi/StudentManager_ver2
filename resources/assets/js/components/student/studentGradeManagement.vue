@@ -24,7 +24,7 @@
                       <h2 style="font-family:Mplus 1p;font-weight:bold">講義リスト</h2>
                     </v-flex>
                     <v-flex xs12 md6>
-                      <v-select :items="semester" v-model="e1" label="Select" color = "light-green darken-2" single-line></v-select>
+                      <!-- <v-select :items="semester" v-model="e1" label="Select" color = "light-green darken-2" single-line></v-select> -->
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -232,11 +232,11 @@ export default {
       ],
        /* 상세 성적 정보 */
        detailTableHeaders: [
-          { text: '날짜', value: 'date' },
-          { text: '시험 이름', value: 'detailType' },
-          { text: '득점', value: 'myScore' },
-          { text: '만점', value: 'totalScore' },
-          { text: '분류', value: 'testType' }
+          { text: '日時', value: 'date' },
+          { text: '試験タイプ', value: 'detailType' },
+          { text: '得点', value: 'myScore' },
+          { text: '満点', value: 'totalScore' },
+          { text: '分類', value: 'testType' }
         ]
     }
   },
@@ -315,7 +315,7 @@ export default {
   border-radius: 0.6975rem;
   position: relative;
   bottom: 200px;
-  min-height: 843px;
+  min-height: 680px;
   box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
 }
 
