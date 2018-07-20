@@ -97,14 +97,14 @@ body {
 
 .fontSetting {
   font-size: 18px;
-  font-weight: lighter;
-  font-style: 'Gothic A1';
+  font-weight: normal;
+  font-family: "Mplus 1p";
 }
 
 #fontSetting td {
   font-size: 18px;
-  font-weight: lighter;
-  font-style: 'Gothic A1';
+  font-weight: normal;
+  font-family: "Mplus 1p";
 }
 
 .setAlertDataArea {
@@ -134,8 +134,8 @@ body {
   bottom: 120px;
 }
 .cardInsideTitle {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: bold;
   border-bottom: 1px solid;
   padding-bottom: 6px;
   border-color: rgba(187, 187, 187, 0.73);
@@ -167,7 +167,7 @@ export default {
           value : 'lateness'
         },
         {
-          text: '早引け',
+          text: '早退',
           value : 'early_leave'
         },
         {
@@ -249,7 +249,7 @@ export default {
               setMessageData[start] += "欠席を";
               break;
             case "early_leave":
-              setMessageData[start] += "早引けを";
+              setMessageData[start] += "早退を";
               break;
           }
           /* 2차 필터링 타입 */

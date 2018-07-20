@@ -26,7 +26,7 @@
                       <v-icon class = "iconStyle" color = "blue accent-2" x-large>alarm</v-icon>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <h1 class = "firstCard">今日遅刻した学生</h1>
+                      <h2 class = "firstCard">今日遅刻した学生</h2  >
                     </v-flex>
                     <v-flex xs12 md2>
                       <h2 style="font-family:Montserrat; position: relative; right: 20px;color:rgb(104, 142, 240)">{{ latenessStudentCount }}/48 </h2>
@@ -47,8 +47,8 @@
                       </v-list-tile-avatar>
                       <v-list-tile-content>
                         <!-- 학생의 이름과 학번 -->
-                        <v-list-tile-title v-html="datas.name"></v-list-tile-title>
-                        <v-list-tile-sub-title v-html="datas.id"></v-list-tile-sub-title>
+                        <v-list-tile-title style="font-family: Mplus 1p; font-weight: lighter" v-html="datas.name"></v-list-tile-title>
+                        <v-list-tile-sub-title style="font-family: Mplus 1p; font-weight: lighter" v-html="datas.id"></v-list-tile-sub-title>
                       </v-list-tile-content>
                     </v-list-tile>
                   </template>
@@ -87,8 +87,8 @@
                      </v-list-tile-avatar>
                      <v-list-tile-content>
                        <!-- 학생의 이름과 학번 -->
-                       <v-list-tile-title v-html="datas.name"></v-list-tile-title>
-                       <v-list-tile-sub-title v-html="datas.id"></v-list-tile-sub-title>
+                       <v-list-tile-title style="font-family: Mplus 1p; font-weight: lighter" v-html="datas.name"></v-list-tile-title>
+                       <v-list-tile-sub-title style="font-family: Mplus 1p; font-weight: lighter" v-html="datas.id"></v-list-tile-sub-title>
                      </v-list-tile-content>
                    </v-list-tile>
                  </template>
@@ -191,12 +191,12 @@ export default {
   max-height: 370px;
 }
 .firstCard {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-size: 23px;
   color: rgb(61, 61, 61);
   position: relative;
   right: 20px;
-  bottom: 3px;
+  bottom: 0px;
 }
 .iconStyle {
   position: relative;

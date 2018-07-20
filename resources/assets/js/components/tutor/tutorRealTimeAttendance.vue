@@ -227,9 +227,11 @@
 
 /* 공통 css */
 .cardsTitle {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
-  font-size: 25px;
+  font-family: "Mplus 1p";
+  font-size: 20px;
+  font-weight: bold;
+  position: relative;
+  right: 15px;
 }
 .currentStudentNum {
   font-family: "Montserrat";
@@ -290,7 +292,7 @@
   min-height: 200px;
   width: 400px;
   box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
-  background: linear-gradient(to bottom right, rgb(165, 180, 210), rgb(61, 96, 241));
+  background: linear-gradient(to bottom right, rgb(87, 140, 247), rgb(2, 90, 224));
 }
 .interestInfoArea {
   min-height: 130px;

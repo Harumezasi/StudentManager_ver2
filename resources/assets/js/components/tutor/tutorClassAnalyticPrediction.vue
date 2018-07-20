@@ -106,7 +106,7 @@
                               <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('absence')">欠席</v-btn>
                             </v-flex>
                             <v-flex xs12 md4>
-                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('early_leave')">早引け</v-btn>
+                                <v-btn depressed small round color="blue accent-3" dark v-on:click="adaChartController('early_leave')">早退</v-btn>
                             </v-flex>
                           </v-layout>
                         </v-container>
@@ -231,9 +231,11 @@
   width: 470px;
 }
 .chartTitle {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: normal;
   font-size: 30px;
+  position: relative;
+  left: 10px;
 }
 .classGradeCartBox {
   height: 500px;
@@ -585,7 +587,7 @@ export default {
             this.selectAtt = 'lateness';
             break;
           case 'early_leave':
-            this.attendanceChartStat = '早引け';
+            this.attendanceChartStat = '早退';
             this.selectAtt = 'early_leave';
             break;
           case 'absence':

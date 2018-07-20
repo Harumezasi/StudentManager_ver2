@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="joinArea">
     <!-- 회원가입 체크 -->
     <div>
       <v-flex xs12>
@@ -16,8 +16,8 @@
               <!-- 학번 or 아이디 입력 영역 -->
               <v-card-actions>
 
-                <div style="width:80px">
-                  <v-radio-group v-model="join_Type">
+                <div>
+                  <v-radio-group v-model="join_Type" class="radioDiv">
                     <v-radio label="学生" value="student" v-if="!joinCheck"></v-radio>
                     <v-radio label="学生" value="student" v-else disabled></v-radio>
                     <v-radio label="教授" value="professor" v-if="!joinCheck"></v-radio>
@@ -26,8 +26,8 @@
                 </div>
 
                 <div>
-                  <v-text-field prepend-icon="person" solo-inverted name="id" :label="message" type="text" v-model="id_Number" class="inputArea" v-if="!joinCheck"></v-text-field>
-                  <v-text-field prepend-icon="person" solo-inverted name="id" :label="message" type="text" v-model="id_Number" class="inputArea" v-else disabled></v-text-field>
+                  <v-text-field solo-inverted name="id" :label="message" type="text" v-model="id_Number" class="inputArea" v-if="!joinCheck"></v-text-field>
+                  <v-text-field solo-inverted name="id" :label="message" type="text" v-model="id_Number" class="inputArea" v-else disabled></v-text-field>
                 </div>
 
                 <v-btn block outline color="green" v-on:click="checkJoin()" v-if="!joinCheck">ID チェック</v-btn>
@@ -104,7 +104,6 @@
         </v-container grid-list-xl>
       </v-flex xs12>
     </div>
-
   </div>
 </template>
 
@@ -114,6 +113,7 @@
             return {
               /* 회원가입 체크 */
               joinCheck : false,
+              id_check : 0,
               /* 입력 메세지 (학생, 교수)*/
               message : null,
               /* 체크 데이터 */
@@ -158,6 +158,7 @@
 
               if(response.data.status){
                 this.joinCheck = true;
+                this.id_check = 1;
                 if(this.join_Type == 'professor'){
                   /* 기본 아이디를 추가 */
                   this.id = this.id_Number;
@@ -191,7 +192,7 @@
               console.log(this.joinCheck);
               formData.append('type', this.join_Type)
               formData.append('id', this.id)
-              formData.append('id_check', 1)
+              formData.append('id_check', this.id_check)
               formData.append('password', this.pw)
               formData.append('password_check', this.pw_check)
               formData.append('name', this.name)
@@ -238,7 +239,7 @@
       				fr.readAsDataURL(files[0])
       				fr.addEventListener('load', () => {
       					this.photoUrl = fr.result
-      					this.photoFile = files[0] // this is an image file that can be sent to server...
+      					this.photoFile = files[0]
       				})
       			} else {
       				this.photoName = ''
@@ -260,6 +261,7 @@
             this.photoUrl  = null
             this.photoName = null
             this.photoFile = null
+            this.id_check = 0
           }
         },
         watch : {
@@ -304,6 +306,17 @@
   padding: 10px;
   float: left;
   width: 250px;
+}
+
+.joinArea {
+  min-width: 40%;
+  min-height: 30%;
+
+  position: absolute;
+  left : 30%;
+}
+.radioDiv {
+  width: 100px;
 }
 
 </style>

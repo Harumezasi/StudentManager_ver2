@@ -21,17 +21,17 @@
             </v-card-title>
             <v-data-table :headers="headers" :items="student_lists" :search="search" :pagination.sync="pagination" hide-actions>
               <template slot="items" slot-scope="props">
-                <td class="text-xs-center" style="height: 70px; font-size: 20px;font-family: Gothic A1" >{{ props.item.id }}</td>
-                 <td class="text-xs-center" style="font-size: 20px;font-family: Gothic A1">{{ props.item.name }}</td>
+                <td class="text-xs-center" style="height: 70px; font-size: 20px;font-family: Mplus 1p" >{{ props.item.id }}</td>
+                 <td class="text-xs-center" style="font-size: 20px;font-family: Mplus 1p">{{ props.item.name }}</td>
                  <td class="text-xs-center">
-                   <v-btn color = "blue accent-2" style="color:white" slot="activator" normal :onclick="props.item.infoLink">
+                   <v-btn color = "blue accent-2" style="color:white;font-family: Mplus 1p" slot="activator" normal :onclick="props.item.infoLink">
                      詳しく見る
                    </v-btn>
                  </td>
               </template>
             </v-data-table>
             <div class="text-xs-center pt-2">
-              <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+              <v-pagination circle v-model="pagination.page" :length="pages"></v-pagination>
             </div>
             <v-alert slot="no-results" :value="true" color="error" icon="warning">
               Your search for "{{ search }}" found no results.
@@ -83,7 +83,6 @@ export default {
           text: '学生番号',
           value: 'studentNum',
           align: 'center',
-          fontSize: '30px'
         },
         {
           class: 'display-1',

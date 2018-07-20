@@ -157,8 +157,8 @@
 
 <style>
 .cardInsideTitle {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: normal;
   border-bottom: 1px solid;
   padding-bottom: 6px;
   border-color: rgba(187, 187, 187, 0.73);
@@ -200,7 +200,7 @@ Vue.component('attendance-pie-chart', {
     renderPieChart : function(){
       this.renderChart({
         /* 기간 내의 날짜 */
-        labels: ['出席','遅刻','欠席','早引け'],
+        labels: ['出席','遅刻','欠席','早退'],
         datasets: [{
             backgroundColor: ['#10a236', '#f9cd41', '#fe7272', '#5c7add'],
             pointBackgroundColor: 'white',
@@ -284,7 +284,7 @@ export default {
        data: []
      },
      {
-       label: '下校&早引け',
+       label: '下校&早退',
        borderColor: '#f48080',
        fill: false,
        data: []
@@ -319,7 +319,7 @@ export default {
          recentlyDate: null
        },
        {
-         name: '早引け',
+         name: '早退',
          countType : '回数',
          count: null,
          continuityType : '続いた回数',
@@ -375,16 +375,16 @@ export default {
      /*--- 출결 분석 테이블 --*/
      headers: [
        {text: 'よく遅刻する曜日', value: 'lateWeek'},
-       {text: 'よく早引けする曜日', value: 'leaveEarlyWeek'},
+       {text: 'よく早退する曜日', value: 'leaveEarlyWeek'},
        {text: 'よく欠席する曜日', value: 'absenceWeek'},
        {text: '平均遅刻の時間', value: 'averageLateTime'},
      ],
      attendanceAnalysis: [],
      headers2: [
        {text: '月平均の遅刻回数', value: 'lateNum'},
-       {text: '月平均の早引け回数', value: 'leaveEarlyNum'},
+       {text: '月平均の早退回数', value: 'leaveEarlyNum'},
        {text: '月平均の欠席回数', value: 'absenceNum'},
-       {text: '早引け＆遅刻の頻繁な理由', value: 'reason'},
+       {text: '早退＆遅刻の頻繁な理由', value: 'reason'},
      ],
      attendanceAnalysisMonth: [],
    }),
@@ -500,7 +500,7 @@ export default {
                 break;
               case 'unreason':
                 /* 조퇴 */
-                this.$set(datas[start], 'sign_out', '早引け');
+                this.$set(datas[start], 'sign_out', '早退');
                 this.$set(datas[start], 'sign_out_time', response.data.message[start].sign_out_time);
                 this.$set(datas[start], 'sign_out_message', response.data.message[start].detail[0].sign_out_message);
                 break;

@@ -22,7 +22,7 @@
                     <img :src="comment.photo_url" />
                   </v-avatar>
                   <div>
-                    <span style="color: black">{{ comment.name }}<br>教授</span>
+                    <span style="color: black;font-family: Mplus 1p">{{ comment.name }}<br>教授</span>
                   </div>
                   <!-- 보여지는 코멘트 -->
                   <div class="box3 sb14" v-if="!comment.textView"> {{ comment.content }} </div>
@@ -75,6 +75,7 @@
               <v-text-field
                 name="input-1"
                 label="コメントを入力してください。"
+                style="font-family: Mplus 1p"
                 textarea
                 v-model="setData"
               ></v-text-field>
@@ -105,7 +106,7 @@
 }
 .fontSetting {
   font-size: 30px;
-  font-style: 'Gothic A1';
+  font-family: "Mplus 1p";
 }
 /*-- 코멘트용 말풍선 --*/
 .box3 {
@@ -117,8 +118,8 @@
   color: #fff;
   padding: 20px;
   text-align: center;
-  font-weight: 900;
-  font-family: "Nanum Gothic Coding";
+  font-weight: 500;
+  font-family: "Mplus 1p";
   position: relative;
 }
 /*-- 왼쪽 말풍선 --*/

@@ -18,11 +18,11 @@
 </head>
 <body>
     <header>
-        <h1>강의 등록 ^_^</h1>
+        <h1>시간표 등록 ^_^</h1>
         <tr/>
     </header>
     <section>
-        <form action="{{ route('tutor.class.subject.import') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('admin.subject.timetable.import') }}" method="post" enctype="multipart/form-data">
             <label for="upload_file">엑셀 업로드</label>
             <input type="file" name="upload_file" id="upload_file">
             <input type="submit" value="전송">

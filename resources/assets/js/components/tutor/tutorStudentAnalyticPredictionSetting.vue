@@ -17,7 +17,7 @@
             <v-card class = "attendanceSettingTitleBox">
               <v-card-text style="padding-bottom: 5px;">
                 <h2 style="color: white">出席</h2>
-                <p>遅刻、早引け、欠席の学生</p>
+                <p>遅刻、早退、欠席の学生</p>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -97,7 +97,7 @@
                       <v-btn depressed fab dark color="cyan accent-4" >
                         <v-icon dark>local_hotel</v-icon>
                       </v-btn>
-                      <h2 class = "frequency">早引け</h2>
+                      <h2 class = "frequency">早退</h2>
                     </v-flex>
                     <v-flex xs5>
                       <v-text-field
@@ -405,22 +405,22 @@ export default {
   border-color: rgba(187, 187, 187, 0.73);
 }
   .period {
-    font-family: "Nanum Gothic Coding";
-    font-weight: lighter;
+    font-family: "Mplus 1p";
+    font-weight: normal;
     color: black;
     margin: 65px 0 0 20px;
   }
 .frequency {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: normal;
   color: black;
   left: 85px;
   bottom: 56px;
   position: relative;
 }
 .frequency_2 {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: normal;
   color: black;
   left: 230px;
   bottom: 55px;
@@ -451,10 +451,10 @@ export default {
   border-color: rgba(187, 187, 187, 0.73);
 }
   .standard {
-    font-family: "Nanum Gothic Coding";
-    font-weight: lighter;
+    font-family: "Mplus 1p";
+    font-weight: normal;
     color: black;
-    margin: 65px 0 0 20px;
+    margin: 57px 0 0 20px;
   }
 
 .lowRankBox {
@@ -464,14 +464,15 @@ export default {
   border-color: rgba(187, 187, 187, 0.73);
 }
  .lowRankTitle {
-   font-family: "Nanum Gothic Coding";
-   font-weight: lighter;
+   font-family: "Mplus 1p";
+   font-weight: normal;
    position: relative;
    right: 35px;
  }
  .lowRankText {
-   font-family: "Nanum Gothic Coding";
-   font-weight: lighter;
+   font-family: "Mplus 1p";
+   font-weight: normal;
+   font-size: 17px;
  }
 
 
@@ -480,18 +481,20 @@ export default {
   bottom: 40px;
 }
   .recentProblemsTitle {
-    font-family: "Nanum Gothic Coding";
-    font-weight: lighter;
+    font-family: "Mplus 1p";
+    font-weight: normal;
     position: relative;
     right: 35px;
   }
   .recentProblemsText {
-    font-family: "Nanum Gothic Coding";
-    font-weight: lighter;
+    font-family: "Mplus 1p";
+    font-weight: normal;
+    font-size: 17px;
   }
   .recentProblemsText_2 {
-    font-family: "Nanum Gothic Coding";
-    font-weight: lighter;
+    font-family: "Mplus 1p";
+    font-weight: normal;
+    font-size: 17px;
   }
 
 

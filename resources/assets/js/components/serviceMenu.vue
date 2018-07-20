@@ -319,8 +319,6 @@ export default {
         axios.get('/professor/subject/list')
         .then((response) => {
           let subjects = response.data.message.subjects;
-
-
           /* 강의 메뉴 생성 */
           for(let start = 0; start < subjects.length; start++){
             this.MenuDataList[0].professor[0].subMenu

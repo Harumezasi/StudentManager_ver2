@@ -2,11 +2,11 @@
   <div class="tutorInformation">
 
     <v-container grid-list-xl>
-      <v-flex xs11>
+      <v-flex xs7>
         <v-card
         class = "profileTitleBox"
-        color = "amber darken-2"
-        style = "box-shadow:  0 4px 12px 0 rgba(244, 149, 24, 0.36)"
+        color = "light-blue darken-4"
+        style = "box-shadow:  0 4px 12px 0 rgba(24, 111, 244, 0.36)"
         >
           <v-card-text style="padding-bottom: 5px;">
             <h1 style="color: white">会員情報</h1>
@@ -17,7 +17,7 @@
     </v-container>
 
     <v-container grid-list-xl>
-     <v-flex xs12>
+     <v-flex xs8>
        <v-card class="profileBox elevation-4" color = "white" style="min-width:370px">
        <v-container grid-list-xl>
          <v-layout row wrap align-center>
@@ -129,7 +129,7 @@
                </v-form>
              </v-card-text>
              <v-card-text class = "updateBtn text-xs-right">
-               <v-btn color = "amber darken-2" dark v-on:click="setUserInfo()" class="fontSetting">会員情報セーブ</v-btn>
+               <v-btn color = "light-blue darken-4" dark v-on:click="setUserInfo()" class="fontSetting">会員情報セーブ</v-btn>
              </v-card-text>
            </v-flex>
          </div>
@@ -150,20 +150,24 @@
 }
 
 #fontSetting {
-  font-size: 30px;
+  font-size: 20px;
   font-style: 'Gothic A1';
 }
 
+.tutorInformation {
+  position: relative;
+  left: 180px;
+}
 .profileTitleBox {
-  border-radius: 0.2975rem;
+  border-radius: 0.4975rem;
   position: relative;
   z-index: 2;
-  left: 35px;
+  left: 43px;
   top: 60px;
 }
 .profileBox {
   padding: 60px 10px 30px 20px;
-  border-radius: 0.2975rem;
+  border-radius: 0.4475rem;
   position: relative;
   z-index: 1;
   bottom: 40px;

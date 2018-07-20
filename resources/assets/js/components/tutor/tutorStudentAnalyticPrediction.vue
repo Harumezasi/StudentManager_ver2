@@ -9,7 +9,7 @@
     <!-- 기간 설정 영역 -->
     <v-dialog v-model="dialog" width="750px">
       <v-card>
-        <v-card-title class="grey lighten-4 py-4 title" style="font-family:Nanum Gothic Coding;">
+        <v-card-title class="grey lighten-4 py-4 title" style="font-family:Mplus 1p">
          分析の期間設定
         </v-card-title>
         <!-- 분석 조건 설정 : 출석 -->
@@ -46,7 +46,7 @@
                ></v-date-picker>
                <!-- 최근 일 경우 -->
                <div v-if="setPeriod_type == 'recently'">
-                 <h2 style="font-family: Gothic A1">最近（10週）は期間の変更ができません。</h2>
+                 <h2 style="font-family: Mplus 1p">最近（10週）は期間の変更ができません。</h2>
                </div>
            </v-flex>
          </v-layout>
@@ -87,7 +87,7 @@
               </v-card-text>
               <!-- 학생 분류 버튼 -->
               <v-card-text class = "buttonBox">
-                <v-btn round outline color="blue accent-2" @click="getStudentInfo('total'), studentSelected='全て'">全て</v-btn>
+                <v-btn style="font-family:Mplus 1p"round outline color="blue accent-2" @click="getStudentInfo('total'), studentSelected='全て'">全て</v-btn>
                 <v-btn round outline color="blue accent-2" @click="getStudentInfo('filter'), studentSelected='注目'">注目</v-btn>
                 <v-btn round outline color="blue accent-2" @click="getStudentInfo('attention'), studentSelected='チェック'">チェック</v-btn>
               </v-card-text>
@@ -168,7 +168,7 @@
                               </v-flex>
 
                               <!-- 학생 정보 -->
-                              <v-flex xs5>
+                              <v-flex xs8>
                                 <v-card-text class = "studentInfo">
                                   <div class="textBox"><span>{{ selectStudentData.id }}</span>{{ selectStudentData.name }}</div>
                                   <!-- 사랑 -->
@@ -208,7 +208,7 @@
                                 </v-card-text>
                               </v-flex>
                               <!-- 학생 정보 -->
-                              <v-flex xs5>
+                              <v-flex xs8>
                                 <v-card-text class = "studentInfo">
                                   <div class="textBox"><span>学生を選んでください。</span></div>
                                 </v-card-text>
@@ -384,8 +384,8 @@
 }
 
 .studentListTitle {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: normal;
   font-size: 30px;
 }
 .buttonBox {
@@ -404,8 +404,8 @@
   box-shadow:  0px 4px 10px 0 rgba(33, 33, 33, 0.36);
 }
 .chartTitle {
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: normal;
   font-size: 30px;
 }
 .studentInfoBox {
@@ -417,8 +417,8 @@
   left: 87px;
 }
   .textBox {
-    font-family: "Nanum Gothic Coding";
-    font-weight: lighter;
+    font-family: "Mplus 1p";
+    font-weight: normal;
     font-size: 25px;
     margin: 0 0 10px 0;
   }
@@ -439,8 +439,8 @@
   position: relative;
   top: 5px;
   left: -10px;
-  font-family: "Nanum Gothic Coding";
-  font-weight: lighter;
+  font-family: "Mplus 1p";
+  font-weight: normal;
 }
 
 /* */
@@ -579,7 +579,7 @@ Vue.component('attendance-count-pieChart', {
   methods : {
     renderPieChart : function(){
       this.renderChart({
-        labels : ['出席','遅行','欠席','早引け'],
+        labels : ['出席','遅行','欠席','早退'],
         datasets:[{
             backgroundColor: ['#4657fa','#9f98ed','#ff3333','#808080'],
             fill : false,

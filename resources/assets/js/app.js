@@ -31,13 +31,15 @@ import Login from './components/Login.vue'
 import join from './components/join.vue'
 
 /* 비밀번호 찾기 */
-//import help from './components/help.vue'
+import help from './components/help.vue'
 
 /* 메뉴 */
 import serviceMenu from './components/serviceMenu.vue'
 
+/* 관리자 */
+import adminMain from './components/admin/adminMain.vue'
+
 /* 학생 */
-import studentMainBody                from './components/student/studentMainBody.vue'
 import studentAttendanceManagement    from './components/student/studentAttendanceManagement.vue'
 import studentGradeManagement         from './components/student/studentGradeManagement.vue'
 import studentUserInfo                from './components/student/studentUserInfo.vue'
@@ -86,10 +88,19 @@ const routes = [
     component:join
   },
   /* 비밀번호 찾기 페이지 */
-  // {
-  //   path: '/help',
-  //   component:help
-  // },
+  {
+    path: '/help',
+    component:help
+  },
+  /* 관리자 페이지 */
+  {
+    path: '/admin',
+    component: adminMain
+  },
+  {
+    path: '/admin/main',
+    component: adminMain
+  },
   /* 학생 페이지 */
   {
     path: '/student',
@@ -100,7 +111,7 @@ const routes = [
         components : {
           body : studentAttendanceManagement
         }
-      },,
+      },
       {
         path: '/student/main',
         components : {
