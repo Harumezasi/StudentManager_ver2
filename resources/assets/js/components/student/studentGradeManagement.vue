@@ -103,8 +103,8 @@
                          <tr>
                            <th scope="cols">分類</th>
                            <th scope="cols">回数</th>
-                           <th scope="cols">満点</th>
                            <th scope="cols">得点</th>
+                           <th scope="cols">満点</th>
                            <th scope="cols">平均</th>
                          </tr>
                         </thead>

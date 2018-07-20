@@ -411,9 +411,11 @@ class HomeController extends Controller
         // 04. 결과 알림
         if($user->save()) {
             // 비밀번호 변경 성공
-            return response()->json(new ResponseObject(
-                true, __('response.update_success', ['element', __('interface.password')])
-            ), 200);
+//            return response()->json(new ResponseObject(
+//                true, __('response.update_success', ['element', __('interface.password')])
+//            ), 200);
+            echo("<script>alert('비밀번호 변경에 성공했습니다.')</script>");
+            echo("<script>location.href='../';</script>");
 
         } else {
             // 변경 실패
