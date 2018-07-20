@@ -136,7 +136,7 @@
                                  <v-list-tile-action>
                                    <v-flex xs12>
                                        <v-layout row wrap align-center>
-                                         <v-flex xs12 md6 v-if="datas.sign_out">
+                                         <v-flex xs12 md6 v-if="!datas.sign_out">
                                            <v-chip :color="datas.sign_in ? 'light-green' : 'grey lighten-1'">登校</v-chip>
                                          </v-flex>
                                          <v-flex xs12 md6 v-else>
