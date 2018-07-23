@@ -8,20 +8,20 @@
 
 return [
     // 공통
-    'study'             => '학업',
-    'subject'           => '강의',
+    'study'             => '学業',
+    'subject'           => '講義',
 
     // 강의 유형
-    'japanese'          => '일본어',
-    'major'             => '전공',
+    'japanese'          => '日本語',
+    'major'             => '専攻',
 
     // 성적 유형
     'midterm'           => '中間',
-    'final'             => '기말',
-    'homework'          => '과제',
-    'quiz'              => '쪽지',
+    'final'             => '期末',
+    'homework'          => '課題',
+    'quiz'              => '小テスト',
 
     // 성적 유형
-    'gained_score'      => '취득점수',
-    'class_average'     => '반 평균',
+    'gained_score'      => '取得点数',
+    'class_average'     => 'クラス平均',
 ];

@@ -490,6 +490,10 @@ Route::group([
             return view('index');
         });
 
+        Route::get('/classAnalyticPrediction',function() {
+            return view('index');
+        });
+
         /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 End ■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 
