@@ -329,22 +329,26 @@ export default {
       checkGradePageUrl: null
     }
   },
-  computed: {
-    paramsData: function(newParams) {
-      console.log("success!!!" + this.$router.history.current.query.subjectName);
-    }
-  },
   methods: {
     getDownloadFile(){
-      axios.post('/professor/subject/score/excel/download', {
-        subject_id : this.$router.history.current.query.subjectName,
-        file_name : this.filename,
-        execute_date : this.date,
-        score_type : this.subType.select,
-        perfect_score : this.perfectScore,
-        content : this.content,
-        file_type : this.fileType
-      },{responseType: 'arraybuffer'}).then((response)=> {
+
+      let formData = new FormData();
+
+      formData.append('subject_id', this.$router.history.current.query.subjectName);
+      formData.append('file_name', this.filename);
+      formData.append('execute_date', this.date);
+      formData.append('score_type', this.subType.select);
+      formData.append('perfect_score', this.perfectScore);
+      formData.append('content', this.content);
+      formData.append('file_type', this.fileType);
+
+
+
+      axios.post('/professor/subject/score/excel/download', formData,
+      {
+        responseType: 'arraybuffer'
+      }).then((response)=> {
+
         let result = document.createElement('a');
         let blob = new Blob([response.data], {type: response.headers['content-type']})
 
@@ -359,6 +363,7 @@ export default {
         this.dialog1 = false;
       }).catch((error)=>{
         console.log("download Err :"+error);
+        alert('ダウンロードに失敗しました。');
       })
     },
     getSubjectData() {
@@ -372,7 +377,7 @@ export default {
           /* 학생 정보를 저장 */
           this.student_lists = response.data.message;
           /* 학생정보페이지 작업 / url 생성 및 연결 */
-          for (var start = 0; start < this.student_lists.length; start++) {
+          for (let start in this.student_lists) {
             this.$set(this.student_lists[start], 'infoLink', "window.open('/studentManagement/main?getInfoIdType=" + this.student_lists[start].id + "', 'newwindow', 'width=1000,height=700'); return true;");
           }
         })
@@ -392,11 +397,9 @@ export default {
           if (response.data.status === true) {
             this.reData = true;
             this.openWindow();
-            console.log(response.data);
           } else {
             this.reData = false;
             this.openWindow();
-            console.log(response.data)
           }
         })
         .catch((error) => {
@@ -411,7 +414,6 @@ export default {
     },
     handleFileUpload() {
       this.file = this.$refs.upload_file.files[0];
-      console.log(this.file);
       this.fileName = this.file.name;
     },
     openWindow() {
