@@ -15,11 +15,16 @@
           <v-card class="studentListBox" height="580">
             <v-card-title>
               <!-- 학기 선택 하는 곳 -->
-              <v-select :items="semester" v-model="e1" label="Select" single-line></v-select>
+              <!-- <v-select :items="semester" v-model="e1" label="Select" single-line></v-select>
               <v-spacer></v-spacer>
-              <v-text-field append-icon="search" label="Search" single-line hide-details v-model="search"></v-text-field>
+              <v-text-field append-icon="search" label="Search" single-line hide-details v-model="search"></v-text-field> -->
             </v-card-title>
-            <v-data-table :headers="headers" :items="student_lists" :search="search" :pagination.sync="pagination" hide-actions>
+            <v-data-table
+            :headers="headers"
+            :items="student_lists"
+            :search="search"
+            :pagination.sync="pagination"
+            >
               <template slot="items" slot-scope="props">
                 <td class="text-xs-center" style="height: 70px; font-size: 20px;font-family: Mplus 1p" >{{ props.item.id }}</td>
                  <td class="text-xs-center" style="font-size: 20px;font-family: Mplus 1p">{{ props.item.name }}</td>
@@ -31,7 +36,7 @@
               </template>
             </v-data-table>
             <div class="text-xs-center pt-2">
-              <v-pagination circle v-model="pagination.page" :length="pages"></v-pagination>
+              <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
             </div>
             <v-alert slot="no-results" :value="true" color="error" icon="warning">
               Your search for "{{ search }}" found no results.
@@ -71,7 +76,9 @@ export default {
   data() {
     return {
       search: '',
-      pagination: {},
+      pagination: {
+        rowsPerPage: 10
+      },
       selected: [],
       e1: null,
       semester: [{
@@ -81,7 +88,7 @@ export default {
       headers: [{
           class: 'display-1',
           text: '学生番号',
-          value: 'studentNum',
+          value: 'id',
           align: 'center',
         },
         {
@@ -95,7 +102,8 @@ export default {
           class: 'display-1',
           text: '',
           value: 'detailInfo',
-          align: 'center'
+          align: 'center',
+          sortable: false
         }
       ],
       student_lists: [],
@@ -121,10 +129,10 @@ export default {
   computed: {
     pages() {
       if (this.pagination.rowsPerPage == null ||
-        this.pagination.totalItems == null
+        this.student_lists == null
       ) return 0
 
-      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+      return Math.ceil(this.student_lists / this.pagination.rowsPerPage)
     }
   }
 }

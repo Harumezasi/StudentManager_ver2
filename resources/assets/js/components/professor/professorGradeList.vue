@@ -40,14 +40,13 @@
       <v-card-title>
         <h2>{{ selectedGradeData }}</h2>
         <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <!-- <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field> -->
           <v-progress-linear :indeterminate="loadingValue"></v-progress-linear>
       </v-card-title>
       <v-data-table
       :headers="headers"
       :items="gradeDatas"
       :pagination.sync="pagination"
-      :search="search"
       id = "fontSetting"
       >
         <template slot="items" slot-scope="props">
@@ -123,8 +122,11 @@ export default {
       },
       {
         text: '満点',
+        sortable: false
       },
-      {}
+      {
+        sortable: false
+      }
     ],
     gradeDatas: [],
     menuDatas : [],
@@ -218,10 +220,10 @@ export default {
   computed: {
     pages() {
       if (this.pagination.rowsPerPage == null ||
-        this.pagination.totalItems == null
+        this.gradeDatas.length == null
       ) return 0
 
-      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+      return Math.ceil(this.gradeDatas.length / this.pagination.rowsPerPage)
     }
   }
 }

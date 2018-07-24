@@ -494,6 +494,11 @@ Route::group([
             return view('index');
         });
 
+        Route::get('/userInfo',function() {
+            return view('index');
+        });
+
+
         /* ■■■■■■■■■■■■■■■■■■■■■■■■ 경로추가 End ■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 

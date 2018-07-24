@@ -78,6 +78,7 @@
                                  v-model="subType"
                                  label="分類"
                                  class="input-group--focused"
+                                 return-object
                                ></v-select>
                              </v-flex>
                              <v-flex xs12>
@@ -179,7 +180,7 @@
                     </v-btn>
                   </v-flex>
                   <v-flex xs12 md3>
-                    <v-text-field append-icon="search" label="名前で探す。" single-line hide-details v-model="search"></v-text-field>
+
                   </v-flex>
               </v-layout>
             </v-flex>
@@ -187,9 +188,7 @@
             <v-data-table
               :headers="headers"
               :items="student_lists"
-              :search="search"
               :pagination.sync="pagination"
-              hide-actions
             >
               <template slot="items" slot-scope="props">
                  <td class="text-xs-center" style="height: 70px; font-size: 20px;font-family: Gothic A1">{{ props.item.id }}</td>
@@ -305,7 +304,7 @@ export default {
       headers: [{
           class: 'display-1',
           text: '学生番号',
-          value: 'studentNum',
+          value: 'id',
           sortable: true,
           align: 'center'
         },
@@ -320,7 +319,8 @@ export default {
           class: 'display-1',
           text: '',
           value: 'detailInfo',
-          align: 'center'
+          align: 'center',
+          sortable: false
         }
       ],
       student_lists: [],
@@ -443,10 +443,10 @@ export default {
   computed: {
     pages() {
       if (this.pagination.rowsPerPage == null ||
-        this.pagination.totalItems == null
+        this.student_lists.length == null
       ) return 0
 
-      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+      return Math.ceil(this.student_lists.length / this.pagination.rowsPerPage)
     }
   }
 }

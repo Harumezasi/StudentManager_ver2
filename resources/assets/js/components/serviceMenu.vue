@@ -111,12 +111,7 @@
   <v-toolbar color="transparent" flat fixed app>
     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
     <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon color="white">notifications_none</v-icon>
-      </v-btn>
-      <v-btn icon color="white">
-        <v-icon>person_outline</v-icon>
-      </v-btn>
+
   </v-toolbar>
 
   <!-- 각 페이지 별, Contents -->

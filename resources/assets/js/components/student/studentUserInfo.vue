@@ -256,7 +256,8 @@ export default {
           this.photoData = null;
           /* 업데이트 후, 변경된 데이터를 보여주기 위해서 데이터를 다시 받아온다. */
           this.getUserInfo();
-
+          /* url del */
+          this.photoUrl = null;
         }).catch((error) => {
 
         console.log('setUserInfo Error : ' + error);

@@ -9,7 +9,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">成績照会 (簡単に)</h2>
+                <h2>成績照会 (簡単に)</h2>
               </v-card-text>
 
               <v-card-text>
@@ -36,7 +36,7 @@
               </v-card-text>
 
               <v-card-text>
-                <h2 class = "cardInsideTitle">{{ subjectStstsName }}</h2>
+                <h2>{{ subjectStstsName }}</h2>
               </v-card-text>
 
               <v-container fluid grid-list-md>
@@ -86,7 +86,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">成績照会 (詳しく)</h2>
+                <h2>成績照会 (詳しく)</h2>
               </v-card-text>
               <v-card-text>
                 <v-container grid-list-xl>
@@ -112,7 +112,7 @@
               </v-card-text>
 
               <v-card-text>
-                <h2 class = "cardInsideTitle">{{ subjectScoreName }}</h2>
+                <h2>{{ subjectScoreName }}</h2>
               </v-card-text>
 
               <!-- 테이블 -->

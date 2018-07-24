@@ -279,6 +279,7 @@
                                   v-model="subjectSelect"
                                   :label="subjectSelect.text"
                                   single-line
+                                  return-object
                                 ></v-select>
                               </v-flex>
                               <!-- 그래프 선택 -->
@@ -288,6 +289,7 @@
                                   v-model="greadeSelected"
                                   :label="greadeSelected.text"
                                   single-line
+                                  return-object
                                 ></v-select>
                               </v-flex>
                               <!-- 종목 선택 -->
@@ -1026,8 +1028,6 @@ export default {
             break;
           case 'code' :
             this.setMinor_type[0]['code'] = value;
-            console.log(value);
-            console.log(this.setLec);
             this.setLec = name;
             this.getStudentInfoRenderGraph('code');
             break;
@@ -1129,8 +1129,6 @@ export default {
         this.progressStudent = false;
 
         this.selectStudent(this.studentInfo[0]);
-        console.log(this.studentInfo);
-        console.log(Object.keys(this.studentInfo[0].trouble).length);
 
         /* 트러블 기본 정보 추가 */
         for(let troubleSetting in this.studentInfo){
@@ -1179,13 +1177,15 @@ export default {
         for(let start in response.data.message.subjects){
           this.subjectList.push(response.data.message.subjects[start]);
         }
+
         /* select 리스트 용 데이터 생성 */
         for(let datas in this.subjectList){
           this.$set(this.subjectList[datas], 'text', this.subjectList[datas].name)
         }
-        console.log(this.subjectList);
+
         /* 과목 코드 기본 값 설정 */
         this.setMinor_type[0]['code'] = this.subjectList[0].id;
+
         this.setLec = this.subjectList[0].name;
         this.subjectSelect = this.subjectList[0];
 
