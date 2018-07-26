@@ -76,9 +76,13 @@
                     <v-flex xs12 md11>
                       <h2 class = "chartTitle">出席の情報分析
                         <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
-                          <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
-                            {{ this.periodSelected }}
-                            ( {{ this.startDate }} ~ {{ this.endDate }})
+                        <v-btn round class = "elevation-0" color = "indigo accent-1" v-else-if="setPeriod_type == 'weekly'" @click.stop="dialog = !dialog">
+                          {{ this.periodSelected }}
+                          ( {{ this.startDate }}週目 ~ {{ this.endDate }}週目 )
+                        </v-btn>
+                        <v-btn round class = "elevation-0" color = "indigo accent-1" v-else @click.stop="dialog = !dialog">
+                          {{ this.periodSelected }}
+                          ( {{ this.startDate }} ~ {{ this.endDate }})
                         </v-btn>
                       </h2>
                     </v-flex>
@@ -144,10 +148,14 @@
                     <v-flex xs12 md11>
                       <h2 class = "chartTitle">学業情報分析
                         <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
-                          <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
-                            {{ this.periodSelected }}
-                            ( {{ this.startDate }} ~ {{ this.endDate }})
-                          </v-btn>
+                        <v-btn round class = "elevation-0" color = "indigo accent-1" v-else-if="setPeriod_type == 'weekly'" @click.stop="dialog = !dialog">
+                          {{ this.periodSelected }}
+                          ( {{ this.startDate }}週目 ~ {{ this.endDate }}週目 )
+                        </v-btn>
+                        <v-btn round class = "elevation-0" color = "indigo accent-1" v-else @click.stop="dialog = !dialog">
+                          {{ this.periodSelected }}
+                          ( {{ this.startDate }} ~ {{ this.endDate }})
+                        </v-btn>
                       </h2>
                     </v-flex>
                   </v-layout>

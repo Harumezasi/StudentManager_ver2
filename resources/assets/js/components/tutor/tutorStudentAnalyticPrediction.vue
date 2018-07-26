@@ -78,7 +78,11 @@
                       <v-flex xs12 md10>
                         <h2 class = "studentListTitle">学生リスト
                           <v-btn round color = "indigo accent-1" v-if="!dateCheck" @click.stop="dialog = !dialog">{{ this.periodSelected }}</v-btn>
-                          <v-btn class = "elevation-0" color = "transparent" v-else @click.stop="dialog = !dialog">
+                          <v-btn round class = "elevation-0" color = "indigo accent-1" v-else-if="setPeriod_type == 'weekly'" @click.stop="dialog = !dialog">
+                            {{ this.periodSelected }}
+                            ( {{ this.startDate }}週目 ~ {{ this.endDate }}週目 )
+                          </v-btn>
+                          <v-btn round class = "elevation-0" color = "indigo accent-1" v-else @click.stop="dialog = !dialog">
                             {{ this.periodSelected }}
                             ( {{ this.startDate }} ~ {{ this.endDate }})
                           </v-btn>

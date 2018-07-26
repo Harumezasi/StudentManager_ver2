@@ -96,8 +96,8 @@
                          <tr>
                            <th scope="cols">分類</th>
                            <th scope="cols">回数</th>
-                           <th scope="cols">満点</th>
                            <th scope="cols">得点</th>
+                           <th scope="cols">満点</th>
                            <th scope="cols">平均</th>
                          </tr>
                         </thead>
@@ -161,7 +161,7 @@
                       :items="viewGradeData.scores"
                       :pagination.sync="pagination"
                       hide-actions
-                      class="elevation-0"
+                      class="text-xs-center"
                       style="position: relative;left:15px;"
                     >
                       <template slot="headerCell" slot-scope="props">
@@ -223,11 +223,11 @@ export default {
       ],
        /* 상세 성적 정보 */
        detailTableHeaders: [
-          { text: '日時', value: 'date' },
-          { text: '試験タイプ', value: 'detailType' },
-          { text: '得点', value: 'myScore' },
-          { text: '満点', value: 'totalScore' },
-          { text: '分類', value: 'testType' }
+          { text: '日時', value: 'date', sortable : false, align : 'center' },
+          { text: '試験タイプ', value: 'detailType', sortable : false, align : 'center' },
+          { text: '満点', value: 'myScore', sortable : false, align : 'center' },
+          { text: '得点', value: 'totalScore', sortable : false, align : 'center'},
+          { text: '分類', value: 'testType', sortable : false, align : 'center' }
         ]
     }
   },

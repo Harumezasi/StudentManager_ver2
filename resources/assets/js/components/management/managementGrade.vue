@@ -194,6 +194,7 @@ export default {
           /* 지도교수 일 경우 */
           this.profType = true;
           this.getSubjectList();
+          console.log('지도교수');
          }else{
           /* 교과목 교수 일 경우 */
           this.profType = false;
@@ -269,7 +270,7 @@ export default {
 
        let urlData = '/professor/detail/score'
 
-       if(type){
+       if(type || this.profType){
          urlData = '/tutor/detail/subject_scores'
        }
 
