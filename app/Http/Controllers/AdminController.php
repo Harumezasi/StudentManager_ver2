@@ -30,6 +30,12 @@ use Validator;
  *  함수 목록
  *      - 메인
  *          = index():                          관리자의 메인 페이지를 출력
+ *
+ *      - 학생관리
+ *          = selectStudentsList():             학생 목록 조회
+ *          = selectStudentInfo():              학생별 상세 정보 조회
+ *          = insertStudent():                  form 요청을 이용한 학생 정보 등록
+ *          = getStudentRegisterExcel():
  */
 class AdminController extends Controller
 {
@@ -120,7 +126,7 @@ class AdminController extends Controller
         ), 200);
     }
 
-    // 학생 등록
+    // form 요청을 이용한 학생 등록
     public function insertStudent(Request $request)
     {
         // 01. 요청 유효성 검사

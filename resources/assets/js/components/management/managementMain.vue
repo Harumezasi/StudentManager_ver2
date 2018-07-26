@@ -120,37 +120,45 @@
 
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
+
               <v-card-text>
                 <h2 class = "cardInsideTitleMain">出席分析</h2>
               </v-card-text>
+
               <v-data-table
-                :headers="headers"
+                :headers="attendance_analy_FisrtHeader"
                 :items="attendanceAnalysis"
                 hide-actions
-                class="elevation-0"
+                class="text-md-center"
                 id="fontSettingMain"
               >
                 <template slot="items" slot-scope="props">
-                  <td>{{ props.item.frequent_data.lateness }}</td>
-                  <td>{{ props.item.frequent_data.early_leave }}</td>
-                  <td>{{ props.item.frequent_data.absence }}</td>
-                  <td>{{ props.item.lateness_average }}</td>
+                  <tr>
+                    <td>{{ props.item.frequent_data.lateness }}</td>
+                    <td>{{ props.item.frequent_data.early_leave }}</td>
+                    <td>{{ props.item.frequent_data.absence }}</td>
+                    <td>{{ props.item.lateness_average }}</td>
+                  </tr>
                 </template>
               </v-data-table>
+
               <v-data-table
-                :headers="headers2"
+                :headers="attendance_analy_SecondHeader"
                 :items="attendanceAnalysisMonth"
                 hide-actions
-                class="elevation-0"
+                class="text-md-center"
                 id='fontSettingMain'
               >
                 <template slot="items" slot-scope="props">
-                  <td>{{ props.item.average_data.lateness }}</td>
-                  <td>{{ props.item.average_data.early_leave }}</td>
-                  <td>{{ props.item.average_data.absence }}</td>
-                  <td>{{ props.item.reason.lateness }}</td>
+                  <tr>
+                    <td>{{ props.item.average_data.lateness }}</td>
+                    <td>{{ props.item.average_data.early_leave }}</td>
+                    <td>{{ props.item.average_data.absence }}</td>
+                    <td>{{ props.item.reason.lateness }}</td>
+                  </tr>
                 </template>
               </v-data-table>
+
             </v-card>
           </v-flex>
 
@@ -183,8 +191,6 @@
   font-style: 'Gothic A1';
 }
 </style>
-
-<script src="/bower_components/chart.js/dist/Chart.min.js"></script>
 
 <script>
 
@@ -269,7 +275,8 @@ Vue.component('checkInOut-doubleLine-chart', {
                 }
                }
              }]
-           }
+           },
+           horizontalLine: [{ y: 3}]
          }
       )
     }
@@ -388,18 +395,18 @@ export default {
        }
      ],
      /*--- 출결 분석 테이블 --*/
-     headers: [
-       {text: 'よく遅刻する曜日', value: 'lateWeek'},
-       {text: 'よく早退する曜日', value: 'leaveEarlyWeek'},
-       {text: 'よく欠席する曜日', value: 'absenceWeek'},
-       {text: '平均遅刻の時間', value: 'averageLateTime'},
+     attendance_analy_FisrtHeader: [
+       {text: 'よく遅刻する曜日', value: 'lateWeek', sortable : false, align : "center"},
+       {text: 'よく早退する曜日', value: 'leaveEarlyWeek', sortable : false, align : "center"},
+       {text: 'よく欠席する曜日', value: 'absenceWeek', sortable : false, align : "center"},
+       {text: '平均遅刻の時間', value: 'averageLateTime', sortable : false, align : "center"},
      ],
      attendanceAnalysis: [],
-     headers2: [
-       {text: '月平均の遅刻回数', value: 'lateNum'},
-       {text: '月平均の早退回数', value: 'leaveEarlyNum'},
-       {text: '月平均の欠席回数', value: 'absenceNum'},
-       {text: '早退＆遅刻の頻繁な理由', value: 'reason'},
+     attendance_analy_SecondHeader: [
+       {text: '月平均の遅刻回数', value: 'lateNum', sortable : false, align : "center"},
+       {text: '月平均の早退回数', value: 'leaveEarlyNum', sortable : false, align : "center"},
+       {text: '月平均の欠席回数', value: 'absenceNum', sortable : false, align : "center"},
+       {text: '早退＆遅刻の頻繁な理由', value: 'reason', sortable : false, align : "center"},
      ],
      attendanceAnalysisMonth: [],
    }),

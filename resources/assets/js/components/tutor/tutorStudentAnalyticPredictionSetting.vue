@@ -310,9 +310,8 @@ export default {
     /* 값의 유효성 확인 */
     checkSettingDatas(){
       let checked = true;
-
       /* 기간 <= 365 */
-      if( parseInt(this.settingData['ada_search_period']) > 365 && parseInt(this.settingData['ada_search_period']) < 1){
+      if( parseInt(this.settingData['ada_search_period']) > 365 || parseInt(this.settingData['ada_search_period']) < 1){
         alert('期間 : 期間は[1]日~[365]日の中にしてください。');
         checked = false;
       }

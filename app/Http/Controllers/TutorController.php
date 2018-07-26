@@ -430,11 +430,11 @@ class TutorController extends Controller
 
         if ($studyClass->updateCriteria($data->getArrayCopy())) {
             return response()->json(new ResponseObject(
-                true, __('response.update_success', ['content' => __('interface.evaluation')])
+                true, __('response.update_success', ['element' => __('interface.evaluation')])
             ), 200);
         } else {
             return response()->json(new ResponseObject(
-                false, __('response.update_failed', ['content' => __('interface.evaluation')])
+                false, __('response.update_failed', ['element' => __('interface.evaluation')])
             ), 200);
         }
     }
