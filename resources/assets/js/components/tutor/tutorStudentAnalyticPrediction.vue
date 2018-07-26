@@ -16,7 +16,8 @@
         <v-container grid-list-sm class="pa-4">
             <v-btn color="info" depressed round v-on:click="selectPeriod('recently')">最近</v-btn>
             <v-btn color="info" depressed round v-on:click="selectPeriod('weekly')">週間</v-btn>
-            <v-btn color="info" depressed round v-on:click="selectPeriod('monthly')">月間</v-btn>
+            <v-btn color="gray" v-if="setPeriod_type == 'recently'" depressed round disabel>月間</v-btn>
+            <v-btn color="info" v-else depressed round v-on:click="selectPeriod('monthly')">月間</v-btn>
           <br>
           <v-layout row wrap>
            <v-flex xs10>
@@ -229,6 +230,7 @@
                                   v-model="attendanceSelected"
                                   :label="attendanceSelected.text"
                                   single-line
+                                  return-object
                                 ></v-select>
                               </v-flex>
                               <v-flex xs6 v-if="attendanceSelected.select == 1">
@@ -511,7 +513,13 @@ Vue.component('attendance-time-lineChart', {
              yAxes: [{
                ticks: {
                 min : 0,
-                max : 2400
+                max : 24,
+                callback: function(value, index, values) {
+                    if(value >= 10)
+                      return '(時間)' + value + ":00";
+                    else
+                      return '(時間)0' + value + ":00";
+                }
                }
              }]
            }
@@ -1526,7 +1534,7 @@ export default {
       /* 값 변경 시작 */
       if(value != null){
         let timeData = value.split(':');
-        let time = timeData[0] + timeData[1];
+        let time = timeData[0] + "." + timeData[1];
 
         return time;
       }
@@ -1631,6 +1639,10 @@ export default {
     this.getStudentInfo(this.studentsType);
   },
   watch : {
+    dialog : function(){
+      if(this.dialog == false)
+      this.selectPeriod('save')
+    },
     fDate : function(){
       this.checkDate('start')
     },

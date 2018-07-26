@@ -15,7 +15,8 @@
             <v-container grid-list-sm class="pa-4">
               <v-btn color="info" depressed round v-on:click="selectPeriod('recently')">最近</v-btn>
               <v-btn color="info" depressed round v-on:click="selectPeriod('weekly')">週間</v-btn>
-              <v-btn color="info" depressed round v-on:click="selectPeriod('monthly')">月間</v-btn>
+              <v-btn color="gray" v-if="setPeriod_type == 'recently'" depressed round disabel>月間</v-btn>
+              <v-btn color="info" v-else depressed round v-on:click="selectPeriod('monthly')">月間</v-btn>
               <br>
               <v-layout row wrap>
                <v-flex xs10>
@@ -93,6 +94,7 @@
                           v-model="attSelect"
                           :label="attendance[0].text"
                           single-line
+                          return-object
                         ></v-select>
                       </v-flex>
                       <v-flex xs7 v-if="attSelect.selected != 3">
@@ -160,15 +162,17 @@
                           v-model="subjectSelect"
                           :label="subjectSelect.text"
                           single-line
+                          return-object
                         ></v-select>
                       </v-flex>
                       <v-flex xs6>
-                          <v-select
-                            :items="subjectsList"
-                            v-model="subjectsSelect"
-                            :label="subjectsSelect.text"
-                            single-line
-                          ></v-select>
+                        <v-select
+                          :items="subjectsList"
+                          v-model="subjectsSelect"
+                          :label="subjectsSelect.text"
+                          single-line
+                          return-object
+                        ></v-select>
                       </v-flex>
                   </v-layout>
                   <v-flex xs12>
@@ -588,7 +592,7 @@ export default {
         /* 상태표시 */
         switch (select) {
           case 'lateness':
-            this.attendanceChartStat = '遅行';
+            this.attendanceChartStat = '遅刻';
             this.selectAtt = 'lateness';
             break;
           case 'early_leave':
@@ -723,6 +727,8 @@ export default {
 
           for(let datas in response.data.message.value){
             tempValue.push(response.data.message.value[datas].count);
+            this.attendanceLabelData[datas] =
+              this.attendanceLabelData[datas] + "(" + response.data.message.value[datas].count + "人)";
           }
 
           this.attendanceData = tempValue;
@@ -1050,6 +1056,10 @@ export default {
       this.getSubjectList();
     },
     watch : {
+      dialog : function(){
+        if(this.dialog == false)
+        this.selectPeriod('save')
+      },
       fDate : function(){
         this.checkDate('start')
       },

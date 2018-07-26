@@ -12,6 +12,7 @@
             <h1 style="color: white">会員情報</h1>
             <p style="font-size:20px">情報確認＆修正</p>
           </v-card-text>
+          <v-progress-linear :indeterminate="progressStat"></v-progress-linear>
         </v-card>
       </v-flex>
     </v-container>
@@ -198,7 +199,10 @@ export default {
      checkCount : 0,
 
      phone : null,
-     phoneType : "###########"
+     phoneType : "###########",
+
+     /**/
+     progressStat : false
    }),
    methods : {
      getUserInfo(){
@@ -243,7 +247,10 @@ export default {
       formData.append('phone', this.phone);
       formData.append('email', this.userInfoDatas.email);
 
-      if(this.checkCount <= 0)
+      if(this.checkCount <= 0){
+
+        this.progressStat = true;
+
         axios.post('/student/info/update',formData)
         .then((response) => {
           /* 통신 테스트 */
@@ -263,6 +270,10 @@ export default {
         console.log('setUserInfo Error : ' + error);
 
         })
+
+        this.progressStat = false;
+
+      }
       else if(this.userPassword != this.userPasswordCheck)
         alert('パスワードが間違っています。')
       else
@@ -310,11 +321,9 @@ export default {
      }
    },
    created(){
-     console.log('c');
      this.getUserInfo();
    },
    mounted(){
-     console.log('m');
      this.getUserInfo();
    }
  }

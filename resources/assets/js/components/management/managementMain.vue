@@ -1,5 +1,5 @@
 <template>
-  <div class = "tutorStudentAttendance fontSetting">
+  <div class = "tutorStudentAttendance fontSettingMain">
 
     <!-- 출결 그래프 영역 -->
     <v-flex xs12>
@@ -8,18 +8,15 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color= "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">出席のグラフ</h2>
+                <h2 class = "cardInsideTitleMain">出席のグラフ</h2>
                 <v-container>
                   <v-layout>
                     <v-flex xs6>
                       <div style="text-align:center">
-                        <h3>出欠 人数 (最近10週)</h3>
+                        <h3>出欠 回数 (最近10週)</h3>
                       </div>
                       <!-- 출결 그래프 -->
-                      <attendance-pie-chart :data="attendanceData" :width="2" :height="1"></attendance-pie-chart>
-
-                      <!-- 설명을 추가 -->
-
+                      <attendance-pie-chart :data="attendanceData" :labels="attendanceLabels" :width="2" :height="1"></attendance-pie-chart>
                     </v-flex>
                     <v-flex xs6>
                       <div style="text-align:center">
@@ -27,8 +24,6 @@
                       </div>
                       <!-- 등교 하교시간 비교 그래프 -->
                       <checkInOut-doubleLine-chart :datasets="attendanceDatasets" :labels="attendanceLabelData" :width="2" :height="1"></checkInOut-doubleLine-chart>
-
-                      <!-- 설명을 추가 -->
 
                     </v-flex>
                   </v-layout>
@@ -48,7 +43,7 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">詳しく</h2>
+                <h2 class = "cardInsideTitleMain">詳しく</h2>
               </v-card-text>
               <v-container fluid grid-list-md>
                 <v-data-iterator
@@ -63,16 +58,16 @@
                       <v-divider></v-divider>
                       <v-list dense>
                         <v-list-tile>
-                          <v-list-tile-content class="fontSetting">{{ props.item.countType }} </v-list-tile-content>
-                          <v-list-tile-content class="align-end fontSetting">{{ props.item.count }}</v-list-tile-content>
+                          <v-list-tile-content class="fontSettingMain">{{ props.item.countType }} </v-list-tile-content>
+                          <v-list-tile-content class="align-end fontSettingMain">{{ props.item.count }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content class="fontSetting">{{ props.item.continuityType }}</v-list-tile-content>
-                          <v-list-tile-content class="align-end fontSetting">{{ props.item.continuityNum }}</v-list-tile-content>
+                          <v-list-tile-content class="fontSettingMain">{{ props.item.continuityType }}</v-list-tile-content>
+                          <v-list-tile-content class="align-end fontSettingMain">{{ props.item.continuityNum }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
-                          <v-list-tile-content class="fontSetting">{{ props.item.recentlyType }}</v-list-tile-content>
-                          <v-list-tile-content class="align-end fontSetting">{{ props.item.recentlyDate }}</v-list-tile-content>
+                          <v-list-tile-content class="fontSettingMain">{{ props.item.recentlyType }}</v-list-tile-content>
+                          <v-list-tile-content class="align-end fontSettingMain">{{ props.item.recentlyDate }}</v-list-tile-content>
                         </v-list-tile>
                       </v-list>
                     </v-card>
@@ -97,7 +92,7 @@
                  :items="attendanceDatas"
                  :pagination.sync="attendancePagination"
                  class="elevation-1"
-                 id='fontSetting'
+                 id='fontSettingMain'
                  >
                <template slot="items" slot-scope="props">
                  <td class="text-xs-center">{{ props.item.reg_date }}</td>
@@ -126,14 +121,14 @@
           <v-flex xs12 md12>
             <v-card class="elevation-1" color = "white">
               <v-card-text>
-                <h2 class = "cardInsideTitle">出席分析</h2>
+                <h2 class = "cardInsideTitleMain">出席分析</h2>
               </v-card-text>
               <v-data-table
                 :headers="headers"
                 :items="attendanceAnalysis"
                 hide-actions
                 class="elevation-0"
-                id="fontSetting"
+                id="fontSettingMain"
               >
                 <template slot="items" slot-scope="props">
                   <td>{{ props.item.frequent_data.lateness }}</td>
@@ -147,7 +142,7 @@
                 :items="attendanceAnalysisMonth"
                 hide-actions
                 class="elevation-0"
-                id='fontSetting'
+                id='fontSettingMain'
               >
                 <template slot="items" slot-scope="props">
                   <td>{{ props.item.average_data.lateness }}</td>
@@ -168,7 +163,7 @@
 </template>
 
 <style>
-.cardInsideTitle {
+.cardInsideTitleMain {
   font-family: "Mplus 1p";
   font-weight: normal;
   border-bottom: 1px solid;
@@ -176,29 +171,30 @@
   border-color: rgba(187, 187, 187, 0.73);
 }
 
-.fontSetting {
+.fontSettingMain {
   font-size: 18px;
   font-weight: lighter;
   font-style: 'Gothic A1';
 }
 
-#fontSetting td {
+#fontSettingMain td {
   font-size: 14px;
   font-weight: lighter;
   font-style: 'Gothic A1';
 }
 </style>
 
+<script src="/bower_components/chart.js/dist/Chart.min.js"></script>
 
 <script>
 
 import Vue from 'vue'
 import VueChartJs from 'vue-chartjs'
 
-/* 등교 하교 시간 비교 그래프  */
+/* 출결 그래프  */
 Vue.component('attendance-pie-chart', {
   extends : VueChartJs.Pie,
-  props: ['data', 'options'],
+  props: ['data', 'labels'],
   mounted(){
     this.renderPieChart();
   },
@@ -206,25 +202,25 @@ Vue.component('attendance-pie-chart', {
   computed: {
     attendanceData : function(){
       return this.data
-    }
+    },
+   attendanceLabels : function (){
+      return this.labels
+   }
   },
   methods : {
     renderPieChart : function(){
-      this.renderChart({
-        /* 기간 내의 날짜 */
-        labels: ['出席','遅刻','欠席','早退'],
-        datasets: [{
-            backgroundColor: ['#10a236', '#f9cd41', '#fe7272', '#5c7add'],
-            pointBackgroundColor: 'white',
-            pointBorderColor: '#249EBF',
-            data: this.attendanceData
-          }],
-          options:{
-            responsive: true,
-            maintainAspectRatio: false
-          }
+
+      this.renderChart(
+        {
+          /* 기간 내의 날짜 */
+          labels: this.attendanceLabels,
+          datasets: [{
+              backgroundColor: ['#10a236', '#f9cd41', '#fe7272', '#5c7add'],
+              data: this.attendanceData
+            }]
         }
       )
+
     }
   },
   watch : {
@@ -293,6 +289,7 @@ export default {
    data: () => ({
      /* 그래프 데이터 변수 */
      attendanceData : [],
+     attendanceLabels  : ['出席','遅刻','欠席','早退'],
      /* */
      attendanceLabelData : [],
      attendanceDatasets : [{
@@ -436,9 +433,13 @@ export default {
         let getDatas = response.data.message;
         /* 그래프에 들어갈 정보 저장*/
         this.attendanceData.push(getDatas.total_sign_in);
+        this.attendanceLabels[0] = this.attendanceLabels[0] + "(" + getDatas.total_sign_in + "回)";
         this.attendanceData.push(getDatas.total_lateness);
+        this.attendanceLabels[1] = this.attendanceLabels[1] + "(" + getDatas.total_lateness + "回)";
         this.attendanceData.push(getDatas.total_absence);
+        this.attendanceLabels[2] = this.attendanceLabels[2] + "(" + getDatas.total_absence + "回)";
         this.attendanceData.push(getDatas.total_early_leave);
+        this.attendanceLabels[3] = this.attendanceLabels[3] + "(" + getDatas.total_early_leave + "回)";
         /* 정보를 저장 */
         /* 출석 */
         this.attendanceStats[0].count = getDatas.total_sign_in;
@@ -600,10 +601,10 @@ export default {
   computed: {
       attendancePages () {
         if (this.attendancePagination.rowsPerPage == null ||
-          this.attendancePagination.totalItems == null
+          this.attendanceDatas.length == null
         ) return 0
 
-        return Math.ceil(this.attendancePagination.totalItems / this.attendancePagination.rowsPerPage)
+        return Math.ceil(this.attendanceDatas.length / this.attendancePagination.rowsPerPage)
       }
     }
   }

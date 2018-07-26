@@ -159,10 +159,10 @@
                   <v-flex xs12 md2>
                     <v-icon color="red darken-3" large>error</v-icon>
                   </v-flex>
-                  <v-flex xs12 md6>
+                  <v-flex xs12 md7>
                     <h1 class="cardsTitle">注意が必要な学生</h1>
                   </v-flex>
-                  <v-flex xs12 md4>
+                  <v-flex xs12 md3>
                     <h1 class="currentStudentNum" style="color: white">{{ loveStudentCount }}/48</h1>
                   </v-flex>
                 </v-layout>
@@ -200,7 +200,7 @@
 .realTimeTopDiv {
   position: relative;
   bottom: 200px;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 .realTimeTopDiv_2 {
@@ -233,7 +233,7 @@
   font-family: "Montserrat";
   font-weight: Bold;
   position: relative;
-  left: 55px;
+  left: 65px;
   bottom: 60px;
 }
 
@@ -269,7 +269,7 @@
   box-shadow: 0px 4px 10px 0 rgba(33, 33, 33, 0.36);
 }
 .absenceAndLateInfoArea {
-  min-height: 600px;
+  height: 600px;
   overflow-y: scroll;
   position: relative;
 }
@@ -280,7 +280,7 @@
   border-radius: 0.6975rem;
   min-height: 330px;
   box-shadow: 0px 4px 10px 0 rgba(33, 33, 33, 0.36);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .attendanceInfoArea {

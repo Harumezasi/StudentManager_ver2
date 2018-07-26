@@ -121,6 +121,7 @@ export default {
           for (var start = 0; start < this.student_lists.length; start++) {
             this.$set(this.student_lists[start], 'infoLink', "window.open('/studentManagement/main?getInfoIdType=" + this.student_lists[start].id + "', 'newwindow', 'width=1000,height=700'); return false;");
           }
+          console.log(this.student_lists);
         }).catch((error) => {
           console.log(error);
         });
@@ -129,10 +130,10 @@ export default {
   computed: {
     pages() {
       if (this.pagination.rowsPerPage == null ||
-        this.student_lists == null
+        this.student_lists.length == null
       ) return 0
 
-      return Math.ceil(this.student_lists / this.pagination.rowsPerPage)
+      return Math.ceil(this.student_lists.length / this.pagination.rowsPerPage)
     }
   }
 }

@@ -312,28 +312,28 @@ export default {
       let checked = true;
 
       /* 기간 <= 365 */
-      if(this.settingData['ada_search_period'] > 365 && this.settingData['ada_search_period'] < 1){
-        alert('기간 : 기간은 [1]일~[365]일 내로 설정하셔야합니다.');
+      if( parseInt(this.settingData['ada_search_period']) > 365 && parseInt(this.settingData['ada_search_period']) < 1){
+        alert('期間 : 期間は[1]日~[365]日の中にしてください。');
         checked = false;
       }
       /* 학업 - 평균 >= 최근 */
-      else if(this.settingData['study_usual'] < this.settingData['study_recent']){
-        alert('학업 : [최근 기간]이 [평소 기간]보다 클 수 없습니다.');
+      else if( parseInt(this.settingData['study_usual']) <  parseInt(this.settingData['study_recent'])){
+        alert('学業 : [最近期間]が [普段期間]より短くしてください。');
         checked = false;
-      }else if(this.settingData['study_usual'] < 1 ){
-        alert('학업 : [평소 기간]의 횟수는 최소 [1]회 이상이여야 합니다.');
+      }else if( parseInt(this.settingData['study_usual']) < 1 ){
+        alert('学業 : [普段期間]の回数は最低[1]回以上にしてください。');
         checked = false;
-      }else if(this.settingData['study_recent'] < 1){
-        alert('학업 : [최근 기간]의 횟수는 최소 [1]회 이상이여야 합니다.');
+      }else if( parseInt(this.settingData['study_recent']) < 1){
+        alert('学業 : [最近期間]の回数は最低[1]回以上にしてください。');
         checked = false;
       }
       /* 석차백분율 <= 100% */
-      else if(this.settingData['low_reflection'] > 100){
-        alert('하위권 : 석차백분율이 [100%]를 초과할 수 없습니다.');
+      else if( parseInt(this.settingData['low_reflection']) > 100){
+        alert('下位圏 : 席次パーセンテージが[100%]を超過できません。');
         checked = false;
       }
-      else if(this.settingData['recent_reflection'] > 100){
-        alert('최근 : 석차백분율이 [100%]를 초과할 수 없습니다.');
+      else if( parseInt(this.settingData['recent_reflection']) > 100){
+        alert('精勤 : 席次パーセンテージが[100%]を超過できません。');
         checked = false;
       }
 
