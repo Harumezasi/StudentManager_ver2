@@ -130,7 +130,7 @@
                </v-form>
              </v-card-text>
              <v-card-text class = "updateBtn text-xs-right">
-               <v-btn color = "light-blue darken-4" dark v-on:click="setUserInfo()" class="fontSetting">会員情報セーブ</v-btn>
+               <v-btn color = "light-blue darken-4" dark v-on:click="setUserInfo()" class="fontSetting">保存する</v-btn>
              </v-card-text>
            </v-flex>
          </div>

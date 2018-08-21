@@ -21,7 +21,7 @@
                   <v-flex xs12 md3>
                     <v-dialog v-model="dialog1" persistent max-width="600px">
                       <v-btn depressed round color="green" class="white--text" slot="activator" normal style="position:relative;right:15px;">
-                        エクセルパイルをダウンロード
+                        エクセルファイルをダウンロード
                         <v-icon right dark>cloud_download</v-icon>
                       </v-btn>
                       <!-- 모달창 메인 -->
@@ -121,7 +121,7 @@
                   <v-flex xs12 md3>
                     <v-dialog v-model="dialog2" persistent max-width="600px">
                       <v-btn depressed round color="green" class="white--text" slot="activator" normal>
-                        成績のパイルアップロード
+                        成績のファイルアップロード
                         <v-icon right dark>cloud_upload</v-icon>
                       </v-btn>
                       <!-- 모달창 메인 -->
@@ -155,7 +155,7 @@
                         <v-card-title>
                           <span class="headline">お知らせ</span>
                         </v-card-title>
-                        <v-flex d-flex xs12 sm6 md4>
+                        <v-flex d-flex xs12>
                           <!-- form 양식 -->
                           <div v-if="reData">
                             成績のアップロードに成功しました。

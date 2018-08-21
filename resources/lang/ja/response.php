@@ -33,7 +33,7 @@ return [
     "send_mail_success"     => 'メールを成功的に送りました。',
 
     // 회원가입 관련
-    'not_joined'                => "新規登録がされていません。まず新規登録をしてください。",
+    'not_joined'                => "新規登録されていません。まず新規登録をしてください。",
     'not_exists_student'        => "その学籍番号はありません。",
     'already_joined_student'    => "その学籍番号はすでに登録されています。",
     'usable_id'                 => '使用できるIDです。',
@@ -81,6 +81,6 @@ return [
 
     // 시간표 등록
     'timetable_wrong_subject'   => '講義コード:subject_idはその学期に開設された講義ではありません。',
-    'timetable_is_not_unique'   => '1つの限で多数の講義があることはできません。',
+    'timetable_is_not_unique'   => '1時限で複数の講義はできません。',
     'timetable_wrong_class'     => 'ほかのクラスの講義があります。'
 ];

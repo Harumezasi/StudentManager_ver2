@@ -554,7 +554,7 @@ export default {
           subjectsSelect : { text: '情報を探しています。'},
           attendance: [
             { text : '出席回数比率', selected:'1' },
-            { text : '平均出席した人の数', selected:'2' },
+            { text : '出席した人数の平均', selected:'2' },
             { text : '週末に出席した学生の数', selected:'3' },
           ],
           /* 기간 설정 */

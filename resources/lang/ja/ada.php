@@ -20,7 +20,7 @@ return [
     'unreason'                  => '無断',
     'personal'                  => '個人事情',
     'sick'                      => '病気',
-    'hometown'                  => '故郷',
+    'hometown'                  => '帰省',
     'accident'                  => '事故',
     'disaster'                  => '天災',
     'etc'                       => 'その他',

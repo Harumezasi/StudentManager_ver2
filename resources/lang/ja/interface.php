@@ -31,7 +31,7 @@ return [
     'type_explain'          => '講義タイプはjapanese(日本語)やmajor(専攻)の中で1つにしてください。',
     'join_list'             => '受講リスト',
     'timetable'             => '時間表',
-    'period'                => ':period限',
+    'period'                => ':period時限',
     'classroom'             => '講義室',
 
     // 공통 : 기능

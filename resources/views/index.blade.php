@@ -34,6 +34,8 @@
     <link href="http://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet">
 </head>
 <body>
+    <script type="text/javascript" src="https://unpkg.com/chart.piecelabel.js"></script>
+
     <div id="main_div"></div>
     @if(session()->has('alert'))
         <script>alert('{{ session()->get('alert') }}')</script>

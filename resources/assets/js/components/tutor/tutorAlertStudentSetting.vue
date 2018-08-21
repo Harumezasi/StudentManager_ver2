@@ -176,7 +176,7 @@ export default {
     return {
       /*-- 기간 --*/
       period: [{
-          text: '一週',
+          text: '１週',
           value : 7
         },
         {
